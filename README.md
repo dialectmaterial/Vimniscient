@@ -1,0 +1,2 @@
+# Vimniscient
+Absolute vim
