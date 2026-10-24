@@ -15,37 +15,37 @@ tasks:
       f(a, ▮b, c)
     target: |-
       f(a, x, c)
-    solution: ciax<Esc>
-    hint: cia changes the argument under the cursor.
+    solution: 'ciax<Esc>'
+    hint: 'cia changes the argument under the cursor.'
   - goal: 'Delete the middle argument and its comma.'
     ft: python
     start: |-
       f(a, ▮b, c)
     target: |-
       f(a, c)
-    solution: daa
-    hint: daa takes the comma with it.
+    solution: 'daa'
+    hint: 'daa takes the comma with it.'
   - goal: 'Delete the last argument.'
     ft: python
     start: |-
       f(a, b, ▮c)
     target: |-
       f(a, b)
-    solution: daa
-    hint: For the last argument, daa removes the comma before it.
+    solution: 'daa'
+    hint: 'For the last argument, daa removes the comma before it.'
   - goal: 'Drop the name parameter.'
     ft: python
     start: |-
       def greet(self, ▮name, age):
     target: |-
       def greet(self, age):
-    solution: daa
-    hint: daa works on parameters too.
+    solution: 'daa'
+    hint: 'daa works on parameters too.'
   - goal: 'Change the first argument, starting from the beginning of the line.'
     ft: python
     start: |-
       ▮foo(a, b)
     target: |-
       foo(z, b)
-    solution: ciaz<Esc>
-    hint: mini.ai jumps to the next argument when the cursor isn't on one.
+    solution: 'ciaz<Esc>'
+    hint: 'mini.ai jumps to the next argument when the cursor isn''t on one.'

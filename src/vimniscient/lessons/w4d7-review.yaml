@@ -6,53 +6,53 @@ intro: |
   Ranges, `:sort`, filters, patterns, `:norm`, motions and indenting, mixed.
 keys: [':m', ':sort', ':%!', ':%s', ':norm', '>i{']
 tasks:
-  - goal: 'Sort the names and remove the duplicate.'
+  - goal: 'Sort the linguists and remove the duplicate.'
     start: |-
-      ▮Noam
-      Ada
-      Noam
-      Alan
+      ▮Sapir
+      Boas
+      Sapir
+      Bloomfield
     target: |-
-      Ada
-      Alan
-      Noam
+      Bloomfield
+      Boas
+      Sapir
     solution: ':sort u<CR>'
     hint: ':sort u'
   - goal: 'Move the TODO line to the top.'
     start: |-
-      first
-      second
-      ▮TODO: this
+      phonology
+      syntax
+      ▮TODO: gloss the data
     target: |-
-      TODO: this
-      first
-      second
+      TODO: gloss the data
+      phonology
+      syntax
     solution: ':m0<CR>'
     hint: ':m0'
   - goal: 'Quote every word.'
     start: |-
-      ▮one two three
+      ▮sit sat seat
     target: |-
-      "one" "two" "three"
+      "sit" "sat" "seat"
     solution: ':s/\w\+/"&"/g<CR>'
     hint: '\w\+ is a word, & is the match.'
   - goal: 'Add "!" to the end of every line.'
     start: |-
-      ▮hi
-      hello
-      hey
+      ▮Hallo
+      Hola
+      Ciao
     target: |-
-      hi!
-      hello!
-      hey!
+      Hallo!
+      Hola!
+      Ciao!
     solution: ':%norm A!<CR>'
     hint: ':%norm A!'
   - goal: 'Number the lines with a shell command.'
     start: |-
-      ▮apple
-      pear
+      ▮Latin
+      Greek
     target: |-
-      1 apple
-      2 pear
-    solution: ":%!awk '{print NR, $0}'<CR>"
+      1 Latin
+      2 Greek
+    solution: ':%!awk ''{print NR, $0}''<CR>'
     hint: 'awk ''{print NR, $0}'' prints the line number before each line. (Visual block g Ctrl-a can''t do this one.)'

@@ -5,7 +5,8 @@ style: keys
 case_sensitive: true
 # Defaults from zathura(1); ~/.config/zathura/zathurarc doesn't change any keys.
 cards:
-  - {prompt: Next page / previous page, answer: [JK, J K]}
+  - {prompt: Next page, answer: [J, <PageDown>]}
+  - {prompt: Previous page, answer: [K, <PageUp>]}
   - {prompt: Half a page down, answer: [<C-d>]}
   - {prompt: Go to the first page, answer: [gg]}
   - {prompt: Go to the last page, answer: [G]}
@@ -13,7 +14,9 @@ cards:
   - {prompt: Search the text, answer: [/]}
   - {prompt: Fit the page width, answer: [s]}
   - {prompt: Fit the whole page, answer: [a]}
-  - {prompt: Zoom in / out / back to original, answer: [+-=, + - =]}
+  - {prompt: Zoom in, answer: ['+', zI]}
+  - {prompt: Zoom out, answer: ['-', zO]}
+  - {prompt: Zoom back to the original size, answer: ['=', z0]}
   - {prompt: Dark mode (recolor), answer: [<C-r>]}
   - {prompt: Show the table of contents, answer: [<Tab>]}
   - {prompt: Toggle two pages side by side, answer: [d]}

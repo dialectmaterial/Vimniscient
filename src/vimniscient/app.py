@@ -24,7 +24,7 @@ from textual.widgets.option_list import Option
 
 from vimniscient import drills, habits, srs, vimgolf
 from vimniscient.answer import is_correct
-from vimniscient.cards import Card, Deck, has_lazyvim, load_decks
+from vimniscient.cards import Card, Deck, has_lazyvim, has_plugin, load_decks
 from vimniscient.lessons import Lesson, Task, load_lessons
 from vimniscient.progress import Progress
 from vimniscient.session import TaskResult, run_lesson
@@ -80,6 +80,10 @@ def plural(n: int, word: str) -> str:
     return f"{n} {word}{'' if n == 1 else 's'}"
 
 
+def streak_text(days: int) -> str:
+    return f"[b]{days}-day[/] streak" if days else "no streak yet"
+
+
 def tint(app: App, text: str, colour: str) -> Text:
     """Text in one of the theme's colours, for tables (their cells don't read $variables)."""
     if colour == "text-muted":  # "auto 60%" in the theme, which only CSS understands
@@ -124,7 +128,7 @@ def vimgolf_lesson(challenge: vimgolf.Challenge) -> Lesson:
         start=challenge.start,
         cursor=(1, 0),
         target=challenge.target,
-        solution=f"not published; see {challenge.url}",
+        solution="—",
         hint=f"No hints in VimGolf. Other people's solutions are on {challenge.url}.",
         ft="",
         lesson_id="vimgolf",
@@ -212,7 +216,7 @@ class StatsView(VerticalScroll):
         tasks_total = sum(len(lesson.tasks) for lesson in lessons)
         tasks_solved = sum(len(progress.best(lesson)) for lesson in lessons)
         self.query_one("#overview", Static).update(
-            f"[b]{plural(progress.streak(), 'day')}[/] streak · {plural(len(progress.days_trained()), 'day')} trained · "
+            f"{streak_text(progress.streak())} · {plural(len(progress.days_trained()), 'day')} trained · "
             f"[b]{done}/{len(lessons)}[/] lessons ({placed} placed) · {tasks_solved}/{tasks_total} tasks solved"
         )
 
@@ -236,14 +240,15 @@ class StatsView(VerticalScroll):
             )
         drill_items = progress.items("drill")
         seen = [drill_items[d.item_id] for d in app.drills if d.item_id in drill_items]
-        table.add_row(
-            "Omarchy drills (live)",
-            str(len(app.drills)),
-            str(len(app.drills)),
-            str(len(seen)),
-            str(sum(item.interval >= 21 for item in seen)),
-            str(sum(item.due <= today for item in seen)),
-        )
+        if drills.Hyprland().available or seen:
+            table.add_row(
+                "Omarchy drills (live)",
+                str(len(app.drills)),
+                str(len(app.drills)),
+                str(len(seen)),
+                str(sum(item.interval >= 21 for item in seen)),
+                str(sum(item.due <= today for item in seen)),
+            )
 
         table = self.table("accuracy-table", "Day", "Cards answered", "Correct")
         for day, n, correct in progress.card_accuracy():
@@ -399,10 +404,10 @@ class MainScreen(Screen):
         hardtime = "blocking" if date.today() >= block else f"hints until {block:%b %d}"
         days = list(reversed(progress.efficiency_by_day(14)))
         efficiency = [100 * ref / keys for _, _, keys, ref in days if keys]
-        lines = [
-            f"[b]{plural(progress.streak(), 'day')}[/] streak · [b]{done}/{len(lessons)}[/] lessons · "
-            f"hardtime {hardtime}",
-        ]
+        parts = [streak_text(progress.streak()), f"[b]{done}/{len(lessons)}[/] lessons"]
+        if has_plugin("hardtime.nvim"):
+            parts.append(f"hardtime {hardtime}")
+        lines = [" · ".join(parts)]
         top = next((h for h in habits.habits() if h.recent), None)
         if top:
             lines.append(f"[dim]top habit:[/] {top.message} ({top.recent}×)")
@@ -464,7 +469,7 @@ class MainScreen(Screen):
         if event.option_list.id == "lesson-list":
             app.start_lesson(app.lesson(event.option.id), done=self.refresh_all)
         else:
-            app.run_step(event.option.id, self.refresh_all)
+            app.run_step(event.option.id, self.refresh_all, direct=True)
 
     def action_pane(self, pane_id: str) -> None:
         self.query_one(f"#{pane_id}", OptionList).focus()
@@ -949,8 +954,10 @@ class VimniscientApp(App):
                 taken.add(worst.item_id)
         return tasks[:3]
 
-    def step(self, step_id: str) -> Callable[[Callable[[], None]], None] | None:
-        """One step of today's routine, or None when there's nothing to do for it."""
+    def step(self, step_id: str, direct: bool = False) -> Callable[[Callable[[], None]], None] | None:
+        """One step of today's routine, or None when there's nothing to do for it.
+
+        `direct` starts lessons without their intro screen (the main screen shows it already)."""
         progress = self.progress
         if step_id == "cards":
             cards = progress.due_cards(self.decks, self.lessons) + progress.new_cards(self.decks, self.lessons)
@@ -963,10 +970,14 @@ class VimniscientApp(App):
         elif step_id == "review":
             review = progress.due_tasks(self.lessons)
             review += self.drill_tasks(review)
+            if review and direct:
+                return lambda done: self.start_lesson(review_lesson(review), done=done)
             if review:
                 return lambda done: self.push_screen(LessonScreen(review_lesson(review)), lambda _: done())
         elif step_id == "lesson":
             nxt = progress.next_lesson(self.lessons)
+            if nxt and direct:
+                return lambda done: self.start_lesson(nxt, done=done)
             if nxt:
                 return lambda done: self.push_screen(LessonScreen(nxt), lambda _: done())
         elif step_id == "vimgolf":
@@ -974,8 +985,8 @@ class VimniscientApp(App):
                 return self.start_vimgolf
         return None
 
-    def run_step(self, step_id: str, done: Callable[[], None]) -> None:
-        step = self.step(step_id)
+    def run_step(self, step_id: str, done: Callable[[], None], direct: bool = False) -> None:
+        step = self.step(step_id, direct)
         if step:
             step(done)
         else:
@@ -986,7 +997,13 @@ class VimniscientApp(App):
         steps = [s for s in (self.step(i) for i in ("cards", "drills", "review", "lesson", "vimgolf")) if s]
         if not steps:
             self.notify("Nothing due and every lesson done. Pick any lesson to practise.")
-        self.run_steps(steps)
+            return
+
+        def finished(done: Callable[[], None]) -> None:
+            self.notify("That's today's practice done. See you tomorrow.", title="Vimniscient")
+            done()
+
+        self.run_steps([*steps, finished])
 
     def todays_drills(self) -> list[drills.Drill]:
         if not drills.Hyprland().available:

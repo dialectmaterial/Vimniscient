@@ -15,16 +15,16 @@ tasks:
       ▮x = 1
     target: |-
       # x = 1
-    solution: gcc
-    hint: gcc toggles a comment on the line.
+    solution: 'gcc'
+    hint: 'gcc toggles a comment on the line.'
   - goal: 'Uncomment the line.'
     ft: python
     start: |-
       # ▮y = 2
     target: |-
       y = 2
-    solution: gcc
-    hint: gcc again removes it.
+    solution: 'gcc'
+    hint: 'gcc again removes it.'
   - goal: 'Comment out this line and the next.'
     ft: python
     start: |-
@@ -35,8 +35,8 @@ tasks:
       # a = 1
       # b = 2
       c = 3
-    solution: gcj
-    hint: gc takes a motion, so gcj covers two lines.
+    solution: 'gcj'
+    hint: 'gc takes a motion, so gcj covers two lines.'
   - goal: 'Comment out the first block.'
     ft: python
     start: |-
@@ -49,13 +49,13 @@ tasks:
       # b = 2
 
       c = 3
-    solution: gcip
-    hint: gcip comments the inner paragraph.
+    solution: 'gcip'
+    hint: 'gcip comments the inner paragraph.'
   - goal: 'Comment out the JavaScript line (a different comment style).'
     ft: javascript
     start: |-
       ▮let x = 1;
     target: |-
       // let x = 1;
-    solution: gcc
-    hint: gc uses whatever comment syntax the language has.
+    solution: 'gcc'
+    hint: 'gc uses whatever comment syntax the language has.'

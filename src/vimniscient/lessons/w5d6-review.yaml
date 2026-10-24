@@ -13,24 +13,24 @@ tasks:
       run(cmd, ▮debug=True, timeout=5)
     target: |-
       run(cmd, timeout=5)
-    solution: daa
-    hint: daa
+    solution: 'daa'
+    hint: 'daa'
   - goal: 'Change the path to /tmp.'
     ft: python
     start: |-
       open(▮'/home/user/file')
     target: |-
       open('/tmp')
-    solution: ciq/tmp<Esc>
-    hint: ciq
+    solution: 'ciq/tmp<Esc>'
+    hint: 'ciq'
   - goal: 'Change the variable name userId to accountId.'
     ft: python
     start: |-
       ▮userId = 1
     target: |-
       accountId = 1
-    solution: cieaccount<Esc>
-    hint: The first sub-word is user; cie changes just that.
+    solution: 'cieaccount<Esc>'
+    hint: 'The first sub-word is user; cie changes just that.'
   - goal: 'Comment out the print.'
     ft: python
     start: |-
@@ -39,5 +39,5 @@ tasks:
     target: |-
       x = 1
       # print(x)
-    solution: gcc
-    hint: gcc
+    solution: 'gcc'
+    hint: 'gcc'

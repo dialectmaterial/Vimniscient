@@ -9,48 +9,48 @@ keys: ['/ in a macro', '@@', ':norm @a', 'yyp<C-a>']
 tasks:
   - goal: 'Uppercase the word after every TODO.'
     start: |-
-      ▮x TODO fix this
-      y nothing here
-      z TODO check that
-      w TODO test it
+      ▮1 TODO gloss this
+      2 nothing here
+      3 TODO transcribe that
+      4 TODO tag it
     target: |-
-      x TODO FIX this
-      y nothing here
-      z TODO CHECK that
-      w TODO TEST it
-    solution: qa/TODO<CR>wgUiwq2@a
+      1 TODO GLOSS this
+      2 nothing here
+      3 TODO TRANSCRIBE that
+      4 TODO TAG it
+    solution: 'qa/TODO<CR>wgUiwq2@a'
     hint: 'Let the macro find its own place: /TODO<Enter> w gUiw.'
   - goal: 'Turn every comma into " | ", using @a once and then @@.'
     start: |-
-      ▮a,b
-      c,d
-      e,f
+      ▮noun,verb
+      subject,object
+      stem,affix
     target: |-
-      a | b
-      c | d
-      e | f
-    solution: qa0f,xi | <Esc>jq@a@@
+      noun | verb
+      subject | object
+      stem | affix
+    solution: 'qa0f,xi | <Esc>jq@a@@'
     hint: '0 f, x deletes the comma, i | <Esc> inserts the separator, j moves on. Then @a, then @@.'
   - goal: 'Put every line in parentheses: record on the first line, then use :norm for the rest.'
     start: |-
-      ▮one
-      two
-      three
-      four
+      ▮NP
+      VP
+      PP
+      AP
     target: |-
-      (one)
-      (two)
-      (three)
-      (four)
+      (NP)
+      (VP)
+      (PP)
+      (AP)
     solution: 'qaI(<Esc>A)<Esc>q:2,$norm @a<CR>'
     hint: 'No j in this macro. :2,$norm @a runs it once on every line from 2 to the end.'
   - goal: 'Make a numbered list of four items.'
     start: |-
-      ▮1. intro
+      ▮1. Gloss the text.
     target: |-
-      1. intro
-      2. intro
-      3. intro
-      4. intro
-    solution: qayyp<C-a>q2@a
+      1. Gloss the text.
+      2. Gloss the text.
+      3. Gloss the text.
+      4. Gloss the text.
+    solution: 'qayyp<C-a>q2@a'
     hint: 'yyp copies the line, Ctrl-a bumps its number. Record that, then 2@a.'

@@ -13,23 +13,23 @@ tasks:
       config = {"mode": "▮dark"}
     target: |-
       config = {"mode": "light"}
-    solution: ciwlight<Esc>
-    hint: ciw or ci" both work.
+    solution: 'ciwlight<Esc>'
+    hint: 'ciw or ci" both work.'
   - goal: 'Replace all three arguments with z.'
     ft: python
     start: |-
       f(▮a, b, c)
     target: |-
       f(z)
-    solution: ci(z<Esc>
-    hint: ci( changes everything inside the parentheses.
-  - goal: 'Delete the second sentence.'
+    solution: 'ci(z<Esc>'
+    hint: 'ci( changes everything inside the parentheses.'
+  - goal: 'Delete the wrong sentence.'
     start: |-
-      One. ▮Two is here. Three.
+      B is voiced. ▮P is a vowel. K is velar.
     target: |-
-      One. Three.
-    solution: das
-    hint: das deletes a sentence and its trailing space.
+      B is voiced. K is velar.
+    solution: 'das'
+    hint: 'das deletes a sentence and its trailing space.'
   - goal: 'Delete the sys and re imports.'
     ft: python
     start: |-
@@ -40,15 +40,15 @@ tasks:
     target: |-
       import os
       import json
-    solution: 2dd
-    hint: A count works on dd too.
+    solution: '2dd'
+    hint: 'A count works on dd too.'
   - goal: 'Change the subdomain to new.'
     start: |-
       url = 'https://▮old.example.org'
     target: |-
       url = 'https://new.example.org'
-    solution: ciwnew<Esc>
-    hint: A dot ends a word, so ciw only takes "old". ct. works too.
+    solution: 'ciwnew<Esc>'
+    hint: 'A dot ends a word, so ciw only takes "old". ct. works too.'
   - goal: 'Indent the body of the function.'
     ft: python
     start: |-

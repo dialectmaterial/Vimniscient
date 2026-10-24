@@ -8,33 +8,33 @@ intro: |
   deletes up to the comma, `ct;` changes up to the semicolon.
 keys: [f, t, F, T, ";", ",", dt, ct]
 tasks:
-  - goal: 'Delete everything up to "went".'
+  - goal: 'Delete everything up to "common".'
     start: |-
-      We ▮walked to the shop and went home.
+      Clicks are ▮really quite common in Zulu.
     target: |-
-      We went home.
-    solution: dtw
-    hint: dtw deletes till the next w after the cursor.
+      Clicks are common in Zulu.
+    solution: 'dtc'
+    hint: 'dtc deletes till the next c after the cursor; really and quite have none.'
   - goal: 'Change the value to 42 (keep the semicolon).'
     start: |-
       let x = ▮old_value; let y = 2;
     target: |-
       let x = 42; let y = 2;
-    solution: ct;42<Esc>
-    hint: ct; changes up to, not including, the semicolon.
+    solution: 'ct;42<Esc>'
+    hint: 'ct; changes up to, not including, the semicolon.'
   - goal: 'Keep only the folder path: delete the file name.'
     start: |-
-      path/to/some/file.tx▮t
+      corpora/english/brown/ca01.tx▮t
     target: |-
-      path/to/some/
-    solution: T/D
-    hint: T/ jumps back to just after the last slash; D deletes to the end of the line.
+      corpora/english/brown/
+    solution: 'T/D'
+    hint: 'T/ jumps back to just after the last slash; D deletes to the end of the line.'
   - goal: 'Turn the third comma into a semicolon.'
     start: |-
-      ▮one, two, three, four
+      ▮nouns, verbs, adjectives, adverbs
     target: |-
-      one, two, three; four
-    solution: 3f,r;
+      nouns, verbs, adjectives; adverbs
+    solution: '3f,r;'
     hint: 'f, then ; ; walks comma by comma. A count is shorter: 3f, and then r; replaces the character.'
   - goal: 'Replace the whole int(input()) call with 42.'
     ft: python
@@ -42,12 +42,12 @@ tasks:
       value = ▮int(input())  # read a number
     target: |-
       value = 42  # read a number
-    solution: ct 42<Esc>
-    hint: t works with a space too. ct<Space> changes up to the next space.
-  - goal: 'Delete from the cursor up to and including the closing bracket.'
+    solution: 'ct 42<Esc>'
+    hint: 't works with a space too. ct<Space> changes up to the next space.'
+  - goal: 'Delete the part in brackets: from the cursor up to and including the ")".'
     start: |-
-      keep (delete▮ this) keep
+      Phonemes▮ (sound units) contrast.
     target: |-
-      keep (delete keep
-    solution: df)
-    hint: df) deletes onto the ), so the bracket goes too.
+      Phonemes contrast.
+    solution: 'df)'
+    hint: 'df) deletes onto the ), so the bracket goes too.'

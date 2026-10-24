@@ -10,55 +10,55 @@ keys: [D, C, cc, dd, J, ddp, A, I]
 tasks:
   - goal: 'Delete the rest of the line.'
     start: |-
-      Keep this part.▮ Remove the rest.
+      Grammar is a system.▮ Usage is something else.
     target: |-
-      Keep this part.
-    solution: D
-    hint: D deletes from the cursor to the end of the line.
-  - goal: 'Change the sum to its answer.'
+      Grammar is a system.
+    solution: 'D'
+    hint: 'D deletes from the cursor to the end of the line.'
+  - goal: 'Change the rest of the line to 44.'
     start: |-
-      x = ▮1 + 2 + 3
+      phonemes in English: ▮about forty or so
     target: |-
-      x = 6
-    solution: C6<Esc>
-    hint: C changes from the cursor to the end of the line.
-  - goal: 'Replace the middle line with "second".'
+      phonemes in English: 44
+    solution: 'C44<Esc>'
+    hint: 'C changes from the cursor to the end of the line.'
+  - goal: 'Replace the middle line with "phonology".'
     start: |-
-      first
-      ▮wrong line here
-      third
+      phonetics
+      ▮astrology
+      semantics
     target: |-
-      first
-      second
-      third
-    solution: ccsecond<Esc>
-    hint: cc changes the whole line, wherever the cursor is.
+      phonetics
+      phonology
+      semantics
+    solution: 'ccphonology<Esc>'
+    hint: 'cc changes the whole line, wherever the cursor is.'
   - goal: 'Join the two lines.'
     start: |-
-      ▮This sentence was
-      split in two.
+      ▮Every language has
+      vowels and consonants.
     target: |-
-      This sentence was split in two.
-    solution: J
-    hint: J joins the next line onto this one, with one space.
-  - goal: 'Put the lines in order.'
+      Every language has vowels and consonants.
+    solution: 'J'
+    hint: 'J joins the next line onto this one, with one space.'
+  - goal: 'Put the levels in order, from sound up.'
     start: |-
-      ▮second
-      first
-      third
+      ▮morphology
+      phonology
+      syntax
     target: |-
-      first
-      second
-      third
-    solution: ddp
-    hint: dd cuts the line, p puts it below the next one.
+      phonology
+      morphology
+      syntax
+    solution: 'ddp'
+    hint: 'dd cuts the line, p puts it below the next one.'
   - goal: 'Add a semicolon at the end.'
     start: |-
       ▮console.log("hi")
     target: |-
       console.log("hi");
-    solution: A;<Esc>
-    hint: A appends at the end of the line, wherever the cursor is.
+    solution: 'A;<Esc>'
+    hint: 'A appends at the end of the line, wherever the cursor is.'
   - goal: 'Comment the line out with "# ".'
     ft: python
     start: |-
@@ -66,4 +66,4 @@ tasks:
     target: |-
       # x = 1
     solution: 'I# <Esc>'
-    hint: I inserts at the start of the line.
+    hint: 'I inserts at the start of the line.'

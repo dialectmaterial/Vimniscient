@@ -11,44 +11,44 @@ keys: ['d}', dG, d0, gJ, xp]
 tasks:
   - goal: 'Delete to the end of the paragraph.'
     start: |-
-      ▮delete
-      these lines
+      ▮um, so
+      anyway
 
-      keep
+      The lecture starts.
     target: |-
 
-      keep
+      The lecture starts.
     solution: 'd}'
     hint: '} moves to the next blank line; d} deletes up to it.'
-  - goal: 'Join the two lines with no space between them.'
+  - goal: 'Join the two halves of the compound with no space.'
     start: |-
-      ▮foo
-      bar
+      ▮sprach
+      gefühl
     target: |-
-      foobar
-    solution: gJ
+      sprachgefühl
+    solution: 'gJ'
     hint: 'J adds a space, gJ doesn''t.'
   - goal: 'Delete from here to the end of the file.'
     start: |-
-      keep
-      ▮delete
-      all
-      this
+      Conclusion
+      ▮draft
+      notes
+      here
     target: |-
-      keep
-    solution: dG
+      Conclusion
+    solution: 'dG'
     hint: 'dG deletes to the last line.'
   - goal: 'Fix the typo by swapping two letters.'
     start: |-
-      t▮eh
+      pho▮enme
     target: |-
-      the
-    solution: xp
+      phoneme
+    solution: 'xp'
     hint: 'x cuts the letter, p puts it back after the next one.'
   - goal: 'Delete everything before the cursor.'
     start: |-
-      delete ▮keep
+      um, so ▮syntax
     target: |-
-      keep
-    solution: d0
+      syntax
+    solution: 'd0'
     hint: 'd0 deletes back to the start of the line, not including the cursor.'

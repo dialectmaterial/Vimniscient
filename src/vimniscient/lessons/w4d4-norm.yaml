@@ -21,13 +21,13 @@ tasks:
     hint: ':%norm A; runs A; on every line.'
   - goal: 'Delete the first word of every line.'
     start: |-
-      ▮- apple
-      - pear
-      - plum
+      ▮- vowel
+      - glide
+      - liquid
     target: |-
-      apple
-      pear
-      plum
+      vowel
+      glide
+      liquid
     solution: ':%norm dw<CR>'
     hint: ':%norm dw deletes a word at the start of each line.'
   - goal: 'Comment out the first two lines with "// ".'
@@ -43,12 +43,12 @@ tasks:
     hint: 'Select the lines, then :norm I// '
   - goal: 'Remove the last character of every line.'
     start: |-
-      ▮one,
-      two,
-      three,
+      ▮phone,
+      phoneme,
+      allophone,
     target: |-
-      one
-      two
-      three
+      phone
+      phoneme
+      allophone
     solution: ':%norm $x<CR>'
     hint: '$ goes to the last character, x deletes it.'

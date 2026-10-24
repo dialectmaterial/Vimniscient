@@ -9,58 +9,58 @@ keys: [qa, '"0p', '<C-v>', ':%s', ':g']
 tasks:
   - goal: 'Wrap every line in square brackets.'
     start: |-
-      ▮a
-      b
-      c
-      d
+      ▮NP
+      VP
+      Det
+      N
     target: |-
-      [a]
-      [b]
-      [c]
-      [d]
+      [NP]
+      [VP]
+      [Det]
+      [N]
     solution: ':%norm I[<C-v><Esc>A]<CR>'
     hint: 'A macro with 3@a works. So does :%norm, where Ctrl-v Esc types an Esc into the command.'
   - goal: 'Prefix every line with "> ".'
     start: |-
-      ▮quote one
-      quote two
-      quote three
+      ▮Words mean
+      what speakers
+      use them for.
     target: |-
-      > quote one
-      > quote two
-      > quote three
+      > Words mean
+      > what speakers
+      > use them for.
     solution: '<C-v>jjI> <Esc>'
     hint: 'Visual block I, or :%s/^/> /'
   - goal: 'Delete the blank lines.'
     start: |-
-      ▮one
+      ▮phoneme
 
-      two
+      morpheme
 
-      three
+      lexeme
     target: |-
-      one
-      two
-      three
+      phoneme
+      morpheme
+      lexeme
     solution: ':g/^$/d<CR>'
     hint: '^$ matches an empty line.'
-  - goal: 'Swap the two halves of every line.'
+  - goal: 'Swap the two halves of every line (English=German becomes German=English).'
     start: |-
-      ▮left=right
-      up=down
+      ▮dog=Hund
+      cat=Katze
     target: |-
-      right=left
-      down=up
+      Hund=dog
+      Katze=cat
     solution: ':%s/\v(.*)\=(.*)/\2=\1<CR>'
     hint: 'Two groups around the =. In very magic mode = is special, so write \=.'
   - goal: 'Duplicate the first line to the end, then delete the second line. Keep the right line in the register.'
     start: |-
-      ▮important
+      ▮competence
       noise
-      end
+      performance
     target: |-
-      important
-      end
-      important
+      competence
+      performance
+      competence
     solution: 'yyjddG"0p'
     hint: 'After dd the unnamed register holds noise; "0p still has the yank.'

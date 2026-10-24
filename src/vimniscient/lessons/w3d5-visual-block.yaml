@@ -33,34 +33,34 @@ tasks:
     hint: '$ in block mode stretches to every line''s end, so A appends after each one.'
   - goal: 'Delete the "1 | " column.'
     start: |-
-      ▮1 | apple
-      2 | pear
-      3 | plum
+      ▮1 | Latin
+      2 | Greek
+      3 | Sanskrit
     target: |-
-      apple
-      pear
-      plum
+      Latin
+      Greek
+      Sanskrit
     solution: '<C-v>jj3ld'
     hint: 'Ctrl-v j j, widen the block with 3l, then d.'
   - goal: 'Number the lines 1, 2, 3.'
     start: |-
-      ▮0. a
-      0. b
-      0. c
+      ▮0. Hindi
+      0. Urdu
+      0. Bengali
     target: |-
-      1. a
-      2. b
-      3. c
+      1. Hindi
+      2. Urdu
+      3. Bengali
     solution: '<C-v>jjg<C-a>'
     hint: 'g Ctrl-a adds 1 to the first line, 2 to the second, 3 to the third.'
-  - goal: 'Change every "red" to "blue" at once.'
+  - goal: 'Change every "noun" to "verb" at once.'
     start: |-
-      ▮red: 1
-      red: 2
-      red: 3
+      ▮noun: 1
+      noun: 2
+      noun: 3
     target: |-
-      blue: 1
-      blue: 2
-      blue: 3
-    solution: '<C-v>jjecblue<Esc>'
+      verb: 1
+      verb: 2
+      verb: 3
+    solution: '<C-v>jjecverb<Esc>'
     hint: 'Select the block with Ctrl-v j j e, then c types the new text on every line.'

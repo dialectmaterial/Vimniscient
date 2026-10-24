@@ -14,39 +14,39 @@ tasks:
       name = "▮Alice"
     target: |-
       name = "Noam"
-    solution: ci"Noam<Esc>
-    hint: ci" changes everything inside the quotes.
+    solution: 'ci"Noam<Esc>'
+    hint: 'ci" changes everything inside the quotes.'
   - goal: 'Change the greeting to "hi", starting from the beginning of the line.'
     ft: python
     start: |-
       ▮greeting = "hello world"
     target: |-
       greeting = "hi"
-    solution: ci"hi<Esc>
-    hint: You don't have to move first. ci" finds the next quotes on the line.
+    solution: 'ci"hi<Esc>'
+    hint: 'You don''t have to move first. ci" finds the next quotes on the line.'
   - goal: 'Empty the inner parentheses.'
     ft: python
     start: |-
       print(len(wo▮rds))
     target: |-
       print(len())
-    solution: di(
-    hint: di( deletes inside the innermost parentheses around the cursor.
+    solution: 'di('
+    hint: 'di( deletes inside the innermost parentheses around the cursor.'
   - goal: 'Delete the argument list, parentheses included.'
     ft: python
     start: |-
       result = total(▮a, b) + 1
     target: |-
       result = total + 1
-    solution: da(
-    hint: da( deletes the parentheses too. (dab is the same thing.)
+    solution: 'da('
+    hint: 'da( deletes the parentheses too. (dab is the same thing.)'
   - goal: 'Empty the list.'
     ft: python
     start: |-
       tags = [▮"noun", "verb"]
     target: |-
       tags = []
-    solution: di[
+    solution: 'di['
     hint: 'di[ works like di(, for square brackets.'
   - goal: 'Change the text inside the tag to "strong".'
     ft: html
@@ -54,5 +54,5 @@ tasks:
       <b>bo▮ld text</b>
     target: |-
       <b>strong</b>
-    solution: citstrong<Esc>
-    hint: it is the inner tag object. cit changes the tag's content.
+    solution: 'citstrong<Esc>'
+    hint: 'it is the inner tag object. cit changes the tag''s content.'

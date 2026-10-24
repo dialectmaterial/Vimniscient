@@ -50,9 +50,14 @@ class Deck:
     cards: list[Card] = field(default_factory=list)
 
 
+def has_plugin(name: str) -> bool:
+    """A Neovim plugin installed through lazy.nvim."""
+    return (NVIM_DATA / "lazy" / name).is_dir()
+
+
 def has_lazyvim() -> bool:
-    """LazyVim installed through lazy.nvim (its lessons and cards need it)."""
-    return (NVIM_DATA / "lazy" / "LazyVim").is_dir()
+    """LazyVim's lessons and cards need it."""
+    return has_plugin("LazyVim")
 
 
 def _static_decks() -> dict[str, Deck]:

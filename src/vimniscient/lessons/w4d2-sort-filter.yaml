@@ -8,68 +8,70 @@ intro: |
   aligns a table. `:r !cmd` inserts a command's output below the cursor.
 keys: [':sort', ':sort n', ':sort u', ':%!cmd', ':r !cmd']
 tasks:
-  - goal: 'Sort the fruit.'
+  - goal: 'Sort the fields.'
     start: |-
-      ▮pear
-      apple
-      fig
+      ▮syntax
+      morphology
+      phonology
     target: |-
-      apple
-      fig
-      pear
+      morphology
+      phonology
+      syntax
     solution: ':sort<CR>'
     hint: ':sort sorts every line by default.'
-  - goal: 'Sort the numbers by value, not alphabetically.'
+  - goal: 'Sort by the number of native speakers (millions), not alphabetically.'
     start: |-
-      ▮10
-      9
-      100
+      ▮Native speakers, millions
+      380 English
+      345 Hindi
+      75 Turkish
     target: |-
-      9
-      10
-      100
+      Native speakers, millions
+      75 Turkish
+      345 Hindi
+      380 English
     solution: ':sort n<CR>'
-    hint: ':sort n sorts numerically.'
+    hint: ':sort n sorts by number; a line without one (the heading) stays first.'
   - goal: 'Sort and remove the duplicates.'
     start: |-
-      ▮b
-      a
-      b
-      c
-      a
+      ▮noun
+      verb
+      noun
+      adjective
+      verb
     target: |-
-      a
-      b
-      c
+      adjective
+      noun
+      verb
     solution: ':sort u<CR>'
     hint: ':sort u keeps only one of each line.'
   - goal: 'Line the table up in columns.'
     start: |-
-      ▮a b c
-      dd ee ff
+      ▮word class gloss
+      cats noun cat.PL
     target: |-
-      a   b   c
-      dd  ee  ff
+      word  class  gloss
+      cats  noun   cat.PL
     solution: ':%!column -t<CR>'
     hint: ':%! sends every line through a shell command. column -t aligns columns.'
   - goal: 'Sort only the first two lines.'
     start: |-
-      ▮b
-      a
-      z
-      y
+      ▮syntax
+      phonology
+      wug
+      blick
     target: |-
-      a
-      b
-      z
-      y
+      phonology
+      syntax
+      wug
+      blick
     solution: 'Vj:sort<CR>'
     hint: 'Select the lines, then :sort works on just those.'
-  - goal: 'Insert the output of a shell command below this line.'
+  - goal: 'Insert the output of a shell command (echo wug) below this line.'
     start: |-
-      ▮top
+      ▮Nonce word:
     target: |-
-      top
-      hi
-    solution: ':r !echo hi<CR>'
-    hint: ':r !echo hi reads the command''s output into the file.'
+      Nonce word:
+      wug
+    solution: ':r !echo wug<CR>'
+    hint: ':r !echo wug reads the command''s output into the file.'

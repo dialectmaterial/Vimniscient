@@ -9,22 +9,22 @@ intro: |
   (smartcase).
 keys: [/, "?", n, N, "*", d/]
 tasks:
-  - goal: 'Change "lazy" to "sleepy".'
+  - goal: 'Change "furiously" to "quietly".'
     start: |-
-      ▮The quick brown fox
-      jumps over the lazy dog
+      ▮Colorless green ideas
+      sleep furiously
     target: |-
-      The quick brown fox
-      jumps over the sleepy dog
-    solution: /l<CR>cwsleepy<Esc>
-    hint: Search for as little as you need. /l<Enter> lands on lazy already.
-  - goal: 'Delete everything before STOP.'
+      Colorless green ideas
+      sleep quietly
+    solution: '/f<CR>cwquietly<Esc>'
+    hint: 'Search for as little as you need. /f<Enter> lands on furiously already.'
+  - goal: 'Delete the hedging before "Chomsky".'
     start: |-
-      ▮remove all of this STOP keep this
+      ▮um, well, you know, Chomsky disagreed
     target: |-
-      STOP keep this
-    solution: d/S<CR>
-    hint: d/S<Enter> deletes up to the next S (uppercase, so the search is exact).
+      Chomsky disagreed
+    solution: 'd/C<CR>'
+    hint: 'd/C<Enter> deletes up to the next C (uppercase, so the search is exact).'
   - goal: 'Rename the second "count" to n.'
     ft: python
     start: |-
@@ -37,15 +37,15 @@ tasks:
     hint: '* jumps to the next occurrence of the word under the cursor.'
   - goal: 'Delete the third "um".'
     start: |-
-      so ▮um I um think um yes
+      the ▮um corpus um has um gaps
     target: |-
-      so um I um think yes
+      the um corpus um has gaps
     solution: '*ndaw'
     hint: '* goes to the second um, n to the third, daw deletes it.'
-  - goal: 'Change the last "beta" to BETA, searching backwards.'
+  - goal: 'Change the last "verb" to VERB, searching backwards.'
     start: |-
-      alpha beta gamma beta delt▮a
+      noun verb noun verb pronou▮n
     target: |-
-      alpha beta gamma BETA delta
-    solution: ?b<CR>cwBETA<Esc>
-    hint: ?b<Enter> searches backwards from the cursor.
+      noun verb noun VERB pronoun
+    solution: '?v<CR>cwVERB<Esc>'
+    hint: '?v<Enter> searches backwards from the cursor.'

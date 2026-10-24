@@ -10,33 +10,33 @@ intro: |
   shorter.
 keys: [v, V, "V>", vU, VJ, "%", c%]
 tasks:
-  - goal: 'Delete the first two lines with V.'
+  - goal: 'Delete the two filler lines with V.'
     start: |-
-      ▮a
-      b
-      c
+      ▮um
+      uh
+      words
     target: |-
-      c
-    solution: Vjd
-    hint: V selects the line, j extends it, d deletes.
-  - goal: 'Uppercase "this loud".'
+      words
+    solution: 'Vjd'
+    hint: 'V selects the line, j extends it, d deletes.'
+  - goal: 'Uppercase "stressed syllable".'
     start: |-
-      make ▮this loud please
+      the ▮stressed syllable here
     target: |-
-      make THIS LOUD please
-    solution: veeU
-    hint: v, then e e to the end of "loud", then U.
-  - goal: 'Join the first three lines.'
+      the STRESSED SYLLABLE here
+    solution: 'veeU'
+    hint: 'v, then e e to the end of "syllable", then U.'
+  - goal: 'Join the noun phrase on the first three lines.'
     start: |-
-      ▮one
-      two
-      three
-      four
+      ▮the
+      small
+      cat
+      sleeps
     target: |-
-      one two three
-      four
-    solution: VjjJ
-    hint: Select three lines with V j j and press J. (3J is shorter.)
+      the small cat
+      sleeps
+    solution: 'VjjJ'
+    hint: 'Select three lines with V j j and press J. (3J is shorter.)'
   - goal: 'Indent the function body.'
     ft: python
     start: |-
@@ -49,13 +49,13 @@ tasks:
           x = 1
           y = 2
           return x
-    solution: Vjj>
-    hint: V j j selects the three lines, > indents them.
+    solution: 'Vjj>'
+    hint: 'V j j selects the three lines, > indents them.'
   - goal: 'Replace the whole condition with "ok".'
     ft: python
     start: |-
       if ▮(ready and (x > 0)):
     target: |-
       if ok:
-    solution: c%ok<Esc>
+    solution: 'c%ok<Esc>'
     hint: '% jumps to the matching bracket, so c% changes the whole group. (v%c works too.)'

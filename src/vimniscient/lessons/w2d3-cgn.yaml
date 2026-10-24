@@ -22,19 +22,19 @@ tasks:
     hint: '* sets the search; cgnbuf<Esc> changes one match; . does the rest (it wraps around).'
   - goal: 'Change the first and the last "the" to "a", keep the middle one.'
     start: |-
-      ▮the cat saw the dog and the bird
+      ▮the stem, the root and the base
     target: |-
-      a cat saw the dog and a bird
+      a stem, the root and a base
     solution: '*Ncgna<Esc>nn.'
     hint: '* then N to go back to the first; cgna<Esc>; n n skips one; . changes the last.'
   - goal: 'Replace "very good" with "great" on both lines.'
     start: |-
-      ▮It was very good.
-      The food was very good.
+      ▮Her accent is very good.
+      Her grammar is very good.
     target: |-
-      It was great.
-      The food was great.
-    solution: /very good<CR>cgngreat<Esc>.
+      Her accent is great.
+      Her grammar is great.
+    solution: '/very good<CR>cgngreat<Esc>.'
     hint: 'Search for the phrase, cgn changes the whole match, . the next one.'
   - goal: 'Change all four foo to bar.'
     start: |-
@@ -45,8 +45,8 @@ tasks:
     hint: 'Same trick: * then cgn, then . for each remaining match.'
   - goal: 'Delete every "um, ".'
     start: |-
-      So ▮um, I think um, we should um, go.
+      So ▮um, a filler is um, a pause word um, like this.
     target: |-
-      So I think we should go.
-    solution: /um, <CR>dgn..
+      So a filler is a pause word like this.
+    solution: '/um, <CR>dgn..'
     hint: 'dgn deletes the next match. Search for "um, " with the space.'

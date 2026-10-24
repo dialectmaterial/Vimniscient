@@ -10,61 +10,61 @@ keys: [':2,3d', ':m0', ':t$', ':1,2m$', ':g/^/m0']
 tasks:
   - goal: 'Move the last line to the top.'
     start: |-
-      a
-      b
-      ▮c
+      phonology
+      syntax
+      ▮phonetics
     target: |-
-      c
-      a
-      b
+      phonetics
+      phonology
+      syntax
     solution: ':m0<CR>'
     hint: ':m0 moves the line below line 0, which is the top.'
-  - goal: 'Copy the header to the end of the file.'
+  - goal: 'Copy the heading to the end of the file.'
     start: |-
-      ▮header
-      a
-      b
+      ▮Glossary
+      ablaut
+      umlaut
     target: |-
-      header
-      a
-      b
-      header
+      Glossary
+      ablaut
+      umlaut
+      Glossary
     solution: ':t$<CR>'
     hint: ':t$ copies the current line below the last line, and the cursor stays put.'
-  - goal: 'Delete lines 2 and 3 without moving.'
+  - goal: 'Delete lines 2 and 3 (the invented languages) without moving.'
     start: |-
-      ▮one
-      two
-      three
-      four
+      ▮Latin
+      Klingon
+      Elvish
+      Greek
     target: |-
-      one
-      four
+      Latin
+      Greek
     solution: ':2,3d<CR>'
     hint: 'A range in front of d: :2,3d.'
   - goal: 'Move the first two lines to the end.'
     start: |-
-      ▮a
-      b
-      c
-      d
+      ▮syntax
+      semantics
+      phonetics
+      phonology
     target: |-
-      c
-      d
-      a
-      b
+      phonetics
+      phonology
+      syntax
+      semantics
     solution: ':1,2m$<CR>'
     hint: ':1,2m$ moves lines 1 to 2 below the last line.'
   - goal: 'Reverse the order of the lines.'
     start: |-
-      ▮1
-      2
-      3
-      4
+      ▮sentence
+      phrase
+      word
+      morpheme
     target: |-
-      4
-      3
-      2
-      1
+      morpheme
+      word
+      phrase
+      sentence
     solution: ':g/^/m0<CR>'
     hint: ':g/^/ matches every line, and m0 moves each to the top in turn.'

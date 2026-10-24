@@ -163,6 +163,16 @@ local function finish(status)
   local r = results[current]
   r.status = status
   r.keys, r.count = task_keys()
+  if status == "quit" then
+    -- the :q that ended the lesson isn't part of the attempt
+    for _, ending in ipairs({ ":qa!<CR>", ":qa<CR>", ":q!<CR>", ":q<CR>", ":wq<CR>", ":x<CR>", "ZZ", "ZQ" }) do
+      if r.keys:sub(-#ending) == ending then
+        r.keys = r.keys:sub(1, -#ending - 1)
+        break
+      end
+    end
+    r.count = 0
+  end
   r.hints = state.hints
   state.done = true
 end

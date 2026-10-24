@@ -8,52 +8,52 @@ intro: |
   pressing a key again and again.
 keys: [3dw, 3dd, c2w, 5x, "3f,", 3J]
 tasks:
-  - goal: 'Delete "four five six".'
+  - goal: 'Delete the three fillers "um uh er".'
     start: |-
-      one two three ▮four five six seven
+      Fillers ▮um uh er are common in speech.
     target: |-
-      one two three seven
-    solution: 3dw
-    hint: 3dw deletes three words, with their spaces.
-  - goal: 'Delete the three "drop" lines.'
+      Fillers are common in speech.
+    solution: '3dw'
+    hint: '3dw deletes three words, with their spaces.'
+  - goal: 'Delete the three invented languages.'
     start: |-
-      keep
-      ▮drop
-      drop
-      drop
-      keep
+      Latin
+      ▮Klingon
+      Quenya
+      Dothraki
+      Greek
     target: |-
-      keep
-      keep
-    solution: 3dd
-    hint: 3dd deletes three lines, starting at the cursor.
-  - goal: 'Change "very big" to "small".'
+      Latin
+      Greek
+    solution: '3dd'
+    hint: '3dd deletes three lines, starting at the cursor.'
+  - goal: 'Change "very large" to "small".'
     start: |-
-      a ▮very big house
+      a ▮very large corpus
     target: |-
-      a small house
-    solution: c2wsmall<Esc>
-    hint: c2w changes two words.
-  - goal: 'Make it 10 instead of 1000000.'
+      a small corpus
+    solution: 'c2wsmall<Esc>'
+    hint: 'c2w changes two words.'
+  - goal: 'Fix the number: about 7000 languages, not 700 million.'
     start: |-
-      x = 10▮00000
+      There are about 7000▮00000 languages.
     target: |-
-      x = 10
-    solution: 5x
-    hint: 5x deletes five characters.
-  - goal: 'Delete from the third comma to the end.'
+      There are about 7000 languages.
+    solution: '5x'
+    hint: '5x deletes five characters.'
+  - goal: 'Delete from the third comma to the end (Klingon isn''t Indo-Aryan).'
     start: |-
-      ▮red, green, blue, yellow
+      ▮Hindi, Urdu, Punjabi, Klingon
     target: |-
-      red, green, blue
-    solution: 3f,D
-    hint: 3f, jumps to the third comma, D deletes from there.
+      Hindi, Urdu, Punjabi
+    solution: '3f,D'
+    hint: '3f, jumps to the third comma, D deletes from there.'
   - goal: 'Join the three lines into one.'
     start: |-
-      ▮one
-      two
-      three
+      ▮voiced
+      bilabial
+      plosive
     target: |-
-      one two three
-    solution: 3J
-    hint: 3J joins three lines.
+      voiced bilabial plosive
+    solution: '3J'
+    hint: '3J joins three lines.'

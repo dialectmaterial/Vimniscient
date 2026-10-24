@@ -21,38 +21,38 @@ tasks:
   - goal: 'Make a Markdown link.'
     ft: markdown
     start: |-
-      ▮Wikipedia https://wikipedia.org
+      ▮WALS https://wals.info
     target: |-
-      [Wikipedia](https://wikipedia.org)
+      [WALS](https://wals.info)
     solution: 'i[<Esc>ea]<Esc>lr(A)<Esc>'
     hint: 'Bracket the word, replace the space with ( using r, then A) closes it.'
-  - goal: 'Make every Vim bold.'
+  - goal: 'Make every Tone bold.'
     ft: markdown
     start: |-
-      ▮Vim is great. I like Vim.
+      ▮Tone is phonemic. Tone matters.
     target: |-
-      **Vim** is great. I like **Vim**.
-    solution: ':s/Vim/**&**/g<CR>'
+      **Tone** is phonemic. **Tone** matters.
+    solution: ':s/Tone/**&**/g<CR>'
     hint: '& is the match, so **&** wraps it.'
   - goal: 'Push every heading one level down.'
     ft: markdown
     start: |-
-      ▮# A
-      ## B
-      ## C
+      ▮# Phonology
+      ## Vowels
+      ## Consonants
     target: |-
-      ## A
-      ### B
-      ### C
+      ## Phonology
+      ### Vowels
+      ### Consonants
     solution: ':%s/^#/##/<CR>'
     hint: 'Add a # at the start of every heading line.'
   - goal: 'Unwrap the paragraph into one line.'
     ft: markdown
     start: |-
-      ▮This is a
-      wrapped
-      paragraph.
+      ▮Language is a
+      system of
+      signs.
     target: |-
-      This is a wrapped paragraph.
-    solution: vipJ
+      Language is a system of signs.
+    solution: 'vipJ'
     hint: 'vip selects the paragraph, J joins it. That works for paragraphs of any length.'

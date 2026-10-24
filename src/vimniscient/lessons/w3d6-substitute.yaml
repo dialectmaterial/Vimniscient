@@ -12,36 +12,36 @@ keys: [':s', ':%s///g', '*:%s//', '\v( )\1', ':g/pat/d', ':v/pat/d', ':g/pat/nor
 tasks:
   - goal: 'Replace "old" with "new" on this line.'
     start: |-
-      ▮the old house
+      ▮the old grammar
     target: |-
-      the new house
+      the new grammar
     solution: ':s/old/new<CR>'
     hint: ':s/old/new<Enter>. The final slash is optional.'
   - goal: 'Use American spelling everywhere.'
     start: |-
-      ▮colour is a colour
-      my colour
+      ▮the colour of a vowel
+      is its timbre
     target: |-
-      color is a color
-      my color
+      the color of a vowel
+      is its timbre
     solution: ':%s/u//g<CR>'
     hint: ':%s/colour/color/g works, but look: the only u''s are in colour. :%s/u//g'
-  - goal: 'Rename the word cat (only the whole word) to dog.'
+  - goal: 'Rename the word case (only the whole word) to kasus.'
     start: |-
-      ▮cat category cat
-      the cat sat
+      ▮case caseless case
+      the case system
     target: |-
-      dog category dog
-      the dog sat
-    solution: '*:%s//dog/g<CR>'
+      kasus caseless kasus
+      the kasus system
+    solution: '*:%s//kasus/g<CR>'
     hint: '* searches for the whole word; an empty pattern in :s reuses that search.'
   - goal: 'Turn "Last, First" into "First Last".'
     start: |-
-      ▮Turing, Alan
-      Lovelace, Ada
+      ▮Chomsky, Noam
+      Saussure, Ferdinand
     target: |-
-      Alan Turing
-      Ada Lovelace
+      Noam Chomsky
+      Ferdinand Saussure
     solution: ':%s/\v(\w+), (\w+)/\2 \1<CR>'
     hint: 'With \v (very magic) ( ) are groups and + needs no backslash. \2 \1 swaps them.'
   - goal: 'Change x to y on the first two lines only.'
@@ -57,24 +57,24 @@ tasks:
     hint: 'Select the lines first: typing : in visual mode limits the command to them.'
   - goal: 'Delete every comment line.'
     start: |-
-      ▮keep
-      # comment
-      keep too
-      # another
+      ▮phoneme
+      # note to self
+      allophone
+      # check this
     target: |-
-      keep
-      keep too
+      phoneme
+      allophone
     solution: ':g/#/d<CR>'
     hint: ':g/#/d deletes every line that contains #.'
   - goal: 'Keep only the error lines.'
     start: |-
-      ▮error: disk
-      info: ok
-      error: net
+      ▮error: unglossed word
+      info: 12 tokens
+      error: unknown tag
       debug: x
     target: |-
-      error: disk
-      error: net
+      error: unglossed word
+      error: unknown tag
     solution: ':v/error/d<CR>'
     hint: ':v is the opposite of :g: it acts on the lines that don''t match.'
   - goal: 'Add a semicolon to every call line, but not to the comment.'

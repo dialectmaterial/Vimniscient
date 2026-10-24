@@ -23,8 +23,8 @@ tasks:
 
 
       y = 2
-    solution: dafdd
-    hint: daf deletes the function wherever the cursor is in it. Its line stays, empty, so dd it.
+    solution: 'dafdd'
+    hint: 'daf deletes the function wherever the cursor is in it. Its line stays, empty, so dd it.'
   - goal: 'Replace the body with pass.'
     ft: python
     start: |-
@@ -33,8 +33,8 @@ tasks:
     target: |-
       def f():
           pass
-    solution: cifpass<Esc>
-    hint: cif changes the inner function, its body.
+    solution: 'cifpass<Esc>'
+    hint: 'cif changes the inner function, its body.'
   - goal: 'Delete the class, and the empty line it leaves.'
     ft: python
     start: |-
@@ -50,8 +50,8 @@ tasks:
 
 
       y = 2
-    solution: dacdd
-    hint: dac deletes the class around the cursor; dd removes the line it leaves.
+    solution: 'dacdd'
+    hint: 'dac deletes the class around the cursor; dd removes the line it leaves.'
   - goal: 'Duplicate the function below itself.'
     ft: python
     start: |-
@@ -62,5 +62,5 @@ tasks:
           return 1
       def f():
           return 1
-    solution: yafjo<Esc>p
+    solution: 'yafjo<Esc>p'
     hint: 'yaf yanks the function (and leaves you on its first line). Its text has no newline at the end, so go to the last line, open a new one (o<Esc>) and p onto it.'

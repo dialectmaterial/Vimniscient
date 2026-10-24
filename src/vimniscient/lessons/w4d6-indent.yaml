@@ -23,28 +23,28 @@ tasks:
     hint: '>i{ indents the inside of the braces.'
   - goal: 'Remove one level of indentation.'
     start: |2-
-              ▮x
+              ▮noun phrase
     target: |2-
-          x
+          noun phrase
     solution: '<<'
     hint: '<< outdents the line.'
   - goal: 'Indent both lines by two levels.'
     start: |-
-      ▮a
-      b
+      ▮subject
+      object
     target: |2-
-              a
-              b
+              subject
+              object
     solution: 'Vj2>'
     hint: 'Select the lines with V j, then 2> indents twice.'
   - goal: 'Indent from here to the end of the file.'
     start: |-
-      top
-      ▮x
-      y
+      S
+      ▮NP
+      VP
     target: |-
-      top
-          x
-          y
+      S
+          NP
+          VP
     solution: '>G'
     hint: '>G indents every line from here down.'

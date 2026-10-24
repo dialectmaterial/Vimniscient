@@ -15,34 +15,34 @@ tasks:
       ID = get_id(ID)
     solution: '*gUiwn.'
     hint: '* finds the other whole-word id; gUiw, then n and . for the first one.'
-  - goal: 'Add one to every number.'
+  - goal: 'Add one to every tone number.'
     start: |-
-      ▮a=1 b=2 c=3
+      ▮tone1 tone2 tone3
     target: |-
-      a=2 b=3 c=4
-    solution: <C-a>w.w.
-    hint: Ctrl-a, then w and . to repeat it on the next ones.
+      tone2 tone3 tone4
+    solution: '<C-a>w.w.'
+    hint: 'Ctrl-a, then w and . to repeat it on the next ones.'
   - goal: 'Fix every "teh".'
     start: |-
-      ▮teh cat and teh dog and teh end
+      ▮teh noun and teh verb and teh rest
     target: |-
-      the cat and the dog and the end
+      the noun and the verb and the rest
     solution: '*cgnthe<Esc>..'
     hint: '* then cgn, then . . for the others.'
   - goal: 'Lowercase the whole line.'
     start: |-
-      ▮SHOUTING IS RUDE
+      ▮CAPS LOOK LIKE SHOUTING
     target: |-
-      shouting is rude
-    solution: Vu
-    hint: V selects the line, u lowercases the selection.
-  - goal: 'Delete up to "here".'
+      caps look like shouting
+    solution: 'Vu'
+    hint: 'V selects the line, u lowercases the selection.'
+  - goal: 'Delete up to "Hindi".'
     start: |-
-      ▮delete until here: keep
+      ▮um, so, basically: Hindi has aspiration
     target: |-
-      here: keep
-    solution: dth
-    hint: The first h after the cursor is in "here", so dth is enough.
+      Hindi has aspiration
+    solution: 'dtH'
+    hint: 't is case-sensitive, and the first capital H is in Hindi, so dtH.'
   - goal: 'Comment out all three lines with "# ".'
     ft: python
     start: |-
@@ -54,4 +54,4 @@ tasks:
       # b = 2
       # c = 3
     solution: 'I# <Esc>j.j.'
-    hint: I# <Esc>, then j . j .
+    hint: 'I# <Esc>, then j . j .'

@@ -19,58 +19,58 @@ tasks:
       let b = 2;
       let c = 3;
       let d = 4;
-    solution: qaA;<Esc>jq3@a
+    solution: 'qaA;<Esc>jq3@a'
     hint: 'qa, then A;<Esc> and j, then q. Now 3@a does the other three lines.'
-  - goal: 'Put every fruit in double quotes.'
+  - goal: 'Put every term in double quotes.'
     start: |-
-      ▮apple
-      pear
-      plum
+      ▮phoneme
+      morpheme
+      lexeme
     target: |-
-      "apple"
-      "pear"
-      "plum"
-    solution: qaI"<Esc>A"<Esc>jq2@a
+      "phoneme"
+      "morpheme"
+      "lexeme"
+    solution: 'qaI"<Esc>A"<Esc>jq2@a'
     hint: 'Record I"<Esc>A"<Esc>j into a, then 2@a.'
   - goal: 'Turn every key=value into key: value.'
     start: |-
-      ▮name=Ada
-      year=1815
-      field=maths
+      ▮name=Saussure
+      born=1857
+      field=linguistics
     target: |-
-      name: Ada
-      year: 1815
-      field: maths
-    solution: qa0f=r:a <Esc>jq2@a
+      name: Saussure
+      born: 1857
+      field: linguistics
+    solution: 'qa0f=r:a <Esc>jq2@a'
     hint: 'Start the macro with 0 so it works wherever j left the cursor: 0 f= r: a<Space><Esc> j.'
-  - goal: 'Delete every second line.'
+  - goal: 'Delete every second line: keep the phonemes, drop the allophones.'
     start: |-
-      ▮keep 1
-      drop
-      keep 2
-      drop
-      keep 3
-      drop
+      ▮/p/
+      [pʰ]
+      /t/
+      [tʰ]
+      /k/
+      [kʰ]
     target: |-
-      keep 1
-      keep 2
-      keep 3
-    solution: qajddq2@a
+      /p/
+      /t/
+      /k/
+    solution: 'qajddq2@a'
     hint: 'Record j dd: it moves to the line to drop and deletes it, which leaves you on the next keeper.'
   - goal: 'Turn every dash into a star. Use a big count.'
     start: |-
-      ▮- a
-      - b
-      - c
-      - d
-      - e
-      - f
+      ▮- noun
+      - verb
+      - adjective
+      - adverb
+      - pronoun
+      - preposition
     target: |-
-      * a
-      * b
-      * c
-      * d
-      * e
-      * f
-    solution: qar*jq99@a
+      * noun
+      * verb
+      * adjective
+      * adverb
+      * pronoun
+      * preposition
+    solution: 'qar*jq99@a'
     hint: 'qa r* j q, then 99@a. It stops when j can''t go further.'

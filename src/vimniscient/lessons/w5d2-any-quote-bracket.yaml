@@ -15,37 +15,37 @@ tasks:
       x = 'a▮bc'
     target: |-
       x = 'z'
-    solution: ciqz<Esc>
-    hint: ciq works for any kind of quote.
+    solution: 'ciqz<Esc>'
+    hint: 'ciq works for any kind of quote.'
   - goal: 'Change hello to bye.'
     ft: python
     start: |-
       say("he▮llo")
     target: |-
       say("bye")
-    solution: ciqbye<Esc>
-    hint: The same ciq, now in double quotes.
+    solution: 'ciqbye<Esc>'
+    hint: 'The same ciq, now in double quotes.'
   - goal: 'Replace what is inside the brackets with c.'
     ft: python
     start: |-
       f(▮a + b)
     target: |-
       f(c)
-    solution: cibc<Esc>
-    hint: cib is inside any bracket.
+    solution: 'cibc<Esc>'
+    hint: 'cib is inside any bracket.'
   - goal: 'Empty the argument list, starting from the beginning of the line.'
     ft: python
     start: |-
       ▮call(x, y)
     target: |-
       call()
-    solution: dib
-    hint: dib finds the next brackets on the line.
+    solution: 'dib'
+    hint: 'dib finds the next brackets on the line.'
   - goal: 'Delete the first call''s brackets and argument.'
     ft: python
     start: |-
       x = f(▮1) + g(2)
     target: |-
       x = f + g(2)
-    solution: dab
-    hint: dab deletes the brackets with what's inside.
+    solution: 'dab'
+    hint: 'dab deletes the brackets with what''s inside.'

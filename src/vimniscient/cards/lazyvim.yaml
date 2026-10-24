@@ -13,9 +13,11 @@ cards:
   - {prompt: Switch buffer, answer: ['<leader>,', '<leader>fb']}
   - {prompt: Recent files, answer: [<leader>fr]}
   - {prompt: File explorer (neo-tree), answer: [<leader>e]}
-  - {prompt: Next buffer / previous buffer, answer: [<S-l><S-h>, ']b[b']}
+  - {prompt: Next buffer, answer: [<S-l>, ']b']}
+  - {prompt: Previous buffer, answer: [<S-h>, '[b']}
   - {prompt: Delete the buffer, answer: [<leader>bd]}
-  - {prompt: Split the window below / to the right, answer: ['<leader>-<leader>|']}
+  - {prompt: Split the window below, answer: ['<leader>-']}
+  - {prompt: Split the window to the right, answer: ['<leader>|']}
   - {prompt: Move to the window on the left, answer: [<C-h>]}
   - {prompt: Search keymaps, answer: [<leader>sk]}
   - {prompt: Search help pages, answer: [<leader>sh]}
@@ -27,7 +29,8 @@ cards:
   - {prompt: Hover documentation, answer: [K]}
   - {prompt: Code action, answer: [<leader>ca]}
   - {prompt: Rename the symbol, answer: [<leader>cr]}
-  - {prompt: Next diagnostic / previous diagnostic, answer: [']d[d']}
+  - {prompt: Next diagnostic, answer: [']d']}
+  - {prompt: Previous diagnostic, answer: ['[d']}
   - {prompt: Format the file, answer: [<leader>cf]}
   - {prompt: Diagnostics list (Trouble), answer: [<leader>xx]}
   - {prompt: Toggle a terminal, answer: [<C-/>, <leader>ft]}

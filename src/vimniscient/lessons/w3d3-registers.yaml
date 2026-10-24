@@ -9,64 +9,64 @@ intro: |
   register a, and `Ctrl-r =` inserts the result of a calculation.
 keys: ['"ayy', '"ap', '"0p', '"_d', '"Ayy', '<C-r>0', '<C-r>=']
 tasks:
-  - goal: 'Move KEEP to the end and delete junk, without losing KEEP.'
+  - goal: 'Copy "langue" to the end and delete junk, without losing "langue".'
     start: |-
-      ▮KEEP
+      ▮langue
       junk
-      end
+      parole
     target: |-
-      KEEP
-      end
-      KEEP
+      langue
+      parole
+      langue
     solution: '"ayyjdd"ap'
     hint: 'yy then dd would paste junk. Yank into a named register: "ayy, then later "ap.'
-  - goal: 'Delete the middle line, then paste the line you yanked at the end.'
+  - goal: 'Delete the typo line, then paste the line you yanked at the end.'
     start: |-
-      ▮copy me
-      delete me
-      here:
+      ▮signifier
+      typo
+      signified:
     target: |-
-      copy me
-      here:
-      copy me
+      signifier
+      signified:
+      signifier
     solution: 'yyjdd"0p'
     hint: 'Register 0 always holds the last yank, even after a delete.'
-  - goal: 'Delete "bad" and replace "target" with "good". Keep good in the unnamed register.'
+  - goal: 'Delete the misspelling "phonene" and replace "phonem" with "phoneme". Keep phoneme in the unnamed register.'
     start: |-
-      ▮good
-      bad
-      target
+      ▮phoneme
+      phonene
+      phonem
     target: |-
-      good
-      good
+      phoneme
+      phoneme
     solution: 'yyj"_ddVp'
-    hint: '"_dd deletes into the black hole, so the unnamed register still holds good. Vp pastes over the line.'
+    hint: '"_dd deletes into the black hole, so the unnamed register still holds phoneme. Vp pastes over the line.'
   - goal: 'Add the name from line 1 to the end of line 2.'
     start: |-
-      ▮name: Ada
+      ▮name: Sapir
       greeting: hello
     target: |-
-      name: Ada
-      greeting: hello Ada
+      name: Sapir
+      greeting: hello Sapir
     solution: '$yiwjA <C-r>0<Esc>'
     hint: 'Yank the word, then in insert mode Ctrl-r 0 types it for you.'
-  - goal: 'Fill in the answer to 6 × 7 while typing.'
+  - goal: 'Fill in the sum while typing.'
     start: |-
-      ▮total:
+      ▮phonemes (24 + 20):
     target: |-
-      total: 42
-    solution: A <C-r>=6*7<CR><Esc>
-    hint: 'In insert mode, Ctrl-r = opens a calculator: type 6*7 and Enter.'
-  - goal: 'Collect alpha and beta in one register and paste both at the end.'
+      phonemes (24 + 20): 44
+    solution: 'A <C-r>=24+20<CR><Esc>'
+    hint: 'In insert mode, Ctrl-r = opens a calculator: type 24+20 and Enter.'
+  - goal: 'Collect noun and verb in one register and paste both at the end.'
     start: |-
-      ▮alpha
+      ▮noun
       skip
-      beta
+      verb
     target: |-
-      alpha
+      noun
       skip
-      beta
-      alpha
-      beta
+      verb
+      noun
+      verb
     solution: '"ayyjj"Ayy"ap'
-    hint: 'A capital register name appends: "ayy, then "Ayy on beta, then "ap.'
+    hint: 'A capital register name appends: "ayy, then "Ayy on verb, then "ap.'

@@ -8,27 +8,27 @@ intro: |
   between spaces, punctuation included.
 keys: [ciw, diw, daw, ciW, yiw, viwp]
 tasks:
-  - goal: 'Change "slow" to "quick" (the cursor is in the middle of the word).'
+  - goal: 'Change "phone" to "phoneme" (the cursor is in the middle of the word).'
     start: |-
-      The sl▮ow brown fox jumps.
+      A pho▮ne is the smallest unit of sound.
     target: |-
-      The quick brown fox jumps.
-    solution: ciwquick<Esc>
-    hint: ciw changes the inner word under the cursor, from anywhere inside it.
+      A phoneme is the smallest unit of sound.
+    solution: 'ciwphoneme<Esc>'
+    hint: 'ciw changes the inner word under the cursor, from anywhere inside it.'
   - goal: 'Delete one "very", including its space.'
     start: |-
       Morphology is a ve▮ry very rich field.
     target: |-
       Morphology is a very rich field.
-    solution: daw
-    hint: daw deletes a word and the space after it, so no double space is left.
-  - goal: 'Replace the whole URL with "the site".'
+    solution: 'daw'
+    hint: 'daw deletes a word and the space after it, so no double space is left.'
+  - goal: 'Replace the whole URL with "the atlas".'
     start: |-
-      Open www.ex▮ample.com now.
+      See www.wa▮ls.info for maps.
     target: |-
-      Open the site now.
-    solution: ciWthe site<Esc>
-    hint: A WORD (capital W) runs from space to space, dots included. Try ciW.
+      See the atlas for maps.
+    solution: 'ciWthe atlas<Esc>'
+    hint: 'A WORD (capital W) runs from space to space, dots included. Try ciW.'
   - goal: 'Change the function name to compute_sum.'
     ft: python
     start: |-
@@ -37,19 +37,19 @@ tasks:
     target: |-
       def compute_sum(items):
           return sum(items)
-    solution: ciwcompute_sum<Esc>
-    hint: Underscores belong to a word, so ciw takes the whole name.
-  - goal: 'Copy "this" over "that".'
+    solution: 'ciwcompute_sum<Esc>'
+    hint: 'Underscores belong to a word, so ciw takes the whole name.'
+  - goal: 'Copy "noun" over "verb".'
     start: |-
-      copy ▮this onto that
+      copy ▮noun onto verb
     target: |-
-      copy this onto this
-    solution: yiwwwviwp
+      copy noun onto noun
+    solution: 'yiwwwviwp'
     hint: 'yiw yanks the word; jump with w w; viwp selects the other word and pastes over it.'
   - goal: 'Delete the duplicated "the".'
     start: |-
       Meaning is ▮the the use of a word.
     target: |-
       Meaning is the use of a word.
-    solution: daw
-    hint: daw takes the word and its trailing space.
+    solution: 'daw'
+    hint: 'daw takes the word and its trailing space.'

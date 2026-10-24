@@ -85,7 +85,7 @@ def habit_deck() -> Deck:
             Card(
                 deck="habits",
                 id=f"habits:{habit.message}",
-                prompt=f"You typed {worse}. What's shorter?",
+                prompt=f"hardtime caught you typing {worse}. What's the better way?",
                 answers=[better],
                 style="keys",
                 case_sensitive=True,

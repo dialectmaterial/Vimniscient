@@ -10,20 +10,20 @@ keys: ['^', '$', '\s\+$', '\d\+', '&', '\v']
 tasks:
   - goal: 'Delete the trailing spaces.'
     start: |-
-      ▮one␣␣␣
-      two␣␣
-      three␣
+      ▮vowel␣␣␣
+      consonant␣␣
+      glide␣
     target: |-
-      one
-      two
-      three
+      vowel
+      consonant
+      glide
     solution: ':%s/\s\+$//<CR>'
     hint: '\s\+$ is one or more spaces right before the end of the line.'
-  - goal: 'Put every number in square brackets.'
+  - goal: 'Put every tone number in square brackets.'
     start: |-
-      ▮a 1 b 22 c 333
+      ▮tone 1, tone 22, tone 214
     target: |-
-      a [1] b [22] c [333]
+      tone [1], tone [22], tone [214]
     solution: ':s/\d\+/[&]/g<CR>'
     hint: '& in the replacement is whatever matched.'
   - goal: 'Rewrite the date as day/month/year.'
@@ -35,23 +35,23 @@ tasks:
     hint: 'Any character can separate the parts of :s. # saves escaping the slashes.'
   - goal: 'Make every line a list item.'
     start: |-
-      ▮milk
-      eggs
-      bread
+      ▮phonology
+      morphology
+      syntax
     target: |-
-      - milk
-      - eggs
-      - bread
+      - phonology
+      - morphology
+      - syntax
     solution: ':%s/^/- /<CR>'
     hint: '^ matches the start of each line, so replacing it inserts there.'
   - goal: 'Join every line that ends with a comma to the next one.'
     start: |-
-      ▮a,
-      b
-      c,
-      d
+      ▮noun,
+      verb
+      subject,
+      object
     target: |-
-      a, b
-      c, d
+      noun, verb
+      subject, object
     solution: ':g/,$/j<CR>'
     hint: ':g/,$/ finds the lines ending in a comma; j joins each one with the next.'
