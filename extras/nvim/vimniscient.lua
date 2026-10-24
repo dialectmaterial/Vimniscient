@@ -3,6 +3,8 @@
 -- hardtime.nvim: hints only for the first 14 days after the first
 -- `vimniscient` run, then it blocks bad habits and arrow keys.
 -- precognition.nvim: shows where motions land; toggle with <leader>uV.
+-- It starts hidden: while its hints are showing, keys typed fast after an
+-- operator get lost (`cia` + text, or `ciw` right after startup).
 
 local function hardtime_phase()
   local f = io.open(vim.fn.expand("~/.local/share/vimniscient/started"), "r")
@@ -36,9 +38,8 @@ return {
   {
     "tris203/precognition.nvim",
     event = "VeryLazy",
-    -- targetedMotionHints mangles fast operator input (`ciw` typed quickly
-    -- right after startup comes out as `ci` + junk), so it stays off.
-    opts = { startVisible = true, targetedMotionHints = { enabled = false } },
+    -- targetedMotionHints mangles fast operator input even more, so it stays off.
+    opts = { startVisible = false, targetedMotionHints = { enabled = false } },
     keys = {
       { "<leader>uV", function() require("precognition").toggle() end, desc = "Toggle Motion Hints" },
     },

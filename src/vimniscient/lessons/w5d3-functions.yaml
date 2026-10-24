@@ -1,0 +1,66 @@
+week: 5
+day: 3
+lazyvim: true
+title: Functions and classes (LazyVim)
+intro: |
+  With treesitter, mini.ai knows your code's structure: `if`/`af` is a
+  function's body or the whole function, `ic`/`ac` the same for a class.
+  `daf` deletes a function wherever the cursor is inside it, and `cif`
+  replaces its body.
+keys: [daf, cif, yaf, dac]
+tasks:
+  - goal: 'Delete the function f, and the empty line daf leaves behind.'
+    ft: python
+    start: |-
+      x = 1
+
+      def f():
+          ▮return 2
+
+      y = 2
+    target: |-
+      x = 1
+
+
+      y = 2
+    solution: dafdd
+    hint: daf deletes the function wherever the cursor is in it. Its line stays, empty, so dd it.
+  - goal: 'Replace the body with pass.'
+    ft: python
+    start: |-
+      def f():
+          ▮return 1
+    target: |-
+      def f():
+          pass
+    solution: cifpass<Esc>
+    hint: cif changes the inner function, its body.
+  - goal: 'Delete the class, and the empty line it leaves.'
+    ft: python
+    start: |-
+      x = 1
+
+      class Old:
+          ▮def m(self):
+              pass
+
+      y = 2
+    target: |-
+      x = 1
+
+
+      y = 2
+    solution: dacdd
+    hint: dac deletes the class around the cursor; dd removes the line it leaves.
+  - goal: 'Duplicate the function below itself.'
+    ft: python
+    start: |-
+      def ▮f():
+          return 1
+    target: |-
+      def f():
+          return 1
+      def f():
+          return 1
+    solution: yafjo<Esc>p
+    hint: 'yaf yanks the function (and leaves you on its first line). Its text has no newline at the end, so go to the last line, open a new one (o<Esc>) and p onto it.'

@@ -1,7 +1,8 @@
 """Loading lessons from the YAML files in `lessons/`.
 
 A task's `start` text marks the cursor with ▮ (placed before the character
-the cursor sits on). `solution` is the reference solution in Vim key
+the cursor sits on). ␣ stands for a space where one has to survive editors
+that strip trailing whitespace. `solution` is the reference solution in Vim key
 notation; its length is the task's reference keystroke count.
 """
 
@@ -13,6 +14,7 @@ import yaml
 from vimniscient.keys import count_keys
 
 CURSOR = "▮"
+SPACE = "␣"
 
 
 @dataclass
@@ -46,6 +48,8 @@ class Lesson:
     intro: str
     keys: list[str]
     tasks: list[Task]
+    review: bool = False  # a mixed review day (skipped by the placement test)
+    lazyvim: bool = False  # needs LazyVim's text objects/plugins (not checked in --clean)
 
     @property
     def label(self) -> str:
@@ -53,7 +57,7 @@ class Lesson:
 
 
 def _parse_start(text: str) -> tuple[list[str], tuple[int, int]]:
-    lines = text.split("\n")
+    lines = text.replace(SPACE, " ").split("\n")
     marked = [i for i, line in enumerate(lines) if CURSOR in line]
     if len(marked) != 1 or lines[marked[0]].count(CURSOR) != 1:
         raise ValueError(f"start text needs exactly one {CURSOR}: {text!r}")
@@ -74,7 +78,7 @@ def _load(source: str, name: str) -> Lesson:
                 goal=t["goal"],
                 start=start,
                 cursor=cursor,
-                target=t["target"].split("\n"),
+                target=t["target"].replace(SPACE, " ").split("\n"),
                 solution=t["solution"],
                 hint=t.get("hint", ""),
                 ft=t.get("ft", data.get("ft", "")),
@@ -90,6 +94,8 @@ def _load(source: str, name: str) -> Lesson:
         intro=data.get("intro", "").strip(),
         keys=data.get("keys", []),
         tasks=tasks,
+        review=data.get("review", False),
+        lazyvim=data.get("lazyvim", False),
     )
 
 

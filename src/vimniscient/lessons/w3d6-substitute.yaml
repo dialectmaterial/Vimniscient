@@ -1,0 +1,90 @@
+week: 3
+day: 6
+title: ':s and :g'
+intro: |
+  `:s/old/new/` replaces on the current line, `:%s/old/new/g` everywhere.
+  An empty pattern (`:%s//new/g`) reuses your last search, so `*` then
+  `:%s//x/g` renames a word. `\(…\)` groups (or `\v(…)` with very magic)
+  come back as `\1`, `\2`. `:g/pat/cmd` runs a command on every matching
+  line (`:g/pat/d`, `:g/pat/norm A;`), and `:v/pat/` on every line that
+  doesn't match.
+keys: [':s', ':%s///g', '*:%s//', '\v( )\1', ':g/pat/d', ':v/pat/d', ':g/pat/norm']
+tasks:
+  - goal: 'Replace "old" with "new" on this line.'
+    start: |-
+      ▮the old house
+    target: |-
+      the new house
+    solution: ':s/old/new<CR>'
+    hint: ':s/old/new<Enter>. The final slash is optional.'
+  - goal: 'Use American spelling everywhere.'
+    start: |-
+      ▮colour is a colour
+      my colour
+    target: |-
+      color is a color
+      my color
+    solution: ':%s/u//g<CR>'
+    hint: ':%s/colour/color/g works, but look: the only u''s are in colour. :%s/u//g'
+  - goal: 'Rename the word cat (only the whole word) to dog.'
+    start: |-
+      ▮cat category cat
+      the cat sat
+    target: |-
+      dog category dog
+      the dog sat
+    solution: '*:%s//dog/g<CR>'
+    hint: '* searches for the whole word; an empty pattern in :s reuses that search.'
+  - goal: 'Turn "Last, First" into "First Last".'
+    start: |-
+      ▮Turing, Alan
+      Lovelace, Ada
+    target: |-
+      Alan Turing
+      Ada Lovelace
+    solution: ':%s/\v(\w+), (\w+)/\2 \1<CR>'
+    hint: 'With \v (very magic) ( ) are groups and + needs no backslash. \2 \1 swaps them.'
+  - goal: 'Change x to y on the first two lines only.'
+    start: |-
+      ▮x = 1
+      x = 2
+      x = 3
+    target: |-
+      y = 1
+      y = 2
+      x = 3
+    solution: 'Vj:s/x/y<CR>'
+    hint: 'Select the lines first: typing : in visual mode limits the command to them.'
+  - goal: 'Delete every comment line.'
+    start: |-
+      ▮keep
+      # comment
+      keep too
+      # another
+    target: |-
+      keep
+      keep too
+    solution: ':g/#/d<CR>'
+    hint: ':g/#/d deletes every line that contains #.'
+  - goal: 'Keep only the error lines.'
+    start: |-
+      ▮error: disk
+      info: ok
+      error: net
+      debug: x
+    target: |-
+      error: disk
+      error: net
+    solution: ':v/error/d<CR>'
+    hint: ':v is the opposite of :g: it acts on the lines that don''t match.'
+  - goal: 'Add a semicolon to every call line, but not to the comment.'
+    start: |-
+      ▮call(a)
+      # skip
+      call(b)
+    target: |-
+      call(a);
+      # skip
+      call(b);
+    solution: ':g/call/norm A;<CR>'
+    hint: ':g/call/norm A; runs A; on each matching line.'

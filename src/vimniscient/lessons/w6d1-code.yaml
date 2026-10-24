@@ -1,0 +1,53 @@
+week: 6
+day: 1
+title: 'Real edits: code'
+intro: |
+  From here on the tasks are the kind you meet in real files, and each
+  needs several of the tools you know now. There's always more than one
+  good route; the reference is just one of them.
+keys: ['*:%s//', ':%s', 'J', 'I', 'A']
+tasks:
+  - goal: 'Rename the variable s to result everywhere (but not the s in items).'
+    ft: python
+    start: |-
+      def total(items):
+          ▮s = 0
+          for i in items:
+              s += i
+          return s
+    target: |-
+      def total(items):
+          result = 0
+          for i in items:
+              result += i
+          return result
+    solution: '*:%s//result/g<CR>'
+    hint: '* searches for the whole word s; :%s//result/g replaces every match.'
+  - goal: 'Turn the names into a Python list.'
+    ft: python
+    start: |-
+      ▮ada
+      alan
+      grace
+    target: |-
+      names = ["ada", "alan", "grace"]
+    solution: ':%s/.*/"&",<CR>gg3J$xInames = [<Esc>A]<Esc>'
+    hint: 'Quote and comma every line with :%s, go back up (gg) and join them with 3J, drop the last comma, then add the start and the end.'
+  - goal: 'Make it a method: add self, and use self. for the two attributes.'
+    ft: python
+    start: |-
+      ▮def show():
+          print(name, age)
+    target: |-
+      def show(self):
+          print(self.name, self.age)
+    solution: 'f)iself<Esc>j:s/\v(name|age)/self.&/g<CR>'
+    hint: 'f) i self. Then on the next line, \v(name|age) matches either word.'
+  - goal: 'Turn the dict literal into a dict() call.'
+    ft: python
+    start: |-
+      ▮d = {"a": 1, "b": 2}
+    target: |-
+      d = dict(a=1, b=2)
+    solution: ':s/\v"(\w+)": /\1=/g<CR>f{xidict(<Esc>f}r)'
+    hint: 'First "key": becomes key= with a group, then replace the braces.'

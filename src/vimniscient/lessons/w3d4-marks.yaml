@@ -1,0 +1,59 @@
+week: 3
+day: 4
+title: Marks and jumps
+intro: |
+  `ma` sets mark a. `'a` jumps to its line, `` `a `` to its exact spot, and
+  both work as motions: `d'a` deletes the lines from here to the mark,
+  `` c`a `` changes from the mark to the cursor. ` `` ` (two backticks)
+  jumps back to where you were before the last jump (`G`, `/`, `%` …).
+keys: [ma, "'a", '`a', "d'a", "y'a", '``']
+tasks:
+  - goal: 'Delete all the lines between BEGIN and END.'
+    start: |-
+      ▮BEGIN
+      line one
+      line two
+      line three
+      line four
+      line five
+      END
+    target: |-
+      BEGIN
+      END
+    solution: "jma/END<CR>kd'a"
+    hint: "Mark the first line to go (ma), find the last one, then d'a. (d/END<Enter> from the first line is a nice shortcut too.)"
+  - goal: 'Copy the x and y lines to after "== B ==".'
+    start: |-
+      ▮== A ==
+      x
+      y
+      == B ==
+    target: |-
+      == A ==
+      x
+      y
+      == B ==
+      x
+      y
+    solution: "jmajy'aGp"
+    hint: "ma on x, j to y, y'a yanks back to the mark, G p pastes at the end."
+  - goal: 'Change "quick brown fox " to "slow fox ", using a mark.'
+    start: |-
+      The ▮quick brown fox jumps
+    target: |-
+      The slow fox jumps
+    solution: 'mafjc`aslow fox <Esc>'
+    hint: 'ma, go to the j of jumps, then c`a changes from the mark up to the cursor.'
+  - goal: 'Fix the typo on the last line, then jump back and fix the first.'
+    start: |-
+      ▮teh start
+      middle
+      middle
+      teh end
+    target: |-
+      the start
+      middle
+      middle
+      the end
+    solution: 'Gcwthe<Esc>``.'
+    hint: 'G is a jump, so `` takes you back. Then . repeats the change.'

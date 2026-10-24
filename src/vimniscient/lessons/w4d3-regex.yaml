@@ -1,0 +1,57 @@
+week: 4
+day: 3
+title: Patterns in :s
+intro: |
+  Useful pieces: `^` and `$` (start and end of line), `\s` whitespace, `\d`
+  a digit, `\+` one or more, `.*` anything. In the replacement `&` is the
+  whole match. Starting a pattern with `\v` (very magic) lets you write
+  `(`, `+` and `|` without backslashes.
+keys: ['^', '$', '\s\+$', '\d\+', '&', '\v']
+tasks:
+  - goal: 'Delete the trailing spaces.'
+    start: |-
+      ▮one␣␣␣
+      two␣␣
+      three␣
+    target: |-
+      one
+      two
+      three
+    solution: ':%s/\s\+$//<CR>'
+    hint: '\s\+$ is one or more spaces right before the end of the line.'
+  - goal: 'Put every number in square brackets.'
+    start: |-
+      ▮a 1 b 22 c 333
+    target: |-
+      a [1] b [22] c [333]
+    solution: ':s/\d\+/[&]/g<CR>'
+    hint: '& in the replacement is whatever matched.'
+  - goal: 'Rewrite the date as day/month/year.'
+    start: |-
+      ▮2026-10-24
+    target: |-
+      24/10/2026
+    solution: ':s#\v(\d+)-(\d+)-(\d+)#\3/\2/\1<CR>'
+    hint: 'Any character can separate the parts of :s. # saves escaping the slashes.'
+  - goal: 'Make every line a list item.'
+    start: |-
+      ▮milk
+      eggs
+      bread
+    target: |-
+      - milk
+      - eggs
+      - bread
+    solution: ':%s/^/- /<CR>'
+    hint: '^ matches the start of each line, so replacing it inserts there.'
+  - goal: 'Join every line that ends with a comma to the next one.'
+    start: |-
+      ▮a,
+      b
+      c,
+      d
+    target: |-
+      a, b
+      c, d
+    solution: ':g/,$/j<CR>'
+    hint: ':g/,$/ finds the lines ending in a comma; j joins each one with the next.'

@@ -1,0 +1,54 @@
+week: 4
+day: 5
+title: More motions
+intro: |
+  Some motions worth knowing with an operator: `}` to the next blank line
+  (`d}` deletes to the end of the paragraph), `G` and `gg` (`dG` deletes to
+  the end of the file), `0` (`d0` deletes back to the start of the line).
+  And two small ones: `gJ` joins without adding a space, and `xp` swaps two
+  characters.
+keys: ['d}', dG, d0, gJ, xp]
+tasks:
+  - goal: 'Delete to the end of the paragraph.'
+    start: |-
+      ▮delete
+      these lines
+
+      keep
+    target: |-
+
+      keep
+    solution: 'd}'
+    hint: '} moves to the next blank line; d} deletes up to it.'
+  - goal: 'Join the two lines with no space between them.'
+    start: |-
+      ▮foo
+      bar
+    target: |-
+      foobar
+    solution: gJ
+    hint: 'J adds a space, gJ doesn''t.'
+  - goal: 'Delete from here to the end of the file.'
+    start: |-
+      keep
+      ▮delete
+      all
+      this
+    target: |-
+      keep
+    solution: dG
+    hint: 'dG deletes to the last line.'
+  - goal: 'Fix the typo by swapping two letters.'
+    start: |-
+      t▮eh
+    target: |-
+      the
+    solution: xp
+    hint: 'x cuts the letter, p puts it back after the next one.'
+  - goal: 'Delete everything before the cursor.'
+    start: |-
+      delete ▮keep
+    target: |-
+      keep
+    solution: d0
+    hint: 'd0 deletes back to the start of the line, not including the cursor.'

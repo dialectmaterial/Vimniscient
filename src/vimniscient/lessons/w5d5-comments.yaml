@@ -1,0 +1,61 @@
+week: 5
+day: 5
+lazyvim: true
+title: Comments (LazyVim)
+intro: |
+  `gc` is the comment operator. It knows each language's comment syntax:
+  `gcc` toggles the current line, `gcj` this line and the next, `gcip` the
+  paragraph, and `gc` in visual mode the selection. Run it again to
+  uncomment.
+keys: [gcc, gcj, gcip, gc]
+tasks:
+  - goal: 'Comment out the line.'
+    ft: python
+    start: |-
+      ▮x = 1
+    target: |-
+      # x = 1
+    solution: gcc
+    hint: gcc toggles a comment on the line.
+  - goal: 'Uncomment the line.'
+    ft: python
+    start: |-
+      # ▮y = 2
+    target: |-
+      y = 2
+    solution: gcc
+    hint: gcc again removes it.
+  - goal: 'Comment out this line and the next.'
+    ft: python
+    start: |-
+      ▮a = 1
+      b = 2
+      c = 3
+    target: |-
+      # a = 1
+      # b = 2
+      c = 3
+    solution: gcj
+    hint: gc takes a motion, so gcj covers two lines.
+  - goal: 'Comment out the first block.'
+    ft: python
+    start: |-
+      ▮a = 1
+      b = 2
+
+      c = 3
+    target: |-
+      # a = 1
+      # b = 2
+
+      c = 3
+    solution: gcip
+    hint: gcip comments the inner paragraph.
+  - goal: 'Comment out the JavaScript line (a different comment style).'
+    ft: javascript
+    start: |-
+      ▮let x = 1;
+    target: |-
+      // let x = 1;
+    solution: gcc
+    hint: gc uses whatever comment syntax the language has.

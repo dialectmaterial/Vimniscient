@@ -1,0 +1,66 @@
+week: 3
+day: 7
+review: true
+title: Week 3 review
+intro: |
+  Macros, registers, marks, visual block, `:s` and `:g`. Many of these have
+  more than one good answer. Pick the one you'd use for real.
+keys: [qa, '"0p', '<C-v>', ':%s', ':g']
+tasks:
+  - goal: 'Wrap every line in square brackets.'
+    start: |-
+      ▮a
+      b
+      c
+      d
+    target: |-
+      [a]
+      [b]
+      [c]
+      [d]
+    solution: ':%norm I[<C-v><Esc>A]<CR>'
+    hint: 'A macro with 3@a works. So does :%norm, where Ctrl-v Esc types an Esc into the command.'
+  - goal: 'Prefix every line with "> ".'
+    start: |-
+      ▮quote one
+      quote two
+      quote three
+    target: |-
+      > quote one
+      > quote two
+      > quote three
+    solution: '<C-v>jjI> <Esc>'
+    hint: 'Visual block I, or :%s/^/> /'
+  - goal: 'Delete the blank lines.'
+    start: |-
+      ▮one
+
+      two
+
+      three
+    target: |-
+      one
+      two
+      three
+    solution: ':g/^$/d<CR>'
+    hint: '^$ matches an empty line.'
+  - goal: 'Swap the two halves of every line.'
+    start: |-
+      ▮left=right
+      up=down
+    target: |-
+      right=left
+      down=up
+    solution: ':%s/\v(.*)\=(.*)/\2=\1<CR>'
+    hint: 'Two groups around the =. In very magic mode = is special, so write \=.'
+  - goal: 'Duplicate the first line to the end, then delete the second line. Keep the right line in the register.'
+    start: |-
+      ▮important
+      noise
+      end
+    target: |-
+      important
+      end
+      important
+    solution: 'yyjddG"0p'
+    hint: 'After dd the unnamed register holds noise; "0p still has the yank.'

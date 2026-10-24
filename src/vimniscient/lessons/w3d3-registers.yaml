@@ -1,0 +1,72 @@
+week: 3
+day: 3
+title: Registers
+intro: |
+  Every yank and delete goes into the unnamed register, so a delete can
+  replace what you meant to paste. Name a register with `"a` (`"ayy`,
+  `"ap`), append to it with `"A`, paste the last yank with `"0p`, and delete
+  without saving anything with `"_d`. While typing, `Ctrl-r a` inserts
+  register a, and `Ctrl-r =` inserts the result of a calculation.
+keys: ['"ayy', '"ap', '"0p', '"_d', '"Ayy', '<C-r>0', '<C-r>=']
+tasks:
+  - goal: 'Move KEEP to the end and delete junk, without losing KEEP.'
+    start: |-
+      ▮KEEP
+      junk
+      end
+    target: |-
+      KEEP
+      end
+      KEEP
+    solution: '"ayyjdd"ap'
+    hint: 'yy then dd would paste junk. Yank into a named register: "ayy, then later "ap.'
+  - goal: 'Delete the middle line, then paste the line you yanked at the end.'
+    start: |-
+      ▮copy me
+      delete me
+      here:
+    target: |-
+      copy me
+      here:
+      copy me
+    solution: 'yyjdd"0p'
+    hint: 'Register 0 always holds the last yank, even after a delete.'
+  - goal: 'Delete "bad" and replace "target" with "good". Keep good in the unnamed register.'
+    start: |-
+      ▮good
+      bad
+      target
+    target: |-
+      good
+      good
+    solution: 'yyj"_ddVp'
+    hint: '"_dd deletes into the black hole, so the unnamed register still holds good. Vp pastes over the line.'
+  - goal: 'Add the name from line 1 to the end of line 2.'
+    start: |-
+      ▮name: Ada
+      greeting: hello
+    target: |-
+      name: Ada
+      greeting: hello Ada
+    solution: '$yiwjA <C-r>0<Esc>'
+    hint: 'Yank the word, then in insert mode Ctrl-r 0 types it for you.'
+  - goal: 'Fill in the answer to 6 × 7 while typing.'
+    start: |-
+      ▮total:
+    target: |-
+      total: 42
+    solution: A <C-r>=6*7<CR><Esc>
+    hint: 'In insert mode, Ctrl-r = opens a calculator: type 6*7 and Enter.'
+  - goal: 'Collect alpha and beta in one register and paste both at the end.'
+    start: |-
+      ▮alpha
+      skip
+      beta
+    target: |-
+      alpha
+      skip
+      beta
+      alpha
+      beta
+    solution: '"ayyjj"Ayy"ap'
+    hint: 'A capital register name appends: "ayy, then "Ayy on beta, then "ap.'

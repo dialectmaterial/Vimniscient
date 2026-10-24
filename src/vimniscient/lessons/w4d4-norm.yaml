@@ -1,0 +1,54 @@
+week: 4
+day: 4
+title: ':normal on many lines'
+intro: |
+  `:norm` runs normal-mode keys on each line of a range, as if you typed
+  them there: `:%norm A;` appends to every line, `:'<,'>norm I// ` comments
+  the selection. It's a macro without recording, and often the fastest way
+  to make the same edit on many lines.
+keys: [':%norm A;', ':%norm dw', ":'<,'>norm I", ':%norm $x']
+tasks:
+  - goal: 'Append a semicolon to every line.'
+    start: |-
+      ▮a = 1
+      b = 2
+      c = 3
+    target: |-
+      a = 1;
+      b = 2;
+      c = 3;
+    solution: ':%norm A;<CR>'
+    hint: ':%norm A; runs A; on every line.'
+  - goal: 'Delete the first word of every line.'
+    start: |-
+      ▮- apple
+      - pear
+      - plum
+    target: |-
+      apple
+      pear
+      plum
+    solution: ':%norm dw<CR>'
+    hint: ':%norm dw deletes a word at the start of each line.'
+  - goal: 'Comment out the first two lines with "// ".'
+    start: |-
+      ▮one();
+      two();
+      three();
+    target: |-
+      // one();
+      // two();
+      three();
+    solution: 'Vj:norm I// <CR>'
+    hint: 'Select the lines, then :norm I// '
+  - goal: 'Remove the last character of every line.'
+    start: |-
+      ▮one,
+      two,
+      three,
+    target: |-
+      one
+      two
+      three
+    solution: ':%norm $x<CR>'
+    hint: '$ goes to the last character, x deletes it.'

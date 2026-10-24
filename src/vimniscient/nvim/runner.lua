@@ -27,6 +27,8 @@ vim.api.nvim_set_current_win(practice_win)
 
 -- Don't let session plugins remember the throwaway practice file.
 pcall(function() require("persistence").stop() end)
+-- precognition's hints lose keys typed fast after an operator (`cia` + text).
+pcall(function() require("precognition").hide() end)
 -- which-key swallows keys and feeds them back, which garbles fast operator
 -- input and reports keys twice. It's off for this session only.
 pcall(function()

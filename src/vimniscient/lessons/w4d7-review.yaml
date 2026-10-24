@@ -1,0 +1,58 @@
+week: 4
+day: 7
+review: true
+title: Week 4 review
+intro: |
+  Ranges, `:sort`, filters, patterns, `:norm`, motions and indenting, mixed.
+keys: [':m', ':sort', ':%!', ':%s', ':norm', '>i{']
+tasks:
+  - goal: 'Sort the names and remove the duplicate.'
+    start: |-
+      ▮Noam
+      Ada
+      Noam
+      Alan
+    target: |-
+      Ada
+      Alan
+      Noam
+    solution: ':sort u<CR>'
+    hint: ':sort u'
+  - goal: 'Move the TODO line to the top.'
+    start: |-
+      first
+      second
+      ▮TODO: this
+    target: |-
+      TODO: this
+      first
+      second
+    solution: ':m0<CR>'
+    hint: ':m0'
+  - goal: 'Quote every word.'
+    start: |-
+      ▮one two three
+    target: |-
+      "one" "two" "three"
+    solution: ':s/\w\+/"&"/g<CR>'
+    hint: '\w\+ is a word, & is the match.'
+  - goal: 'Add "!" to the end of every line.'
+    start: |-
+      ▮hi
+      hello
+      hey
+    target: |-
+      hi!
+      hello!
+      hey!
+    solution: ':%norm A!<CR>'
+    hint: ':%norm A!'
+  - goal: 'Number the lines with a shell command.'
+    start: |-
+      ▮apple
+      pear
+    target: |-
+      1 apple
+      2 pear
+    solution: ":%!awk '{print NR, $0}'<CR>"
+    hint: 'awk ''{print NR, $0}'' prints the line number before each line. (Visual block g Ctrl-a can''t do this one.)'

@@ -1,0 +1,43 @@
+week: 5
+day: 6
+review: true
+lazyvim: true
+title: Week 5 review
+intro: |
+  LazyVim's text objects and comments, mixed.
+keys: [daa, ciq, cib, cif, cie, gcc]
+tasks:
+  - goal: 'Remove the debug argument.'
+    ft: python
+    start: |-
+      run(cmd, ▮debug=True, timeout=5)
+    target: |-
+      run(cmd, timeout=5)
+    solution: daa
+    hint: daa
+  - goal: 'Change the path to /tmp.'
+    ft: python
+    start: |-
+      open(▮'/home/user/file')
+    target: |-
+      open('/tmp')
+    solution: ciq/tmp<Esc>
+    hint: ciq
+  - goal: 'Change the variable name userId to accountId.'
+    ft: python
+    start: |-
+      ▮userId = 1
+    target: |-
+      accountId = 1
+    solution: cieaccount<Esc>
+    hint: The first sub-word is user; cie changes just that.
+  - goal: 'Comment out the print.'
+    ft: python
+    start: |-
+      x = 1
+      ▮print(x)
+    target: |-
+      x = 1
+      # print(x)
+    solution: gcc
+    hint: gcc

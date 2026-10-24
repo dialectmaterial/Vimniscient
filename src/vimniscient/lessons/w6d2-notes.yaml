@@ -1,0 +1,58 @@
+week: 6
+day: 2
+title: 'Real edits: notes'
+intro: |
+  Markdown and plain notes: lists, links, emphasis, headings and wrapped
+  paragraphs.
+keys: ['<C-v>I', 'gv', 'g<C-a>', ':s/&/', 'vipJ']
+tasks:
+  - goal: 'Turn the topics into a numbered list.'
+    ft: markdown
+    start: |-
+      ▮phonology
+      morphology
+      syntax
+    target: |-
+      1. phonology
+      2. morphology
+      3. syntax
+    solution: '<C-v>GI0. <Esc>gvg<C-a>'
+    hint: 'Put "0. " in front of every line with a block insert, reselect with gv, then g Ctrl-a counts up.'
+  - goal: 'Make a Markdown link.'
+    ft: markdown
+    start: |-
+      ▮Wikipedia https://wikipedia.org
+    target: |-
+      [Wikipedia](https://wikipedia.org)
+    solution: 'i[<Esc>ea]<Esc>lr(A)<Esc>'
+    hint: 'Bracket the word, replace the space with ( using r, then A) closes it.'
+  - goal: 'Make every Vim bold.'
+    ft: markdown
+    start: |-
+      ▮Vim is great. I like Vim.
+    target: |-
+      **Vim** is great. I like **Vim**.
+    solution: ':s/Vim/**&**/g<CR>'
+    hint: '& is the match, so **&** wraps it.'
+  - goal: 'Push every heading one level down.'
+    ft: markdown
+    start: |-
+      ▮# A
+      ## B
+      ## C
+    target: |-
+      ## A
+      ### B
+      ### C
+    solution: ':%s/^#/##/<CR>'
+    hint: 'Add a # at the start of every heading line.'
+  - goal: 'Unwrap the paragraph into one line.'
+    ft: markdown
+    start: |-
+      ▮This is a
+      wrapped
+      paragraph.
+    target: |-
+      This is a wrapped paragraph.
+    solution: vipJ
+    hint: 'vip selects the paragraph, J joins it. That works for paragraphs of any length.'

@@ -1,0 +1,88 @@
+# Live Omarchy drills: the trainer watches Hyprland's event socket and ticks a
+# step off when it really happened.
+#
+# A step matches an event by name and arguments (the part after `>>`, split on
+# commas). Argument patterns:
+#   $drill  the drill window's address     $home  the trainer's workspace
+#   $away   workspace 9 (8 if you're on 9)
+#   $new    any other window; the first match is remembered for later steps
+#   !drill  any window but the drill window
+#   *       anything                        other text must match exactly
+# `active: $drill` also requires the drill window to have focus (for events
+# like `fullscreen` that don't name a window).
+# `bindings` are descriptions from `omarchy menu keybindings --print`; the hint
+# shows their keys live.
+drills:
+  - id: focus
+    title: Focus the drill window
+    bindings: [Focus on left window, Focus on right window, Focus on next window]
+    prompt: Without the mouse, move the focus off the drill window, then back onto it.
+    steps:
+      - {event: activewindowv2, args: ["!drill"], done: focus moved away}
+      - {event: activewindowv2, args: [$drill], done: drill window focused}
+
+  - id: float
+    title: Float and tile
+    bindings: [Toggle window floating/tiling]
+    prompt: Make the drill window float, then tile it again.
+    steps:
+      - {event: changefloatingmode, args: [$drill, "1"], done: floating}
+      - {event: changefloatingmode, args: [$drill, "0"], done: tiled again}
+
+  - id: fullscreen
+    title: Full screen
+    bindings: [Full screen]
+    prompt: Make the drill window full screen, then leave full screen.
+    steps:
+      - {event: fullscreen, args: ["1"], active: $drill, done: full screen}
+      - {event: fullscreen, args: ["0"], active: $drill, done: back to normal}
+
+  - id: full-width
+    title: Full width
+    bindings: [Full width]
+    prompt: Give the drill window the full width (not full screen), then undo it.
+    steps:
+      - {event: fullscreen, args: ["1"], active: $drill, done: full width}
+      - {event: fullscreen, args: ["0"], active: $drill, done: back to normal}
+
+  - id: pop
+    title: Pop a window out
+    bindings: [Pop window out (float & pin)]
+    prompt: Pop the drill window out (float and pin it), then put it back.
+    steps:
+      - {event: pin, args: [$drill, "1"], done: popped out}
+      - {event: pin, args: [$drill, "0"], done: back in place}
+
+  - id: workspace-visit
+    title: Visit a workspace and come back
+    bindings: [Switch to workspace 1, Former workspace]
+    prompt: Go to workspace {away}, then come straight back here (workspace {home}). There's a key for "back".
+    steps:
+      - {event: workspacev2, args: [$away, "*"], done: "on workspace {away}"}
+      - {event: workspacev2, args: [$home, "*"], done: "back on workspace {home}"}
+
+  - id: workspace-move
+    title: Send a window away and fetch it
+    bindings: [Move window silently to workspace 1, Switch to workspace 1, Move window to workspace 1]
+    prompt: >-
+      Send the drill window to workspace {away} without following it. Then go to
+      workspace {away} and take it back to workspace {home} with you.
+    steps:
+      - {event: movewindowv2, args: [$drill, $away, "*"], done: "sent to workspace {away}"}
+      - {event: workspacev2, args: [$away, "*"], done: "on workspace {away}"}
+      - {event: movewindowv2, args: [$drill, $home, "*"], done: brought back}
+
+  - id: terminal
+    title: Open and close a terminal
+    bindings: [Terminal, Close window]
+    prompt: Open a new terminal, then close it again with the keyboard.
+    steps:
+      - {event: openwindow, args: [$new, "*", "*", "*"], done: terminal open}
+      - {event: closewindow, args: [$new], done: closed}
+
+  - id: close
+    title: Close a window
+    bindings: [Close window]
+    prompt: Close the drill window with the keyboard. (A new one opens for the next drill.)
+    steps:
+      - {event: closewindow, args: [$drill], done: closed}

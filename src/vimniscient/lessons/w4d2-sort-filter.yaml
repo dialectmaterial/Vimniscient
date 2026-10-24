@@ -1,0 +1,75 @@
+week: 4
+day: 2
+title: ':sort and shell filters'
+intro: |
+  `:sort` sorts lines (`:sort n` numerically, `:sort u` drops duplicates).
+  `:%!cmd` sends the lines through a shell command and replaces them with
+  its output, so any Unix tool becomes an editing command: `:%!column -t`
+  aligns a table. `:r !cmd` inserts a command's output below the cursor.
+keys: [':sort', ':sort n', ':sort u', ':%!cmd', ':r !cmd']
+tasks:
+  - goal: 'Sort the fruit.'
+    start: |-
+      ▮pear
+      apple
+      fig
+    target: |-
+      apple
+      fig
+      pear
+    solution: ':sort<CR>'
+    hint: ':sort sorts every line by default.'
+  - goal: 'Sort the numbers by value, not alphabetically.'
+    start: |-
+      ▮10
+      9
+      100
+    target: |-
+      9
+      10
+      100
+    solution: ':sort n<CR>'
+    hint: ':sort n sorts numerically.'
+  - goal: 'Sort and remove the duplicates.'
+    start: |-
+      ▮b
+      a
+      b
+      c
+      a
+    target: |-
+      a
+      b
+      c
+    solution: ':sort u<CR>'
+    hint: ':sort u keeps only one of each line.'
+  - goal: 'Line the table up in columns.'
+    start: |-
+      ▮a b c
+      dd ee ff
+    target: |-
+      a   b   c
+      dd  ee  ff
+    solution: ':%!column -t<CR>'
+    hint: ':%! sends every line through a shell command. column -t aligns columns.'
+  - goal: 'Sort only the first two lines.'
+    start: |-
+      ▮b
+      a
+      z
+      y
+    target: |-
+      a
+      b
+      z
+      y
+    solution: 'Vj:sort<CR>'
+    hint: 'Select the lines, then :sort works on just those.'
+  - goal: 'Insert the output of a shell command below this line.'
+    start: |-
+      ▮top
+    target: |-
+      top
+      hi
+    solution: ':r !echo hi<CR>'
+    hint: ':r !echo hi reads the command''s output into the file.'

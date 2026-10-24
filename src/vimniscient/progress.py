@@ -20,6 +20,7 @@ STARTED_FILE = DATA_DIR / "started"
 HARDTIME_HINT_DAYS = 14
 
 NEW_CARDS_PER_DAY = 10
+NEW_DRILLS_PER_DAY = 2
 MAX_DUE_CARDS = 30
 MAX_REVIEW_TASKS = 5
 
@@ -55,6 +56,14 @@ CREATE TABLE IF NOT EXISTS card_log (
 CREATE TABLE IF NOT EXISTS placed (
     lesson TEXT PRIMARY KEY,
     ts TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS drill_log (
+    id INTEGER PRIMARY KEY,
+    ts TEXT NOT NULL,
+    drill TEXT NOT NULL,
+    seconds REAL NOT NULL,
+    hinted INTEGER NOT NULL,
+    skipped INTEGER NOT NULL
 );
 CREATE TABLE IF NOT EXISTS vimgolf (
     id TEXT PRIMARY KEY,
@@ -224,6 +233,25 @@ class Progress:
                     left -= 1
         return picked
 
+    # omarchy drills
+
+    def log_drill(self, drill_id: str, seconds: float, hinted: bool, skipped: bool) -> None:
+        self.db.execute(
+            "INSERT INTO drill_log (ts, drill, seconds, hinted, skipped) VALUES (?,?,?,?,?)",
+            (_now(), drill_id, seconds, int(hinted), int(skipped)),
+        )
+        self.db.commit()
+
+    def due_drills(self, drills: list) -> list:
+        today = date.today()
+        items = self.items("drill")
+        return [d for d in drills if d.item_id in items and items[d.item_id].due <= today]
+
+    def new_drills(self, drills: list) -> list:
+        items = self.items("drill")
+        left = NEW_DRILLS_PER_DAY - sum(1 for item in items.values() if item.created == date.today())
+        return [d for d in drills if d.item_id not in items][: max(0, left)]
+
     # vimgolf
 
     def vimgolf_today(self, index: list[dict], fetch) -> "Challenge | None":
@@ -279,7 +307,8 @@ class Progress:
 
     def days_trained(self) -> set[date]:
         rows = self.db.execute(
-            "SELECT DISTINCT substr(ts, 1, 10) FROM attempts UNION SELECT DISTINCT substr(ts, 1, 10) FROM card_log"
+            "SELECT DISTINCT substr(ts, 1, 10) FROM attempts UNION SELECT DISTINCT substr(ts, 1, 10) FROM card_log "
+            "UNION SELECT DISTINCT substr(ts, 1, 10) FROM drill_log"
         )
         return {date.fromisoformat(d) for (d,) in rows}
 

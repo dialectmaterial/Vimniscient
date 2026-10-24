@@ -1,0 +1,59 @@
+week: 5
+day: 4
+lazyvim: true
+title: Sub-words, numbers, calls (LazyVim)
+intro: |
+  More of LazyVim's mini.ai objects: `e` is one part of a camelCase or
+  snake_case word, `d` a number, `u` a function call (`au` takes the name
+  and its arguments), and `g` the whole buffer. And there's a small
+  built-in: `]<Space>` adds a blank line below without leaving normal mode.
+keys: [cie, cid, cau, cag, ']<Space>']
+tasks:
+  - goal: 'Change Case to Big in the camelCase name.'
+    start: |-
+      camel▮CaseWord
+    target: |-
+      camelBigWord
+    solution: cieBig<Esc>
+    hint: ie is the sub-word under the cursor.
+  - goal: 'Change case to big in the snake_case name.'
+    start: |-
+      snake_▮case_name
+    target: |-
+      snake_big_name
+    solution: ciebig<Esc>
+    hint: The same ie works between underscores.
+  - goal: 'Change the port to 443.'
+    start: |-
+      port = 80▮80
+    target: |-
+      port = 443
+    solution: cid443<Esc>
+    hint: id is the number under the cursor.
+  - goal: 'Replace the whole call with 42.'
+    ft: python
+    start: |-
+      x = ▮compute(a, b) + 1
+    target: |-
+      x = 42 + 1
+    solution: cau42<Esc>
+    hint: au is a function call with its name and arguments.
+  - goal: 'Replace the entire file with the word empty.'
+    start: |-
+      ▮lots
+      of
+      lines
+    target: |-
+      empty
+    solution: cagempty<Esc>
+    hint: ag is the whole buffer.
+  - goal: 'Add a blank line below without entering insert mode.'
+    start: |-
+      ▮first
+      second
+    target: |-
+      first
+
+      second
+    solution: ']<Space>'
+    hint: ']<Space> adds an empty line below, [<Space> one above.'

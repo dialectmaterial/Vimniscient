@@ -1,0 +1,66 @@
+week: 3
+day: 5
+title: Visual block
+intro: |
+  `Ctrl-v` selects a rectangle. Then `I` inserts before it on every line,
+  `A` appends after it (`$A` appends at each line's end, even when the lines
+  differ in length), `c` changes it, `d` deletes it, and `g Ctrl-a`
+  numbers the selected lines 1, 2, 3 …
+keys: ['<C-v>', '<C-v>I', '<C-v>$A', '<C-v>c', '<C-v>d', 'g<C-a>']
+tasks:
+  - goal: 'Comment out the three lines with "# ".'
+    ft: python
+    start: |-
+      ▮a = 1
+      b = 2
+      c = 3
+    target: |-
+      # a = 1
+      # b = 2
+      # c = 3
+    solution: '<C-v>jjI# <Esc>'
+    hint: 'Ctrl-v j j selects the first column, I# <Esc> types on every line.'
+  - goal: 'Add a semicolon to lines of different lengths.'
+    start: |-
+      ▮x = 1
+      yy = 22
+      zzz = 333
+    target: |-
+      x = 1;
+      yy = 22;
+      zzz = 333;
+    solution: '<C-v>jj$A;<Esc>'
+    hint: '$ in block mode stretches to every line''s end, so A appends after each one.'
+  - goal: 'Delete the "1 | " column.'
+    start: |-
+      ▮1 | apple
+      2 | pear
+      3 | plum
+    target: |-
+      apple
+      pear
+      plum
+    solution: '<C-v>jj3ld'
+    hint: 'Ctrl-v j j, widen the block with 3l, then d.'
+  - goal: 'Number the lines 1, 2, 3.'
+    start: |-
+      ▮0. a
+      0. b
+      0. c
+    target: |-
+      1. a
+      2. b
+      3. c
+    solution: '<C-v>jjg<C-a>'
+    hint: 'g Ctrl-a adds 1 to the first line, 2 to the second, 3 to the third.'
+  - goal: 'Change every "red" to "blue" at once.'
+    start: |-
+      ▮red: 1
+      red: 2
+      red: 3
+    target: |-
+      blue: 1
+      blue: 2
+      blue: 3
+    solution: '<C-v>jjecblue<Esc>'
+    hint: 'Select the block with Ctrl-v j j e, then c types the new text on every line.'

@@ -1,0 +1,48 @@
+week: 6
+day: 3
+title: 'Real edits: data'
+intro: |
+  CSV, logs and lists: swap columns, pull out fields, filter and sort.
+keys: [':%s/\v( )', ':g/pat/d', ':sort n']
+tasks:
+  - goal: 'Swap the two columns.'
+    start: |-
+      ▮name,age
+      ada,36
+      alan,41
+    target: |-
+      age,name
+      36,ada
+      41,alan
+    solution: ':%s/\v(.*),(.*)/\2,\1<CR>'
+    hint: 'Two groups around the comma, swapped in the replacement.'
+  - goal: 'Keep only the email addresses.'
+    start: |-
+      ▮id 1, email: a@x.org
+      id 2, email: b@y.org
+    target: |-
+      a@x.org
+      b@y.org
+    solution: ':%s/.*email: //<CR>'
+    hint: 'Delete everything up to and including "email: ".'
+  - goal: 'Sort the lines by their number.'
+    start: |-
+      ▮b 3
+      a 1
+      c 2
+    target: |-
+      a 1
+      c 2
+      b 3
+    solution: ':sort n<CR>'
+    hint: ':sort n sorts by the first number on each line, wherever it is.'
+  - goal: 'Drop the DEBUG lines, then the timestamps.'
+    start: |-
+      ▮10:01 INFO start
+      10:02 DEBUG x
+      10:03 INFO done
+    target: |-
+      INFO start
+      INFO done
+    solution: ':g/DEBUG/d<CR>:%s/^\S\+ //<CR>'
+    hint: ':g/DEBUG/d first, then \S\+ (everything up to the first space) at the start of each line.'

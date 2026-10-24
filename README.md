@@ -27,7 +27,9 @@ Optional training wheels for everyday editing: copy
   bad habits for the first 14 days after your first `vimniscient` run, then it
   blocks them (and the arrow keys).
 - [precognition.nvim](https://github.com/tris203/precognition.nvim): shows
-  where `w`, `b`, `e`, `$`, `%` … would take you. Toggle with `<leader>uV`.
+  where `w`, `b`, `e`, `$`, `%` … would take you. It starts hidden; toggle it
+  with `<leader>uV`. (While its hints are showing, keys typed fast after an
+  operator can get lost, `cia` + text for example. Lessons always hide it.)
 
 ## Use
 
@@ -37,18 +39,27 @@ Optional training wheels for everyday editing: copy
 | `vimniscient list` | List the lessons |
 | `vimniscient run w1d1-words` | Run one lesson directly |
 
-In the menu: `t` today, `c` cards only, `g` VimGolf, `p` placement test,
-`s` stats, `j`/`k` + Enter for any lesson, `q` to quit.
+In the menu: `t` today, `c` cards only, `d` Omarchy drills, `g` VimGolf,
+`p` placement test, `s` stats, `j`/`k` + Enter for any lesson, `q` to quit.
 
 **Today** (`t`) is the daily routine:
 
 1. the cards that are due, plus up to 10 new ones
-2. the Vim tasks from earlier days that are due again, plus a few habit
+2. Omarchy drills: the ones due, plus up to 2 new ones
+3. the Vim tasks from earlier days that are due again, plus a few habit
    drills (see below)
-3. the next lesson
-4. one VimGolf challenge
+4. the next lesson
+5. one VimGolf challenge
 
 Inside a lesson: `:Hint` (twice for the answer), `:Skip`, `:Reset`, `:q` to stop.
+
+**Omarchy drills** (`d`) have you do things for real, like "float the drill
+window and tile it again" or "send it to workspace 9 and fetch it back".
+The trainer opens a window titled *Vimniscient drill* for the drills, so
+your own windows are left alone. It watches Hyprland's event socket and
+ticks each step off when it actually happens. The hint (`h`, or by itself
+after 25 seconds) shows the keys from your live keybindings. Drills share
+the spaced-repetition schedule, graded by how fast you were.
 
 **VimGolf** (`g`) gives you a challenge from [vimgolf.com](https://www.vimgolf.com)
 every day: the most played ones you haven't tried yet that fit on screen.
@@ -97,10 +108,13 @@ another folder).
 |---|---|
 | 1 | Text objects, `f`/`t`, line commands, counts |
 | 2 | `.`, search as a motion, `cgn`, case and numbers, insert tricks, visual mode |
-| 3 | Macros, registers, marks, visual block, `:s` and `:g` *(planned)* |
-| 4 | LazyVim: pickers, buffers, splits, neo-tree, LSP, surround *(planned)* |
-| 5 | Omarchy, foot, tmux, shell, Zathura *(planned)* |
-| 6+ | Mixed review, timed rounds *(planned)* |
+| 3 | Macros, registers, marks, visual block, `:s` and `:g` |
+| 4 | Ranges (`:m`, `:t`), `:sort` and shell filters, patterns, `:norm`, more motions, indenting |
+| 5 | LazyVim's text objects (arguments, any quote/bracket, functions, classes, sub-words, numbers, calls) and comments |
+| 6 | Real edits: code, notes and data, each mixing several tools |
+
+Omarchy, tmux, the shell, foot and Zathura run alongside all of this, as
+cards and live drills.
 
 ## Writing lessons
 
@@ -125,11 +139,23 @@ tasks:
     ft: python                # optional filetype
 ```
 
+Write `␣` for a space that has to survive editors stripping trailing whitespace.
+
+Optional lesson flags: `review: true` for a mixed review day (the placement
+test skips those), and `lazyvim: true` when the tasks need LazyVim's plugins
+(they're checked in your own config, not in `nvim --clean`). For indented
+text, give the block an indentation indicator (`|2-`), or YAML strips the
+leading spaces.
+
 Check that every reference solution really produces its target, and that card answers written in different ways match:
 
 ```bash
-uv run python tests/check_lessons.py
+uv run python tests/check_lessons.py            # plain Vim lessons, in nvim --clean
+uv run python tests/check_lessons.py --lazyvim  # LazyVim lessons, in your own config
 uv run python tests/check_answers.py
+uv run python tests/check_drills.py             # drill steps against made-up events
+uv run python tests/live_lessons.py --all       # types every solution into the real runner (tmux)
+uv run python tests/live_drills.py              # runs every drill on your desktop (moves windows!)
 ```
 
 ## How it works
