@@ -21,6 +21,18 @@ tasks:
       }
     solution: '>i{'
     hint: '>i{ indents the inside of the braces.'
+    variants:
+      - goal: 'Indent everything inside the braces.'
+        start: |-
+          while y {
+          ▮c()
+          d()
+          }
+        target: |-
+          while y {
+              c()
+              d()
+          }
   - goal: 'Remove one level of indentation.'
     start: |2-
               ▮noun phrase
@@ -28,6 +40,12 @@ tasks:
           noun phrase
     solution: '<<'
     hint: '<< outdents the line.'
+    variants:
+      - goal: 'Remove one level of indentation.'
+        start: |2-
+                  ▮verb phrase
+        target: |2-
+              verb phrase
   - goal: 'Indent both lines by two levels.'
     start: |-
       ▮subject
@@ -37,6 +55,14 @@ tasks:
               object
     solution: 'Vj2>'
     hint: 'Select the lines with V j, then 2> indents twice.'
+    variants:
+      - goal: 'Indent both lines by two levels.'
+        start: |-
+          ▮topic
+          comment
+        target: |2-
+                  topic
+                  comment
   - goal: 'Indent from here to the end of the file.'
     start: |-
       S
@@ -48,3 +74,13 @@ tasks:
           VP
     solution: '>G'
     hint: '>G indents every line from here down.'
+    variants:
+      - goal: 'Indent from here to the end of the file.'
+        start: |-
+          CP
+          ▮C
+          TP
+        target: |-
+          CP
+              C
+              TP

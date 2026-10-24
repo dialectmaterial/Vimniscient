@@ -16,6 +16,13 @@ tasks:
       name = "Noam"
     solution: 'ci"Noam<Esc>'
     hint: 'ci" changes everything inside the quotes.'
+    variants:
+      - goal: 'Change the language to Hopi.'
+        start: |-
+          lang = "▮Zulu"
+        target: |-
+          lang = "Hopi"
+        solution: 'ci"Hopi<Esc>'
   - goal: 'Change the greeting to "hi", starting from the beginning of the line.'
     ft: python
     start: |-
@@ -24,6 +31,13 @@ tasks:
       greeting = "hi"
     solution: 'ci"hi<Esc>'
     hint: 'You don''t have to move first. ci" finds the next quotes on the line.'
+    variants:
+      - goal: 'Change the gloss to "dog", starting from the beginning of the line.'
+        start: |-
+          ▮gloss = "big brown dog"
+        target: |-
+          gloss = "dog"
+        solution: 'ci"dog<Esc>'
   - goal: 'Empty the inner parentheses.'
     ft: python
     start: |-
@@ -32,6 +46,12 @@ tasks:
       print(len())
     solution: 'di('
     hint: 'di( deletes inside the innermost parentheses around the cursor.'
+    variants:
+      - goal: 'Empty the inner parentheses.'
+        start: |-
+          print(sorted(ton▮es))
+        target: |-
+          print(sorted())
   - goal: 'Delete the argument list, parentheses included.'
     ft: python
     start: |-
@@ -40,6 +60,12 @@ tasks:
       result = total + 1
     solution: 'da('
     hint: 'da( deletes the parentheses too. (dab is the same thing.)'
+    variants:
+      - goal: 'Delete the argument list, parentheses included.'
+        start: |-
+          n = count(▮vowels, word) * 2
+        target: |-
+          n = count * 2
   - goal: 'Empty the list.'
     ft: python
     start: |-
@@ -48,6 +74,12 @@ tasks:
       tags = []
     solution: 'di['
     hint: 'di[ works like di(, for square brackets.'
+    variants:
+      - goal: 'Empty the list.'
+        start: |-
+          cases = [▮"nom", "acc", "gen"]
+        target: |-
+          cases = []
   - goal: 'Change the text inside the tag to "strong".'
     ft: html
     start: |-
@@ -56,3 +88,10 @@ tasks:
       <b>strong</b>
     solution: 'citstrong<Esc>'
     hint: 'it is the inner tag object. cit changes the tag''s content.'
+    variants:
+      - goal: 'Change the text inside the tag to "emphasis".'
+        start: |-
+          <i>it▮alic gloss</i>
+        target: |-
+          <i>emphasis</i>
+        solution: 'citemphasis<Esc>'

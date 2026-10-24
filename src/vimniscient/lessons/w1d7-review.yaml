@@ -15,6 +15,13 @@ tasks:
       config = {"mode": "light"}
     solution: 'ciwlight<Esc>'
     hint: 'ciw or ci" both work.'
+    variants:
+      - goal: 'Switch the language to en.'
+        start: |-
+          config = {"lang": "▮nl"}
+        target: |-
+          config = {"lang": "en"}
+        solution: 'ciwen<Esc>'
   - goal: 'Replace all three arguments with z.'
     ft: python
     start: |-
@@ -23,6 +30,13 @@ tasks:
       f(z)
     solution: 'ci(z<Esc>'
     hint: 'ci( changes everything inside the parentheses.'
+    variants:
+      - goal: 'Replace all three arguments with w.'
+        start: |-
+          g(▮x, y, z)
+        target: |-
+          g(w)
+        solution: 'ci(w<Esc>'
   - goal: 'Delete the wrong sentence.'
     start: |-
       B is voiced. ▮P is a vowel. K is velar.
@@ -30,6 +44,12 @@ tasks:
       B is voiced. K is velar.
     solution: 'das'
     hint: 'das deletes a sentence and its trailing space.'
+    variants:
+      - goal: 'Delete the wrong sentence.'
+        start: |-
+          M is nasal. ▮S is a stop. L is lateral.
+        target: |-
+          M is nasal. L is lateral.
   - goal: 'Delete the sys and re imports.'
     ft: python
     start: |-
@@ -42,6 +62,16 @@ tasks:
       import json
     solution: '2dd'
     hint: 'A count works on dd too.'
+    variants:
+      - goal: 'Delete the os and sys imports.'
+        start: |-
+          import re
+          ▮import os
+          import sys
+          import nltk
+        target: |-
+          import re
+          import nltk
   - goal: 'Change the subdomain to new.'
     start: |-
       url = 'https://▮old.example.org'
@@ -49,6 +79,13 @@ tasks:
       url = 'https://new.example.org'
     solution: 'ciwnew<Esc>'
     hint: 'A dot ends a word, so ciw only takes "old". ct. works too.'
+    variants:
+      - goal: 'Change the subdomain to www.'
+        start: |-
+          url = 'https://▮test.wals.info'
+        target: |-
+          url = 'https://www.wals.info'
+        solution: 'ciwwww<Esc>'
   - goal: 'Indent the body of the function.'
     ft: python
     start: |-
@@ -61,3 +98,13 @@ tasks:
           return x
     solution: '>j'
     hint: '> with a motion indents lines: >j indents this line and the next.'
+    variants:
+      - goal: 'Indent the body of the function.'
+        start: |-
+          def g():
+          ▮n = 0
+          return n
+        target: |-
+          def g():
+              n = 0
+              return n

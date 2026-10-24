@@ -15,6 +15,12 @@ tasks:
       ID = get_id(ID)
     solution: '*gUiwn.'
     hint: '* finds the other whole-word id; gUiw, then n and . for the first one.'
+    variants:
+      - goal: 'Uppercase every standalone "pos".'
+        start: |-
+          ▮pos = tag(pos)
+        target: |-
+          POS = tag(POS)
   - goal: 'Add one to every tone number.'
     start: |-
       ▮tone1 tone2 tone3
@@ -22,6 +28,12 @@ tasks:
       tone2 tone3 tone4
     solution: '<C-a>w.w.'
     hint: 'Ctrl-a, then w and . to repeat it on the next ones.'
+    variants:
+      - goal: 'Add one to every case number.'
+        start: |-
+          ▮case1 case2 case3
+        target: |-
+          case2 case3 case4
   - goal: 'Fix every "teh".'
     start: |-
       ▮teh noun and teh verb and teh rest
@@ -29,6 +41,12 @@ tasks:
       the noun and the verb and the rest
     solution: '*cgnthe<Esc>..'
     hint: '* then cgn, then . . for the others.'
+    variants:
+      - goal: 'Fix every "hte".'
+        start: |-
+          ▮hte stem and hte root and hte end
+        target: |-
+          the stem and the root and the end
   - goal: 'Lowercase the whole line.'
     start: |-
       ▮CAPS LOOK LIKE SHOUTING
@@ -36,6 +54,12 @@ tasks:
       caps look like shouting
     solution: 'Vu'
     hint: 'V selects the line, u lowercases the selection.'
+    variants:
+      - goal: 'Lowercase the whole line.'
+        start: |-
+          ▮ALL CAPS HIDES CASE
+        target: |-
+          all caps hides case
   - goal: 'Delete up to "Hindi".'
     start: |-
       ▮um, so, basically: Hindi has aspiration
@@ -43,6 +67,13 @@ tasks:
       Hindi has aspiration
     solution: 'dtH'
     hint: 't is case-sensitive, and the first capital H is in Hindi, so dtH.'
+    variants:
+      - goal: 'Delete up to "Hausa".'
+        start: |-
+          ▮well, the thing is: Hausa has tone
+        target: |-
+          Hausa has tone
+        hint: 't is case-sensitive, and the first capital H is in Hausa, so dtH.'
   - goal: 'Comment out all three lines with "# ".'
     ft: python
     start: |-
@@ -55,3 +86,13 @@ tasks:
       # c = 3
     solution: 'I# <Esc>j.j.'
     hint: 'I# <Esc>, then j . j .'
+    variants:
+      - goal: 'Comment out all three lines with "# ".'
+        start: |-
+          ▮x = 1
+          y = 2
+          z = 3
+        target: |-
+          # x = 1
+          # y = 2
+          # z = 3

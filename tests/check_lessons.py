@@ -15,21 +15,26 @@ from vimniscient.lessons import load_lessons
 
 lazyvim = "--lazyvim" in sys.argv
 lessons = [lesson for lesson in load_lessons() if lesson.lazyvim == lazyvim]
-already = [f"{lesson.id}#{i}" for lesson in lessons for i, t in enumerate(lesson.tasks, 1) if t.start == t.target]
+already = [
+    f"{lesson.id}#{i}" for lesson in lessons for i, t in enumerate(lesson.tasks, 1)
+    for v in [t, *t.variants] if v.start == v.target
+]
 if already:
     sys.exit(f"tasks that start out solved: {', '.join(already)}")
+# every version of every task: the original and its variants
 tasks = [
     {
-        "id": f"{lesson.id}#{i}",
-        "goal": t.goal,
-        "start": t.start,
-        "cursor": list(t.cursor),
-        "target": t.target,
-        "solution": t.solution,
-        "ft": t.ft,
+        "id": f"{lesson.id}#{i}" + (f" (version {n + 1})" if n else ""),
+        "goal": v.goal,
+        "start": v.start,
+        "cursor": list(v.cursor),
+        "target": v.target,
+        "solution": v.solution,
+        "ft": v.ft,
     }
     for lesson in lessons
     for i, t in enumerate(lesson.tasks, 1)
+    for n, v in enumerate([t, *t.variants])
 ]
 script = Path(__file__).with_name("check_lessons.lua")
 with tempfile.NamedTemporaryFile("w", suffix=".json") as f:

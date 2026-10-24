@@ -28,6 +28,13 @@ def run_lesson(lesson: Lesson) -> list[TaskResult]:
         result_path = tmp_path / "results.json"
         practice = tmp_path / "practice.txt"
         practice.write_text("\n".join(lesson.tasks[0].start), encoding="utf-8")
+        totals = {phase: sum(t.phase == phase for t in lesson.tasks) for phase in ("learn", "recall")}
+        seen = {"learn": 0, "recall": 0}
+        labels = []
+        for t in lesson.tasks:
+            seen[t.phase] += 1
+            two_rounds = totals["learn"] > 0
+            labels.append(f"{t.phase.upper()} {seen[t.phase]}/{totals[t.phase]}" if two_rounds else None)
         session_path.write_text(
             json.dumps(
                 {
@@ -43,8 +50,11 @@ def run_lesson(lesson: Lesson) -> list[TaskResult]:
                             "hint": t.hint,
                             "solution": t.solution,
                             "ft": t.ft,
+                            "phase": t.phase,
+                            "label": label,
+                            "show": t.solution if t.phase == "learn" else "",
                         }
-                        for t in lesson.tasks
+                        for t, label in zip(lesson.tasks, labels)
                     ],
                 }
             ),

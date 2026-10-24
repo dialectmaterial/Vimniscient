@@ -4,9 +4,18 @@ A task's `start` text marks the cursor with ▮ (placed before the character
 the cursor sits on). ␣ stands for a space where one has to survive editors
 that strip trailing whitespace. `solution` is the reference solution in Vim key
 notation; its length is the task's reference keystroke count.
+
+A task can list `variants`: the same skill on other texts, so that recall and
+review don't just replay a sentence you remember. A variant inherits whatever
+it doesn't set (the solution, hint and filetype).
+
+A lesson runs in two rounds: Learn, with the keys shown, then Recall, the same
+skills on the other texts, shuffled, without the keys.
 """
 
-from dataclasses import dataclass
+import random
+from dataclasses import dataclass, field, replace
+from datetime import date
 from importlib import resources
 
 import yaml
@@ -29,10 +38,24 @@ class Task:
     lesson_id: str = ""
     index: int = 0  # position in its lesson
     ref_override: int | None = None  # when there's no reference solution (VimGolf)
+    variants: list["Task"] = field(default_factory=list)
+    phase: str = "recall"  # learn (keys shown) | recall (from memory)
 
     @property
     def item_id(self) -> str:
         return f"task:{self.lesson_id}#{self.index}"
+
+    @property
+    def versions(self) -> int:
+        return 1 + len(self.variants)
+
+    def version(self, n: int) -> "Task":
+        """Version n of this task, cycling through the original and its variants."""
+        n %= self.versions
+        return self if n == 0 else self.variants[n - 1]
+
+    def as_phase(self, phase: str) -> "Task":
+        return replace(self, phase=phase)
 
     @property
     def ref(self) -> int:
@@ -67,25 +90,29 @@ def _parse_start(text: str) -> tuple[list[str], tuple[int, int]]:
     return lines, (row + 1, col)
 
 
+def _task(t: dict, parent: Task | None, lesson_id: str, index: int, ft: str) -> Task:
+    start, cursor = _parse_start(t["start"])
+    return Task(
+        goal=t.get("goal") or parent.goal,
+        start=start,
+        cursor=cursor,
+        target=t["target"].replace(SPACE, " ").split("\n"),
+        solution=t.get("solution") or parent.solution,
+        hint=t.get("hint") or (parent.hint if parent else ""),
+        ft=t.get("ft", parent.ft if parent else ft),
+        lesson_id=lesson_id,
+        index=index,
+    )
+
+
 def _load(source: str, name: str) -> Lesson:
     data = yaml.safe_load(source)
     lesson_id = name.removesuffix(".yaml")
     tasks = []
     for i, t in enumerate(data["tasks"]):
-        start, cursor = _parse_start(t["start"])
-        tasks.append(
-            Task(
-                goal=t["goal"],
-                start=start,
-                cursor=cursor,
-                target=t["target"].replace(SPACE, " ").split("\n"),
-                solution=t["solution"],
-                hint=t.get("hint", ""),
-                ft=t.get("ft", data.get("ft", "")),
-                lesson_id=lesson_id,
-                index=i,
-            )
-        )
+        task = _task(t, None, lesson_id, i, data.get("ft", ""))
+        task.variants = [_task(v, task, lesson_id, i, task.ft) for v in t.get("variants", [])]
+        tasks.append(task)
     return Lesson(
         id=lesson_id,
         week=data["week"],
@@ -97,6 +124,15 @@ def _load(source: str, name: str) -> Lesson:
         review=data.get("review", False),
         lazyvim=data.get("lazyvim", False),
     )
+
+
+def two_rounds(lesson: Lesson, day: date | None = None) -> list[Task]:
+    """Learn (each task as written, keys shown), then Recall (the next version
+    of each, shuffled, keys hidden). The order changes from day to day."""
+    learn = [t.as_phase("learn") for t in lesson.tasks]
+    recall = [t.version(1).as_phase("recall") for t in lesson.tasks]
+    random.Random(f"{lesson.id}:{day or date.today()}").shuffle(recall)
+    return learn + recall
 
 
 def load_lessons() -> list[Lesson]:

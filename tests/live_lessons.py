@@ -16,7 +16,7 @@ import tempfile
 import time
 
 from vimniscient.keys import split_keys
-from vimniscient.lessons import load_lessons
+from vimniscient.lessons import load_lessons, two_rounds
 
 PACE = 0.08  # seconds between keys, a fast typist
 SPECIAL = {"<Esc>": "Escape", "<CR>": "Enter", "<C-a>": "C-a", "<C-x>": "C-x", "<C-v>": "C-v", "<C-r>": "C-r", " ": "Space", "<Space>": "Space"}
@@ -36,9 +36,10 @@ def send(token: str) -> None:
         tmux("send-keys", "-t", SESSION, "-l", "\\;" if token == ";" else token)
 
 
-def goal_number() -> int | None:
-    m = re.search(r"GOAL (\d+)/", tmux("capture-pane", "-pt", SESSION))
-    return int(m.group(1)) if m else None
+def goal_label() -> str | None:
+    """LEARN 2/6, RECALL 3/6, … from the goal window."""
+    m = re.search(r"(LEARN|RECALL|GOAL) \d+/\d+", tmux("capture-pane", "-pt", SESSION))
+    return m.group(0) if m else None
 
 
 args = sys.argv[1:]
@@ -57,12 +58,14 @@ with tempfile.TemporaryDirectory() as data:
         tmux("new-session", "-d", "-s", SESSION, "-x", "120", "-y", "32",
              f"VIMNISCIENT_DATA={data} vimniscient run {lesson.id}; sleep 5")
         time.sleep(3.5)
-        for i, task in enumerate(lesson.tasks, 1):
+        session = two_rounds(lesson)  # the order `vimniscient run` uses today
+        for task in session:
+            label = goal_label()
             for token in split_keys(task.solution):
                 send(token)
                 time.sleep(PACE)
             time.sleep(2.2)
-            if goal_number() == i:  # still on this task: it wasn't solved
+            if goal_label() == label:  # still on this task: it wasn't solved
                 for token in [":Skip", "<CR>"]:
                     tmux("send-keys", "-t", SESSION, *(["Enter"] if token == "<CR>" else ["-l", token]))
                 time.sleep(0.6)
@@ -70,14 +73,14 @@ with tempfile.TemporaryDirectory() as data:
         tmux("kill-session", "-t", SESSION)
         db = sqlite3.connect(os.path.join(data, "progress.db"))
         rows = db.execute(
-            "SELECT task, status, count, ref, keys FROM attempts WHERE lesson = ? ORDER BY id", (lesson.id,)
+            "SELECT task, status, count, ref, keys, phase FROM attempts WHERE lesson = ? ORDER BY id", (lesson.id,)
         ).fetchall()
         db.execute("DELETE FROM attempts WHERE lesson = ?", (lesson.id,))
         db.commit()
         bad = [r for r in rows if r[1] != "solved" or r[2] != r[3]]
-        failed += len(bad) + (len(lesson.tasks) - len(rows))
-        for task, status, count, ref, keys in bad:
-            print(f"FAIL {lesson.id}#{task + 1}: {status} {count}/{ref} typed {keys!r}")
-        print(f"{lesson.id}: {len(rows) - len(bad)}/{len(lesson.tasks)} ok", flush=True)
+        failed += len(bad) + (len(session) - len(rows))
+        for task, status, count, ref, keys, phase in bad:
+            print(f"FAIL {lesson.id}#{task + 1} ({phase}): {status} {count}/{ref} typed {keys!r}")
+        print(f"{lesson.id}: {len(rows) - len(bad)}/{len(session)} ok", flush=True)
 print(f"{failed} problems")
 sys.exit(1 if failed else 0)

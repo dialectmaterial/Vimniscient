@@ -20,6 +20,18 @@ tasks:
       [N]
     solution: ':%norm I[<C-v><Esc>A]<CR>'
     hint: 'A macro with 3@a works. So does :%norm, where Ctrl-v Esc types an Esc into the command.'
+    variants:
+      - goal: 'Wrap every line in square brackets.'
+        start: |-
+          ▮DP
+          TP
+          C
+          V
+        target: |-
+          [DP]
+          [TP]
+          [C]
+          [V]
   - goal: 'Prefix every line with "> ".'
     start: |-
       ▮Words mean
@@ -31,6 +43,16 @@ tasks:
       > use them for.
     solution: '<C-v>jjI> <Esc>'
     hint: 'Visual block I, or :%s/^/> /'
+    variants:
+      - goal: 'Prefix every line with "> ".'
+        start: |-
+          ▮The limits of
+          my language mean
+          the limits of my world.
+        target: |-
+          > The limits of
+          > my language mean
+          > the limits of my world.
   - goal: 'Delete the blank lines.'
     start: |-
       ▮phoneme
@@ -44,6 +66,18 @@ tasks:
       lexeme
     solution: ':g/^$/d<CR>'
     hint: '^$ matches an empty line.'
+    variants:
+      - goal: 'Delete the blank lines.'
+        start: |-
+          ▮onset
+
+          nucleus
+
+          coda
+        target: |-
+          onset
+          nucleus
+          coda
   - goal: 'Swap the two halves of every line (English=German becomes German=English).'
     start: |-
       ▮dog=Hund
@@ -53,6 +87,14 @@ tasks:
       Katze=cat
     solution: ':%s/\v(.*)\=(.*)/\2=\1<CR>'
     hint: 'Two groups around the =. In very magic mode = is special, so write \=.'
+    variants:
+      - goal: 'Swap the two halves of every line (English=German becomes German=English).'
+        start: |-
+          ▮house=Haus
+          water=Wasser
+        target: |-
+          Haus=house
+          Wasser=water
   - goal: 'Duplicate the first line to the end, then delete the second line. Keep the right line in the register.'
     start: |-
       ▮competence
@@ -64,3 +106,13 @@ tasks:
       competence
     solution: 'yyjddG"0p'
     hint: 'After dd the unnamed register holds noise; "0p still has the yank.'
+    variants:
+      - goal: 'Duplicate the first line to the end, then delete the second line. Keep the right line in the register.'
+        start: |-
+          ▮langue
+          noise
+          parole
+        target: |-
+          langue
+          parole
+          langue

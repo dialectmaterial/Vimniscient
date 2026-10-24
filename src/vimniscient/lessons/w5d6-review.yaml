@@ -15,6 +15,12 @@ tasks:
       run(cmd, timeout=5)
     solution: 'daa'
     hint: 'daa'
+    variants:
+      - goal: 'Remove the verbose argument.'
+        start: |-
+          load(path, ▮verbose=True, limit=9)
+        target: |-
+          load(path, limit=9)
   - goal: 'Change the path to /tmp.'
     ft: python
     start: |-
@@ -23,6 +29,13 @@ tasks:
       open('/tmp')
     solution: 'ciq/tmp<Esc>'
     hint: 'ciq'
+    variants:
+      - goal: 'Change the path to /srv.'
+        start: |-
+          open(▮'/data/corpus.txt')
+        target: |-
+          open('/srv')
+        solution: 'ciq/srv<Esc>'
   - goal: 'Change the variable name userId to accountId.'
     ft: python
     start: |-
@@ -31,6 +44,14 @@ tasks:
       accountId = 1
     solution: 'cieaccount<Esc>'
     hint: 'The first sub-word is user; cie changes just that.'
+    variants:
+      - goal: 'Change the variable name wordCount to tokenCount.'
+        start: |-
+          ▮wordCount = 0
+        target: |-
+          tokenCount = 0
+        solution: 'cietoken<Esc>'
+        hint: 'The first sub-word is word; cie changes just that.'
   - goal: 'Comment out the print.'
     ft: python
     start: |-
@@ -41,3 +62,11 @@ tasks:
       # print(x)
     solution: 'gcc'
     hint: 'gcc'
+    variants:
+      - goal: 'Comment out the print.'
+        start: |-
+          y = 2
+          ▮print(y)
+        target: |-
+          y = 2
+          # print(y)

@@ -20,6 +20,17 @@ tasks:
       save(buf)
     solution: '*cgnbuf<Esc>..'
     hint: '* sets the search; cgnbuf<Esc> changes one match; . does the rest (it wraps around).'
+    variants:
+      - goal: 'Rename every arr to data.'
+        start: |-
+          ▮arr = load()
+          show(arr)
+          keep(arr)
+        target: |-
+          data = load()
+          show(data)
+          keep(data)
+        solution: '*cgndata<Esc>..'
   - goal: 'Change the first and the last "the" to "a", keep the middle one.'
     start: |-
       ▮the stem, the root and the base
@@ -27,6 +38,12 @@ tasks:
       a stem, the root and a base
     solution: '*Ncgna<Esc>nn.'
     hint: '* then N to go back to the first; cgna<Esc>; n n skips one; . changes the last.'
+    variants:
+      - goal: 'Change the first and the last "the" to "a", keep the middle one.'
+        start: |-
+          ▮the vowel, the glide and the stop
+        target: |-
+          a vowel, the glide and a stop
   - goal: 'Replace "very good" with "great" on both lines.'
     start: |-
       ▮Her accent is very good.
@@ -36,6 +53,15 @@ tasks:
       Her grammar is great.
     solution: '/very good<CR>cgngreat<Esc>.'
     hint: 'Search for the phrase, cgn changes the whole match, . the next one.'
+    variants:
+      - goal: 'Replace "very clear" with "crisp" on both lines.'
+        start: |-
+          ▮Her vowels are very clear.
+          Her tones are very clear.
+        target: |-
+          Her vowels are crisp.
+          Her tones are crisp.
+        solution: '/very clear<CR>cgncrisp<Esc>.'
   - goal: 'Change all four foo to bar.'
     start: |-
       rm ▮foo; rm foo; rm foo; rm foo
@@ -43,6 +69,13 @@ tasks:
       rm bar; rm bar; rm bar; rm bar
     solution: '*cgnbar<Esc>...'
     hint: 'Same trick: * then cgn, then . for each remaining match.'
+    variants:
+      - goal: 'Change all four tmp to out.'
+        start: |-
+          cp ▮tmp; cp tmp; cp tmp; cp tmp
+        target: |-
+          cp out; cp out; cp out; cp out
+        solution: '*cgnout<Esc>...'
   - goal: 'Delete every "um, ".'
     start: |-
       So ▮um, a filler is um, a pause word um, like this.
@@ -50,3 +83,11 @@ tasks:
       So a filler is a pause word like this.
     solution: '/um, <CR>dgn..'
     hint: 'dgn deletes the next match. Search for "um, " with the space.'
+    variants:
+      - goal: 'Delete every "like, ".'
+        start: |-
+          It's ▮like, a word that is like, just like, filler.
+        target: |-
+          It's a word that is just filler.
+        solution: '/like, <CR>dgn..'
+        hint: 'dgn deletes the next match. Search for "like, " with the space.'

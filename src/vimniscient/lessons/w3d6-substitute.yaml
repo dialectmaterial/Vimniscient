@@ -17,6 +17,12 @@ tasks:
       the new grammar
     solution: ':s/old/new<CR>'
     hint: ':s/old/new<Enter>. The final slash is optional.'
+    variants:
+      - goal: 'Replace "old" with "new" on this line.'
+        start: |-
+          ▮the old theory
+        target: |-
+          the new theory
   - goal: 'Use American spelling everywhere.'
     start: |-
       ▮the colour of a vowel
@@ -26,6 +32,15 @@ tasks:
       is its timbre
     solution: ':%s/u//g<CR>'
     hint: ':%s/colour/color/g works, but look: the only u''s are in colour. :%s/u//g'
+    variants:
+      - goal: 'Use American spelling everywhere.'
+        start: |-
+          ▮a labour of phonetics
+          is my endeavour
+        target: |-
+          a labor of phonetics
+          is my endeavor
+        hint: ':%s/our/or/g works, but look: the only u''s are in labour and endeavour. :%s/u//g'
   - goal: 'Rename the word case (only the whole word) to kasus.'
     start: |-
       ▮case caseless case
@@ -35,6 +50,15 @@ tasks:
       the kasus system
     solution: '*:%s//kasus/g<CR>'
     hint: '* searches for the whole word; an empty pattern in :s reuses that search.'
+    variants:
+      - goal: 'Rename the word tone (only the whole word) to pitch.'
+        start: |-
+          ▮tone toneless tone
+          the tone contour
+        target: |-
+          pitch toneless pitch
+          the pitch contour
+        solution: '*:%s//pitch/g<CR>'
   - goal: 'Turn "Last, First" into "First Last".'
     start: |-
       ▮Chomsky, Noam
@@ -44,6 +68,14 @@ tasks:
       Ferdinand Saussure
     solution: ':%s/\v(\w+), (\w+)/\2 \1<CR>'
     hint: 'With \v (very magic) ( ) are groups and + needs no backslash. \2 \1 swaps them.'
+    variants:
+      - goal: 'Turn "Last, First" into "First Last".'
+        start: |-
+          ▮Sapir, Edward
+          Boas, Franz
+        target: |-
+          Edward Sapir
+          Franz Boas
   - goal: 'Change x to y on the first two lines only.'
     start: |-
       ▮x = 1
@@ -55,6 +87,17 @@ tasks:
       x = 3
     solution: 'Vj:s/x/y<CR>'
     hint: 'Select the lines first: typing : in visual mode limits the command to them.'
+    variants:
+      - goal: 'Change a to b on the first two lines only.'
+        start: |-
+          ▮a = 1
+          a = 2
+          a = 3
+        target: |-
+          b = 1
+          b = 2
+          a = 3
+        solution: 'Vj:s/a/b<CR>'
   - goal: 'Delete every comment line.'
     start: |-
       ▮phoneme
@@ -66,6 +109,16 @@ tasks:
       allophone
     solution: ':g/#/d<CR>'
     hint: ':g/#/d deletes every line that contains #.'
+    variants:
+      - goal: 'Delete every comment line.'
+        start: |-
+          ▮morpheme
+          # ask Sapir
+          allomorph
+          # fix
+        target: |-
+          morpheme
+          allomorph
   - goal: 'Keep only the error lines.'
     start: |-
       ▮error: unglossed word
@@ -77,6 +130,16 @@ tasks:
       error: unknown tag
     solution: ':v/error/d<CR>'
     hint: ':v is the opposite of :g: it acts on the lines that don''t match.'
+    variants:
+      - goal: 'Keep only the error lines.'
+        start: |-
+          ▮error: no gloss
+          ok: 30 tokens
+          error: bad tag
+          warn: x
+        target: |-
+          error: no gloss
+          error: bad tag
   - goal: 'Add a semicolon to every call line, but not to the comment.'
     start: |-
       ▮call(a)
@@ -88,3 +151,14 @@ tasks:
       call(b);
     solution: ':g/call/norm A;<CR>'
     hint: ':g/call/norm A; runs A; on each matching line.'
+    variants:
+      - goal: 'Add a semicolon to every emit line, but not to the comment.'
+        start: |-
+          ▮emit(x)
+          # skip
+          emit(y)
+        target: |-
+          emit(x);
+          # skip
+          emit(y);
+        solution: ':g/emit/norm A;<CR>'

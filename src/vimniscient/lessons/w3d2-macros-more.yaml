@@ -20,6 +20,18 @@ tasks:
       4 TODO TAG it
     solution: 'qa/TODO<CR>wgUiwq2@a'
     hint: 'Let the macro find its own place: /TODO<Enter> w gUiw.'
+    variants:
+      - goal: 'Uppercase the word after every TODO.'
+        start: |-
+          ▮a TODO check this
+          b fine
+          c TODO gloss that
+          d TODO tag it
+        target: |-
+          a TODO CHECK this
+          b fine
+          c TODO GLOSS that
+          d TODO TAG it
   - goal: 'Turn every comma into " | ", using @a once and then @@.'
     start: |-
       ▮noun,verb
@@ -31,6 +43,16 @@ tasks:
       stem | affix
     solution: 'qa0f,xi | <Esc>jq@a@@'
     hint: '0 f, x deletes the comma, i | <Esc> inserts the separator, j moves on. Then @a, then @@.'
+    variants:
+      - goal: 'Turn every comma into " | ", using @a once and then @@.'
+        start: |-
+          ▮onset,coda
+          head,dependent
+          topic,comment
+        target: |-
+          onset | coda
+          head | dependent
+          topic | comment
   - goal: 'Put every line in parentheses: record on the first line, then use :norm for the rest.'
     start: |-
       ▮NP
@@ -44,6 +66,18 @@ tasks:
       (AP)
     solution: 'qaI(<Esc>A)<Esc>q:2,$norm @a<CR>'
     hint: 'No j in this macro. :2,$norm @a runs it once on every line from 2 to the end.'
+    variants:
+      - goal: 'Put every line in parentheses: record on the first line, then use :norm for the rest.'
+        start: |-
+          ▮DP
+          TP
+          CP
+          VP
+        target: |-
+          (DP)
+          (TP)
+          (CP)
+          (VP)
   - goal: 'Make a numbered list of four items.'
     start: |-
       ▮1. Gloss the text.
@@ -54,3 +88,12 @@ tasks:
       4. Gloss the text.
     solution: 'qayyp<C-a>q2@a'
     hint: 'yyp copies the line, Ctrl-a bumps its number. Record that, then 2@a.'
+    variants:
+      - goal: 'Make a numbered list of four items.'
+        start: |-
+          ▮1. Transcribe the tape.
+        target: |-
+          1. Transcribe the tape.
+          2. Transcribe the tape.
+          3. Transcribe the tape.
+          4. Transcribe the tape.

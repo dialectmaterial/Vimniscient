@@ -22,6 +22,19 @@ tasks:
       END
     solution: 'jma/END<CR>kd''a'
     hint: 'Mark the first line to go (ma), find the last one, then d''a. (d/END<Enter> from the first line is a nice shortcut too.)'
+    variants:
+      - goal: 'Delete all the lines between BEGIN and END.'
+        start: |-
+          ▮BEGIN
+          nom: I
+          acc: me
+          gen: my
+          dat: to me
+          abl: from me
+          END
+        target: |-
+          BEGIN
+          END
   - goal: 'Copy kindergarten and angst under "Used in English".'
     start: |-
       ▮== German ==
@@ -37,6 +50,21 @@ tasks:
       angst
     solution: 'jmajy''aGp'
     hint: 'ma on kindergarten, j to angst, y''a yanks back to the mark, G p pastes at the end.'
+    variants:
+      - goal: 'Copy rendezvous and déjà vu under "Used in English".'
+        start: |-
+          ▮== French ==
+          rendezvous
+          déjà vu
+          == Used in English ==
+        target: |-
+          == French ==
+          rendezvous
+          déjà vu
+          == Used in English ==
+          rendezvous
+          déjà vu
+        hint: 'ma on rendezvous, j to déjà vu, y''a yanks back to the mark, G p pastes at the end.'
   - goal: 'Change "very common " to "typical ", using a mark.'
     start: |-
       A ▮very common word order is SVO
@@ -44,6 +72,14 @@ tasks:
       A typical word order is SVO
     solution: 'mafwc`atypical <Esc>'
     hint: 'ma, go to the w of word, then c`a changes from the mark up to the cursor.'
+    variants:
+      - goal: 'Change "most frequent " to "commonest ", using a mark.'
+        start: |-
+          The ▮most frequent English word is the
+        target: |-
+          The commonest English word is the
+        solution: 'mafEc`acommonest <Esc>'
+        hint: 'ma, go to the E of English, then c`a changes from the mark up to the cursor.'
   - goal: 'Fix the typo on the last line, then jump back and fix the first.'
     start: |-
       ▮teh first word
@@ -57,3 +93,15 @@ tasks:
       the last word
     solution: 'Gcwthe<Esc>``.'
     hint: 'G is a jump, so `` takes you back. Then . repeats the change.'
+    variants:
+      - goal: 'Fix the typo on the last line, then jump back and fix the first.'
+        start: |-
+          ▮teh noun
+          middle
+          middle
+          teh verb
+        target: |-
+          the noun
+          middle
+          middle
+          the verb

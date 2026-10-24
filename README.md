@@ -20,6 +20,16 @@ Each task shows the goal at the top and your text below, with the
 differences highlighted. Edit until they match, and the next task loads by
 itself. There's nothing to submit, and any way of getting there counts.
 
+Every lesson has two rounds:
+
+1. **Learn**: each task with the keys to type shown next to it, so you use
+   exactly what you'll need to remember.
+2. **Recall**: the same skills come back on different text, in a different
+   order, with the keys hidden. Only this round counts towards your progress.
+
+Every task has more than one text, and each review gives you the next one.
+That way you remember the skill, not the sentence.
+
 Your keystrokes are counted the same way [VimGolf](https://www.vimgolf.com)
 counts them, and afterwards you see your keys next to the reference
 solution. If `ciwbuf<Esc>..` took you 14 keys and the reference does it in
@@ -47,7 +57,7 @@ change your Neovim config.
 
 ## What you'll learn
 
-37 lessons and 194 tasks over six weeks, one lesson a day:
+37 lessons and 194 tasks (each with two texts) over six weeks, one lesson a day:
 
 | Week | Topics |
 |---|---|
@@ -152,6 +162,13 @@ tasks:
     solution: ciwquick<Esc>   # the reference; its length is the "ref" count
     hint: ciw changes the inner word under the cursor.
     ft: python                # optional filetype
+    variants:                 # the same skill on other texts, for Recall and reviews
+      - goal: 'Change "big" to "small".'
+        start: |-
+          A b▮ig corpus.
+        target: |-
+          A small corpus.
+        solution: ciwsmall<Esc>   # whatever a variant leaves out, it takes from the task
 ```
 
 More details:
@@ -160,7 +177,7 @@ More details:
 - `lazyvim: true` marks lessons that need LazyVim.
 - Indented text needs an indentation indicator (`|2-`), or YAML strips the leading spaces.
 
-Before sending a lesson, check that every solution really produces its target:
+Before sending a lesson, check that every solution (variants included) really produces its target:
 
 ```bash
 uv run python tests/check_lessons.py            # plain-Vim lessons, in nvim --clean

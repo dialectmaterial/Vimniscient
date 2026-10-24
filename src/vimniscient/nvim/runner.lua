@@ -2,7 +2,9 @@
 --
 -- Started as `nvim -i NONE practice.txt -S runner.lua` with
 -- $VIMNISCIENT_SESSION pointing at a JSON file:
---   { title, result_path, tasks = { { goal, start, cursor, target, ref, hint, solution, ft } } }
+--   { title, result_path, tasks = { { goal, start, cursor, target, ref, hint, solution, ft, label, show } } }
+-- `label` heads the goal window (LEARN 2/6, RECALL 2/6); `show` is set during
+-- the Learn round and puts the keys to type in the practice window.
 -- The goal is shown in a read-only split above, diffed against the practice
 -- buffer. A task is solved as soon as the buffer matches the target in normal
 -- mode; results go to result_path when Neovim exits.
@@ -89,12 +91,13 @@ local function update_winbars()
   end
   local _, count = task_keys()
   vim.wo[goal_win].winbar = string.format(
-    "%%#Title# GOAL %d/%d %%* %s",
-    current, #tasks, esc(task.goal)
+    "%%#Title# %s %%* %s",
+    esc(task.label or string.format("GOAL %d/%d", current, #tasks)), esc(task.goal)
   )
+  local show = task.show and task.show ~= "" and string.format("  %%#Title#type%%* %s", esc(task.show)) or ""
   vim.wo[practice_win].winbar = string.format(
-    "%%#Title# YOU %%* keys %d · ref %d %%=:Hint  :Skip  :Reset  :q quit ",
-    count, task.ref
+    "%%#Title# YOU %%* keys %d · ref %d%s %%=:Hint  :Skip  :Reset  :q quit ",
+    count, task.ref, show
   )
 end
 
@@ -114,6 +117,10 @@ end
 local function load_task(i)
   current = i
   local task = tasks[i]
+  if i > 1 and task.phase ~= tasks[i - 1].phase and task.phase == "recall" then
+    vim.notify("From memory now: new text, no keys shown.", vim.log.levels.INFO,
+      { title = "Recall" })
+  end
   state = { keys = {}, done = false, hints = 0 }
   results[i].status = "quit"
 

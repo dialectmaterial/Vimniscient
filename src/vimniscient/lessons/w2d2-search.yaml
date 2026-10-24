@@ -18,6 +18,16 @@ tasks:
       sleep quietly
     solution: '/f<CR>cwquietly<Esc>'
     hint: 'Search for as little as you need. /f<Enter> lands on furiously already.'
+    variants:
+      - goal: 'Change "boat" to "ship".'
+        start: |-
+          ▮The old man
+          the boat
+        target: |-
+          The old man
+          the ship
+        solution: '/b<CR>cwship<Esc>'
+        hint: 'Search for as little as you need. /b<Enter> lands on boat already.'
   - goal: 'Delete the hedging before "Chomsky".'
     start: |-
       ▮um, well, you know, Chomsky disagreed
@@ -25,6 +35,14 @@ tasks:
       Chomsky disagreed
     solution: 'd/C<CR>'
     hint: 'd/C<Enter> deletes up to the next C (uppercase, so the search is exact).'
+    variants:
+      - goal: 'Delete the hedging before "Saussure".'
+        start: |-
+          ▮er, like, honestly, Saussure agreed
+        target: |-
+          Saussure agreed
+        solution: 'd/S<CR>'
+        hint: 'd/S<Enter> deletes up to the next S (uppercase, so the search is exact).'
   - goal: 'Rename the second "count" to n.'
     ft: python
     start: |-
@@ -35,6 +53,14 @@ tasks:
       total = n + 1
     solution: '*ciwn<Esc>'
     hint: '* jumps to the next occurrence of the word under the cursor.'
+    variants:
+      - goal: 'Rename the second "size" to n.'
+        start: |-
+          ▮size = 0
+          max = size * 2
+        target: |-
+          size = 0
+          max = n * 2
   - goal: 'Delete the third "um".'
     start: |-
       the ▮um corpus um has um gaps
@@ -42,6 +68,13 @@ tasks:
       the um corpus um has gaps
     solution: '*ndaw'
     hint: '* goes to the second um, n to the third, daw deletes it.'
+    variants:
+      - goal: 'Delete the third "uh".'
+        start: |-
+          the ▮uh data uh look uh fine
+        target: |-
+          the uh data uh look fine
+        hint: '* goes to the second uh, n to the third, daw deletes it.'
   - goal: 'Change the last "verb" to VERB, searching backwards.'
     start: |-
       noun verb noun verb pronou▮n
@@ -49,3 +82,11 @@ tasks:
       noun verb noun VERB pronoun
     solution: '?v<CR>cwVERB<Esc>'
     hint: '?v<Enter> searches backwards from the cursor.'
+    variants:
+      - goal: 'Change the last "noun" to NOUN, searching backwards.'
+        start: |-
+          verb noun verb noun articl▮e
+        target: |-
+          verb noun verb NOUN article
+        solution: '?no<CR>cwNOUN<Esc>'
+        hint: '?no<Enter> searches backwards for the start of noun.'

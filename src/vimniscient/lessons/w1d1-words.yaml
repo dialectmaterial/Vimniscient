@@ -15,6 +15,13 @@ tasks:
       A phoneme is the smallest unit of sound.
     solution: 'ciwphoneme<Esc>'
     hint: 'ciw changes the inner word under the cursor, from anywhere inside it.'
+    variants:
+      - goal: 'Fix "langauge" (the cursor is in the middle of the word).'
+        start: |-
+          Every lang▮auge has vowels.
+        target: |-
+          Every language has vowels.
+        solution: 'ciwlanguage<Esc>'
   - goal: 'Delete one "very", including its space.'
     start: |-
       Morphology is a ve▮ry very rich field.
@@ -22,6 +29,12 @@ tasks:
       Morphology is a very rich field.
     solution: 'daw'
     hint: 'daw deletes a word and the space after it, so no double space is left.'
+    variants:
+      - goal: 'Delete one "really", including its space.'
+        start: |-
+          Syntax is a re▮ally really deep topic.
+        target: |-
+          Syntax is a really deep topic.
   - goal: 'Replace the whole URL with "the atlas".'
     start: |-
       See www.wa▮ls.info for maps.
@@ -29,6 +42,13 @@ tasks:
       See the atlas for maps.
     solution: 'ciWthe atlas<Esc>'
     hint: 'A WORD (capital W) runs from space to space, dots included. Try ciW.'
+    variants:
+      - goal: 'Replace the whole URL with "the article".'
+        start: |-
+          Read en.wiki▮pedia.org/wiki/Tone first.
+        target: |-
+          Read the article first.
+        solution: 'ciWthe article<Esc>'
   - goal: 'Change the function name to compute_sum.'
     ft: python
     start: |-
@@ -39,6 +59,15 @@ tasks:
           return sum(items)
     solution: 'ciwcompute_sum<Esc>'
     hint: 'Underscores belong to a word, so ciw takes the whole name.'
+    variants:
+      - goal: 'Change the function name to vowel_count.'
+        start: |-
+          def ▮count_vowels(word):
+              return len(word)
+        target: |-
+          def vowel_count(word):
+              return len(word)
+        solution: 'ciwvowel_count<Esc>'
   - goal: 'Copy "noun" over "verb".'
     start: |-
       copy ▮noun onto verb
@@ -46,6 +75,12 @@ tasks:
       copy noun onto noun
     solution: 'yiwwwviwp'
     hint: 'yiw yanks the word; jump with w w; viwp selects the other word and pastes over it.'
+    variants:
+      - goal: 'Copy "stem" over "root".'
+        start: |-
+          copy ▮stem onto root
+        target: |-
+          copy stem onto stem
   - goal: 'Delete the duplicated "the".'
     start: |-
       Meaning is ▮the the use of a word.
@@ -53,3 +88,9 @@ tasks:
       Meaning is the use of a word.
     solution: 'daw'
     hint: 'daw takes the word and its trailing space.'
+    variants:
+      - goal: 'Delete the duplicated "a".'
+        start: |-
+          A word is ▮a a unit of meaning.
+        target: |-
+          A word is a unit of meaning.

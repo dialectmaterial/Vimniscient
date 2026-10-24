@@ -17,6 +17,13 @@ tasks:
       f(a, x, c)
     solution: 'ciax<Esc>'
     hint: 'cia changes the argument under the cursor.'
+    variants:
+      - goal: 'Change the middle argument to w.'
+        start: |-
+          g(x, ▮y, z)
+        target: |-
+          g(x, w, z)
+        solution: 'ciaw<Esc>'
   - goal: 'Delete the middle argument and its comma.'
     ft: python
     start: |-
@@ -25,6 +32,12 @@ tasks:
       f(a, c)
     solution: 'daa'
     hint: 'daa takes the comma with it.'
+    variants:
+      - goal: 'Delete the middle argument and its comma.'
+        start: |-
+          g(x, ▮y, z)
+        target: |-
+          g(x, z)
   - goal: 'Delete the last argument.'
     ft: python
     start: |-
@@ -33,6 +46,12 @@ tasks:
       f(a, b)
     solution: 'daa'
     hint: 'For the last argument, daa removes the comma before it.'
+    variants:
+      - goal: 'Delete the last argument.'
+        start: |-
+          g(x, y, ▮z)
+        target: |-
+          g(x, y)
   - goal: 'Drop the name parameter.'
     ft: python
     start: |-
@@ -41,6 +60,12 @@ tasks:
       def greet(self, age):
     solution: 'daa'
     hint: 'daa works on parameters too.'
+    variants:
+      - goal: 'Drop the word parameter.'
+        start: |-
+          def tag(self, ▮word, pos):
+        target: |-
+          def tag(self, pos):
   - goal: 'Change the first argument, starting from the beginning of the line.'
     ft: python
     start: |-
@@ -49,3 +74,10 @@ tasks:
       foo(z, b)
     solution: 'ciaz<Esc>'
     hint: 'mini.ai jumps to the next argument when the cursor isn''t on one.'
+    variants:
+      - goal: 'Change the first argument to q, starting from the beginning of the line.'
+        start: |-
+          ▮bar(x, y)
+        target: |-
+          bar(q, y)
+        solution: 'ciaq<Esc>'

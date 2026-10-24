@@ -87,6 +87,10 @@ class Progress:
             STARTED_FILE.write_text(date.today().isoformat() + "\n")
         self.db = sqlite3.connect(DATA_DIR / "progress.db")
         self.db.executescript(SCHEMA)
+        columns = {row[1] for row in self.db.execute("PRAGMA table_info(attempts)")}
+        if "phase" not in columns:  # databases from before the Learn/Recall rounds
+            self.db.execute("ALTER TABLE attempts ADD COLUMN phase TEXT NOT NULL DEFAULT 'recall'")
+            self.db.commit()
 
     # spaced repetition items
 
@@ -128,11 +132,12 @@ class Progress:
             if r.status == "unseen":
                 continue
             self.db.execute(
-                "INSERT INTO attempts (ts, lesson, task, status, count, ref, keys, hints) VALUES (?,?,?,?,?,?,?,?)",
-                (ts, r.task.lesson_id, r.task.index, r.status, r.count, r.task.ref, r.keys, r.hints),
+                "INSERT INTO attempts (ts, lesson, task, status, count, ref, keys, hints, phase) VALUES (?,?,?,?,?,?,?,?,?)",
+                (ts, r.task.lesson_id, r.task.index, r.status, r.count, r.task.ref, r.keys, r.hints, r.task.phase),
             )
+            # Only recall says whether you know it; the Learn round shows the keys.
             grade = srs.task_grade(r.status, r.count, r.task.ref, r.hints)
-            if grade is None:
+            if grade is None or r.task.phase != "recall":
                 continue
             item = self.item(r.task.item_id) or srs.Item(r.task.item_id, "task")
             srs.review(item, grade, date.today())
@@ -142,7 +147,7 @@ class Progress:
     def best(self, lesson: Lesson) -> dict[int, int]:
         """Fewest keys per solved task index."""
         rows = self.db.execute(
-            "SELECT task, MIN(count) FROM attempts WHERE lesson = ? AND status = 'solved' GROUP BY task",
+            "SELECT task, MIN(count) FROM attempts WHERE lesson = ? AND status = 'solved' AND phase = 'recall' GROUP BY task",
             (lesson.id,),
         )
         return dict(rows.fetchall())
@@ -160,6 +165,14 @@ class Progress:
         nxt = self.next_lesson(lessons)
         return nxt.week if nxt else max(lesson.week for lesson in lessons) + 1
 
+    def version_for(self, task: Task) -> Task:
+        """The next version of a task to practise: each recall moves on to another text."""
+        (n,) = self.db.execute(
+            "SELECT COUNT(*) FROM attempts WHERE lesson = ? AND task = ? AND phase = 'recall'",
+            (task.lesson_id, task.index),
+        ).fetchone()
+        return task.version(n + 1)
+
     def due_tasks(self, lessons: list[Lesson]) -> list[Task]:
         """Tasks from earlier days that are due for review, most overdue first."""
         today = date.today()
@@ -168,7 +181,7 @@ class Progress:
             (item for item in self.items("task").values() if item.due <= today and item.id in tasks),
             key=lambda item: (item.due, -item.lapses),
         )
-        return [tasks[item.id] for item in due[:MAX_REVIEW_TASKS]]
+        return [self.version_for(tasks[item.id]) for item in due[:MAX_REVIEW_TASKS]]
 
     def place(self, lessons: list[Lesson], results: list[TaskResult]) -> list[Lesson]:
         """Mark lessons as known from a placement run; returns the lessons placed."""
@@ -325,7 +338,7 @@ class Progress:
         """(day, solved tasks, keys typed, reference keys) for recent training days."""
         rows = self.db.execute(
             "SELECT substr(ts, 1, 10) AS d, COUNT(*), SUM(count), SUM(ref) FROM attempts "
-            "WHERE status = 'solved' GROUP BY d ORDER BY d DESC LIMIT ?",
+            "WHERE status = 'solved' AND phase = 'recall' GROUP BY d ORDER BY d DESC LIMIT ?",
             (limit,),
         )
         return list(rows)

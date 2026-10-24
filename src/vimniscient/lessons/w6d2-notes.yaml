@@ -18,6 +18,16 @@ tasks:
       3. syntax
     solution: '<C-v>GI0. <Esc>gvg<C-a>'
     hint: 'Put "0. " in front of every line with a block insert, reselect with gv, then g Ctrl-a counts up.'
+    variants:
+      - goal: 'Turn the topics into a numbered list.'
+        start: |-
+          ▮semantics
+          pragmatics
+          discourse
+        target: |-
+          1. semantics
+          2. pragmatics
+          3. discourse
   - goal: 'Make a Markdown link.'
     ft: markdown
     start: |-
@@ -26,6 +36,12 @@ tasks:
       [WALS](https://wals.info)
     solution: 'i[<Esc>ea]<Esc>lr(A)<Esc>'
     hint: 'Bracket the word, replace the space with ( using r, then A) closes it.'
+    variants:
+      - goal: 'Make a Markdown link.'
+        start: |-
+          ▮Glottolog https://glottolog.org
+        target: |-
+          [Glottolog](https://glottolog.org)
   - goal: 'Make every Tone bold.'
     ft: markdown
     start: |-
@@ -34,6 +50,13 @@ tasks:
       **Tone** is phonemic. **Tone** matters.
     solution: ':s/Tone/**&**/g<CR>'
     hint: '& is the match, so **&** wraps it.'
+    variants:
+      - goal: 'Make every Stress bold.'
+        start: |-
+          ▮Stress is lexical. Stress shifts.
+        target: |-
+          **Stress** is lexical. **Stress** shifts.
+        solution: ':s/Stress/**&**/g<CR>'
   - goal: 'Push every heading one level down.'
     ft: markdown
     start: |-
@@ -46,6 +69,16 @@ tasks:
       ### Consonants
     solution: ':%s/^#/##/<CR>'
     hint: 'Add a # at the start of every heading line.'
+    variants:
+      - goal: 'Push every heading one level down.'
+        start: |-
+          ▮# Syntax
+          ## Phrases
+          ## Clauses
+        target: |-
+          ## Syntax
+          ### Phrases
+          ### Clauses
   - goal: 'Unwrap the paragraph into one line.'
     ft: markdown
     start: |-
@@ -56,3 +89,11 @@ tasks:
       Language is a system of signs.
     solution: 'vipJ'
     hint: 'vip selects the paragraph, J joins it. That works for paragraphs of any length.'
+    variants:
+      - goal: 'Unwrap the paragraph into one line.'
+        start: |-
+          ▮The meaning of
+          a word is its
+          use.
+        target: |-
+          The meaning of a word is its use.

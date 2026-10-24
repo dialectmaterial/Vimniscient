@@ -19,6 +19,16 @@ tasks:
       syntax
     solution: ':m0<CR>'
     hint: ':m0 moves the line below line 0, which is the top.'
+    variants:
+      - goal: 'Move the last line to the top.'
+        start: |-
+          morphology
+          syntax
+          ▮phonology
+        target: |-
+          phonology
+          morphology
+          syntax
   - goal: 'Copy the heading to the end of the file.'
     start: |-
       ▮Glossary
@@ -31,6 +41,17 @@ tasks:
       Glossary
     solution: ':t$<CR>'
     hint: ':t$ copies the current line below the last line, and the cursor stays put.'
+    variants:
+      - goal: 'Copy the heading to the end of the file.'
+        start: |-
+          ▮References
+          Sapir 1921
+          Boas 1911
+        target: |-
+          References
+          Sapir 1921
+          Boas 1911
+          References
   - goal: 'Delete lines 2 and 3 (the invented languages) without moving.'
     start: |-
       ▮Latin
@@ -42,6 +63,16 @@ tasks:
       Greek
     solution: ':2,3d<CR>'
     hint: 'A range in front of d: :2,3d.'
+    variants:
+      - goal: 'Delete lines 2 and 3 (the invented languages) without moving.'
+        start: |-
+          ▮Dutch
+          Na'vi
+          Klingon
+          German
+        target: |-
+          Dutch
+          German
   - goal: 'Move the first two lines to the end.'
     start: |-
       ▮syntax
@@ -55,6 +86,18 @@ tasks:
       semantics
     solution: ':1,2m$<CR>'
     hint: ':1,2m$ moves lines 1 to 2 below the last line.'
+    variants:
+      - goal: 'Move the first two lines to the end.'
+        start: |-
+          ▮pragmatics
+          semantics
+          phonetics
+          morphology
+        target: |-
+          phonetics
+          morphology
+          pragmatics
+          semantics
   - goal: 'Reverse the order of the lines.'
     start: |-
       ▮sentence
@@ -68,3 +111,15 @@ tasks:
       sentence
     solution: ':g/^/m0<CR>'
     hint: ':g/^/ matches every line, and m0 moves each to the top in turn.'
+    variants:
+      - goal: 'Reverse the order of the lines.'
+        start: |-
+          ▮paragraph
+          sentence
+          clause
+          phrase
+        target: |-
+          phrase
+          clause
+          sentence
+          paragraph

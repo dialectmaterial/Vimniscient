@@ -16,6 +16,16 @@ tasks:
       Turkic,Turkish
     solution: ':%s/\v(.*),(.*)/\2,\1<CR>'
     hint: 'Two groups around the comma, swapped in the replacement.'
+    variants:
+      - goal: 'Swap the two columns.'
+        start: |-
+          ▮word,gloss
+          Hund,dog
+          Katze,cat
+        target: |-
+          gloss,word
+          dog,Hund
+          cat,Katze
   - goal: 'Keep only the email addresses.'
     start: |-
       ▮id 1, email: sapir@yale.edu
@@ -25,6 +35,14 @@ tasks:
       boas@columbia.edu
     solution: ':%s/.*email: //<CR>'
     hint: 'Delete everything up to and including "email: ".'
+    variants:
+      - goal: 'Keep only the email addresses.'
+        start: |-
+          ▮id 3, email: labov@upenn.edu
+          id 4, email: eckert@stanford.edu
+        target: |-
+          labov@upenn.edu
+          eckert@stanford.edu
   - goal: 'Sort the courses by their number.'
     start: |-
       ▮syntax 3
@@ -36,6 +54,16 @@ tasks:
       syntax 3
     solution: ':sort n<CR>'
     hint: ':sort n sorts by the first number on each line, wherever it is.'
+    variants:
+      - goal: 'Sort the courses by their number.'
+        start: |-
+          ▮pragmatics 4
+          syntax 3
+          semantics 2
+        target: |-
+          semantics 2
+          syntax 3
+          pragmatics 4
   - goal: 'Drop the DEBUG lines, then the timestamps.'
     start: |-
       ▮10:01 INFO tagging started
@@ -46,3 +74,12 @@ tasks:
       INFO tagging done
     solution: ':g/DEBUG/d<CR>:%s/^\S\+ //<CR>'
     hint: ':g/DEBUG/d first, then \S\+ (everything up to the first space) at the start of each line.'
+    variants:
+      - goal: 'Drop the DEBUG lines, then the timestamps.'
+        start: |-
+          ▮09:00 INFO parsing started
+          09:01 DEBUG node 4
+          09:02 INFO parsing done
+        target: |-
+          INFO parsing started
+          INFO parsing done

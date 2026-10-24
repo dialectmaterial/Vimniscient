@@ -22,6 +22,19 @@ tasks:
       Semantics studies meaning.
     solution: 'dap'
     hint: 'dap deletes the paragraph and the empty line after it.'
+    variants:
+      - goal: 'Delete the middle paragraph.'
+        start: |-
+          Morphology studies words.
+
+          Pragmatics ▮studies use.
+          It can wait.
+
+          Syntax studies sentences.
+        target: |-
+          Morphology studies words.
+
+          Syntax studies sentences.
   - goal: 'Duplicate the first paragraph.'
     start: |-
       ▮Colorless green ideas sleep furiously.
@@ -35,6 +48,18 @@ tasks:
       Done.
     solution: 'yapP'
     hint: 'yap yanks the paragraph with its empty line; P puts it above the cursor.'
+    variants:
+      - goal: 'Duplicate the first paragraph.'
+        start: |-
+          ▮The horse raced past the barn fell.
+
+          Done.
+        target: |-
+          The horse raced past the barn fell.
+
+          The horse raced past the barn fell.
+
+          Done.
   - goal: 'Fix the wrong sentence: it should say "Verbs describe actions."'
     start: |-
       Nouns name things. Verbs describe ▮colours. Adjectives describe things.
@@ -42,6 +67,13 @@ tasks:
       Nouns name things. Verbs describe actions. Adjectives describe things.
     solution: 'cisVerbs describe actions.<Esc>'
     hint: 'cis changes the inner sentence and leaves the spaces around it.'
+    variants:
+      - goal: 'Fix the wrong sentence: it should say "Stops block the air."'
+        start: |-
+          Vowels are voiced. Stops ▮are fricatives. Nasals use the nose.
+        target: |-
+          Vowels are voiced. Stops block the air. Nasals use the nose.
+        solution: 'cisStops block the air.<Esc>'
   - goal: 'Delete the middle sentence.'
     start: |-
       Sapir taught Whorf. Whorf ▮worked in fire insurance. Whorf studied Hopi.
@@ -49,6 +81,12 @@ tasks:
       Sapir taught Whorf. Whorf studied Hopi.
     solution: 'das'
     hint: 'das deletes a sentence plus the space after it.'
+    variants:
+      - goal: 'Delete the middle sentence.'
+        start: |-
+          Labov studied New York. Labov ▮sold ice cream. Labov counted variants.
+        target: |-
+          Labov studied New York. Labov counted variants.
   - goal: 'Indent the three levels.'
     start: |-
       Levels:
@@ -64,3 +102,17 @@ tasks:
           syntax
     solution: '>ip'
     hint: '>ip indents the inner paragraph. (Indent here is 4 spaces.)'
+    variants:
+      - goal: 'Indent the three cases.'
+        start: |-
+          Cases:
+
+          ▮nominative
+          accusative
+          genitive
+        target: |-
+          Cases:
+
+              nominative
+              accusative
+              genitive

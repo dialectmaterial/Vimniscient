@@ -20,6 +20,16 @@ tasks:
       # c = 3
     solution: '<C-v>jjI# <Esc>'
     hint: 'Ctrl-v j j selects the first column, I# <Esc> types on every line.'
+    variants:
+      - goal: 'Comment out the three lines with "# ".'
+        start: |-
+          ▮p = 1
+          q = 2
+          r = 3
+        target: |-
+          # p = 1
+          # q = 2
+          # r = 3
   - goal: 'Add a semicolon to lines of different lengths.'
     start: |-
       ▮x = 1
@@ -31,6 +41,16 @@ tasks:
       zzz = 333;
     solution: '<C-v>jj$A;<Esc>'
     hint: '$ in block mode stretches to every line''s end, so A appends after each one.'
+    variants:
+      - goal: 'Add a semicolon to lines of different lengths.'
+        start: |-
+          ▮a = 1
+          bb = 22
+          ccc = 333
+        target: |-
+          a = 1;
+          bb = 22;
+          ccc = 333;
   - goal: 'Delete the "1 | " column.'
     start: |-
       ▮1 | Latin
@@ -42,6 +62,16 @@ tasks:
       Sanskrit
     solution: '<C-v>jj3ld'
     hint: 'Ctrl-v j j, widen the block with 3l, then d.'
+    variants:
+      - goal: 'Delete the "1 | " column.'
+        start: |-
+          ▮1 | Hopi
+          2 | Zuni
+          3 | Navajo
+        target: |-
+          Hopi
+          Zuni
+          Navajo
   - goal: 'Number the lines 1, 2, 3.'
     start: |-
       ▮0. Hindi
@@ -53,6 +83,16 @@ tasks:
       3. Bengali
     solution: '<C-v>jjg<C-a>'
     hint: 'g Ctrl-a adds 1 to the first line, 2 to the second, 3 to the third.'
+    variants:
+      - goal: 'Number the lines 1, 2, 3.'
+        start: |-
+          ▮0. Dutch
+          0. German
+          0. Frisian
+        target: |-
+          1. Dutch
+          2. German
+          3. Frisian
   - goal: 'Change every "noun" to "verb" at once.'
     start: |-
       ▮noun: 1
@@ -64,3 +104,14 @@ tasks:
       verb: 3
     solution: '<C-v>jjecverb<Esc>'
     hint: 'Select the block with Ctrl-v j j e, then c types the new text on every line.'
+    variants:
+      - goal: 'Change every "verb" to "noun" at once.'
+        start: |-
+          ▮verb: 1
+          verb: 2
+          verb: 3
+        target: |-
+          noun: 1
+          noun: 2
+          noun: 3
+        solution: '<C-v>jjecnoun<Esc>'

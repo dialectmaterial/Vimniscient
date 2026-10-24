@@ -19,6 +19,16 @@ tasks:
       morphology
     solution: 'ophonology<Esc>'
     hint: 'o opens a new line below and starts insert mode.'
+    variants:
+      - goal: 'Add the missing level between them.'
+        start: |-
+          ▮syntax
+          pragmatics
+        target: |-
+          syntax
+          semantics
+          pragmatics
+        solution: 'osemantics<Esc>'
   - goal: 'Add an Abstract line above.'
     start: |-
       ▮Introduction
@@ -27,6 +37,14 @@ tasks:
       Introduction
     solution: 'OAbstract<Esc>'
     hint: 'O opens a line above.'
+    variants:
+      - goal: 'Add an Introduction line above.'
+        start: |-
+          ▮Method
+        target: |-
+          Introduction
+          Method
+        solution: 'OIntroduction<Esc>'
   - goal: 'Make "morpheme" plural.'
     start: |-
       Two ▮morpheme combine.
@@ -34,6 +52,12 @@ tasks:
       Two morphemes combine.
     solution: 'eas<Esc>'
     hint: 'e goes to the end of the word, a appends after it.'
+    variants:
+      - goal: 'Make "allophone" plural.'
+        start: |-
+          Three ▮allophone appear.
+        target: |-
+          Three allophones appear.
   - goal: 'Underline the title with five = signs.'
     start: |-
       Words
@@ -43,6 +67,14 @@ tasks:
       =====
     solution: '5i=<Esc>'
     hint: 'A count before i repeats the inserted text.'
+    variants:
+      - goal: 'Underline the title with five = signs.'
+        start: |-
+          Tones
+          ▮
+        target: |-
+          Tones
+          =====
   - goal: 'Overwrite the date with 2026-10-24.'
     start: |-
       Interview: ▮2025-01-01
@@ -50,6 +82,12 @@ tasks:
       Interview: 2026-10-24
     solution: 'R2026-10-24<Esc>'
     hint: 'R is replace mode, which types over the existing characters.'
+    variants:
+      - goal: 'Overwrite the date with 2026-10-24.'
+        start: |-
+          Recorded: ▮2024-03-15
+        target: |-
+          Recorded: 2026-10-24
   - goal: 'Fix the operator: minus should be plus.'
     start: |-
       x = a ▮- b
@@ -57,3 +95,9 @@ tasks:
       x = a + b
     solution: 'r+'
     hint: 'r replaces one character and stays in normal mode.'
+    variants:
+      - goal: 'Fix the operator: times should be plus.'
+        start: |-
+          y = b ▮* c
+        target: |-
+          y = b + c

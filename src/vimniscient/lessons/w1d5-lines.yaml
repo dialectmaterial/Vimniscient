@@ -15,6 +15,12 @@ tasks:
       Grammar is a system.
     solution: 'D'
     hint: 'D deletes from the cursor to the end of the line.'
+    variants:
+      - goal: 'Delete the rest of the line.'
+        start: |-
+          Speech comes first.▮ Writing came much later.
+        target: |-
+          Speech comes first.
   - goal: 'Change the rest of the line to 44.'
     start: |-
       phonemes in English: ▮about forty or so
@@ -22,6 +28,13 @@ tasks:
       phonemes in English: 44
     solution: 'C44<Esc>'
     hint: 'C changes from the cursor to the end of the line.'
+    variants:
+      - goal: 'Change the rest of the line to 5.'
+        start: |-
+          vowels in Spanish: ▮a handful, maybe
+        target: |-
+          vowels in Spanish: 5
+        solution: 'C5<Esc>'
   - goal: 'Replace the middle line with "phonology".'
     start: |-
       phonetics
@@ -33,6 +46,17 @@ tasks:
       semantics
     solution: 'ccphonology<Esc>'
     hint: 'cc changes the whole line, wherever the cursor is.'
+    variants:
+      - goal: 'Replace the middle line with "semantics".'
+        start: |-
+          syntax
+          ▮numerology
+          pragmatics
+        target: |-
+          syntax
+          semantics
+          pragmatics
+        solution: 'ccsemantics<Esc>'
   - goal: 'Join the two lines.'
     start: |-
       ▮Every language has
@@ -41,6 +65,13 @@ tasks:
       Every language has vowels and consonants.
     solution: 'J'
     hint: 'J joins the next line onto this one, with one space.'
+    variants:
+      - goal: 'Join the two lines.'
+        start: |-
+          ▮No language is
+          more primitive than another.
+        target: |-
+          No language is more primitive than another.
   - goal: 'Put the levels in order, from sound up.'
     start: |-
       ▮morphology
@@ -52,6 +83,16 @@ tasks:
       syntax
     solution: 'ddp'
     hint: 'dd cuts the line, p puts it below the next one.'
+    variants:
+      - goal: 'Put the units in order, from small to large.'
+        start: |-
+          ▮phrase
+          word
+          sentence
+        target: |-
+          word
+          phrase
+          sentence
   - goal: 'Add a semicolon at the end.'
     start: |-
       ▮console.log("hi")
@@ -59,6 +100,12 @@ tasks:
       console.log("hi");
     solution: 'A;<Esc>'
     hint: 'A appends at the end of the line, wherever the cursor is.'
+    variants:
+      - goal: 'Add a semicolon at the end.'
+        start: |-
+          ▮return tokens
+        target: |-
+          return tokens;
   - goal: 'Comment the line out with "# ".'
     ft: python
     start: |-
@@ -67,3 +114,9 @@ tasks:
       # x = 1
     solution: 'I# <Esc>'
     hint: 'I inserts at the start of the line.'
+    variants:
+      - goal: 'Comment the line out with "# ".'
+        start: |-
+          y = ▮2
+        target: |-
+          # y = 2

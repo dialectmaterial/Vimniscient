@@ -31,7 +31,11 @@ def main() -> None:
     lesson = next((lesson for lesson in lessons if lesson.id == args.lesson), None)
     if lesson is None:
         parser.error(f"no lesson {args.lesson!r}; try `vimniscient list`")
-    results = run_lesson(lesson)
+    from dataclasses import replace
+
+    from vimniscient.lessons import two_rounds
+
+    results = run_lesson(replace(lesson, tasks=two_rounds(lesson)))
     Progress().record(results)
     for i, r in enumerate(results, 1):
-        print(f"{i}. {r.status:8} {r.count if r.status == 'solved' else '-':>3} keys (ref {r.task.ref})  {r.task.goal}")
+        print(f"{i:2}. {r.task.phase:6} {r.status:8} {r.count if r.status == 'solved' else '-':>3} keys (ref {r.task.ref})  {r.task.goal}")

@@ -19,6 +19,16 @@ tasks:
       glide
     solution: ':%s/\s\+$//<CR>'
     hint: '\s\+$ is one or more spaces right before the end of the line.'
+    variants:
+      - goal: 'Delete the trailing spaces.'
+        start: |-
+          ▮onset␣␣
+          nucleus␣␣␣
+          coda␣
+        target: |-
+          onset
+          nucleus
+          coda
   - goal: 'Put every tone number in square brackets.'
     start: |-
       ▮tone 1, tone 22, tone 214
@@ -26,6 +36,12 @@ tasks:
       tone [1], tone [22], tone [214]
     solution: ':s/\d\+/[&]/g<CR>'
     hint: '& in the replacement is whatever matched.'
+    variants:
+      - goal: 'Put every case number in square brackets.'
+        start: |-
+          ▮case 1, case 4, case 12
+        target: |-
+          case [1], case [4], case [12]
   - goal: 'Rewrite the date as day/month/year.'
     start: |-
       ▮2026-10-24
@@ -33,6 +49,12 @@ tasks:
       24/10/2026
     solution: ':s#\v(\d+)-(\d+)-(\d+)#\3/\2/\1<CR>'
     hint: 'Any character can separate the parts of :s. # saves escaping the slashes.'
+    variants:
+      - goal: 'Rewrite the date as day/month/year.'
+        start: |-
+          ▮1957-02-14
+        target: |-
+          14/02/1957
   - goal: 'Make every line a list item.'
     start: |-
       ▮phonology
@@ -44,6 +66,16 @@ tasks:
       - syntax
     solution: ':%s/^/- /<CR>'
     hint: '^ matches the start of each line, so replacing it inserts there.'
+    variants:
+      - goal: 'Make every line a list item.'
+        start: |-
+          ▮onset
+          nucleus
+          coda
+        target: |-
+          - onset
+          - nucleus
+          - coda
   - goal: 'Join every line that ends with a comma to the next one.'
     start: |-
       ▮noun,
@@ -55,3 +87,13 @@ tasks:
       subject, object
     solution: ':g/,$/j<CR>'
     hint: ':g/,$/ finds the lines ending in a comma; j joins each one with the next.'
+    variants:
+      - goal: 'Join every line that ends with a comma to the next one.'
+        start: |-
+          ▮onset,
+          nucleus
+          topic,
+          comment
+        target: |-
+          onset, nucleus
+          topic, comment

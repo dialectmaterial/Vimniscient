@@ -16,6 +16,13 @@ tasks:
       camelBigWord
     solution: 'cieBig<Esc>'
     hint: 'ie is the sub-word under the cursor.'
+    variants:
+      - goal: 'Change Count to Sum in the camelCase name.'
+        start: |-
+          vowel▮CountTotal
+        target: |-
+          vowelSumTotal
+        solution: 'cieSum<Esc>'
   - goal: 'Change case to big in the snake_case name.'
     start: |-
       snake_▮case_name
@@ -23,6 +30,13 @@ tasks:
       snake_big_name
     solution: 'ciebig<Esc>'
     hint: 'The same ie works between underscores.'
+    variants:
+      - goal: 'Change height to contour in the snake_case name.'
+        start: |-
+          tone_▮height_value
+        target: |-
+          tone_contour_value
+        solution: 'ciecontour<Esc>'
   - goal: 'Change the port to 443.'
     start: |-
       port = 80▮80
@@ -30,6 +44,13 @@ tasks:
       port = 443
     solution: 'cid443<Esc>'
     hint: 'id is the number under the cursor.'
+    variants:
+      - goal: 'Change the sample rate to 16000.'
+        start: |-
+          rate = 44▮100
+        target: |-
+          rate = 16000
+        solution: 'cid16000<Esc>'
   - goal: 'Replace the whole call with 42.'
     ft: python
     start: |-
@@ -38,6 +59,13 @@ tasks:
       x = 42 + 1
     solution: 'cau42<Esc>'
     hint: 'au is a function call with its name and arguments.'
+    variants:
+      - goal: 'Replace the whole call with 1.'
+        start: |-
+          y = ▮score(w, t) * 2
+        target: |-
+          y = 1 * 2
+        solution: 'cau1<Esc>'
   - goal: 'Replace the entire file with the word empty.'
     start: |-
       ▮draft
@@ -47,6 +75,15 @@ tasks:
       empty
     solution: 'cagempty<Esc>'
     hint: 'ag is the whole buffer.'
+    variants:
+      - goal: 'Replace the entire file with the word fresh.'
+        start: |-
+          ▮old
+          text
+          here
+        target: |-
+          fresh
+        solution: 'cagfresh<Esc>'
   - goal: 'Add a blank line below without entering insert mode.'
     start: |-
       ▮Abstract
@@ -57,3 +94,12 @@ tasks:
       Introduction
     solution: ']<Space>'
     hint: ']<Space> adds an empty line below, [<Space> one above.'
+    variants:
+      - goal: 'Add a blank line below without entering insert mode.'
+        start: |-
+          ▮Method
+          Results
+        target: |-
+          Method
+
+          Results

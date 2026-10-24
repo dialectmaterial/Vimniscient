@@ -25,6 +25,20 @@ tasks:
       y = 2
     solution: 'dafdd'
     hint: 'daf deletes the function wherever the cursor is in it. Its line stays, empty, so dd it.'
+    variants:
+      - goal: 'Delete the function g, and the empty line daf leaves behind.'
+        start: |-
+          a = 1
+
+          def g():
+              ▮return 3
+
+          b = 2
+        target: |-
+          a = 1
+
+
+          b = 2
   - goal: 'Replace the body with pass.'
     ft: python
     start: |-
@@ -35,6 +49,14 @@ tasks:
           pass
     solution: 'cifpass<Esc>'
     hint: 'cif changes the inner function, its body.'
+    variants:
+      - goal: 'Replace the body with pass.'
+        start: |-
+          def g():
+              ▮return 2
+        target: |-
+          def g():
+              pass
   - goal: 'Delete the class, and the empty line it leaves.'
     ft: python
     start: |-
@@ -52,6 +74,21 @@ tasks:
       y = 2
     solution: 'dacdd'
     hint: 'dac deletes the class around the cursor; dd removes the line it leaves.'
+    variants:
+      - goal: 'Delete the class, and the empty line it leaves.'
+        start: |-
+          a = 1
+
+          class Tag:
+              ▮def run(self):
+                  pass
+
+          b = 2
+        target: |-
+          a = 1
+
+
+          b = 2
   - goal: 'Duplicate the function below itself.'
     ft: python
     start: |-
@@ -64,3 +101,13 @@ tasks:
           return 1
     solution: 'yafjo<Esc>p'
     hint: 'yaf yanks the function (and leaves you on its first line). Its text has no newline at the end, so go to the last line, open a new one (o<Esc>) and p onto it.'
+    variants:
+      - goal: 'Duplicate the function below itself.'
+        start: |-
+          def ▮g():
+              return 2
+        target: |-
+          def g():
+              return 2
+          def g():
+              return 2

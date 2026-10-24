@@ -20,6 +20,16 @@ tasks:
       The lecture starts.
     solution: 'd}'
     hint: '} moves to the next blank line; d} deletes up to it.'
+    variants:
+      - goal: 'Delete to the end of the paragraph.'
+        start: |-
+          ▮er, right
+          well
+
+          The seminar begins.
+        target: |-
+
+          The seminar begins.
   - goal: 'Join the two halves of the compound with no space.'
     start: |-
       ▮sprach
@@ -28,6 +38,13 @@ tasks:
       sprachgefühl
     solution: 'gJ'
     hint: 'J adds a space, gJ doesn''t.'
+    variants:
+      - goal: 'Join the two halves of the compound with no space.'
+        start: |-
+          ▮welt
+          anschauung
+        target: |-
+          weltanschauung
   - goal: 'Delete from here to the end of the file.'
     start: |-
       Conclusion
@@ -38,6 +55,15 @@ tasks:
       Conclusion
     solution: 'dG'
     hint: 'dG deletes to the last line.'
+    variants:
+      - goal: 'Delete from here to the end of the file.'
+        start: |-
+          Summary
+          ▮todo
+          scratch
+          notes
+        target: |-
+          Summary
   - goal: 'Fix the typo by swapping two letters.'
     start: |-
       pho▮enme
@@ -45,6 +71,12 @@ tasks:
       phoneme
     solution: 'xp'
     hint: 'x cuts the letter, p puts it back after the next one.'
+    variants:
+      - goal: 'Fix the typo by swapping two letters.'
+        start: |-
+          mor▮hpeme
+        target: |-
+          morpheme
   - goal: 'Delete everything before the cursor.'
     start: |-
       um, so ▮syntax
@@ -52,3 +84,9 @@ tasks:
       syntax
     solution: 'd0'
     hint: 'd0 deletes back to the start of the line, not including the cursor.'
+    variants:
+      - goal: 'Delete everything before the cursor.'
+        start: |-
+          well, ▮semantics
+        target: |-
+          semantics

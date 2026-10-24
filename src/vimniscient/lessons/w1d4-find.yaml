@@ -15,6 +15,13 @@ tasks:
       Clicks are common in Zulu.
     solution: 'dtc'
     hint: 'dtc deletes till the next c after the cursor; really and quite have none.'
+    variants:
+      - goal: 'Delete everything up to "contrastive".'
+        start: |-
+          Tones are ▮very often contrastive in Thai.
+        target: |-
+          Tones are contrastive in Thai.
+        hint: 'dtc deletes till the next c after the cursor; very and often have none.'
   - goal: 'Change the value to 42 (keep the semicolon).'
     start: |-
       let x = ▮old_value; let y = 2;
@@ -22,6 +29,13 @@ tasks:
       let x = 42; let y = 2;
     solution: 'ct;42<Esc>'
     hint: 'ct; changes up to, not including, the semicolon.'
+    variants:
+      - goal: 'Change the value to 5 (keep the semicolon).'
+        start: |-
+          let n = ▮count_vowels; let m = 0;
+        target: |-
+          let n = 5; let m = 0;
+        solution: 'ct;5<Esc>'
   - goal: 'Keep only the folder path: delete the file name.'
     start: |-
       corpora/english/brown/ca01.tx▮t
@@ -29,6 +43,12 @@ tasks:
       corpora/english/brown/
     solution: 'T/D'
     hint: 'T/ jumps back to just after the last slash; D deletes to the end of the line.'
+    variants:
+      - goal: 'Keep only the folder path: delete the file name.'
+        start: |-
+          corpora/dutch/cgn/fn000123.wa▮v
+        target: |-
+          corpora/dutch/cgn/
   - goal: 'Turn the third comma into a semicolon.'
     start: |-
       ▮nouns, verbs, adjectives, adverbs
@@ -36,6 +56,12 @@ tasks:
       nouns, verbs, adjectives; adverbs
     solution: '3f,r;'
     hint: 'f, then ; ; walks comma by comma. A count is shorter: 3f, and then r; replaces the character.'
+    variants:
+      - goal: 'Turn the third comma into a semicolon.'
+        start: |-
+          ▮Bantu, Romance, Slavic, Turkic
+        target: |-
+          Bantu, Romance, Slavic; Turkic
   - goal: 'Replace the whole int(input()) call with 42.'
     ft: python
     start: |-
@@ -44,6 +70,13 @@ tasks:
       value = 42  # read a number
     solution: 'ct 42<Esc>'
     hint: 't works with a space too. ct<Space> changes up to the next space.'
+    variants:
+      - goal: 'Replace the whole len(set(words)) call with 0.'
+        start: |-
+          n = ▮len(set(words))  # vocabulary size
+        target: |-
+          n = 0  # vocabulary size
+        solution: 'ct 0<Esc>'
   - goal: 'Delete the part in brackets: from the cursor up to and including the ")".'
     start: |-
       Phonemes▮ (sound units) contrast.
@@ -51,3 +84,9 @@ tasks:
       Phonemes contrast.
     solution: 'df)'
     hint: 'df) deletes onto the ), so the bracket goes too.'
+    variants:
+      - goal: 'Delete the part in brackets: from the cursor up to and including the ")".'
+        start: |-
+          Allophones▮ (variants of a phoneme) vary.
+        target: |-
+          Allophones vary.

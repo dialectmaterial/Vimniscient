@@ -15,6 +15,12 @@ tasks:
       English is Germanic
     solution: '~'
     hint: '~ flips the case of the character under the cursor.'
+    variants:
+      - goal: 'Capitalise the language name.'
+        start: |-
+          ▮dutch is West Germanic
+        target: |-
+          Dutch is West Germanic
   - goal: 'Uppercase "ipa".'
     start: |-
       the ▮ipa chart
@@ -22,6 +28,12 @@ tasks:
       the IPA chart
     solution: 'gUiw'
     hint: 'gU is the uppercase operator; iw is the word.'
+    variants:
+      - goal: 'Uppercase "apa".'
+        start: |-
+          the ▮apa alphabet
+        target: |-
+          the APA alphabet
   - goal: 'Make the whole line lowercase.'
     start: |-
       ▮WHISPERED VOWELS ARE QUIET
@@ -29,6 +41,12 @@ tasks:
       whispered vowels are quiet
     solution: 'guu'
     hint: 'guu lowercases the line (gu + u, like dd).'
+    variants:
+      - goal: 'Make the whole line lowercase.'
+        start: |-
+          ▮DON'T SHOUT THE GLOSSES
+        target: |-
+          don't shout the glosses
   - goal: 'Latin has six cases: fix the number.'
     start: |-
       ▮Latin has 5 cases
@@ -36,6 +54,12 @@ tasks:
       Latin has 6 cases
     solution: '<C-a>'
     hint: 'Ctrl-a adds one to the next number on the line.'
+    variants:
+      - goal: 'German has four cases: fix the number.'
+        start: |-
+          ▮German has 3 cases
+        target: |-
+          German has 4 cases
   - goal: 'Saussure died in 1913: add 30 to the year.'
     start: |-
       ▮Saussure died in 1883
@@ -43,6 +67,12 @@ tasks:
       Saussure died in 1913
     solution: '30<C-a>'
     hint: 'With a count, Ctrl-a adds that many.'
+    variants:
+      - goal: 'Sapir was born in 1884: add 30 to the year.'
+        start: |-
+          ▮Sapir was born in 1854
+        target: |-
+          Sapir was born in 1884
   - goal: 'Syntactic Structures came out a year earlier: fix it.'
     start: |-
       ▮Syntactic Structures: 1958
@@ -50,6 +80,12 @@ tasks:
       Syntactic Structures: 1957
     solution: '<C-x>'
     hint: 'Ctrl-x subtracts one.'
+    variants:
+      - goal: 'The Course came out a year earlier: fix it.'
+        start: |-
+          ▮Course in General Linguistics: 1917
+        target: |-
+          Course in General Linguistics: 1916
   - goal: 'Flip the case of the first word.'
     start: |-
       ▮sAUSSURE and the sign
@@ -57,3 +93,9 @@ tasks:
       Saussure and the sign
     solution: 'g~iw'
     hint: 'g~ toggles case over a motion or text object.'
+    variants:
+      - goal: 'Flip the case of the first word.'
+        start: |-
+          ▮cHOMSKY and generative grammar
+        target: |-
+          Chomsky and generative grammar

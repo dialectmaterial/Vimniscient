@@ -10,6 +10,7 @@ import asyncio
 import os
 import time
 from collections.abc import Callable
+from dataclasses import replace
 from datetime import date
 from pathlib import Path
 
@@ -25,7 +26,7 @@ from textual.widgets.option_list import Option
 from vimniscient import drills, habits, srs, vimgolf
 from vimniscient.answer import is_correct
 from vimniscient.cards import Card, Deck, has_lazyvim, has_plugin, load_decks
-from vimniscient.lessons import Lesson, Task, load_lessons
+from vimniscient.lessons import Lesson, Task, load_lessons, two_rounds
 from vimniscient.progress import Progress
 from vimniscient.session import TaskResult, run_lesson
 
@@ -73,6 +74,10 @@ DEFAULT_THEME = "vimniscient-mocha"
 TASK_HELP = (
     "The goal shows in the top window, your text below. When they match, the next task loads by "
     "itself. Inside Neovim: `:Hint` (twice for the answer), `:Skip`, `:Reset`, `:q` to stop."
+)
+ROUNDS_HELP = (
+    "Two rounds. **Learn**: each task with the keys to type shown. **Recall**: the same skills on "
+    "new text, in another order, from memory. Only Recall counts towards your progress."
 )
 
 
@@ -171,7 +176,7 @@ def lesson_markdown(lesson: Lesson, best: dict[int, int] | None = None) -> str:
         for i, task in enumerate(lesson.tasks):
             mark = f"✓ {best[i]} keys" if i in best else "·"
             rows.append(f"- {task.goal} *({mark}, ref {task.ref})*" if i in best else f"- {task.goal}")
-        tasks = f"**{len(best)}/{len(lesson.tasks)} solved**\n\n" + "\n".join(rows)
+        tasks = f"**{len(best)}/{len(lesson.tasks)} recalled**\n\n" + "\n".join(rows)
     return f"{lesson.intro}\n\n{keys}{tasks}"
 
 
@@ -519,7 +524,8 @@ class LessonScreen(Screen):
     def compose(self) -> ComposeResult:
         lesson = self.lesson
         with VerticalScroll(id="lesson-panel", classes="pane column"):
-            yield Markdown(f"{lesson_markdown(lesson)}\n\n{plural(len(lesson.tasks), 'task')}. {TASK_HELP}")
+            rounds = f" {ROUNDS_HELP}" if lesson.week else ""
+            yield Markdown(f"{lesson_markdown(lesson)}\n\n{plural(len(lesson.tasks), 'task')}.{rounds} {TASK_HELP}")
         yield Static(keybar(("enter", "start"), ("esc", "back")), classes="keybar")
 
     def on_mount(self) -> None:
@@ -560,19 +566,22 @@ class ResultsScreen(Screen):
         yield Static(keybar(("enter", "done"), ("r", "again")), classes="keybar")
 
     def on_mount(self) -> None:
-        solved = sum(r.status == "solved" for r in self.results)
+        recall = [r for r in self.results if r.task.phase == "recall"]
+        solved = sum(r.status == "solved" for r in recall)
         panel = self.query_one("#results-panel")
         panel.border_title = f"{self.lesson.label} · {self.lesson.title}" if self.lesson.week else self.lesson.title
-        panel.border_subtitle = f"{solved}/{len(self.results)} solved"
+        panel.border_subtitle = f"{solved}/{len(recall)} recalled" if len(recall) < len(self.results) else f"{solved}/{len(recall)} solved"
+        two_rounds = len(recall) < len(self.results)
         table = self.query_one(DataTable)
-        table.add_columns("#", "Task", "Result", "Keys", "Ref", "You typed", "Reference")
+        table.add_columns("#", *(["Round"] if two_rounds else []), "Task", "Result", "Keys", "Ref", "You typed", "Reference")
         for i, r in enumerate(self.results, 1):
             keys = str(r.count) if r.status == "solved" else ""
             if r.status == "solved" and r.count <= r.task.ref:
                 keys = tint(self.app, keys, "success")
             label, colour = STATUS[r.status]
-            table.add_row(str(i), r.task.goal, tint(self.app, label, colour), keys, str(r.task.ref), r.keys,
-                          r.task.solution)
+            round_cell = [tint(self.app, r.task.phase, "text-muted")] if two_rounds else []
+            table.add_row(str(i), *round_cell, r.task.goal, tint(self.app, label, colour), keys, str(r.task.ref),
+                          r.keys, r.task.solution)
 
     def action_again(self) -> None:
         self.dismiss(True)
@@ -915,9 +924,11 @@ class VimniscientApp(App):
         on_results: Callable[[list[TaskResult]], str] | None = None,
         done: Callable[[], None] = lambda: None,
     ) -> None:
-        """Run a lesson in Neovim, then show the results; `done` runs when the user moves on."""
+        """Run a lesson in Neovim, then show the results; `done` runs when the user moves on.
+        Real lessons (not review, placement or VimGolf) run in two rounds: Learn, then Recall."""
+        session = replace(lesson, tasks=two_rounds(lesson)) if lesson.week else lesson
         with self.suspend():
-            results = run_lesson(lesson)
+            results = run_lesson(session)
         if on_results:
             note = on_results(results)
         else:
@@ -930,7 +941,7 @@ class VimniscientApp(App):
             else:
                 done()
 
-        self.push_screen(ResultsScreen(lesson, results, note), after)
+        self.push_screen(ResultsScreen(session, results, note), after)
 
     def run_steps(self, steps: list[Callable[[Callable[[], None]], None]]) -> None:
         """Run screens one after another; each step calls `done` when finished."""
@@ -950,7 +961,7 @@ class VimniscientApp(App):
             candidates = [t for t in lesson.tasks if t.item_id not in taken]
             if candidates:
                 worst = min(candidates, key=lambda t: items[t.item_id].ease if t.item_id in items else 0)
-                tasks.append(worst)
+                tasks.append(self.progress.version_for(worst))
                 taken.add(worst.item_id)
         return tasks[:3]
 

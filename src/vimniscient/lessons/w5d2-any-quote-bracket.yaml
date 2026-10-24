@@ -17,6 +17,13 @@ tasks:
       x = 'z'
     solution: 'ciqz<Esc>'
     hint: 'ciq works for any kind of quote.'
+    variants:
+      - goal: 'Change the text in the single quotes to q.'
+        start: |-
+          y = 'h▮ello'
+        target: |-
+          y = 'q'
+        solution: 'ciqq<Esc>'
   - goal: 'Change hello to bye.'
     ft: python
     start: |-
@@ -25,6 +32,13 @@ tasks:
       say("bye")
     solution: 'ciqbye<Esc>'
     hint: 'The same ciq, now in double quotes.'
+    variants:
+      - goal: 'Change noun to verb.'
+        start: |-
+          tag("no▮un")
+        target: |-
+          tag("verb")
+        solution: 'ciqverb<Esc>'
   - goal: 'Replace what is inside the brackets with c.'
     ft: python
     start: |-
@@ -33,6 +47,13 @@ tasks:
       f(c)
     solution: 'cibc<Esc>'
     hint: 'cib is inside any bracket.'
+    variants:
+      - goal: 'Replace what is inside the brackets with z.'
+        start: |-
+          g(▮x * y)
+        target: |-
+          g(z)
+        solution: 'cibz<Esc>'
   - goal: 'Empty the argument list, starting from the beginning of the line.'
     ft: python
     start: |-
@@ -41,6 +62,12 @@ tasks:
       call()
     solution: 'dib'
     hint: 'dib finds the next brackets on the line.'
+    variants:
+      - goal: 'Empty the argument list, starting from the beginning of the line.'
+        start: |-
+          ▮emit(a, b)
+        target: |-
+          emit()
   - goal: 'Delete the first call''s brackets and argument.'
     ft: python
     start: |-
@@ -49,3 +76,9 @@ tasks:
       x = f + g(2)
     solution: 'dab'
     hint: 'dab deletes the brackets with what''s inside.'
+    variants:
+      - goal: 'Delete the first call''s brackets and argument.'
+        start: |-
+          y = g(▮2) + h(3)
+        target: |-
+          y = g + h(3)

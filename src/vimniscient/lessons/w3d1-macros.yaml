@@ -21,6 +21,18 @@ tasks:
       let d = 4;
     solution: 'qaA;<Esc>jq3@a'
     hint: 'qa, then A;<Esc> and j, then q. Now 3@a does the other three lines.'
+    variants:
+      - goal: 'Add a semicolon to every line, with a macro.'
+        start: |-
+          ▮let p = 1
+          let q = 2
+          let r = 3
+          let s = 4
+        target: |-
+          let p = 1;
+          let q = 2;
+          let r = 3;
+          let s = 4;
   - goal: 'Put every term in double quotes.'
     start: |-
       ▮phoneme
@@ -32,6 +44,16 @@ tasks:
       "lexeme"
     solution: 'qaI"<Esc>A"<Esc>jq2@a'
     hint: 'Record I"<Esc>A"<Esc>j into a, then 2@a.'
+    variants:
+      - goal: 'Put every term in double quotes.'
+        start: |-
+          ▮stem
+          root
+          affix
+        target: |-
+          "stem"
+          "root"
+          "affix"
   - goal: 'Turn every key=value into key: value.'
     start: |-
       ▮name=Saussure
@@ -43,6 +65,16 @@ tasks:
       field: linguistics
     solution: 'qa0f=r:a <Esc>jq2@a'
     hint: 'Start the macro with 0 so it works wherever j left the cursor: 0 f= r: a<Space><Esc> j.'
+    variants:
+      - goal: 'Turn every key=value into key: value.'
+        start: |-
+          ▮name=Sapir
+          born=1884
+          field=anthropology
+        target: |-
+          name: Sapir
+          born: 1884
+          field: anthropology
   - goal: 'Delete every second line: keep the phonemes, drop the allophones.'
     start: |-
       ▮/p/
@@ -57,6 +89,19 @@ tasks:
       /k/
     solution: 'qajddq2@a'
     hint: 'Record j dd: it moves to the line to drop and deletes it, which leaves you on the next keeper.'
+    variants:
+      - goal: 'Delete every second line: keep the phonemes, drop the allophones.'
+        start: |-
+          ▮/b/
+          [b̥]
+          /d/
+          [d̥]
+          /g/
+          [g̊]
+        target: |-
+          /b/
+          /d/
+          /g/
   - goal: 'Turn every dash into a star. Use a big count.'
     start: |-
       ▮- noun
@@ -74,3 +119,19 @@ tasks:
       * preposition
     solution: 'qar*jq99@a'
     hint: 'qa r* j q, then 99@a. It stops when j can''t go further.'
+    variants:
+      - goal: 'Turn every dash into a star. Use a big count.'
+        start: |-
+          ▮- nominative
+          - accusative
+          - genitive
+          - dative
+          - ablative
+          - vocative
+        target: |-
+          * nominative
+          * accusative
+          * genitive
+          * dative
+          * ablative
+          * vocative

@@ -19,6 +19,14 @@ tasks:
       words
     solution: 'Vjd'
     hint: 'V selects the line, j extends it, d deletes.'
+    variants:
+      - goal: 'Delete the two filler lines with V.'
+        start: |-
+          ▮er
+          hmm
+          phrases
+        target: |-
+          phrases
   - goal: 'Uppercase "stressed syllable".'
     start: |-
       the ▮stressed syllable here
@@ -26,6 +34,13 @@ tasks:
       the STRESSED SYLLABLE here
     solution: 'veeU'
     hint: 'v, then e e to the end of "syllable", then U.'
+    variants:
+      - goal: 'Uppercase "focus particle".'
+        start: |-
+          the ▮focus particle here
+        target: |-
+          the FOCUS PARTICLE here
+        hint: 'v, then e e to the end of "particle", then U.'
   - goal: 'Join the noun phrase on the first three lines.'
     start: |-
       ▮the
@@ -37,6 +52,16 @@ tasks:
       sleeps
     solution: 'VjjJ'
     hint: 'Select three lines with V j j and press J. (3J is shorter.)'
+    variants:
+      - goal: 'Join the noun phrase on the first three lines.'
+        start: |-
+          ▮a
+          big
+          dog
+          barks
+        target: |-
+          a big dog
+          barks
   - goal: 'Indent the function body.'
     ft: python
     start: |-
@@ -51,6 +76,18 @@ tasks:
           return x
     solution: 'Vjj>'
     hint: 'V j j selects the three lines, > indents them.'
+    variants:
+      - goal: 'Indent the function body.'
+        start: |-
+          def g():
+          ▮a = 1
+          b = 2
+          return a
+        target: |-
+          def g():
+              a = 1
+              b = 2
+              return a
   - goal: 'Replace the whole condition with "ok".'
     ft: python
     start: |-
@@ -59,3 +96,9 @@ tasks:
       if ok:
     solution: 'c%ok<Esc>'
     hint: '% jumps to the matching bracket, so c% changes the whole group. (v%c works too.)'
+    variants:
+      - goal: 'Replace the whole condition with "ok".'
+        start: |-
+          while ▮(i < n and (ok)):
+        target: |-
+          while ok:

@@ -23,6 +23,22 @@ tasks:
           return result
     solution: '*:%s//result/g<CR>'
     hint: '* searches for the whole word s; :%s//result/g replaces every match.'
+    variants:
+      - goal: 'Rename the variable n to count everywhere (but not the n in "in").'
+        start: |-
+          def size(words):
+              ▮n = 0
+              for w in words:
+                  n += 1
+              return n
+        target: |-
+          def size(words):
+              count = 0
+              for w in words:
+                  count += 1
+              return count
+        solution: '*:%s//count/g<CR>'
+        hint: '* searches for the whole word n; :%s//count/g replaces every match.'
   - goal: 'Turn the names into a Python list.'
     ft: python
     start: |-
@@ -33,6 +49,14 @@ tasks:
       names = ["ada", "alan", "grace"]
     solution: ':%s/.*/"&",<CR>gg3J$xInames = [<Esc>A]<Esc>'
     hint: 'Quote and comma every line with :%s, go back up (gg) and join them with 3J, drop the last comma, then add the start and the end.'
+    variants:
+      - goal: 'Turn the names into a Python list.'
+        start: |-
+          ▮ipa
+          wals
+          cldf
+        target: |-
+          names = ["ipa", "wals", "cldf"]
   - goal: 'Make it a method: add self, and use self. for the two attributes.'
     ft: python
     start: |-
@@ -43,6 +67,16 @@ tasks:
           print(self.name, self.age)
     solution: 'f)iself<Esc>j:s/\v(name|age)/self.&/g<CR>'
     hint: 'f) i self. Then on the next line, \v(name|age) matches either word.'
+    variants:
+      - goal: 'Make it a method: add self, and use self. for the two attributes.'
+        start: |-
+          ▮def tag():
+              print(word, pos)
+        target: |-
+          def tag(self):
+              print(self.word, self.pos)
+        solution: 'f)iself<Esc>j:s/\v(word|pos)/self.&/g<CR>'
+        hint: 'f) i self. Then on the next line, \v(word|pos) matches either word.'
   - goal: 'Turn the dict literal into a dict() call.'
     ft: python
     start: |-
@@ -51,3 +85,9 @@ tasks:
       d = dict(a=1, b=2)
     solution: ':s/\v"(\w+)": /\1=/g<CR>f{xidict(<Esc>f}r)'
     hint: 'First "key": becomes key= with a group, then replace the braces.'
+    variants:
+      - goal: 'Turn the dict literal into a dict() call.'
+        start: |-
+          ▮t = {"x": 3, "y": 4}
+        target: |-
+          t = dict(x=3, y=4)

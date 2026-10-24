@@ -17,6 +17,12 @@ tasks:
       # x = 1
     solution: 'gcc'
     hint: 'gcc toggles a comment on the line.'
+    variants:
+      - goal: 'Comment out the line.'
+        start: |-
+          ▮y = 2
+        target: |-
+          # y = 2
   - goal: 'Uncomment the line.'
     ft: python
     start: |-
@@ -25,6 +31,12 @@ tasks:
       y = 2
     solution: 'gcc'
     hint: 'gcc again removes it.'
+    variants:
+      - goal: 'Uncomment the line.'
+        start: |-
+          # ▮z = 3
+        target: |-
+          z = 3
   - goal: 'Comment out this line and the next.'
     ft: python
     start: |-
@@ -37,6 +49,16 @@ tasks:
       c = 3
     solution: 'gcj'
     hint: 'gc takes a motion, so gcj covers two lines.'
+    variants:
+      - goal: 'Comment out this line and the next.'
+        start: |-
+          ▮p = 1
+          q = 2
+          r = 3
+        target: |-
+          # p = 1
+          # q = 2
+          r = 3
   - goal: 'Comment out the first block.'
     ft: python
     start: |-
@@ -51,6 +73,18 @@ tasks:
       c = 3
     solution: 'gcip'
     hint: 'gcip comments the inner paragraph.'
+    variants:
+      - goal: 'Comment out the first block.'
+        start: |-
+          ▮p = 1
+          q = 2
+
+          r = 3
+        target: |-
+          # p = 1
+          # q = 2
+
+          r = 3
   - goal: 'Comment out the JavaScript line (a different comment style).'
     ft: javascript
     start: |-
@@ -59,3 +93,9 @@ tasks:
       // let x = 1;
     solution: 'gcc'
     hint: 'gc uses whatever comment syntax the language has.'
+    variants:
+      - goal: 'Comment out the JavaScript line (a different comment style).'
+        start: |-
+          ▮let y = 2;
+        target: |-
+          // let y = 2;

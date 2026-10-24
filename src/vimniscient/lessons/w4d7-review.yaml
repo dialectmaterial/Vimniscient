@@ -18,6 +18,17 @@ tasks:
       Sapir
     solution: ':sort u<CR>'
     hint: ':sort u'
+    variants:
+      - goal: 'Sort the linguists and remove the duplicate.'
+        start: |-
+          ▮Labov
+          Trudgill
+          Labov
+          Eckert
+        target: |-
+          Eckert
+          Labov
+          Trudgill
   - goal: 'Move the TODO line to the top.'
     start: |-
       phonology
@@ -29,6 +40,16 @@ tasks:
       syntax
     solution: ':m0<CR>'
     hint: ':m0'
+    variants:
+      - goal: 'Move the TODO line to the top.'
+        start: |-
+          morphology
+          semantics
+          ▮TODO: check the tags
+        target: |-
+          TODO: check the tags
+          morphology
+          semantics
   - goal: 'Quote every word.'
     start: |-
       ▮sit sat seat
@@ -36,6 +57,12 @@ tasks:
       "sit" "sat" "seat"
     solution: ':s/\w\+/"&"/g<CR>'
     hint: '\w\+ is a word, & is the match.'
+    variants:
+      - goal: 'Quote every word.'
+        start: |-
+          ▮ship sheep chip
+        target: |-
+          "ship" "sheep" "chip"
   - goal: 'Add "!" to the end of every line.'
     start: |-
       ▮Hallo
@@ -47,6 +74,16 @@ tasks:
       Ciao!
     solution: ':%norm A!<CR>'
     hint: ':%norm A!'
+    variants:
+      - goal: 'Add "!" to the end of every line.'
+        start: |-
+          ▮Bonjour
+          Guten Tag
+          Salve
+        target: |-
+          Bonjour!
+          Guten Tag!
+          Salve!
   - goal: 'Number the lines with a shell command.'
     start: |-
       ▮Latin
@@ -56,3 +93,11 @@ tasks:
       2 Greek
     solution: ':%!awk ''{print NR, $0}''<CR>'
     hint: 'awk ''{print NR, $0}'' prints the line number before each line. (Visual block g Ctrl-a can''t do this one.)'
+    variants:
+      - goal: 'Number the lines with a shell command.'
+        start: |-
+          ▮Hopi
+          Zuni
+        target: |-
+          1 Hopi
+          2 Zuni

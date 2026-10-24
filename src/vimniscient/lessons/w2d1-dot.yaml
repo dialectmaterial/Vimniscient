@@ -14,6 +14,13 @@ tasks:
       x = bar + bar
     solution: 'ciwbar<Esc>ww.'
     hint: 'Change the first one with ciw, jump to the second with w w, then press .'
+    variants:
+      - goal: 'Change both "old" to "new".'
+        start: |-
+          y = ▮old * old
+        target: |-
+          y = new * new
+        solution: 'ciwnew<Esc>ww.'
   - goal: 'Add a semicolon to every line.'
     start: |-
       ▮let a = 1
@@ -25,6 +32,16 @@ tasks:
       let c = 3;
     solution: 'A;<Esc>j.j.'
     hint: 'A;<Esc> on the first line, then j . j .'
+    variants:
+      - goal: 'Add a semicolon to every line.'
+        start: |-
+          ▮let p = 1
+          let q = 2
+          let r = 3
+        target: |-
+          let p = 1;
+          let q = 2;
+          let r = 3;
   - goal: 'Indent both lines.'
     start: |-
       ▮noun
@@ -34,6 +51,14 @@ tasks:
           verb
     solution: '>>j.'
     hint: '>> indents one line; . repeats it on the next.'
+    variants:
+      - goal: 'Indent both lines.'
+        start: |-
+          ▮onset
+          coda
+        target: |2-
+              onset
+              coda
   - goal: 'Delete all three "very".'
     start: |-
       a ▮very very very long sentence
@@ -41,6 +66,12 @@ tasks:
       a long sentence
     solution: 'dw..'
     hint: 'dw once, then . twice. (3dw is just as short.)'
+    variants:
+      - goal: 'Delete all three "really".'
+        start: |-
+          a ▮really really really short word
+        target: |-
+          a short word
   - goal: 'Turn the lines into a list with "- ".'
     start: |-
       ▮phonology
@@ -52,3 +83,13 @@ tasks:
       - syntax
     solution: 'I- <Esc>j.j.'
     hint: 'I- <Esc> once, then j . j .'
+    variants:
+      - goal: 'Turn the lines into a list with "- ".'
+        start: |-
+          ▮nominative
+          accusative
+          dative
+        target: |-
+          - nominative
+          - accusative
+          - dative

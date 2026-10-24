@@ -20,6 +20,16 @@ tasks:
       langue
     solution: '"ayyjdd"ap'
     hint: 'yy then dd would paste junk. Yank into a named register: "ayy, then later "ap.'
+    variants:
+      - goal: 'Copy "competence" to the end and delete junk, without losing "competence".'
+        start: |-
+          ▮competence
+          junk
+          performance
+        target: |-
+          competence
+          performance
+          competence
   - goal: 'Delete the typo line, then paste the line you yanked at the end.'
     start: |-
       ▮signifier
@@ -31,6 +41,16 @@ tasks:
       signifier
     solution: 'yyjdd"0p'
     hint: 'Register 0 always holds the last yank, even after a delete.'
+    variants:
+      - goal: 'Delete the typo line, then paste the line you yanked at the end.'
+        start: |-
+          ▮sign
+          typo
+          referent:
+        target: |-
+          sign
+          referent:
+          sign
   - goal: 'Delete the misspelling "phonene" and replace "phonem" with "phoneme". Keep phoneme in the unnamed register.'
     start: |-
       ▮phoneme
@@ -41,6 +61,16 @@ tasks:
       phoneme
     solution: 'yyj"_ddVp'
     hint: '"_dd deletes into the black hole, so the unnamed register still holds phoneme. Vp pastes over the line.'
+    variants:
+      - goal: 'Delete the misspelling "sintax" and replace "syntaks" with "syntax". Keep syntax in the unnamed register.'
+        start: |-
+          ▮syntax
+          sintax
+          syntaks
+        target: |-
+          syntax
+          syntax
+        hint: '"_dd deletes into the black hole, so the unnamed register still holds syntax. Vp pastes over the line.'
   - goal: 'Add the name from line 1 to the end of line 2.'
     start: |-
       ▮name: Sapir
@@ -50,6 +80,14 @@ tasks:
       greeting: hello Sapir
     solution: '$yiwjA <C-r>0<Esc>'
     hint: 'Yank the word, then in insert mode Ctrl-r 0 types it for you.'
+    variants:
+      - goal: 'Add the name from line 1 to the end of line 2.'
+        start: |-
+          ▮name: Boas
+          greeting: hi
+        target: |-
+          name: Boas
+          greeting: hi Boas
   - goal: 'Fill in the sum while typing.'
     start: |-
       ▮phonemes (24 + 20):
@@ -57,6 +95,14 @@ tasks:
       phonemes (24 + 20): 44
     solution: 'A <C-r>=24+20<CR><Esc>'
     hint: 'In insert mode, Ctrl-r = opens a calculator: type 24+20 and Enter.'
+    variants:
+      - goal: 'Fill in the product while typing.'
+        start: |-
+          ▮vowels (5 * 2):
+        target: |-
+          vowels (5 * 2): 10
+        solution: 'A <C-r>=5*2<CR><Esc>'
+        hint: 'In insert mode, Ctrl-r = opens a calculator: type 5*2 and Enter.'
   - goal: 'Collect noun and verb in one register and paste both at the end.'
     start: |-
       ▮noun
@@ -70,3 +116,16 @@ tasks:
       verb
     solution: '"ayyjj"Ayy"ap'
     hint: 'A capital register name appends: "ayy, then "Ayy on verb, then "ap.'
+    variants:
+      - goal: 'Collect onset and coda in one register and paste both at the end.'
+        start: |-
+          ▮onset
+          skip
+          coda
+        target: |-
+          onset
+          skip
+          coda
+          onset
+          coda
+        hint: 'A capital register name appends: "ayy, then "Ayy on coda, then "ap.'

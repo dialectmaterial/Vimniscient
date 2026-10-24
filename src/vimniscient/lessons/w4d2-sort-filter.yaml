@@ -19,6 +19,16 @@ tasks:
       syntax
     solution: ':sort<CR>'
     hint: ':sort sorts every line by default.'
+    variants:
+      - goal: 'Sort the fields.'
+        start: |-
+          ▮semantics
+          pragmatics
+          phonetics
+        target: |-
+          phonetics
+          pragmatics
+          semantics
   - goal: 'Sort by the number of native speakers (millions), not alphabetically.'
     start: |-
       ▮Native speakers, millions
@@ -32,6 +42,18 @@ tasks:
       380 English
     solution: ':sort n<CR>'
     hint: ':sort n sorts by number; a line without one (the heading) stays first.'
+    variants:
+      - goal: 'Sort by the number of native speakers (millions), not alphabetically.'
+        start: |-
+          ▮Native speakers, millions
+          230 Bengali
+          125 Japanese
+          86 Vietnamese
+        target: |-
+          Native speakers, millions
+          86 Vietnamese
+          125 Japanese
+          230 Bengali
   - goal: 'Sort and remove the duplicates.'
     start: |-
       ▮noun
@@ -45,6 +67,18 @@ tasks:
       verb
     solution: ':sort u<CR>'
     hint: ':sort u keeps only one of each line.'
+    variants:
+      - goal: 'Sort and remove the duplicates.'
+        start: |-
+          ▮stop
+          nasal
+          stop
+          glide
+          nasal
+        target: |-
+          glide
+          nasal
+          stop
   - goal: 'Line the table up in columns.'
     start: |-
       ▮word class gloss
@@ -54,6 +88,14 @@ tasks:
       cats  noun   cat.PL
     solution: ':%!column -t<CR>'
     hint: ':%! sends every line through a shell command. column -t aligns columns.'
+    variants:
+      - goal: 'Line the table up in columns.'
+        start: |-
+          ▮form gloss tag
+          dogs dog.PL N
+        target: |-
+          form  gloss   tag
+          dogs  dog.PL  N
   - goal: 'Sort only the first two lines.'
     start: |-
       ▮syntax
@@ -67,6 +109,18 @@ tasks:
       blick
     solution: 'Vj:sort<CR>'
     hint: 'Select the lines, then :sort works on just those.'
+    variants:
+      - goal: 'Sort only the first two lines.'
+        start: |-
+          ▮tone
+          stress
+          wug
+          blick
+        target: |-
+          stress
+          tone
+          wug
+          blick
   - goal: 'Insert the output of a shell command (echo wug) below this line.'
     start: |-
       ▮Nonce word:
@@ -75,3 +129,12 @@ tasks:
       wug
     solution: ':r !echo wug<CR>'
     hint: ':r !echo wug reads the command''s output into the file.'
+    variants:
+      - goal: 'Insert the output of a shell command (echo blick) below this line.'
+        start: |-
+          ▮Another nonce word:
+        target: |-
+          Another nonce word:
+          blick
+        solution: ':r !echo blick<CR>'
+        hint: ':r !echo blick reads the command''s output into the file.'
