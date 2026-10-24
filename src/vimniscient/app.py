@@ -17,6 +17,7 @@ from textual.app import App, ComposeResult
 from textual.binding import Binding
 from textual.containers import Vertical, VerticalScroll
 from textual.screen import Screen
+from textual.theme import Theme
 from textual.widgets import DataTable, Footer, Input, Markdown, OptionList, Static, TabbedContent, TabPane
 from textual.widgets.option_list import Option
 
@@ -39,17 +40,34 @@ STATUS = {
     "unseen": ("not reached", "text-muted"),
 }
 
+# Catppuccin from its own palette (catppuccin.com/palette): mauve leads, lavender
+# and blue accent, no peach. Textual's built-in Catppuccin themes use peach.
+CATPPUCCIN = (
+    Theme(name="vimniscient-mocha", dark=True,
+          primary="#cba6f7", secondary="#89b4fa", accent="#b4befe",           # mauve, blue, lavender
+          success="#a6e3a1", warning="#f9e2af", error="#f38ba8",             # green, yellow, red
+          foreground="#cdd6f4", background="#1e1e2e", surface="#313244", panel="#45475a",
+          variables={"block-cursor-foreground": "#1e1e2e", "footer-key-foreground": "#cba6f7",
+                     "input-selection-background": "#cba6f7 35%"}),
+    Theme(name="vimniscient-latte", dark=False,
+          primary="#8839ef", secondary="#1e66f5", accent="#7287fd",
+          success="#40a02b", warning="#df8e1d", error="#d20f39",
+          foreground="#4c4f69", background="#eff1f5", surface="#ccd0da", panel="#bcc0cc",
+          variables={"block-cursor-foreground": "#eff1f5", "footer-key-foreground": "#8839ef",
+                     "input-selection-background": "#8839ef 35%"}),
+)
+
 # Omarchy theme names (~/.local/state/omarchy/current/theme.name) with a Textual twin.
 OMARCHY_THEMES = {
-    "catppuccin": "catppuccin-mocha",
-    "catppuccin-latte": "catppuccin-latte",
+    "catppuccin": "vimniscient-mocha",
+    "catppuccin-latte": "vimniscient-latte",
     "gruvbox": "gruvbox",
     "nord": "nord",
     "tokyo-night": "tokyo-night",
     "rose-pine": "rose-pine",
     "flexoki-light": "flexoki",
 }
-DEFAULT_THEME = "catppuccin-mocha"
+DEFAULT_THEME = "vimniscient-mocha"
 
 SCREENS = {"today": "Today", "lessons": "Lessons", "practice": "Practice", "stats": "Stats"}
 
@@ -838,6 +856,7 @@ class VimniscientApp(App):
     #logo { color: $accent; height: auto; padding: 0 0 1 0; }
     #habit-line { height: auto; color: $text-muted; padding-top: 1; }
     Markdown { padding: 0 1; margin: 0; }
+    MarkdownBlock > .code_inline { background: $surface; color: $primary; }
     .section-label { color: $text-muted; text-style: bold; height: 1; margin-top: 1; }
     DataTable { background: $background; height: auto; max-height: 14; margin-top: 1; }
     DataTable > .datatable--header { background: $surface; color: $text-muted; text-style: bold; }
@@ -868,6 +887,8 @@ class VimniscientApp(App):
         return next(lesson for lesson in self.lessons if lesson.id == lesson_id)
 
     def on_mount(self) -> None:
+        for theme in CATPPUCCIN:
+            self.register_theme(theme)
         theme = omarchy_theme()
         self.theme = theme if theme in self.available_themes else DEFAULT_THEME
         self.push_screen(MainScreen())

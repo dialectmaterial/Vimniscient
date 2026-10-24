@@ -40,7 +40,7 @@ Optional training wheels for everyday editing: copy
 | `vimniscient run w1d1-words` | Run one lesson directly |
 
 The app has four screens, switched with `1`–`4`, in your Omarchy theme's
-colours (Catppuccin Mocha by default):
+colours (Catppuccin Mocha by default, from its own palette: mauve, lavender and blue, no peach):
 
 1. **Today**: the daily routine step by step. Enter runs one step, `t` runs them all.
 2. **Lessons**: every lesson, with its intro and progress below the list. Enter starts it.
