@@ -14,52 +14,38 @@ from vimniscient.lessons import Lesson, Task
 @dataclass
 class TaskResult:
     task: Task
-    status: str  # solved | skipped | quit | unseen
+    status: str  # solved | failed (endless) | skipped | quit | unseen
     keys: str
     count: int
     hints: int
+    level: int = 0  # endless mode: the level the task was given at
+    budget: int | None = None  # endless mode: the most keys allowed
 
 
-def run_lesson(lesson: Lesson) -> list[TaskResult]:
+def task_json(t: Task) -> dict:
+    return {
+        "goal": t.goal,
+        "start": t.start,
+        "cursor": list(t.cursor),
+        "target": t.target,
+        "ref": t.ref,
+        "hint": t.hint,
+        "solution": t.solution,
+        "ft": t.ft,
+        "phase": t.phase,
+    }
+
+
+def run_nvim(session: dict, first: list[str]) -> list[dict]:
+    """Start Neovim with the runner on `session`; returns the raw results it wrote."""
     runner = resources.files("vimniscient") / "nvim" / "runner.lua"
     with tempfile.TemporaryDirectory(prefix="vimniscient-") as tmp, resources.as_file(runner) as runner_path:
         tmp_path = Path(tmp)
         session_path = tmp_path / "session.json"
         result_path = tmp_path / "results.json"
         practice = tmp_path / "practice.txt"
-        practice.write_text("\n".join(lesson.tasks[0].start), encoding="utf-8")
-        totals = {phase: sum(t.phase == phase for t in lesson.tasks) for phase in ("learn", "recall")}
-        seen = {"learn": 0, "recall": 0}
-        labels = []
-        for t in lesson.tasks:
-            seen[t.phase] += 1
-            two_rounds = totals["learn"] > 0
-            labels.append(f"{t.phase.upper()} {seen[t.phase]}/{totals[t.phase]}" if two_rounds else None)
-        session_path.write_text(
-            json.dumps(
-                {
-                    "title": f"{lesson.label}: {lesson.title}",
-                    "result_path": str(result_path),
-                    "tasks": [
-                        {
-                            "goal": t.goal,
-                            "start": t.start,
-                            "cursor": list(t.cursor),
-                            "target": t.target,
-                            "ref": t.ref,
-                            "hint": t.hint,
-                            "solution": t.solution,
-                            "ft": t.ft,
-                            "phase": t.phase,
-                            "label": label,
-                            "show": t.solution if t.phase == "learn" else "",
-                        }
-                        for t, label in zip(lesson.tasks, labels)
-                    ],
-                }
-            ),
-            encoding="utf-8",
-        )
+        practice.write_text("\n".join(first), encoding="utf-8")
+        session_path.write_text(json.dumps(session | {"result_path": str(result_path)}), encoding="utf-8")
         # cwd=tmp keeps session plugins away from the user's real projects;
         # -i NONE gives every lesson clean registers and history.
         subprocess.run(
@@ -67,11 +53,37 @@ def run_lesson(lesson: Lesson) -> list[TaskResult]:
             cwd=tmp,
             env=os.environ | {"VIMNISCIENT_SESSION": str(session_path)},
         )
-        raw = json.loads(result_path.read_text()) if result_path.exists() else []
+        return json.loads(result_path.read_text()) if result_path.exists() else []
 
+
+def run_lesson(lesson: Lesson, retry: bool = False) -> list[TaskResult]:
+    """With `retry`, a skipped Recall task is shown, typed once with the keys
+    shown, and asked again on its next text at the end (see runner.lua)."""
+    totals = {phase: sum(t.phase == phase for t in lesson.tasks) for phase in ("learn", "recall")}
+    seen = {"learn": 0, "recall": 0}
+    tasks = []
+    for n, t in enumerate(lesson.tasks):
+        seen[t.phase] += 1
+        two_rounds = totals["learn"] > 0
+        tasks.append(
+            task_json(t)
+            | {
+                "n": n,
+                "label": f"{t.phase.upper()} {seen[t.phase]}/{totals[t.phase]}" if two_rounds else None,
+                "show": t.solution if t.phase == "learn" else "",
+            }
+            | ({"again": task_json(t.next_version())} if retry and t.phase == "recall" else {})
+        )
+    raw = run_nvim({"title": f"{lesson.label}: {lesson.title}", "tasks": tasks, "retry": retry}, lesson.tasks[0].start)
+    if not raw:  # Neovim never got going: every task unseen
+        raw = [{"n": n} for n in range(len(lesson.tasks))]
     results = []
-    for i, task in enumerate(lesson.tasks):
-        r = raw[i] if i < len(raw) else {}
+    for r in raw:
+        task = lesson.tasks[r["n"]]
+        if r.get("extra") == "learn":
+            task = task.as_phase("learn")
+        elif r.get("extra") == "recall":
+            task = task.next_version().as_phase("recall")
         results.append(
             TaskResult(
                 task=task,
@@ -82,3 +94,34 @@ def run_lesson(lesson: Lesson) -> list[TaskResult]:
             )
         )
     return results
+
+
+def run_endless(pool: dict[str, Task], rungs: list[tuple[str, int]], level: int, ramp: int, gap: int) -> list[TaskResult]:
+    """Endless mode: the runner climbs `rungs` (task id, version) from `level` on,
+    and slots in a Learn and a Recall for every task missed (see endless.py)."""
+    session = {
+        "title": "Endless",
+        "tasks": [],
+        "endless": {
+            "pool": {item_id: [task_json(task.version(v)) for v in range(task.versions)] for item_id, task in pool.items()},
+            "rungs": [{"id": item_id, "v": v} for item_id, v in rungs],
+            "level": level,
+            "ramp": ramp,
+            "gap": gap,
+        },
+    }
+    item_id, v = rungs[0]
+    raw = run_nvim(session, pool[item_id].version(v).start)
+    return [
+        TaskResult(
+            task=pool[r["id"]].version(r["v"]).as_phase(r["phase"]),
+            status=r["status"],
+            keys=r["keys"],
+            count=r["count"],
+            hints=r["hints"],
+            level=r["level"],
+            budget=r.get("budget"),
+        )
+        for r in raw
+        if r.get("id") in pool and r["status"] != "unseen"
+    ]

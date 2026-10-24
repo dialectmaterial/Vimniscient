@@ -23,12 +23,12 @@ from textual.theme import Theme
 from textual.widgets import DataTable, Input, Markdown, OptionList, Sparkline, Static
 from textual.widgets.option_list import Option
 
-from vimniscient import drills, habits, srs, vimgolf
+from vimniscient import drills, endless, habits, srs, vimgolf
 from vimniscient.answer import is_correct
 from vimniscient.cards import Card, Deck, has_lazyvim, has_plugin, load_decks
 from vimniscient.lessons import Lesson, Task, load_lessons, two_rounds
 from vimniscient.progress import Progress
-from vimniscient.session import TaskResult, run_lesson
+from vimniscient.session import TaskResult, run_endless, run_lesson
 
 LOGO = """\
 █ █ █ █▀▄▀█ █▄ █ █ ▄▀▀ ▄▀▀ █ ██▀ █▄ █ ▀█▀
@@ -37,6 +37,7 @@ LOGO = """\
 # Result labels and the theme colour each is shown in.
 STATUS = {
     "solved": ("solved", "success"),
+    "failed": ("missed", "error"),
     "skipped": ("skipped", "warning"),
     "quit": ("quit", "error"),
     "unseen": ("not reached", "text-muted"),
@@ -75,14 +76,15 @@ TASK_HELP = (
     "The goal shows in the top window, your text below. When they match, the next task loads by "
     "itself. Inside Neovim: `:Hint` (twice for the answer), `:Skip`, `:Reset`, `:q` to stop."
 )
+RETRY_HELP = "Skip a task you can't recall and you'll see the answer, type it once, and get it again at the end."
 ROUNDS_HELP = (
     "Two rounds. **Learn**: each task with the keys to type shown. **Recall**: the same skills on "
     "new text, in another order, from memory. Only Recall counts towards your progress."
 )
 
 
-def plural(n: int, word: str) -> str:
-    return f"{n} {word}{'' if n == 1 else 's'}"
+def plural(n: int, word: str, many: str = "") -> str:
+    return f"{n} {word if n == 1 else many or word + 's'}"
 
 
 def streak_text(days: int) -> str:
@@ -103,6 +105,31 @@ def omarchy_theme() -> str:
     except OSError:
         return DEFAULT_THEME
     return OMARCHY_THEMES.get(name, DEFAULT_THEME)
+
+
+ENDLESS_INTRO = (
+    "Tasks from every lesson, one after another, for as long as you like. Each one you solve "
+    "climbs a level. New lessons join the mix as you climb, and the key budget shrinks: about "
+    "twice the reference at first, exactly the reference by level {ramp}.\n\n"
+    "Go over the budget, `:Skip`, or ask for the answer, and it's a miss. A miss shows the answer, "
+    "then you type it in with the keys shown (**Learn**). A couple of tasks later it comes back on "
+    "another text, from memory (**Recall**). `:q` stops; your level is kept, and the next run starts "
+    "{below} levels below it."
+)
+
+
+def endless_lesson(start: int, best: int) -> Lesson:
+    record = f" Your best is level **{best}**." if best else ""
+    return Lesson(
+        id="endless",
+        week=0,
+        day=0,
+        title="Endless",
+        intro=f"**Starting at level {start}.**{record}\n\n"
+        + ENDLESS_INTRO.format(ramp=endless.RAMP, below=endless.RESTART_BELOW),
+        keys=[],
+        tasks=[],
+    )
 
 
 def review_lesson(tasks: list[Task]) -> Lesson:
@@ -296,6 +323,7 @@ class MainScreen(Screen):
         Binding("t", "app.today", "Start today"),
         Binding("c", "app.cards", "Cards", show=False),
         Binding("d", "app.drills", "Drills", show=False),
+        Binding("e", "app.endless", "Endless", show=False),
         Binding("g", "app.vimgolf", "VimGolf", show=False),
         Binding("p", "app.placement", "Placement", show=False),
         Binding("s", "app.stats", "Stats", show=False),
@@ -319,8 +347,8 @@ class MainScreen(Screen):
                     yield Static(id="progress-text")
                     yield Sparkline([], id="spark")
         yield Static(
-            keybar(("t", "today"), ("⏎", "open"), ("⇥", "pane"), ("c", "cards"), ("d", "drills"),
-                   ("g", "golf"), ("p", "place"), ("s", "stats"), ("q", "quit")),
+            keybar(("t", "today"), ("⏎", "open"), ("⇥", "pane"), ("e", "endless"), ("c", "cards"),
+                   ("d", "drills"), ("g", "golf"), ("p", "place"), ("s", "stats"), ("q", "quit")),
             classes="keybar",
         )
 
@@ -342,8 +370,8 @@ class MainScreen(Screen):
         self.refresh_progress()
         self.show_detail()
 
-    def plan(self) -> list[tuple[str, str, str, bool]]:
-        """Today's steps: (id, label, detail, still to do)."""
+    def plan(self) -> list[tuple[str, str, str, bool | None]]:
+        """Today's steps: (id, label, detail, still to do), then Endless (None: never done)."""
         app: VimniscientApp = self.app  # type: ignore[assignment]
         progress, lessons = app.progress, app.lessons
         due, new = progress.due_cards(app.decks, lessons), progress.new_cards(app.decks, lessons)
@@ -358,6 +386,7 @@ class MainScreen(Screen):
             ("review", "Review", plural(len(review), "task") if review else "nothing due", bool(review)),
             ("lesson", "Lesson", f"W{nxt.week} D{nxt.day} · {nxt.title}" if nxt else "all done", nxt is not None),
             ("vimgolf", "VimGolf", "done" if golf_done else "today's challenge", not golf_done),
+            ("endless", "Endless", f"best level {best}" if (best := progress.endless_best()) else "as long as you like", None),
         ]
 
     PLAN_DETAIL = {
@@ -369,12 +398,14 @@ class MainScreen(Screen):
                    "habits hardtime keeps catching."),
         "vimgolf": ("VimGolf", "One challenge from vimgolf.com, the most played ones first, scored against "
                     "the leaderboard."),
+        "endless": ("Endless", ENDLESS_INTRO.format(ramp=endless.RAMP, below=endless.RESTART_BELOW)
+                    + "\n\nNot part of `t`: play it whenever you have time left."),
     }
 
     def refresh_plan(self) -> None:
         options = []
         for step_id, label, detail, todo in self.plan():
-            mark = "[$primary]›[/]" if todo else "[$success]✓[/]"
+            mark = "[$secondary]∞[/]" if todo is None else "[$primary]›[/]" if todo else "[$success]✓[/]"
             options.append(Option(f"{mark} [b]{label:<8}[/] [dim]{detail}[/]", id=step_id))
         self.fill("plan", options)
 
@@ -410,6 +441,8 @@ class MainScreen(Screen):
         days = list(reversed(progress.efficiency_by_day(14)))
         efficiency = [100 * ref / keys for _, _, keys, ref in days if keys]
         parts = [streak_text(progress.streak()), f"[b]{done}/{len(lessons)}[/] lessons"]
+        if progress.endless_best():
+            parts.append(f"endless best level {progress.endless_best()}")
         if has_plugin("hardtime.nvim"):
             parts.append(f"hardtime {hardtime}")
         lines = [" · ".join(parts)]
@@ -515,17 +548,25 @@ class LessonScreen(Screen):
         Binding("h", "back", "Back", show=False),
     ]
 
-    def __init__(self, lesson: Lesson, on_results: Callable[[list[TaskResult]], str] | None = None) -> None:
-        """`on_results` stores the results and returns a note for the results screen."""
+    def __init__(
+        self,
+        lesson: Lesson,
+        on_results: Callable[[list[TaskResult]], str] | None = None,
+        start: Callable[[Callable[[], None]], None] | None = None,
+    ) -> None:
+        """`on_results` stores the results and returns a note for the results screen;
+        `start` runs something other than the lesson's tasks (endless mode)."""
         super().__init__()
         self.lesson = lesson
         self.on_results = on_results
+        self.start = start
 
     def compose(self) -> ComposeResult:
         lesson = self.lesson
         with VerticalScroll(id="lesson-panel", classes="pane column"):
-            rounds = f" {ROUNDS_HELP}" if lesson.week else ""
-            yield Markdown(f"{lesson_markdown(lesson)}\n\n{plural(len(lesson.tasks), 'task')}.{rounds} {TASK_HELP}")
+            rounds = f" {ROUNDS_HELP} {RETRY_HELP}" if lesson.week else f" {RETRY_HELP}" if lesson.id == "review" else ""
+            count = f"{plural(len(lesson.tasks), 'task')}.{rounds} " if lesson.tasks else ""
+            yield Markdown(f"{lesson_markdown(lesson)}\n\n{count}{TASK_HELP}")
         yield Static(keybar(("enter", "start"), ("esc", "back")), classes="keybar")
 
     def on_mount(self) -> None:
@@ -537,7 +578,10 @@ class LessonScreen(Screen):
 
     def action_start(self) -> None:
         app: VimniscientApp = self.app  # type: ignore[assignment]
-        app.start_lesson(self.lesson, self.on_results, done=lambda: self.dismiss(True))
+        if self.start:
+            self.start(lambda: self.dismiss(True))
+        else:
+            app.start_lesson(self.lesson, self.on_results, done=lambda: self.dismiss(True))
 
 
 class ResultsScreen(Screen):
@@ -550,18 +594,20 @@ class ResultsScreen(Screen):
         Binding("q", "done", "Done", show=False),
     ]
 
-    def __init__(self, lesson: Lesson, results: list[TaskResult], note: str = "") -> None:
+    def __init__(self, lesson: Lesson, results: list[TaskResult], note: str = "", subtitle: str = "") -> None:
         super().__init__()
         self.lesson = lesson
         self.results = results
         self.note = note
+        self.subtitle = subtitle
 
     def compose(self) -> ComposeResult:
         with Vertical(id="results-panel", classes="pane"):
             if self.note:
                 yield Static(self.note, id="note")
             yield DataTable(id="results", cursor_type="row")
-            yield Static("[dim]ref = the reference solution's keystrokes; fewer than ref and you beat it[/]",
+            budget = " · budget = the most keys allowed at that level" if any(r.budget for r in self.results) else ""
+            yield Static(f"[dim]ref = the reference solution's keys; fewer and you beat it{budget}[/]",
                          id="results-legend")
         yield Static(keybar(("enter", "done"), ("r", "again")), classes="keybar")
 
@@ -570,18 +616,23 @@ class ResultsScreen(Screen):
         solved = sum(r.status == "solved" for r in recall)
         panel = self.query_one("#results-panel")
         panel.border_title = f"{self.lesson.label} · {self.lesson.title}" if self.lesson.week else self.lesson.title
-        panel.border_subtitle = f"{solved}/{len(recall)} recalled" if len(recall) < len(self.results) else f"{solved}/{len(recall)} solved"
-        two_rounds = len(recall) < len(self.results)
+        two_rounds = len({r.task.phase for r in self.results}) > 1
+        budgets = any(r.budget for r in self.results)
+        panel.border_subtitle = self.subtitle or (f"{solved}/{len(recall)} recalled" if two_rounds else f"{solved}/{len(recall)} solved")
         table = self.query_one(DataTable)
-        table.add_columns("#", *(["Round"] if two_rounds else []), "Task", "Result", "Keys", "Ref", "You typed", "Reference")
+        table.add_columns("#", *(["Round"] if two_rounds else []), "Task", "Result", "Keys",
+                          *(["Budget"] if budgets else []), "Ref", "You typed", "Reference")
         for i, r in enumerate(self.results, 1):
             keys = str(r.count) if r.status == "solved" else ""
             if r.status == "solved" and r.count <= r.task.ref:
                 keys = tint(self.app, keys, "success")
             label, colour = STATUS[r.status]
-            round_cell = [tint(self.app, r.task.phase, "text-muted")] if two_rounds else []
-            table.add_row(str(i), *round_cell, r.task.goal, tint(self.app, label, colour), keys, str(r.task.ref),
-                          r.keys, r.task.solution)
+            phase = f"level {r.level}" if r.task.phase == "climb" else r.task.phase
+            round_cell = [tint(self.app, phase, "text-muted")] if two_rounds else []
+            budget_cell = [str(r.budget or "")] if budgets else []
+            goal = r.task.goal if len(r.task.goal) <= 40 else r.task.goal[:39] + "…"
+            table.add_row(str(i), *round_cell, goal, tint(self.app, label, colour), keys, *budget_cell,
+                          str(r.task.ref), r.keys, r.task.solution)
 
     def action_again(self) -> None:
         self.dismiss(True)
@@ -860,7 +911,7 @@ class VimniscientApp(App):
 
     #main { height: 1fr; }
     #left { width: 46; max-width: 45%; }
-    #plan { height: 7; }
+    #plan { height: 8; }
     #lesson-list { height: 1fr; }
     #right { width: 1fr; }
     #detail-pane { height: 1fr; }
@@ -925,10 +976,11 @@ class VimniscientApp(App):
         done: Callable[[], None] = lambda: None,
     ) -> None:
         """Run a lesson in Neovim, then show the results; `done` runs when the user moves on.
-        Real lessons (not review, placement or VimGolf) run in two rounds: Learn, then Recall."""
+        Real lessons (not review, placement or VimGolf) run in two rounds: Learn, then Recall.
+        In lessons and reviews, a skipped task is shown, typed, and asked again at the end."""
         session = replace(lesson, tasks=two_rounds(lesson)) if lesson.week else lesson
         with self.suspend():
-            results = run_lesson(session)
+            results = run_lesson(session, retry=bool(lesson.week) or lesson.id == "review")
         if on_results:
             note = on_results(results)
         else:
@@ -994,6 +1046,14 @@ class VimniscientApp(App):
         elif step_id == "vimgolf":
             if not progress.vimgolf_done_today():
                 return self.start_vimgolf
+        elif step_id == "endless":
+            start = progress.endless_start(endless.RESTART_BELOW)
+            if direct:
+                return lambda done: self.start_endless(start, done)
+            return lambda done: self.push_screen(
+                LessonScreen(endless_lesson(start, progress.endless_best()), start=lambda d: self.start_endless(start, d)),
+                lambda _: done(),
+            )
         return None
 
     def run_step(self, step_id: str, done: Callable[[], None], direct: bool = False) -> None:
@@ -1041,6 +1101,31 @@ class VimniscientApp(App):
             return "Known already: " + ", ".join(f"{p.label} ({p.title})" for p in placed)
 
         self.push_screen(LessonScreen(placement_lesson(self.lessons), on_results))
+
+    def action_endless(self) -> None:
+        self.run_step("endless", lambda: None)
+
+    def start_endless(self, start: int, done: Callable[[], None]) -> None:
+        """Climb from `start` until the user quits, then show how it went."""
+        best = self.progress.endless_best()
+        rungs = endless.ladder(self.lessons, start)
+        pool = {t.item_id: t for t, _ in rungs}
+        with self.suspend():
+            results = run_endless(pool, [(t.item_id, v) for t, v in rungs], start, endless.RAMP, endless.GAP)
+        run = endless.summary(results, start)
+        self.progress.record_endless(results, run)
+        note = (f"Level {run['start']} → {run['level']} · {plural(run['missed'], 'miss', 'misses')}, "
+                f"{run['fixed']} recalled afterwards")
+        if run["level"] > best and run["climbed"]:
+            note += " · a new best!"
+
+        def after(again: bool) -> None:
+            if again:
+                self.start_endless(self.progress.endless_start(endless.RESTART_BELOW), done)
+            else:
+                done()
+
+        self.push_screen(ResultsScreen(endless_lesson(start, best), results, note, f"level {run['level']}"), after)
 
     def action_vimgolf(self) -> None:
         self.start_vimgolf(lambda: None)

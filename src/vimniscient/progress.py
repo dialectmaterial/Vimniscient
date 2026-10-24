@@ -65,6 +65,15 @@ CREATE TABLE IF NOT EXISTS drill_log (
     hinted INTEGER NOT NULL,
     skipped INTEGER NOT NULL
 );
+CREATE TABLE IF NOT EXISTS endless_runs (
+    id INTEGER PRIMARY KEY,
+    ts TEXT NOT NULL,
+    start INTEGER NOT NULL,
+    level INTEGER NOT NULL,
+    climbed INTEGER NOT NULL,
+    missed INTEGER NOT NULL,
+    fixed INTEGER NOT NULL
+);
 CREATE TABLE IF NOT EXISTS vimgolf (
     id TEXT PRIMARY KEY,
     title TEXT NOT NULL,
@@ -245,6 +254,32 @@ class Progress:
                     picked.append(unseen[deck].pop(0))
                     left -= 1
         return picked
+
+    # endless mode
+
+    def record_endless(self, results: list[TaskResult], run: dict[str, int]) -> None:
+        """Attempts go in as phase 'endless': they count for the streak, not for lessons or reviews."""
+        ts = _now()
+        for r in results:
+            self.db.execute(
+                "INSERT INTO attempts (ts, lesson, task, status, count, ref, keys, hints, phase) VALUES (?,?,?,?,?,?,?,?,?)",
+                (ts, r.task.lesson_id, r.task.index, r.status, r.count, r.task.ref, r.keys, r.hints, "endless"),
+            )
+        if results:
+            self.db.execute(
+                "INSERT INTO endless_runs (ts, start, level, climbed, missed, fixed) VALUES (?,?,?,?,?,?)",
+                (ts, run["start"], run["level"], run["climbed"], run["missed"], run["fixed"]),
+            )
+        self.db.commit()
+
+    def endless_best(self) -> int:
+        (best,) = self.db.execute("SELECT MAX(level) FROM endless_runs").fetchone()
+        return best or 0
+
+    def endless_start(self, below: int) -> int:
+        """Where a new run starts: a little below where the last one ended."""
+        row = self.db.execute("SELECT level FROM endless_runs ORDER BY id DESC LIMIT 1").fetchone()
+        return max(1, row[0] - below) if row else 1
 
     # omarchy drills
 

@@ -30,6 +30,9 @@ Every lesson has two rounds:
 Every task has more than one text, and each review gives you the next one.
 That way you remember the skill, not the sentence.
 
+Can't recall one? `:Skip` it. You'll see the answer, type it once with the
+keys shown, and get the task again at the end of the session, on its other text.
+
 Your keystrokes are counted the same way [VimGolf](https://www.vimgolf.com)
 counts them, and afterwards you see your keys next to the reference
 solution. If `ciwbuf<Esc>..` took you 14 keys and the reference does it in
@@ -84,6 +87,15 @@ LazyVim setup.
    with the most played ones. You play it in your Neovim, and your score is
    compared with the site's leaderboard.
 
+Press **`e`** for **Endless** whenever you have time left: tasks from every
+lesson, one after another, for as long as you like. Each one you solve climbs a
+level. New lessons join the mix as you climb, and the key budget shrinks from
+about twice the reference to exactly the reference by level 200. Go over the
+budget, `:Skip`, or ask for the answer, and it's a miss. You'll see the answer,
+type it with the keys shown, and a couple of tasks later the same skill comes
+back on another text, from memory. Each run starts a little below where the
+last one ended.
+
 Cards and tasks share one spaced-repetition schedule, like Anki. Whatever
 went well comes back later, and whatever you forgot comes back tomorrow.
 
@@ -98,6 +110,7 @@ lesson, and your progress with a keystroke-efficiency graph.
 | `t` | Run today's routine |
 | `Enter` | Start the selected step or lesson |
 | `Tab`, `j`/`k` | Move between panes and through lists |
+| `e` | Endless mode |
 | `c` / `g` / `p` | Cards / VimGolf / placement test |
 | `s` | Stats |
 | `q` | Quit |
@@ -184,6 +197,8 @@ uv run python tests/check_lessons.py            # plain-Vim lessons, in nvim --c
 uv run python tests/check_lessons.py --lazyvim  # LazyVim lessons, in your own config
 uv run python tests/check_answers.py            # card answers written different ways
 uv run python tests/live_lessons.py --all       # types every solution into the real runner (needs tmux)
+uv run python tests/live_retry.py               # a skipped task comes back (Learn, then Recall)
+uv run python tests/live_endless.py             # endless mode: a miss, its Learn copy and its Recall
 ```
 
 ## How it works

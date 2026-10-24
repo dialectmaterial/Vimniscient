@@ -39,7 +39,9 @@ class Task:
     index: int = 0  # position in its lesson
     ref_override: int | None = None  # when there's no reference solution (VimGolf)
     variants: list["Task"] = field(default_factory=list)
-    phase: str = "recall"  # learn (keys shown) | recall (from memory)
+    phase: str = "recall"  # learn (keys shown) | recall (from memory) | climb (endless mode)
+    # every version of the task, this one included (not compared: it holds the task itself)
+    siblings: list["Task"] = field(default_factory=list, compare=False, repr=False)
 
     @property
     def item_id(self) -> str:
@@ -53,6 +55,13 @@ class Task:
         """Version n of this task, cycling through the original and its variants."""
         n %= self.versions
         return self if n == 0 else self.variants[n - 1]
+
+    def next_version(self) -> "Task":
+        """The version after this one, for another go on a text not just seen."""
+        if len(self.siblings) < 2:
+            return self
+        i = next(i for i, t in enumerate(self.siblings) if t.start == self.start and t.target == self.target)
+        return self.siblings[(i + 1) % len(self.siblings)]
 
     def as_phase(self, phase: str) -> "Task":
         return replace(self, phase=phase)
@@ -112,6 +121,8 @@ def _load(source: str, name: str) -> Lesson:
     for i, t in enumerate(data["tasks"]):
         task = _task(t, None, lesson_id, i, data.get("ft", ""))
         task.variants = [_task(v, task, lesson_id, i, task.ft) for v in t.get("variants", [])]
+        for version in (task, *task.variants):
+            version.siblings = [task, *task.variants]
         tasks.append(task)
     return Lesson(
         id=lesson_id,
