@@ -5,13 +5,22 @@ import sqlite3
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
-from vimniscient.lessons import Lesson
+from vimniscient import srs
+from vimniscient.cards import DECK_ORDER, Card, Deck
+from vimniscient.lessons import Lesson, Task
 from vimniscient.session import TaskResult
 
-DATA_DIR = Path(os.environ.get("XDG_DATA_HOME", Path.home() / ".local/share")) / "vimniscient"
+# VIMNISCIENT_DATA points somewhere else, e.g. for testing without touching real progress.
+DATA_DIR = Path(
+    os.environ.get("VIMNISCIENT_DATA") or Path(os.environ.get("XDG_DATA_HOME", Path.home() / ".local/share")) / "vimniscient"
+)
 # Read by ~/.config/nvim/lua/plugins/vimniscient.lua to time hardtime's switch to blocking.
 STARTED_FILE = DATA_DIR / "started"
 HARDTIME_HINT_DAYS = 14
+
+NEW_CARDS_PER_DAY = 10
+MAX_DUE_CARDS = 30
+MAX_REVIEW_TASKS = 5
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS attempts (
@@ -25,7 +34,32 @@ CREATE TABLE IF NOT EXISTS attempts (
     keys TEXT NOT NULL,
     hints INTEGER NOT NULL
 );
+CREATE TABLE IF NOT EXISTS items (
+    id TEXT PRIMARY KEY,
+    kind TEXT NOT NULL,
+    ease REAL NOT NULL,
+    interval REAL NOT NULL,
+    due TEXT NOT NULL,
+    reps INTEGER NOT NULL,
+    lapses INTEGER NOT NULL,
+    created TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS card_log (
+    id INTEGER PRIMARY KEY,
+    ts TEXT NOT NULL,
+    card TEXT NOT NULL,
+    correct INTEGER NOT NULL,
+    answer TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS placed (
+    lesson TEXT PRIMARY KEY,
+    ts TEXT NOT NULL
+);
 """
+
+
+def _now() -> str:
+    return datetime.now().isoformat(timespec="seconds")
 
 
 class Progress:
@@ -36,16 +70,55 @@ class Progress:
         self.db = sqlite3.connect(DATA_DIR / "progress.db")
         self.db.executescript(SCHEMA)
 
-    def record(self, lesson: Lesson, results: list[TaskResult]) -> None:
-        ts = datetime.now().isoformat(timespec="seconds")
-        self.db.executemany(
-            "INSERT INTO attempts (ts, lesson, task, status, count, ref, keys, hints) VALUES (?,?,?,?,?,?,?,?)",
-            [
-                (ts, lesson.id, i, r.status, r.count, r.task.ref, r.keys, r.hints)
-                for i, r in enumerate(results)
-                if r.status != "unseen"
-            ],
+    # spaced repetition items
+
+    def item(self, item_id: str) -> srs.Item | None:
+        row = self.db.execute(
+            "SELECT id, kind, ease, interval, due, reps, lapses, created FROM items WHERE id = ?", (item_id,)
+        ).fetchone()
+        if not row:
+            return None
+        return srs.Item(row[0], row[1], row[2], row[3], date.fromisoformat(row[4]), row[5], row[6], date.fromisoformat(row[7]))
+
+    def items(self, kind: str) -> dict[str, srs.Item]:
+        rows = self.db.execute(
+            "SELECT id, kind, ease, interval, due, reps, lapses, created FROM items WHERE kind = ?", (kind,)
         )
+        return {
+            r[0]: srs.Item(r[0], r[1], r[2], r[3], date.fromisoformat(r[4]), r[5], r[6], date.fromisoformat(r[7]))
+            for r in rows
+        }
+
+    def _save(self, item: srs.Item) -> None:
+        self.db.execute(
+            "INSERT OR REPLACE INTO items (id, kind, ease, interval, due, reps, lapses, created) VALUES (?,?,?,?,?,?,?,?)",
+            (item.id, item.kind, item.ease, item.interval, item.due.isoformat(), item.reps, item.lapses, item.created.isoformat()),
+        )
+
+    def grade(self, item_id: str, kind: str, grade: int) -> srs.Item:
+        item = self.item(item_id) or srs.Item(item_id, kind)
+        srs.review(item, grade, date.today())
+        self._save(item)
+        self.db.commit()
+        return item
+
+    # vim tasks
+
+    def record(self, results: list[TaskResult]) -> None:
+        ts = _now()
+        for r in results:
+            if r.status == "unseen":
+                continue
+            self.db.execute(
+                "INSERT INTO attempts (ts, lesson, task, status, count, ref, keys, hints) VALUES (?,?,?,?,?,?,?,?)",
+                (ts, r.task.lesson_id, r.task.index, r.status, r.count, r.task.ref, r.keys, r.hints),
+            )
+            grade = srs.task_grade(r.status, r.count, r.task.ref, r.hints)
+            if grade is None:
+                continue
+            item = self.item(r.task.item_id) or srs.Item(r.task.item_id, "task")
+            srs.review(item, grade, date.today())
+            self._save(item)
         self.db.commit()
 
     def best(self, lesson: Lesson) -> dict[int, int]:
@@ -56,20 +129,129 @@ class Progress:
         )
         return dict(rows.fetchall())
 
+    def is_placed(self, lesson: Lesson) -> bool:
+        return self.db.execute("SELECT 1 FROM placed WHERE lesson = ?", (lesson.id,)).fetchone() is not None
+
     def is_done(self, lesson: Lesson) -> bool:
-        return len(self.best(lesson)) == len(lesson.tasks)
+        return self.is_placed(lesson) or len(self.best(lesson)) == len(lesson.tasks)
 
     def next_lesson(self, lessons: list[Lesson]) -> Lesson | None:
         return next((lesson for lesson in lessons if not self.is_done(lesson)), None)
 
+    def current_week(self, lessons: list[Lesson]) -> int:
+        nxt = self.next_lesson(lessons)
+        return nxt.week if nxt else max(lesson.week for lesson in lessons) + 1
+
+    def due_tasks(self, lessons: list[Lesson]) -> list[Task]:
+        """Tasks from earlier days that are due for review, most overdue first."""
+        today = date.today()
+        tasks = {t.item_id: t for lesson in lessons for t in lesson.tasks}
+        due = sorted(
+            (item for item in self.items("task").values() if item.due <= today and item.id in tasks),
+            key=lambda item: (item.due, -item.lapses),
+        )
+        return [tasks[item.id] for item in due[:MAX_REVIEW_TASKS]]
+
+    def place(self, lessons: list[Lesson], results: list[TaskResult]) -> list[Lesson]:
+        """Mark lessons as known from a placement run; returns the lessons placed."""
+        passed: dict[str, list[bool]] = {}
+        for r in results:
+            ok = srs.task_grade(r.status, r.count, r.task.ref, r.hints) in (srs.GOOD, srs.EASY)
+            passed.setdefault(r.task.lesson_id, []).append(ok)
+        placed = [lesson for lesson in lessons if passed.get(lesson.id) and all(passed[lesson.id])]
+        # A week's review day counts as placed when every lesson of that week is.
+        for week in {lesson.week for lesson in lessons}:
+            days = [lesson for lesson in lessons if lesson.week == week]
+            tested = [lesson for lesson in days if lesson.id in passed]
+            if tested and all(lesson in placed for lesson in tested):
+                placed += [lesson for lesson in days if lesson.id not in passed and lesson not in placed]
+        tested_ids = {r.task.item_id for r in results}
+        for lesson in placed:
+            self.db.execute("INSERT OR IGNORE INTO placed (lesson, ts) VALUES (?, ?)", (lesson.id, _now()))
+            # The tasks that weren't tested come up in review within a week.
+            for t in lesson.tasks:
+                if t.item_id not in tested_ids and not self.item(t.item_id):
+                    self._save(srs.Item(t.item_id, "task", interval=7, due=date.today() + timedelta(days=7),
+                                        created=date.today()))
+        self.db.commit()
+        return placed
+
+    # cards
+
+    def log_card(self, card: Card, correct: bool, answer: str) -> None:
+        self.db.execute(
+            "INSERT INTO card_log (ts, card, correct, answer) VALUES (?,?,?,?)", (_now(), card.id, int(correct), answer)
+        )
+        self.db.commit()
+
+    def unlocked(self, decks: dict[str, Deck], lessons: list[Lesson]) -> list[Card]:
+        week = self.current_week(lessons)
+        return [card for deck in decks.values() for card in deck.cards if card.week <= week]
+
+    def due_cards(self, decks: dict[str, Deck], lessons: list[Lesson]) -> list[Card]:
+        today = date.today()
+        items = self.items("card")
+        due = [c for c in self.unlocked(decks, lessons) if c.id in items and items[c.id].due <= today]
+        due.sort(key=lambda c: items[c.id].due)
+        return due[:MAX_DUE_CARDS]
+
+    def new_cards(self, decks: dict[str, Deck], lessons: list[Lesson]) -> list[Card]:
+        """Today's unseen cards, taking turns between decks."""
+        items = self.items("card")
+        today = date.today()
+        left = NEW_CARDS_PER_DAY - sum(1 for item in items.values() if item.created == today)
+        unseen: dict[str, list[Card]] = {}
+        for card in self.unlocked(decks, lessons):
+            if card.id not in items:
+                unseen.setdefault(card.deck, []).append(card)
+        for cards in unseen.values():
+            cards.sort(key=lambda c: c.order)
+        picked: list[Card] = []
+        order = [d for d in DECK_ORDER if d in unseen] + [d for d in unseen if d not in DECK_ORDER]
+        while left > 0 and any(unseen.get(d) for d in order):
+            for deck in order:
+                if left > 0 and unseen.get(deck):
+                    picked.append(unseen[deck].pop(0))
+                    left -= 1
+        return picked
+
+    # overview
+
+    def days_trained(self) -> set[date]:
+        rows = self.db.execute(
+            "SELECT DISTINCT substr(ts, 1, 10) FROM attempts UNION SELECT DISTINCT substr(ts, 1, 10) FROM card_log"
+        )
+        return {date.fromisoformat(d) for (d,) in rows}
+
     def streak(self) -> int:
-        days = {date.fromisoformat(d) for (d,) in self.db.execute("SELECT DISTINCT substr(ts, 1, 10) FROM attempts")}
+        days = self.days_trained()
         day = date.today() if date.today() in days else date.today() - timedelta(days=1)
         n = 0
         while day in days:
             n += 1
             day -= timedelta(days=1)
         return n
+
+    def efficiency_by_day(self, limit: int = 7) -> list[tuple[str, int, int, int]]:
+        """(day, solved tasks, keys typed, reference keys) for recent training days."""
+        rows = self.db.execute(
+            "SELECT substr(ts, 1, 10) AS d, COUNT(*), SUM(count), SUM(ref) FROM attempts "
+            "WHERE status = 'solved' GROUP BY d ORDER BY d DESC LIMIT ?",
+            (limit,),
+        )
+        return list(rows)
+
+    def card_accuracy(self, limit: int = 7) -> list[tuple[str, int, int]]:
+        """(day, answered, correct) for recent card days."""
+        rows = self.db.execute(
+            "SELECT substr(ts, 1, 10) AS d, COUNT(*), SUM(correct) FROM card_log GROUP BY d ORDER BY d DESC LIMIT ?",
+            (limit,),
+        )
+        return list(rows)
+
+    def hardest(self, limit: int = 6) -> list[srs.Item]:
+        rows = self.db.execute("SELECT id FROM items WHERE lapses > 0 ORDER BY lapses DESC, ease ASC LIMIT ?", (limit,))
+        return [self.item(item_id) for (item_id,) in rows]
 
     def hardtime_block_date(self) -> date:
         started = date.fromisoformat(STARTED_FILE.read_text().strip())

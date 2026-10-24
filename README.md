@@ -33,12 +33,44 @@ Optional training wheels for everyday editing: copy
 
 | Command | What it does |
 |---|---|
-| `vimniscient` | Menu: today's lesson (`t`), all lessons (`j`/`k`, Enter) |
+| `vimniscient` | The menu (keys below) |
 | `vimniscient list` | List the lessons |
 | `vimniscient run w1d1-words` | Run one lesson directly |
 
-Inside a lesson: `:Hint` (twice for the answer), `:Skip`, `:Reset`, `:q` to stop.
-Progress is kept in `~/.local/share/vimniscient/progress.db`.
+In the menu: `t` today, `c` cards only, `p` placement test, `s` stats,
+`j`/`k` + Enter for any lesson, `q` to quit.
+
+**Today** (`t`) is the daily routine: the cards that are due plus up to 10
+new ones, then the Vim tasks from earlier days that are due again, then the
+next lesson. Inside a lesson: `:Hint` (twice for the answer), `:Skip`,
+`:Reset`, `:q` to stop.
+
+**Placement** (`p`) gives you two tasks from every lesson. Each lesson you
+clearly know (both tasks solved without hints, in at most about 1.5× the
+reference keys) is marked done, and its other tasks come back in review a
+week later.
+
+### Cards
+
+You type the keys for a prompt. For key sequences, `ciw`, `<C-a>`/`ctrl-a`/`^a`
+and `<leader>ff`/`space ff` are all accepted. For chords, write
+`SUPER SHIFT + B` or `super+shift+b`. When your answer meant the same thing
+but got marked wrong, press `o` ("I was right").
+
+| Deck | Where the cards come from |
+|---|---|
+| Vim | `cards/vim.yaml`, unlocked week by week along with the lessons |
+| LazyVim | a core set in `cards/lazyvim.yaml`, plus every leader keymap in **your** Neovim config |
+| Omarchy | live from `omarchy menu keybindings --print` (what SUPER + K shows) |
+| tmux | live from `omarchy-menu-tmux-keybindings --print` |
+| Shell, foot, Zathura | `cards/*.yaml`, checked against the man pages and your configs |
+
+Cards and Vim tasks share one spaced-repetition schedule (a small SM-2
+variant in `srs.py`). Getting something right pushes it further out,
+forgetting it brings it back tomorrow. A new card you get right the first
+time counts as known and skips ahead. Progress is kept in
+`~/.local/share/vimniscient/progress.db` (set `VIMNISCIENT_DATA` to use
+another folder).
 
 ## Curriculum
 
@@ -74,10 +106,11 @@ tasks:
     ft: python                # optional filetype
 ```
 
-Check that every reference solution really produces its target:
+Check that every reference solution really produces its target, and that card answers written in different ways match:
 
 ```bash
 uv run python tests/check_lessons.py
+uv run python tests/check_answers.py
 ```
 
 ## How it works

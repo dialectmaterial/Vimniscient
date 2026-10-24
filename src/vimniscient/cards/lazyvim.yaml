@@ -1,0 +1,38 @@
+deck: lazyvim
+title: LazyVim
+style: keys
+case_sensitive: true
+# The core set, introduced first. The rest of the deck is read from your own
+# Neovim config (every keymap with a description), so it follows your setup.
+# LSP keys are listed here because they only exist once a language server attaches.
+cards:
+  - {prompt: Find files (root dir), answer: ['<leader><Space>', '<leader>ff']}
+  - {prompt: Grep the project (root dir), answer: [<leader>/, <leader>sg]}
+  - {prompt: Switch buffer, answer: ['<leader>,', '<leader>fb']}
+  - {prompt: Recent files, answer: [<leader>fr]}
+  - {prompt: File explorer (neo-tree), answer: [<leader>e]}
+  - {prompt: Next buffer / previous buffer, answer: [<S-l><S-h>, ']b[b']}
+  - {prompt: Delete the buffer, answer: [<leader>bd]}
+  - {prompt: Split the window below / to the right, answer: ['<leader>-<leader>|']}
+  - {prompt: Move to the window on the left, answer: [<C-h>]}
+  - {prompt: Search keymaps, answer: [<leader>sk]}
+  - {prompt: Search help pages, answer: [<leader>sh]}
+  - {prompt: Lazygit, answer: [<leader>gg]}
+  - {prompt: Comment the line, answer: [gcc]}
+  - {prompt: Flash jump (type a few characters, then a label), answer: [s]}
+  - {prompt: Go to definition, answer: [gd]}
+  - {prompt: Show references, answer: [gr]}
+  - {prompt: Hover documentation, answer: [K]}
+  - {prompt: Code action, answer: [<leader>ca]}
+  - {prompt: Rename the symbol, answer: [<leader>cr]}
+  - {prompt: Next diagnostic / previous diagnostic, answer: [']d[d']}
+  - {prompt: Format the file, answer: [<leader>cf]}
+  - {prompt: Diagnostics list (Trouble), answer: [<leader>xx]}
+  - {prompt: Toggle a terminal, answer: [<C-/>, <leader>ft]}
+  - {prompt: Quit everything, answer: [<leader>qq]}
+  - {prompt: 'neo-tree: open the file with the system app', answer: [O]}
+  - {prompt: 'neo-tree: add a file or folder', answer: [a]}
+  - {prompt: 'neo-tree: rename', answer: [r]}
+  - {prompt: 'neo-tree: delete', answer: [d]}
+  - {prompt: 'neo-tree: toggle hidden files', answer: [H]}
+  - {prompt: 'neo-tree: show all neo-tree keys', answer: ['?']}

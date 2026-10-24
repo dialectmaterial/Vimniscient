@@ -1,0 +1,22 @@
+deck: shell
+title: Shell (bash)
+style: keys
+case_sensitive: false
+note: Readline keys work in bash and in most terminal prompts.
+cards:
+  - {prompt: Search back through your command history, answer: [<C-r>]}
+  - {prompt: Jump to the start of the line, answer: [<C-a>, <Home>]}
+  - {prompt: Jump to the end of the line, answer: [<C-e>, <End>]}
+  - {prompt: Delete the word before the cursor, answer: [<C-w>]}
+  - {prompt: Delete from the cursor to the start of the line, answer: [<C-u>]}
+  - {prompt: Delete from the cursor to the end of the line, answer: [<C-k>]}
+  - {prompt: Paste what you just deleted with Ctrl-w/u/k, answer: [<C-y>]}
+  - {prompt: Move one word back, answer: [<M-b>]}
+  - {prompt: Move one word forward, answer: [<M-f>]}
+  - {prompt: Clear the screen, answer: [<C-l>]}
+  - {prompt: Cancel the current line, answer: [<C-c>]}
+  - {prompt: Insert the last argument of the previous command, answer: [<M-.>, '!$']}
+  - {prompt: Run the previous command again with sudo, answer: [sudo !!]}
+  - {prompt: Open the current command in your editor, answer: [<C-x><C-e>]}
+  - {prompt: Undo the last edit on the command line, answer: [<C-_>, <C-x><C-u>]}
+  - {prompt: Go back to the previous directory, answer: [cd -]}

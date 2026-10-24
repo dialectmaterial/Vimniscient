@@ -24,6 +24,12 @@ class Task:
     solution: str
     hint: str
     ft: str
+    lesson_id: str = ""
+    index: int = 0  # position in its lesson
+
+    @property
+    def item_id(self) -> str:
+        return f"task:{self.lesson_id}#{self.index}"
 
     @property
     def ref(self) -> int:
@@ -58,8 +64,9 @@ def _parse_start(text: str) -> tuple[list[str], tuple[int, int]]:
 
 def _load(source: str, name: str) -> Lesson:
     data = yaml.safe_load(source)
+    lesson_id = name.removesuffix(".yaml")
     tasks = []
-    for t in data["tasks"]:
+    for i, t in enumerate(data["tasks"]):
         start, cursor = _parse_start(t["start"])
         tasks.append(
             Task(
@@ -70,10 +77,12 @@ def _load(source: str, name: str) -> Lesson:
                 solution=t["solution"],
                 hint=t.get("hint", ""),
                 ft=t.get("ft", data.get("ft", "")),
+                lesson_id=lesson_id,
+                index=i,
             )
         )
     return Lesson(
-        id=name.removesuffix(".yaml"),
+        id=lesson_id,
         week=data["week"],
         day=data["day"],
         title=data["title"],

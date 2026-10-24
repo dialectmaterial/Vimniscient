@@ -1,0 +1,28 @@
+deck: zathura
+title: Zathura (PDF)
+style: keys
+case_sensitive: true
+# Defaults from zathura(1); ~/.config/zathura/zathurarc doesn't change any keys.
+cards:
+  - {prompt: Next page / previous page, answer: [JK, J K]}
+  - {prompt: Half a page down, answer: [<C-d>]}
+  - {prompt: Go to the first page, answer: [gg]}
+  - {prompt: Go to the last page, answer: [G]}
+  - {prompt: Go to page 12, answer: [12G]}
+  - {prompt: Search the text, answer: [/]}
+  - {prompt: Fit the page width, answer: [s]}
+  - {prompt: Fit the whole page, answer: [a]}
+  - {prompt: Zoom in / out / back to original, answer: [+-=, + - =]}
+  - {prompt: Dark mode (recolor), answer: [<C-r>]}
+  - {prompt: Show the table of contents, answer: [<Tab>]}
+  - {prompt: Toggle two pages side by side, answer: [d]}
+  - {prompt: Follow a link with the keyboard, answer: [f]}
+  - {prompt: Rotate the page, answer: [r]}
+  - {prompt: Reload the document, answer: [R]}
+  - {prompt: Jump back after following a link, answer: [<C-o>]}
+  - {prompt: Set quickmark a, answer: [ma]}
+  - {prompt: Go to quickmark a, answer: ["'a"]}
+  - {prompt: Presentation mode, answer: [<F5>]}
+  - {prompt: Fullscreen, answer: [<F11>]}
+  - {prompt: Toggle the status bar, answer: [<C-n>]}
+  - {prompt: Open another document, answer: [o]}

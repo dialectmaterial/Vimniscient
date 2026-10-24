@@ -32,6 +32,6 @@ def main() -> None:
     if lesson is None:
         parser.error(f"no lesson {args.lesson!r}; try `vimniscient list`")
     results = run_lesson(lesson)
-    Progress().record(lesson, results)
+    Progress().record(results)
     for i, r in enumerate(results, 1):
         print(f"{i}. {r.status:8} {r.count if r.status == 'solved' else '-':>3} keys (ref {r.task.ref})  {r.task.goal}")

@@ -1,0 +1,18 @@
+deck: foot
+title: foot (terminal)
+style: combo
+case_sensitive: false
+# Defaults from foot.ini(5), with copy/paste as set in ~/.config/foot/foot.ini.
+cards:
+  - {prompt: Copy the selection, answer: [CTRL SHIFT + C, CTRL + INSERT]}
+  - {prompt: Paste from the clipboard, answer: [CTRL SHIFT + V, SHIFT + INSERT]}
+  - {prompt: Scroll back one page, answer: [SHIFT + PAGE_UP]}
+  - {prompt: Scroll forward one page, answer: [SHIFT + PAGE_DOWN]}
+  - {prompt: Search the scrollback, answer: [CTRL SHIFT + R]}
+  - {prompt: Make the font bigger, answer: [CTRL + PLUS, CTRL + EQUAL]}
+  - {prompt: Make the font smaller, answer: [CTRL + MINUS]}
+  - {prompt: Reset the font size, answer: [CTRL + 0]}
+  - {prompt: Open a new terminal in the same directory, answer: [CTRL SHIFT + N]}
+  - {prompt: Pick a URL on screen with the keyboard, answer: [CTRL SHIFT + O]}
+  - {prompt: Jump to the previous shell prompt, answer: [CTRL SHIFT + Z]}
+  - {prompt: Type a Unicode character, answer: [CTRL SHIFT + U]}
