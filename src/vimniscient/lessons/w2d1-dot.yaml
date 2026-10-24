@@ -1,0 +1,54 @@
+week: 2
+day: 1
+title: The dot command
+intro: |
+  `.` repeats your last change: the whole thing, including the text you
+  typed in insert mode. Make one change carefully, then move and press `.`
+  wherever it should happen again. This is the most useful key in Vim.
+keys: ['.', 'A;<Esc>j.', '>>j.', 'dw..']
+tasks:
+  - goal: 'Change both "foo" to "bar".'
+    start: |-
+      x = ▮foo + foo
+    target: |-
+      x = bar + bar
+    solution: ciwbar<Esc>ww.
+    hint: Change the first one with ciw, jump to the second with w w, then press .
+  - goal: 'Add a semicolon to every line.'
+    start: |-
+      ▮let a = 1
+      let b = 2
+      let c = 3
+    target: |-
+      let a = 1;
+      let b = 2;
+      let c = 3;
+    solution: A;<Esc>j.j.
+    hint: A;<Esc> on the first line, then j . j .
+  - goal: 'Indent both lines.'
+    start: |-
+      ▮one
+      two
+    target: |2-
+          one
+          two
+    solution: '>>j.'
+    hint: '>> indents one line; . repeats it on the next.'
+  - goal: 'Delete all three "very".'
+    start: |-
+      the ▮very very very good film
+    target: |-
+      the good film
+    solution: dw..
+    hint: dw once, then . twice. (3dw is just as short.)
+  - goal: 'Turn the lines into a list with "- ".'
+    start: |-
+      ▮apples
+      pears
+      plums
+    target: |-
+      - apples
+      - pears
+      - plums
+    solution: 'I- <Esc>j.j.'
+    hint: I- <Esc> once, then j . j .

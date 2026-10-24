@@ -1,0 +1,52 @@
+week: 2
+day: 3
+title: The cgn trick
+intro: |
+  `gn` selects the next search match. So `cgn` changes the next match, and
+  `.` then changes the one after that, and the one after that. Search once
+  (with `/` or `*`), `cgn` the first, then press `.` per match. Press `n`
+  to skip one you want to keep. `dgn` deletes matches the same way.
+keys: ['cgn', 'dgn', '*cgn', 'n.']
+tasks:
+  - goal: 'Rename every tmp to buf.'
+    ft: python
+    start: |-
+      ▮tmp = read()
+      print(tmp)
+      save(tmp)
+    target: |-
+      buf = read()
+      print(buf)
+      save(buf)
+    solution: '*cgnbuf<Esc>..'
+    hint: '* sets the search; cgnbuf<Esc> changes one match; . does the rest (it wraps around).'
+  - goal: 'Change the first and the last "the" to "a", keep the middle one.'
+    start: |-
+      ▮the cat saw the dog and the bird
+    target: |-
+      a cat saw the dog and a bird
+    solution: '*Ncgna<Esc>nn.'
+    hint: '* then N to go back to the first; cgna<Esc>; n n skips one; . changes the last.'
+  - goal: 'Replace "very good" with "great" on both lines.'
+    start: |-
+      ▮It was very good.
+      The food was very good.
+    target: |-
+      It was great.
+      The food was great.
+    solution: /very good<CR>cgngreat<Esc>.
+    hint: 'Search for the phrase, cgn changes the whole match, . the next one.'
+  - goal: 'Change all four foo to bar.'
+    start: |-
+      rm ▮foo; rm foo; rm foo; rm foo
+    target: |-
+      rm bar; rm bar; rm bar; rm bar
+    solution: '*cgnbar<Esc>...'
+    hint: 'Same trick: * then cgn, then . for each remaining match.'
+  - goal: 'Delete every "um, ".'
+    start: |-
+      So ▮um, I think um, we should um, go.
+    target: |-
+      So I think we should go.
+    solution: /um, <CR>dgn..
+    hint: 'dgn deletes the next match. Search for "um, " with the space.'

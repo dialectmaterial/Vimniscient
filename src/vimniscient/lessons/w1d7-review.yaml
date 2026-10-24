@@ -1,0 +1,62 @@
+week: 1
+day: 7
+title: Week 1 review
+intro: |
+  A mix of everything from this week. Try each one before reaching for
+  `:Hint`, and try to match the reference keystroke count.
+keys: [ciw, ci(, das, dd, daw, ct, ">ip", "3f,"]
+tasks:
+  - goal: 'Switch the mode to light.'
+    ft: python
+    start: |-
+      config = {"mode": "▮dark"}
+    target: |-
+      config = {"mode": "light"}
+    solution: ciwlight<Esc>
+    hint: ciw or ci" both work.
+  - goal: 'Replace all three arguments with z.'
+    ft: python
+    start: |-
+      f(▮a, b, c)
+    target: |-
+      f(z)
+    solution: ci(z<Esc>
+    hint: ci( changes everything inside the parentheses.
+  - goal: 'Delete the second sentence.'
+    start: |-
+      One. ▮Two is here. Three.
+    target: |-
+      One. Three.
+    solution: das
+    hint: das deletes a sentence and its trailing space.
+  - goal: 'Delete the sys and re imports.'
+    ft: python
+    start: |-
+      import os
+      ▮import sys
+      import re
+      import json
+    target: |-
+      import os
+      import json
+    solution: 2dd
+    hint: A count works on dd too.
+  - goal: 'Change the subdomain to new.'
+    start: |-
+      url = 'https://▮old.example.org'
+    target: |-
+      url = 'https://new.example.org'
+    solution: ciwnew<Esc>
+    hint: A dot ends a word, so ciw only takes "old". ct. works too.
+  - goal: 'Indent the body of the function.'
+    ft: python
+    start: |-
+      def f():
+      ▮x = 1
+      return x
+    target: |-
+      def f():
+          x = 1
+          return x
+    solution: '>j'
+    hint: '> with a motion indents lines: >j indents this line and the next.'

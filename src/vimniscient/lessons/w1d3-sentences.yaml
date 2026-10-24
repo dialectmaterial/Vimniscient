@@ -1,0 +1,66 @@
+week: 1
+day: 3
+title: Sentences and paragraphs
+intro: |
+  Bigger text objects: `is`/`as` for a sentence, `ip`/`ap` for a paragraph
+  (a block of lines between empty lines). `ap` includes the empty line after
+  it, so `dap` leaves no gap. Any operator works on them, including `>` to
+  indent and `y` to yank.
+keys: [dap, yap, cis, das, ">ip"]
+tasks:
+  - goal: 'Delete the middle paragraph.'
+    start: |-
+      First paragraph stays.
+
+      Second ▮paragraph goes.
+      It has two lines.
+
+      Third paragraph stays.
+    target: |-
+      First paragraph stays.
+
+      Third paragraph stays.
+    solution: dap
+    hint: dap deletes the paragraph and the empty line after it.
+  - goal: 'Duplicate the first paragraph.'
+    start: |-
+      ▮Repeat after me.
+
+      Done.
+    target: |-
+      Repeat after me.
+
+      Repeat after me.
+
+      Done.
+    solution: yapP
+    hint: yap yanks the paragraph with its empty line; P puts it above the cursor.
+  - goal: 'Replace the wrong sentence with "Fixed it."'
+    start: |-
+      This is fine. This sentence is ▮wrong. That is fine.
+    target: |-
+      This is fine. Fixed it. That is fine.
+    solution: cisFixed it.<Esc>
+    hint: cis changes the inner sentence and leaves the spaces around it.
+  - goal: 'Delete the middle sentence.'
+    start: |-
+      Keep this. Delete ▮this one. Keep that.
+    target: |-
+      Keep this. Keep that.
+    solution: das
+    hint: das deletes a sentence plus the space after it.
+  - goal: 'Indent the three steps.'
+    start: |-
+      Steps:
+
+      ▮mix
+      bake
+      eat
+    target: |-
+      Steps:
+
+          mix
+          bake
+          eat
+    solution: '>ip'
+    hint: '>ip indents the inner paragraph. (Indent here is 4 spaces.)'

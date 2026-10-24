@@ -1,0 +1,58 @@
+week: 1
+day: 2
+title: Quotes, brackets and tags
+intro: |
+  The same `i`/`a` trick works on pairs: `i"` is inside the quotes, `a"`
+  includes them. Brackets: `i(` `i[` `i{` `i<`, and `it` for inside an HTML
+  tag. For quotes the cursor doesn't even have to be inside: `ci"` jumps to
+  the next quoted string on the line.
+keys: ['ci"', 'da"', 'di(', 'da(', 'di[', 'cit']
+tasks:
+  - goal: 'Change the name to Noam.'
+    ft: python
+    start: |-
+      name = "▮Alice"
+    target: |-
+      name = "Noam"
+    solution: ci"Noam<Esc>
+    hint: ci" changes everything inside the quotes.
+  - goal: 'Change the greeting to "hi", starting from the beginning of the line.'
+    ft: python
+    start: |-
+      ▮greeting = "hello world"
+    target: |-
+      greeting = "hi"
+    solution: ci"hi<Esc>
+    hint: You don't have to move first. ci" finds the next quotes on the line.
+  - goal: 'Empty the inner parentheses.'
+    ft: python
+    start: |-
+      print(len(wo▮rds))
+    target: |-
+      print(len())
+    solution: di(
+    hint: di( deletes inside the innermost parentheses around the cursor.
+  - goal: 'Delete the argument list, parentheses included.'
+    ft: python
+    start: |-
+      result = total(▮a, b) + 1
+    target: |-
+      result = total + 1
+    solution: da(
+    hint: da( deletes the parentheses too. (dab is the same thing.)
+  - goal: 'Empty the list.'
+    ft: python
+    start: |-
+      tags = [▮"noun", "verb"]
+    target: |-
+      tags = []
+    solution: di[
+    hint: 'di[ works like di(, for square brackets.'
+  - goal: 'Change the text inside the tag to "strong".'
+    ft: html
+    start: |-
+      <b>bo▮ld text</b>
+    target: |-
+      <b>strong</b>
+    solution: citstrong<Esc>
+    hint: it is the inner tag object. cit changes the tag's content.

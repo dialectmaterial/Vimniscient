@@ -1,0 +1,61 @@
+week: 2
+day: 6
+title: Visual mode
+intro: |
+  `v` selects characters, `V` whole lines. Move to grow the selection, then
+  give an operator: `d`, `c`, `y`, `>`, `U` (uppercase), `u` (lowercase),
+  `J` (join). `%` jumps to the matching bracket, so `v%` selects a bracketed
+  group, and `c%` changes it without visual mode. Visual mode is for when you
+  want to *see* what you'll change. Often an operator plus a motion is
+  shorter.
+keys: [v, V, "V>", vU, VJ, "%", c%]
+tasks:
+  - goal: 'Delete the first two lines with V.'
+    start: |-
+      ▮a
+      b
+      c
+    target: |-
+      c
+    solution: Vjd
+    hint: V selects the line, j extends it, d deletes.
+  - goal: 'Uppercase "this loud".'
+    start: |-
+      make ▮this loud please
+    target: |-
+      make THIS LOUD please
+    solution: veeU
+    hint: v, then e e to the end of "loud", then U.
+  - goal: 'Join the first three lines.'
+    start: |-
+      ▮one
+      two
+      three
+      four
+    target: |-
+      one two three
+      four
+    solution: VjjJ
+    hint: Select three lines with V j j and press J. (3J is shorter.)
+  - goal: 'Indent the function body.'
+    ft: python
+    start: |-
+      def f():
+      ▮x = 1
+      y = 2
+      return x
+    target: |-
+      def f():
+          x = 1
+          y = 2
+          return x
+    solution: Vjj>
+    hint: V j j selects the three lines, > indents them.
+  - goal: 'Replace the whole condition with "ok".'
+    ft: python
+    start: |-
+      if ▮(ready and (x > 0)):
+    target: |-
+      if ok:
+    solution: c%ok<Esc>
+    hint: '% jumps to the matching bracket, so c% changes the whole group. (v%c works too.)'

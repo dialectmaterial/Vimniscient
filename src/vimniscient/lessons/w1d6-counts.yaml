@@ -1,0 +1,59 @@
+week: 1
+day: 6
+title: Counts
+intro: |
+  Put a number in front and it repeats: `3dw` deletes three words, `3dd`
+  three lines, `5x` five characters, `3J` joins three lines, `2f,` finds the
+  second comma. `c2w` changes two words. Counting is often shorter than
+  pressing a key again and again.
+keys: [3dw, 3dd, c2w, 5x, "3f,", 3J]
+tasks:
+  - goal: 'Delete "four five six".'
+    start: |-
+      one two three ▮four five six seven
+    target: |-
+      one two three seven
+    solution: 3dw
+    hint: 3dw deletes three words, with their spaces.
+  - goal: 'Delete the three "drop" lines.'
+    start: |-
+      keep
+      ▮drop
+      drop
+      drop
+      keep
+    target: |-
+      keep
+      keep
+    solution: 3dd
+    hint: 3dd deletes three lines, starting at the cursor.
+  - goal: 'Change "very big" to "small".'
+    start: |-
+      a ▮very big house
+    target: |-
+      a small house
+    solution: c2wsmall<Esc>
+    hint: c2w changes two words.
+  - goal: 'Make it 10 instead of 1000000.'
+    start: |-
+      x = 10▮00000
+    target: |-
+      x = 10
+    solution: 5x
+    hint: 5x deletes five characters.
+  - goal: 'Delete from the third comma to the end.'
+    start: |-
+      ▮red, green, blue, yellow
+    target: |-
+      red, green, blue
+    solution: 3f,D
+    hint: 3f, jumps to the third comma, D deletes from there.
+  - goal: 'Join the three lines into one.'
+    start: |-
+      ▮one
+      two
+      three
+    target: |-
+      one two three
+    solution: 3J
+    hint: 3J joins three lines.

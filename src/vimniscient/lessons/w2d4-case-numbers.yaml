@@ -1,0 +1,59 @@
+week: 2
+day: 4
+title: Case and numbers
+intro: |
+  `~` flips the case of one character. `gU`, `gu` and `g~` are operators:
+  `gUiw` uppercases a word, `guu` lowercases a line. `Ctrl-a` adds one to the
+  next number on the line and `Ctrl-x` subtracts one; with a count, `30
+  Ctrl-a` adds thirty. The cursor doesn't need to be on the number.
+keys: ["~", gUiw, guu, g~iw, "<C-a>", "<C-x>"]
+tasks:
+  - goal: 'Capitalise the first letter.'
+    start: |-
+      ▮hello world
+    target: |-
+      Hello world
+    solution: '~'
+    hint: '~ flips the case of the character under the cursor.'
+  - goal: 'Uppercase "nasa".'
+    start: |-
+      the ▮nasa mission
+    target: |-
+      the NASA mission
+    solution: gUiw
+    hint: gU is the uppercase operator; iw is the word.
+  - goal: 'Make the whole line lowercase.'
+    start: |-
+      ▮THIS SHOULD BE QUIET
+    target: |-
+      this should be quiet
+    solution: guu
+    hint: guu lowercases the line (gu + u, like dd).
+  - goal: 'Bump the version to 4.'
+    start: |-
+      ▮version = 3
+    target: |-
+      version = 4
+    solution: <C-a>
+    hint: Ctrl-a adds one to the next number on the line.
+  - goal: 'Double the timeout to 60.'
+    start: |-
+      ▮timeout = 30
+    target: |-
+      timeout = 60
+    solution: 30<C-a>
+    hint: With a count, Ctrl-a adds that many.
+  - goal: 'Go back one year.'
+    start: |-
+      ▮year = 2026
+    target: |-
+      year = 2025
+    solution: <C-x>
+    hint: Ctrl-x subtracts one.
+  - goal: 'Flip the case of the first word.'
+    start: |-
+      ▮fLIP the case
+    target: |-
+      Flip the case
+    solution: g~iw
+    hint: g~ toggles case over a motion or text object.

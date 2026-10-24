@@ -1,0 +1,56 @@
+week: 2
+day: 7
+title: Week 2 review
+intro: |
+  Dot, search, cgn, case, numbers and visual mode, mixed. Look for the
+  shortest route before you start typing.
+keys: [".", "*", cgn, gUiw, "<C-a>", Vu, dt]
+tasks:
+  - goal: 'Uppercase every standalone "id".'
+    ft: python
+    start: |-
+      ▮id = get_id(id)
+    target: |-
+      ID = get_id(ID)
+    solution: '*gUiwn.'
+    hint: '* finds the other whole-word id; gUiw, then n and . for the first one.'
+  - goal: 'Add one to every number.'
+    start: |-
+      ▮a=1 b=2 c=3
+    target: |-
+      a=2 b=3 c=4
+    solution: <C-a>w.w.
+    hint: Ctrl-a, then w and . to repeat it on the next ones.
+  - goal: 'Fix every "teh".'
+    start: |-
+      ▮teh cat and teh dog and teh end
+    target: |-
+      the cat and the dog and the end
+    solution: '*cgnthe<Esc>..'
+    hint: '* then cgn, then . . for the others.'
+  - goal: 'Lowercase the whole line.'
+    start: |-
+      ▮SHOUTING IS RUDE
+    target: |-
+      shouting is rude
+    solution: Vu
+    hint: V selects the line, u lowercases the selection.
+  - goal: 'Delete up to "here".'
+    start: |-
+      ▮delete until here: keep
+    target: |-
+      here: keep
+    solution: dth
+    hint: The first h after the cursor is in "here", so dth is enough.
+  - goal: 'Comment out all three lines with "# ".'
+    ft: python
+    start: |-
+      ▮a = 1
+      b = 2
+      c = 3
+    target: |-
+      # a = 1
+      # b = 2
+      # c = 3
+    solution: 'I# <Esc>j.j.'
+    hint: I# <Esc>, then j . j .

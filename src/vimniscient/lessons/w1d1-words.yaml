@@ -1,0 +1,55 @@
+week: 1
+day: 1
+title: Word text objects
+intro: |
+  An operator (`c` change, `d` delete, `y` yank) followed by a text object acts
+  on a whole thing, wherever the cursor is inside it. `iw` is the *inner word*,
+  `aw` is *a word* plus the space after it. `iW`/`aW` are WORDs: everything
+  between spaces, punctuation included.
+keys: [ciw, diw, daw, ciW, yiw, viwp]
+tasks:
+  - goal: 'Change "slow" to "quick" (the cursor is in the middle of the word).'
+    start: |-
+      The sl▮ow brown fox jumps.
+    target: |-
+      The quick brown fox jumps.
+    solution: ciwquick<Esc>
+    hint: ciw changes the inner word under the cursor, from anywhere inside it.
+  - goal: 'Delete one "very", including its space.'
+    start: |-
+      Morphology is a ve▮ry very rich field.
+    target: |-
+      Morphology is a very rich field.
+    solution: daw
+    hint: daw deletes a word and the space after it, so no double space is left.
+  - goal: 'Replace the whole URL with "the site".'
+    start: |-
+      Open www.ex▮ample.com now.
+    target: |-
+      Open the site now.
+    solution: ciWthe site<Esc>
+    hint: A WORD (capital W) runs from space to space, dots included. Try ciW.
+  - goal: 'Change the function name to compute_sum.'
+    ft: python
+    start: |-
+      def ▮calc_total(items):
+          return sum(items)
+    target: |-
+      def compute_sum(items):
+          return sum(items)
+    solution: ciwcompute_sum<Esc>
+    hint: Underscores belong to a word, so ciw takes the whole name.
+  - goal: 'Copy "this" over "that".'
+    start: |-
+      copy ▮this onto that
+    target: |-
+      copy this onto this
+    solution: yiwwwviwp
+    hint: 'yiw yanks the word; jump with w w; viwp selects the other word and pastes over it.'
+  - goal: 'Delete the duplicated "the".'
+    start: |-
+      Meaning is ▮the the use of a word.
+    target: |-
+      Meaning is the use of a word.
+    solution: daw
+    hint: daw takes the word and its trailing space.

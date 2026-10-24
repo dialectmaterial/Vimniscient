@@ -1,0 +1,59 @@
+week: 2
+day: 5
+title: Getting into insert mode well
+intro: |
+  Choosing the right way into insert mode saves moving first: `o`/`O` open a
+  line below/above, `ea` appends at the end of a word, `R` overwrites text,
+  `r` replaces one character without entering insert mode, and a count
+  repeats what you type (`5i=<Esc>`). While typing, `Ctrl-w` deletes the
+  last word and `Ctrl-u` the whole line, so you rarely need Backspace.
+keys: [o, O, ea, R, r, 5i, "<C-w>", "<C-u>"]
+tasks:
+  - goal: 'Add the missing second line.'
+    start: |-
+      ▮first line
+      third line
+    target: |-
+      first line
+      second line
+      third line
+    solution: osecond line<Esc>
+    hint: o opens a new line below and starts insert mode.
+  - goal: 'Add a header line above.'
+    start: |-
+      ▮body
+    target: |-
+      header
+      body
+    solution: Oheader<Esc>
+    hint: O opens a line above.
+  - goal: 'Make "cat" plural.'
+    start: |-
+      The ▮cat sat.
+    target: |-
+      The cats sat.
+    solution: eas<Esc>
+    hint: e goes to the end of the word, a appends after it.
+  - goal: 'Underline the title with five = signs.'
+    start: |-
+      Title
+      ▮
+    target: |-
+      Title
+      =====
+    solution: 5i=<Esc>
+    hint: A count before i repeats the inserted text.
+  - goal: 'Overwrite the date with 2026-10-24.'
+    start: |-
+      Date: ▮2025-01-01
+    target: |-
+      Date: 2026-10-24
+    solution: R2026-10-24<Esc>
+    hint: R is replace mode, which types over the existing characters.
+  - goal: 'Fix the operator: minus should be plus.'
+    start: |-
+      x = a ▮- b
+    target: |-
+      x = a + b
+    solution: r+
+    hint: r replaces one character and stays in normal mode.

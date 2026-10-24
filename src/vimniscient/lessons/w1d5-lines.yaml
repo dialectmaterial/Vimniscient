@@ -1,0 +1,69 @@
+week: 1
+day: 5
+title: Whole lines and line ends
+intro: |
+  Line commands: `D` deletes to the end of the line, `C` changes to the end,
+  `cc` changes the whole line, `dd` deletes it, `J` joins the next line on.
+  `A` appends at the end and `I` inserts at the first non-blank character.
+  `ddp` swaps two lines.
+keys: [D, C, cc, dd, J, ddp, A, I]
+tasks:
+  - goal: 'Delete the rest of the line.'
+    start: |-
+      Keep this part.▮ Remove the rest.
+    target: |-
+      Keep this part.
+    solution: D
+    hint: D deletes from the cursor to the end of the line.
+  - goal: 'Change the sum to its answer.'
+    start: |-
+      x = ▮1 + 2 + 3
+    target: |-
+      x = 6
+    solution: C6<Esc>
+    hint: C changes from the cursor to the end of the line.
+  - goal: 'Replace the middle line with "second".'
+    start: |-
+      first
+      ▮wrong line here
+      third
+    target: |-
+      first
+      second
+      third
+    solution: ccsecond<Esc>
+    hint: cc changes the whole line, wherever the cursor is.
+  - goal: 'Join the two lines.'
+    start: |-
+      ▮This sentence was
+      split in two.
+    target: |-
+      This sentence was split in two.
+    solution: J
+    hint: J joins the next line onto this one, with one space.
+  - goal: 'Put the lines in order.'
+    start: |-
+      ▮second
+      first
+      third
+    target: |-
+      first
+      second
+      third
+    solution: ddp
+    hint: dd cuts the line, p puts it below the next one.
+  - goal: 'Add a semicolon at the end.'
+    start: |-
+      ▮console.log("hi")
+    target: |-
+      console.log("hi");
+    solution: A;<Esc>
+    hint: A appends at the end of the line, wherever the cursor is.
+  - goal: 'Comment the line out with "# ".'
+    ft: python
+    start: |-
+      x = ▮1
+    target: |-
+      # x = 1
+    solution: 'I# <Esc>'
+    hint: I inserts at the start of the line.
