@@ -1,8 +1,10 @@
 # Vimniscient
 
+<p align="center">
 <img width="427" height="442" alt="image" src="https://github.com/user-attachments/assets/0978f73d-140f-4a74-a470-a25e41fa96ad" />
+</p>
 
-Absolute vim. A daily trainer that runs its exercises in **your own Neovim**
+Absolute vim, really. A daily trainer that runs its exercises in **your own Neovim**
 (LazyVim and all), so you practise in the editor you actually use.
 
 Each task shows a goal at the top, diffed against your text below. Edit
