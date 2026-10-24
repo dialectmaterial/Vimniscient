@@ -150,38 +150,20 @@ def nvim_keymaps() -> list[dict]:
     return maps
 
 
-# Leader groups in the order worth learning them.
-_LEADER_ORDER = ["<Space>", "e", "/", ",", "f", "s", "b", "c", "g", "w", "x", "q", "u", "<Tab>"]
-
-
-def _leader_rank(lhs: str) -> int:
-    rest = lhs.removeprefix("<Space>")
-    for i, prefix in enumerate(_LEADER_ORDER):
-        if rest.startswith(prefix):
-            return i
-    return len(_LEADER_ORDER)
-
-
 def lazyvim_extra_cards(core: list[Card]) -> list[Card]:
-    """Leader keymaps from the user's config that the core deck doesn't cover."""
+    """The `from_config` keymaps of cards/lazyvim.yaml, as named in the user's config."""
+    data = yaml.safe_load((resources.files("vimniscient") / "cards" / "lazyvim.yaml").read_text(encoding="utf-8"))
+    wanted = [pretty_keys(k) for k in data.get("from_config", [])]
     known = {a for card in core for a in card.answers}
-    maps = [
-        m for m in nvim_keymaps()
-        if m["mode"] == "n" and m["lhs"].startswith("<Space>") and not m["desc"].startswith("+") and "<Plug>" not in m["lhs"]
-    ]
-    # Skip whatever the core deck teaches already, under any of its keys.
-    known_descs = {m["desc"] for m in maps if pretty_keys(m["lhs"]) in known}
-    by_desc: dict[str, list[str]] = {}
-    for m in maps:
-        lhs, desc = m["lhs"], m["desc"]
-        if desc in known_descs:
-            continue
-        by_desc.setdefault(desc, []).append(lhs)
-    ranked = sorted(by_desc.items(), key=lambda kv: (_leader_rank(kv[1][0]), kv[1][0]))
+    by_lhs = {
+        pretty_keys(m["lhs"]): m["desc"]
+        for m in nvim_keymaps()
+        if m["mode"] == "n" and not m["desc"].startswith("+")
+    }
     start = len(core)
     return [
-        Card("lazyvim", f"lazyvim:{desc}", desc, [pretty_keys(k) for k in keys], "keys", True, order=start + i)
-        for i, (desc, keys) in enumerate(ranked)
+        Card("lazyvim", f"lazyvim:{by_lhs[lhs]}", by_lhs[lhs], [lhs], "keys", True, order=start + i)
+        for i, lhs in enumerate(lhs for lhs in wanted if lhs in by_lhs and lhs not in known)
     ]
 
 

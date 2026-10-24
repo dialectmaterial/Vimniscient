@@ -164,7 +164,8 @@ class Hyprland:
         self.drill_window = subprocess.Popen(
             [
                 "xdg-terminal-exec", f"--app-id={DRILL_CLASS}", f"--title={DRILL_TITLE}",
-                "-e", "sh", "-c", f'printf "\\n  {text}\\n"; exec sleep 86400',
+                # it closes itself once the trainer is gone, even if that crashed
+                "-e", "sh", "-c", f'printf "\\n  {text}\\n"; while kill -0 {os.getpid()} 2>/dev/null; do sleep 2; done',
             ],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,

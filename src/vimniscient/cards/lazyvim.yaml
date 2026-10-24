@@ -2,8 +2,9 @@ deck: lazyvim
 title: LazyVim
 style: keys
 case_sensitive: true
-# The core set, introduced first. The rest of the deck is read from your own
-# Neovim config (every keymap with a description), so it follows your setup.
+# The core set, introduced first. After it come the keymaps in `from_config`,
+# read from your own Neovim config so their names and keys follow your setup
+# (any that your config doesn't have are left out).
 # LSP keys are listed here because they only exist once a language server attaches.
 cards:
   - {prompt: Find files (root dir), answer: ['<leader><Space>', '<leader>ff']}
@@ -36,3 +37,40 @@ cards:
   - {prompt: 'neo-tree: delete', answer: [d]}
   - {prompt: 'neo-tree: toggle hidden files', answer: [H]}
   - {prompt: 'neo-tree: show all neo-tree keys', answer: ['?']}
+
+# Worth learning beyond the core, in the order they're introduced.
+from_config:
+  - '<leader>fn'   # new file
+  - '<leader>fc'   # find config file
+  - '<leader>sr'   # search and replace
+  - '<leader>sw'   # search for the word under the cursor
+  - '<leader>sR'   # resume the last picker
+  - '<leader>sb'   # lines in this buffer
+  - '<leader>sd'   # diagnostics
+  - '<leader>su'   # undotree
+  - '<leader>`'    # other buffer
+  - '<leader>bo'   # delete other buffers
+  - '<leader>bp'   # pin buffer
+  - '<leader>wd'   # delete window
+  - '<leader>gs'   # git status
+  - '<leader>gb'   # git blame line
+  - '<leader>gd'   # git diff
+  - '<leader>gl'   # git log
+  - '<leader>cd'   # line diagnostics
+  - '<leader>cs'   # symbols
+  - '<leader>xq'   # quickfix list
+  - '<leader>ql'   # restore last session
+  - '<leader>:'    # command history
+  - '<leader>.'    # scratch buffer
+  - '<leader>?'    # buffer keymaps
+  - '<leader>n'    # notification history
+  - '<leader>un'   # dismiss notifications
+  - '<leader>uw'   # toggle wrap
+  - '<leader>ul'   # toggle line numbers
+  - '<leader>us'   # toggle spelling
+  - '<leader>ud'   # toggle diagnostics
+  - '<leader>uz'   # zen mode
+  - '<leader>l'    # Lazy (plugins)
+  - '<leader><Tab><Tab>'   # new tab
+  - '<leader><Tab>]'       # next tab
+  - '<leader><Tab>d'       # close tab

@@ -39,8 +39,15 @@ Optional training wheels for everyday editing: copy
 | `vimniscient list` | List the lessons |
 | `vimniscient run w1d1-words` | Run one lesson directly |
 
-In the menu: `t` today, `c` cards only, `d` Omarchy drills, `g` VimGolf,
-`p` placement test, `s` stats, `j`/`k` + Enter for any lesson, `q` to quit.
+The app has four screens, switched with `1`–`4`, in your Omarchy theme's
+colours (Catppuccin Mocha by default):
+
+1. **Today**: the daily routine step by step. Enter runs one step, `t` runs them all.
+2. **Lessons**: every lesson, with its intro and progress below the list. Enter starts it.
+3. **Practice**: cards, Omarchy drills, VimGolf and the placement test, outside the routine.
+4. **Stats**: keystroke efficiency, decks, card accuracy, trouble spots, habits and VimGolf.
+
+`j`/`k` move through the lists, `q` quits.
 
 **Today** (`t`) is the daily routine:
 
@@ -53,7 +60,7 @@ In the menu: `t` today, `c` cards only, `d` Omarchy drills, `g` VimGolf,
 
 Inside a lesson: `:Hint` (twice for the answer), `:Skip`, `:Reset`, `:q` to stop.
 
-**Omarchy drills** (`d`) have you do things for real, like "float the drill
+**Omarchy drills** have you do things for real, like "float the drill
 window and tile it again" or "send it to workspace 9 and fetch it back".
 The trainer opens a window titled *Vimniscient drill* for the drills, so
 your own windows are left alone. It watches Hyprland's event socket and
@@ -61,11 +68,10 @@ ticks each step off when it actually happens. The hint (`h`, or by itself
 after 25 seconds) shows the keys from your live keybindings. Drills share
 the spaced-repetition schedule, graded by how fast you were.
 
-**VimGolf** (`g`) gives you a challenge from [vimgolf.com](https://www.vimgolf.com)
+**VimGolf** gives you a challenge from [vimgolf.com](https://www.vimgolf.com)
 every day: the most played ones you haven't tried yet that fit on screen.
 You play it in your own Neovim, and your score (keys + `ZZ`) is compared with
-the site's leaderboard. To submit officially, install `vim`, run `vimgolf setup`
-once, then run `vimgolf put <id>`.
+the site's leaderboard.
 
 **Habits** come from [hardtime.nvim](https://github.com/m4xshen/hardtime.nvim)'s
 log. Every "Use X instead of Y" it showed you becomes a card in the *Your
@@ -74,7 +80,7 @@ habits* deck, which is introduced first. When it keeps catching you pressing
 teach better motions (counts, search, `f`/`t`, text objects), but only
 lessons you've already done.
 
-**Placement** (`p`) gives you two tasks from every lesson. Each lesson you
+**Placement** gives you two tasks from every lesson. Each lesson you
 clearly know (both tasks solved without hints, in at most about 1.5× the
 reference keys) is marked done, and its other tasks come back in review a
 week later.
@@ -90,7 +96,7 @@ but got marked wrong, press `o` ("I was right").
 |---|---|
 | Your habits | live from hardtime.nvim's log: what it caught you doing |
 | Vim | `cards/vim.yaml`, unlocked week by week along with the lessons |
-| LazyVim | a core set in `cards/lazyvim.yaml`, plus every leader keymap in **your** Neovim config |
+| LazyVim | a core set in `cards/lazyvim.yaml`, plus a hand-picked list of leader keymaps, named and keyed as in **your** Neovim config |
 | Omarchy | live from `omarchy menu keybindings --print` (what SUPER + K shows) |
 | tmux | live from `omarchy-menu-tmux-keybindings --print` |
 | Shell, foot, Zathura | `cards/*.yaml`, checked against the man pages and your configs |
