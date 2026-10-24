@@ -39,15 +39,17 @@ Optional training wheels for everyday editing: copy
 | `vimniscient list` | List the lessons |
 | `vimniscient run w1d1-words` | Run one lesson directly |
 
-The app has four screens, switched with `1`–`4`, in your Omarchy theme's
-colours (Catppuccin Mocha by default, from its own palette: mauve, lavender and blue, no peach):
+Everything is on one screen, laid out like lazygit, in your Omarchy theme's colours
+(Catppuccin Mocha's own palette by default: mauve, lavender and blue):
 
-1. **Today**: the daily routine step by step. Enter runs one step, `t` runs them all.
-2. **Lessons**: every lesson, with its intro and progress below the list. Enter starts it.
-3. **Practice**: cards, Omarchy drills, VimGolf and the placement test, outside the routine.
-4. **Stats**: keystroke efficiency, decks, card accuracy, trouble spots, habits and VimGolf.
+- **Today** (top left): the daily routine step by step. Enter runs one step, `t` runs them all.
+- **Lessons** (bottom left): every lesson, ✓ solved, ○ placed, ◐ started. Enter starts it.
+- On the right: whatever is highlighted (a lesson's intro and its tasks), and your progress
+  with a keystroke-efficiency sparkline.
 
-`j`/`k` move through the lists, `q` quits.
+`Tab` (or `1`/`2`) moves between panes, `j`/`k` through a list. `c` cards, `d` Omarchy
+drills, `g` VimGolf, `p` placement test, `s` stats, `q` quit. Cards and drills open in
+a centred focus screen. Nothing animates.
 
 **Today** (`t`) is the daily routine:
 

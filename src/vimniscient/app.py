@@ -1,8 +1,9 @@
-"""The Textual interface: four numbered screens around lessons, cards and drills.
+"""The Textual interface.
 
-The look follows SOL ESSENCE: flat, borderless lists with the highlighted
-entry's text below them, muted help lines, and the colours of the Omarchy
-theme in use (Catppuccin Mocha unless another one matches).
+Laid out like lazygit: everything on one screen in titled panes, Tab moves
+focus, one key bar at the bottom, nothing animates. Cards and drills get a
+centred focus screen, as in terminal typing trainers. Colours come from the
+Omarchy theme in use (Catppuccin Mocha's own palette by default).
 """
 
 import asyncio
@@ -15,10 +16,10 @@ from pathlib import Path
 from rich.text import Text
 from textual.app import App, ComposeResult
 from textual.binding import Binding
-from textual.containers import Vertical, VerticalScroll
+from textual.containers import Horizontal, Vertical, VerticalScroll
 from textual.screen import Screen
 from textual.theme import Theme
-from textual.widgets import DataTable, Footer, Input, Markdown, OptionList, Static, TabbedContent, TabPane
+from textual.widgets import DataTable, Input, Markdown, OptionList, Sparkline, Static
 from textual.widgets.option_list import Option
 
 from vimniscient import drills, habits, srs, vimgolf
@@ -68,8 +69,6 @@ OMARCHY_THEMES = {
     "flexoki-light": "flexoki",
 }
 DEFAULT_THEME = "vimniscient-mocha"
-
-SCREENS = {"today": "Today", "lessons": "Lessons", "practice": "Practice", "stats": "Stats"}
 
 TASK_HELP = (
     "The goal shows in the top window, your text below. When they match, the next task loads by "
@@ -162,34 +161,14 @@ def placement_lesson(lessons: list[Lesson]) -> Lesson:
 
 def lesson_markdown(lesson: Lesson, best: dict[int, int] | None = None) -> str:
     keys = f"**New keys** {'  '.join(f'`{k}`' for k in lesson.keys)}\n\n" if lesson.keys else ""
-    progress = ""
+    tasks = ""
     if best is not None:
-        solved = len(best)
-        progress = f"*{solved}/{len(lesson.tasks)} tasks solved*" if solved else f"*{plural(len(lesson.tasks), 'task')}*"
-    return f"{lesson.intro}\n\n{keys}{progress}"
-
-
-class Browser(Vertical):
-    """A list above the highlighted entry's text, as in SOL ESSENCE."""
-
-    DEFAULT_CSS = """
-    Browser { height: 1fr; }
-    Browser > .browser-help { height: auto; padding: 0 0 1 0; color: $text-muted; }
-    Browser > OptionList { height: 13; max-height: 45%; border: none; background: $surface; padding: 1; }
-    Browser > OptionList:focus { border: none; }
-    Browser > .browser-detail { height: 1fr; margin-top: 1; }
-    """
-
-    def __init__(self, help_text: str, list_id: str, detail_id: str) -> None:
-        super().__init__()
-        self.help_text = help_text
-        self.list_id = list_id
-        self.detail_id = detail_id
-
-    def compose(self) -> ComposeResult:
-        yield Static(self.help_text, classes="browser-help")
-        yield OptionList(id=self.list_id)
-        yield VerticalScroll(Markdown(id=self.detail_id), classes="browser-detail")
+        rows = []
+        for i, task in enumerate(lesson.tasks):
+            mark = f"✓ {best[i]} keys" if i in best else "·"
+            rows.append(f"- {task.goal} *({mark}, ref {task.ref})*" if i in best else f"- {task.goal}")
+        tasks = f"**{len(best)}/{len(lesson.tasks)} solved**\n\n" + "\n".join(rows)
+    return f"{lesson.intro}\n\n{keys}{tasks}"
 
 
 class StatsView(VerticalScroll):
@@ -289,12 +268,29 @@ class StatsView(VerticalScroll):
         self.placeholders()
 
 
+def progress_bar(done: int, total: int, width: int = 40) -> str:
+    filled = round(width * done / total) if total else 0
+    return f"[$primary]{'━' * filled}[/][$panel]{'━' * (width - filled)}[/]"
+
+
+def keybar(*pairs: tuple[str, str]) -> str:
+    """One line of key hints, lazygit-style: the key in mauve, what it does after it."""
+    return "  ".join(f"[bold $primary]{key}[/] {what}" for key, what in pairs)
+
+
 class MainScreen(Screen):
-    """The four screens: Today, Lessons, Practice, Stats."""
+    """Everything at once, lazygit-style: Today and Lessons on the left, the
+    highlighted entry on the right, progress below it. Tab moves between panes."""
 
     BINDINGS = [
         Binding("t", "app.today", "Start today"),
-        *(Binding(str(n), f"show('{name}')", label, show=False) for n, (name, label) in enumerate(SCREENS.items(), 1)),
+        Binding("c", "app.cards", "Cards", show=False),
+        Binding("d", "app.drills", "Drills", show=False),
+        Binding("g", "app.vimgolf", "VimGolf", show=False),
+        Binding("p", "app.placement", "Placement", show=False),
+        Binding("s", "app.stats", "Stats", show=False),
+        Binding("1", "pane('plan')", "Today", show=False),
+        Binding("2", "pane('lesson-list')", "Lessons", show=False),
         Binding("j", "move(1)", "Down", show=False),
         Binding("k", "move(-1)", "Up", show=False),
         Binding("l", "open", "Open", show=False),
@@ -302,57 +298,39 @@ class MainScreen(Screen):
     ]
 
     def compose(self) -> ComposeResult:
-        yield Static(id="status-line")
-        with TabbedContent(id="screens"):
-            with TabPane("Today", id="today"):
-                yield Static(LOGO, id="logo")
-                yield Browser(
-                    "Today's routine · arrows browse · Enter runs one step · t runs them all in order",
-                    "plan", "plan-detail",
-                )
-                yield Static(id="habit-line")
-            with TabPane("Lessons", id="lessons"):
-                yield Browser(
-                    "Lessons · arrows browse · Enter starts the lesson · ✓ solved  ○ placed  n/m tasks solved",
-                    "lesson-list", "lesson-detail",
-                )
-            with TabPane("Practice", id="practice"):
-                yield Browser(
-                    "Practice outside today's routine · arrows browse · Enter starts",
-                    "practice-list", "practice-detail",
-                )
-            with TabPane("Stats", id="stats"):
-                yield StatsView(id="stats-view")
-        yield Static("1–4 screens · t start today · q quit", id="hint-line")
-        yield Footer()
-
-    def on_screen_resume(self) -> None:
-        self.refresh_all()
+        with Horizontal(id="main"):
+            with Vertical(id="left"):
+                yield OptionList(id="plan", classes="pane")
+                yield OptionList(id="lesson-list", classes="pane")
+            with Vertical(id="right"):
+                with VerticalScroll(id="detail-pane", classes="pane"):
+                    yield Markdown(id="detail")
+                with Vertical(id="progress-pane", classes="pane"):
+                    yield Static(id="progress-text")
+                    yield Sparkline([], id="spark")
+        yield Static(
+            keybar(("t", "today"), ("⏎", "open"), ("⇥", "pane"), ("c", "cards"), ("d", "drills"),
+                   ("g", "golf"), ("p", "place"), ("s", "stats"), ("q", "quit")),
+            classes="keybar",
+        )
 
     def on_mount(self) -> None:
+        self.query_one("#plan").border_title = "1 Today"
+        self.query_one("#lesson-list").border_title = "2 Lessons"
+        self.query_one("#progress-pane").border_title = "Progress"
+        self.refresh_all()
+        self.query_one("#plan", OptionList).focus()
+
+    def on_screen_resume(self) -> None:
         self.refresh_all()
 
     # data
 
     def refresh_all(self) -> None:
-        app: VimniscientApp = self.app  # type: ignore[assignment]
-        progress, lessons = app.progress, app.lessons
-        done = sum(progress.is_done(lesson) for lesson in lessons)
-        block = progress.hardtime_block_date()
-        hardtime = "hardtime blocking" if date.today() >= block else f"hardtime hints until {block:%b %d}"
-        self.query_one("#status-line", Static).update(
-            f"[bold $accent]Vimniscient[/] · {plural(progress.streak(), 'day')} streak · "
-            f"{done}/{len(lessons)} lessons · {hardtime}"
-        )
-        top = next((h for h in habits.habits() if h.recent), None)
-        habit = f"Top habit: {top.message} ({top.recent}× in two weeks)" if top else ""
-        if not progress.days_trained():
-            habit = "New here? The placement test (Practice, 3) skips the lessons you already know."
-        self.query_one("#habit-line", Static).update(habit)
         self.refresh_plan()
         self.refresh_lessons()
-        self.refresh_practice()
-        self.query_one(StatsView).refresh_stats()
+        self.refresh_progress()
+        self.show_detail()
 
     def plan(self) -> list[tuple[str, str, str, bool]]:
         """Today's steps: (id, label, detail, still to do)."""
@@ -365,46 +343,30 @@ class MainScreen(Screen):
         nxt = progress.next_lesson(lessons)
         golf_done = progress.vimgolf_done_today()
         return [
-            ("cards", "Cards", f"{len(due)} due · {len(new)} new" if due or new else "done",
-             bool(due or new)),
-            ("drills", "Omarchy drills", plural(len(todays_drills), "drill") if todays_drills else "done",
-             bool(todays_drills)),
+            ("cards", "Cards", f"{len(due)} due · {len(new)} new" if due or new else "done", bool(due or new)),
+            ("drills", "Drills", plural(len(todays_drills), "drill") if todays_drills else "done", bool(todays_drills)),
             ("review", "Review", plural(len(review), "task") if review else "nothing due", bool(review)),
-            ("lesson", "Lesson", f"{nxt.label} · {nxt.title}" if nxt else "all done", nxt is not None),
+            ("lesson", "Lesson", f"W{nxt.week} D{nxt.day} · {nxt.title}" if nxt else "all done", nxt is not None),
             ("vimgolf", "VimGolf", "done" if golf_done else "today's challenge", not golf_done),
         ]
 
     PLAN_DETAIL = {
-        "cards": "Type the keys for each prompt: Vim, LazyVim, Omarchy, tmux, the shell, foot, Zathura, "
-        "and the habits hardtime caught. Due cards first, then up to 10 new ones.",
-        "drills": "Do it for real on the *Vimniscient drill* window; Hyprland's events confirm each step. "
-        "`h` shows the keys, `s` skips.",
-        "review": "Vim tasks from earlier days that are due again, plus a few drills for the habits "
-        "hardtime keeps catching.",
-        "lesson": "",
-        "vimgolf": "One challenge from vimgolf.com, the most played ones first, scored against the leaderboard.",
+        "cards": ("Cards", "Type the keys for each prompt: Vim, LazyVim, Omarchy, tmux, the shell, foot, "
+                  "Zathura, and the habits hardtime caught. Due cards first, then up to 10 new ones."),
+        "drills": ("Omarchy drills", "Do it for real on the *Vimniscient drill* window; Hyprland's events "
+                   "confirm each step. `h` shows the keys, `s` skips."),
+        "review": ("Review", "Vim tasks from earlier days that are due again, plus a few drills for the "
+                   "habits hardtime keeps catching."),
+        "vimgolf": ("VimGolf", "One challenge from vimgolf.com, the most played ones first, scored against "
+                    "the leaderboard."),
     }
 
     def refresh_plan(self) -> None:
         options = []
         for step_id, label, detail, todo in self.plan():
-            mark = "[$accent]›[/]" if todo else "[$success]✓[/]"
-            text = f"{mark}  [b]{label}[/]  [dim]{detail}[/]"
-            options.append(Option(text, id=step_id))
+            mark = "[$primary]›[/]" if todo else "[$success]✓[/]"
+            options.append(Option(f"{mark} [b]{label:<8}[/] [dim]{detail}[/]", id=step_id))
         self.fill("plan", options)
-        self.show_plan_detail()
-
-    def show_plan_detail(self) -> None:
-        plan_list = self.query_one("#plan", OptionList)
-        if plan_list.highlighted is None:
-            return
-        step_id = plan_list.get_option_at_index(plan_list.highlighted).id
-        app: VimniscientApp = self.app  # type: ignore[assignment]
-        text = self.PLAN_DETAIL[step_id]
-        if step_id == "lesson":
-            nxt = app.progress.next_lesson(app.lessons)
-            text = f"**{nxt.label} · {nxt.title}**\n\n{lesson_markdown(nxt)}" if nxt else "Every lesson is done."
-        self.query_one("#plan-detail", Markdown).update(text)
 
     def refresh_lessons(self) -> None:
         app: VimniscientApp = self.app  # type: ignore[assignment]
@@ -416,46 +378,41 @@ class MainScreen(Screen):
                 week = lesson.week
                 options.append(Option(f"[dim]Week {week}[/]", disabled=True))
             best = progress.best(lesson)
+            count = ""
             if len(best) == len(lesson.tasks):
-                mark = "[$success]✓  [/]"
+                mark = "[$success]✓[/]"
             elif progress.is_placed(lesson):
-                mark = "[$success]○  [/]"
+                mark = "[$success]○[/]"
+            elif best:
+                mark, count = "[$primary]◐[/]", f" [dim]{len(best)}/{len(lesson.tasks)}[/]"
             else:
-                mark = f"[dim]{len(best)}/{len(lesson.tasks)}[/]"
-            options.append(Option(f"  {mark}  Day {lesson.day} · {lesson.title}", id=lesson.id))
+                mark = "[dim]·[/]"
+            options.append(Option(f" {mark} {lesson.day} {lesson.title}{count}", id=lesson.id))
         nxt = progress.next_lesson(app.lessons)
         self.fill("lesson-list", options, nxt.id if nxt else None)
-        self.show_lesson_detail()
 
-    def show_lesson_detail(self) -> None:
-        lesson_list = self.query_one("#lesson-list", OptionList)
-        if lesson_list.highlighted is None:
-            return
+    def refresh_progress(self) -> None:
         app: VimniscientApp = self.app  # type: ignore[assignment]
-        lesson = app.lesson(lesson_list.get_option_at_index(lesson_list.highlighted).id)
-        self.query_one("#lesson-detail", Markdown).update(
-            f"**{lesson.label} · {lesson.title}**\n\n{lesson_markdown(lesson, app.progress.best(lesson))}"
-        )
-
-    PRACTICE = {
-        "cards": ("Cards", "Today's due and new cards, outside the routine."),
-        "drills": ("Omarchy drills", "Today's drills, or all nine when none are due."),
-        "vimgolf": ("VimGolf", "Today's challenge from vimgolf.com."),
-        "placement": ("Placement test", "Two tasks from every lesson. Lessons you clearly know are marked "
-                      "done, and their other tasks come back in review a week later."),
-    }
-
-    def refresh_practice(self) -> None:
-        options = [Option(f"[b]{label}[/]", id=key) for key, (label, _) in self.PRACTICE.items()]
-        self.fill("practice-list", options)
-        self.show_practice_detail()
-
-    def show_practice_detail(self) -> None:
-        practice = self.query_one("#practice-list", OptionList)
-        if practice.highlighted is not None:
-            key = practice.get_option_at_index(practice.highlighted).id
-            label, text = self.PRACTICE[key]
-            self.query_one("#practice-detail", Markdown).update(f"**{label}**\n\n{text}")
+        progress, lessons = app.progress, app.lessons
+        done = sum(progress.is_done(lesson) for lesson in lessons)
+        block = progress.hardtime_block_date()
+        hardtime = "blocking" if date.today() >= block else f"hints until {block:%b %d}"
+        days = list(reversed(progress.efficiency_by_day(14)))
+        efficiency = [100 * ref / keys for _, _, keys, ref in days if keys]
+        lines = [
+            f"[b]{plural(progress.streak(), 'day')}[/] streak · [b]{done}/{len(lessons)}[/] lessons · "
+            f"hardtime {hardtime}",
+        ]
+        top = next((h for h in habits.habits() if h.recent), None)
+        if top:
+            lines.append(f"[dim]top habit:[/] {top.message} ({top.recent}×)")
+        if not progress.days_trained():
+            lines.append("[dim]New here? Press[/] [b $primary]p[/] [dim]for the placement test: it skips what you know.[/]")
+        lines.append("[dim]keystroke efficiency, last 14 days[/]" if efficiency else "[dim]efficiency shows up after your first lesson[/]")
+        self.query_one("#progress-text", Static).update("\n".join(lines))
+        spark = self.query_one("#spark", Sparkline)
+        spark.data = efficiency
+        spark.display = bool(efficiency)
 
     def fill(self, list_id: str, options: list[Option], select: str | None = None) -> None:
         """Replace a list's options, keeping the highlight where it was."""
@@ -470,48 +427,73 @@ class MainScreen(Screen):
         else:
             option_list.highlighted = next((i for i, o in enumerate(options) if not o.disabled), None)
 
+    def show_detail(self) -> None:
+        """The right pane follows whichever list has focus."""
+        app: VimniscientApp = self.app  # type: ignore[assignment]
+        focused = self.focused if isinstance(self.focused, OptionList) else self.query_one("#plan", OptionList)
+        if focused.highlighted is None:
+            return
+        key = focused.get_option_at_index(focused.highlighted).id
+        lesson = None
+        if focused.id == "lesson-list":
+            lesson = app.lesson(key)
+        elif key == "lesson":
+            lesson = app.progress.next_lesson(app.lessons)
+            if lesson is None:
+                title, text = "Lessons", "Every lesson is done. Pick any in the Lessons list to practise again."
+        else:
+            title, text = self.PLAN_DETAIL[key]
+        if lesson:
+            title = f"{lesson.label} · {lesson.title}"
+            text = lesson_markdown(lesson, app.progress.best(lesson))
+        pane = self.query_one("#detail-pane")
+        pane.border_title = title
+        self.query_one("#detail", Markdown).update(text)
+
     # events
 
     def on_option_list_option_highlighted(self, event: OptionList.OptionHighlighted) -> None:
-        {"plan": self.show_plan_detail, "lesson-list": self.show_lesson_detail,
-         "practice-list": self.show_practice_detail}.get(event.option_list.id, lambda: None)()
+        if event.option_list is self.focused:
+            self.show_detail()
+
+    def on_descendant_focus(self) -> None:
+        self.show_detail()
 
     def on_option_list_option_selected(self, event: OptionList.OptionSelected) -> None:
         app: VimniscientApp = self.app  # type: ignore[assignment]
-        key = event.option.id
         if event.option_list.id == "lesson-list":
-            app.start_lesson(app.lesson(key), done=self.refresh_all)
-        elif event.option_list.id == "plan":
-            app.run_step(key, self.refresh_all)
-        elif event.option_list.id == "practice-list":
-            {"cards": app.action_cards, "drills": app.action_drills,
-             "vimgolf": app.action_vimgolf, "placement": app.action_placement}[key]()
-
-    def on_tabbed_content_tab_activated(self, event: TabbedContent.TabActivated) -> None:
-        pane = event.pane
-        lists = pane.query(OptionList)
-        if lists:
-            lists.first().focus()
+            app.start_lesson(app.lesson(event.option.id), done=self.refresh_all)
         else:
-            pane.query_one(StatsView).focus()
+            app.run_step(event.option.id, self.refresh_all)
 
-    def action_show(self, name: str) -> None:
-        self.query_one("#screens", TabbedContent).active = name
-
-    def focused_list(self) -> OptionList | None:
-        return self.focused if isinstance(self.focused, OptionList) else None
+    def action_pane(self, pane_id: str) -> None:
+        self.query_one(f"#{pane_id}", OptionList).focus()
 
     def action_move(self, step: int) -> None:
-        option_list = self.focused_list()
-        if option_list:
-            option_list.action_cursor_down() if step > 0 else option_list.action_cursor_up()
-        elif isinstance(self.focused, VerticalScroll):
-            self.focused.scroll_relative(y=step * 2)
+        if isinstance(self.focused, OptionList):
+            self.focused.action_cursor_down() if step > 0 else self.focused.action_cursor_up()
 
     def action_open(self) -> None:
-        option_list = self.focused_list()
-        if option_list:
-            option_list.action_select()
+        if isinstance(self.focused, OptionList):
+            self.focused.action_select()
+
+
+class StatsScreen(Screen):
+    BINDINGS = [Binding("escape", "app.pop_screen", "Back"), Binding("q", "app.pop_screen", "Back", show=False),
+                Binding("j", "scroll(2)", "Down", show=False), Binding("k", "scroll(-2)", "Up", show=False)]
+
+    def compose(self) -> ComposeResult:
+        yield StatsView(id="stats-view", classes="pane")
+        yield Static(keybar(("j/k", "scroll"), ("esc", "back")), classes="keybar")
+
+    def on_mount(self) -> None:
+        view = self.query_one(StatsView)
+        view.border_title = "Stats"
+        view.refresh_stats()
+        view.focus()
+
+    def action_scroll(self, lines: int) -> None:
+        self.query_one(StatsView).scroll_relative(y=lines)
 
 
 class LessonScreen(Screen):
@@ -531,14 +513,13 @@ class LessonScreen(Screen):
 
     def compose(self) -> ComposeResult:
         lesson = self.lesson
-        yield Static(lesson.label if lesson.week else "Vimniscient", classes="screen-head")
-        yield Static(lesson.title, classes="screen-title")
-        yield VerticalScroll(
-            Markdown(f"{lesson_markdown(lesson)}\n\n{plural(len(lesson.tasks), 'task')}. {TASK_HELP}"),
-            classes="screen-body",
-        )
-        yield Static("Enter starts · Escape goes back", classes="help")
-        yield Footer()
+        with VerticalScroll(id="lesson-panel", classes="pane column"):
+            yield Markdown(f"{lesson_markdown(lesson)}\n\n{plural(len(lesson.tasks), 'task')}. {TASK_HELP}")
+        yield Static(keybar(("enter", "start"), ("esc", "back")), classes="keybar")
+
+    def on_mount(self) -> None:
+        lesson = self.lesson
+        self.query_one("#lesson-panel").border_title = f"{lesson.label} · {lesson.title}" if lesson.week else lesson.title
 
     def action_back(self) -> None:
         self.dismiss(None)
@@ -565,18 +546,19 @@ class ResultsScreen(Screen):
         self.note = note
 
     def compose(self) -> ComposeResult:
-        solved = sum(r.status == "solved" for r in self.results)
-        yield Static(f"{self.lesson.label if self.lesson.week else 'Results'} · {solved}/{len(self.results)} solved",
-                     classes="screen-head")
-        yield Static(self.lesson.title, classes="screen-title")
-        if self.note:
-            yield Static(self.note, id="note")
-        yield DataTable(id="results", cursor_type="row")
-        yield Static("ref = the reference solution's keystrokes; fewer than ref and you beat it · "
-                     "r again · Enter done", classes="help")
-        yield Footer()
+        with Vertical(id="results-panel", classes="pane"):
+            if self.note:
+                yield Static(self.note, id="note")
+            yield DataTable(id="results", cursor_type="row")
+            yield Static("[dim]ref = the reference solution's keystrokes; fewer than ref and you beat it[/]",
+                         id="results-legend")
+        yield Static(keybar(("enter", "done"), ("r", "again")), classes="keybar")
 
     def on_mount(self) -> None:
+        solved = sum(r.status == "solved" for r in self.results)
+        panel = self.query_one("#results-panel")
+        panel.border_title = f"{self.lesson.label} · {self.lesson.title}" if self.lesson.week else self.lesson.title
+        panel.border_subtitle = f"{solved}/{len(self.results)} solved"
         table = self.query_one(DataTable)
         table.add_columns("#", "Task", "Result", "Keys", "Ref", "You typed", "Reference")
         for i, r in enumerate(self.results, 1):
@@ -615,12 +597,12 @@ class CardScreen(Screen):
         self.answered = 0
 
     def compose(self) -> ComposeResult:
-        yield Static(id="card-head", classes="screen-head")
-        yield Static(id="card-prompt", classes="screen-title")
-        yield Input(id="card-input")
-        yield Static(id="card-feedback")
-        yield Static(id="card-help", classes="help")
-        yield Footer()
+        with Vertical(id="card-panel", classes="pane column"):
+            yield Static(id="card-bar")
+            yield Static(id="card-prompt", classes="prompt")
+            yield Input(id="card-input")
+            yield Static(id="card-feedback")
+        yield Static(id="card-help", classes="keybar")
 
     def on_mount(self) -> None:
         self.show_card()
@@ -631,10 +613,10 @@ class CardScreen(Screen):
             return
         card = self.queue[0]
         done = self.total - len([c for c in self.queue if c.id not in self.retried])
-        again = " · [$warning]again[/]" if card.id in self.retried else ""
-        self.query_one("#card-head", Static).update(
-            f"{self.title_text} · {min(done + 1, self.total)}/{self.total} · [$accent]{self.decks[card.deck].title}[/]{again}"
-        )
+        panel = self.query_one("#card-panel")
+        panel.border_title = f"{self.title_text} · {self.decks[card.deck].title}"
+        panel.border_subtitle = ("again · " if card.id in self.retried else "") + f"{min(done + 1, self.total)}/{self.total}"
+        self.query_one("#card-bar", Static).update(progress_bar(done, self.total))
         self.query_one("#card-prompt", Static).update(card.prompt)
         box = self.query_one("#card-input", Input)
         box.value = ""
@@ -646,7 +628,7 @@ class CardScreen(Screen):
         )
         box.focus()
         self.query_one("#card-feedback", Static).update("")
-        self.query_one("#card-help", Static).update("Enter checks · Escape stops")
+        self.query_one("#card-help", Static).update(keybar(("enter", "check"), ("esc", "stop")))
 
     def on_input_submitted(self, event: Input.Submitted) -> None:
         if self.pending or not self.queue:
@@ -664,10 +646,10 @@ class CardScreen(Screen):
         note = f"\n[dim]{card.note}[/]" if card.note else ""
         if correct:
             text = f"[$success]✓[/]  [b]{card.shown}[/]{also}{note}"
-            help_text = "Enter next · Escape stops"
+            help_text = keybar(("enter", "next"), ("esc", "stop"))
         else:
             text = f"[$error]✗[/]  [b]{card.shown}[/]{also}{note}"
-            help_text = "Enter next · o I was right · Escape stops"
+            help_text = keybar(("enter", "next"), ("o", "I was right"), ("esc", "stop"))
         self.query_one("#card-feedback", Static).update(text)
         self.query_one("#card-help", Static).update(help_text)
 
@@ -728,11 +710,12 @@ class DrillScreen(Screen):
         self.done_count = 0
 
     def compose(self) -> ComposeResult:
-        yield Static(id="drill-head", classes="screen-head")
-        yield Static(id="drill-prompt", classes="screen-title")
-        yield Static(id="drill-steps")
-        yield Static(id="drill-status", classes="help")
-        yield Footer()
+        with Vertical(id="drill-panel", classes="pane column"):
+            yield Static(id="drill-bar")
+            yield Static(id="drill-prompt", classes="prompt")
+            yield Static(id="drill-steps")
+            yield Static(id="drill-status")
+        yield Static(keybar(("h", "hint"), ("s", "skip"), ("esc", "stop")), classes="keybar")
 
     async def on_mount(self) -> None:
         if not self.hypr.available:
@@ -762,9 +745,10 @@ class DrillScreen(Screen):
         self.current = drills.DrillRun(drill, addr, self.home_ws)
         self.hinted = False
         done = self.total - len(self.queue)
-        self.query_one("#drill-head", Static).update(
-            f"{self.title_text} · {done + 1}/{self.total} · [$accent]{drill.title}[/]"
-        )
+        panel = self.query_one("#drill-panel")
+        panel.border_title = f"{self.title_text} · {drill.title}"
+        panel.border_subtitle = f"{done + 1}/{self.total}"
+        self.query_one("#drill-bar", Static).update(progress_bar(done, self.total))
         self.query_one("#drill-prompt", Static).update(self.current.text(drill.prompt))
         self.show_steps()
         self.tick()
@@ -789,8 +773,8 @@ class DrillScreen(Screen):
         if seconds >= self.AUTO_HINT_SECONDS and not self.hinted:
             self.action_hint()
             return
-        hint = self.hint_text() if self.hinted else "h hint · s skip · Escape stops"
-        self.query_one("#drill-status", Static).update(f"{seconds}s · {hint}")
+        hint = self.hint_text() if self.hinted else "[dim]waiting for Hyprland…[/]"
+        self.query_one("#drill-status", Static).update(f"[dim]{seconds}s[/]  {hint}")
 
     def hint_text(self) -> str:
         app: VimniscientApp = self.app  # type: ignore[assignment]
@@ -828,7 +812,7 @@ class DrillScreen(Screen):
         if self.current and not self.current.finished:
             self.hinted = True
             seconds = int(time.monotonic() - self.current.started)
-            self.query_one("#drill-status", Static).update(f"{seconds}s · {self.hint_text()}")
+            self.query_one("#drill-status", Static).update(f"[dim]{seconds}s[/]  {self.hint_text()}")
 
     def action_skip(self) -> None:
         if self.current and not self.current.finished:
@@ -849,35 +833,59 @@ class VimniscientApp(App):
     ENABLE_COMMAND_PALETTE = False
     CSS = """
     Screen { background: $background; }
-    #status-line, #hint-line { padding: 0 2; color: $text-muted; height: 1; }
-    #status-line { margin-top: 1; }
-    TabbedContent { height: 1fr; }
-    TabPane { padding: 1 2 0 2; }
-    #logo { color: $accent; height: auto; padding: 0 0 1 0; }
-    #habit-line { height: auto; color: $text-muted; padding-top: 1; }
-    Markdown { padding: 0 1; margin: 0; }
+
+    /* panes: rounded, titled in the border, mauve when focused (lazygit) */
+    .pane { border: round $panel; border-title-color: $text-muted; border-subtitle-color: $text-muted;
+            background: $background; padding: 0 1; }
+    .pane:focus, .pane:focus-within { border: round $primary; border-title-color: $primary; }
+    OptionList.pane { padding: 0 1; text-wrap: nowrap; text-overflow: ellipsis; }
+    OptionList.pane:focus { border: round $primary; }
+    OptionList > .option-list--option-highlighted { background: $surface; color: $foreground; text-style: none; }
+    OptionList:focus > .option-list--option-highlighted { background: $primary 25%; color: $foreground; text-style: bold; }
+    .keybar { height: 1; padding: 0 1; color: $text-muted; background: $background; }
+
+    #main { height: 1fr; }
+    #left { width: 46; max-width: 45%; }
+    #plan { height: 7; }
+    #lesson-list { height: 1fr; }
+    #right { width: 1fr; }
+    #detail-pane { height: 1fr; }
+    #progress-pane { height: auto; max-height: 10; }
+    #progress-text { height: auto; }
+    #spark { height: 2; margin-top: 1; }
+    Sparkline > .sparkline--max-color { color: $primary; }
+    Sparkline > .sparkline--min-color { color: $secondary; }
+    Markdown { padding: 0 1; margin: 0; background: $background; }
     MarkdownBlock > .code_inline { background: $surface; color: $primary; }
+
+    /* focus screens: one centred column, like terminal typing trainers */
+    CardScreen, DrillScreen, LessonScreen { align: center middle; }
+    .column, .column:focus-within { width: 76; max-width: 100%; height: auto; max-height: 90%; padding: 1 2;
+                                    border: round $primary; border-title-color: $primary; }
+    .prompt { color: $primary; text-style: bold; height: auto; padding: 1 0; }
+    #card-bar, #drill-bar { height: 1; }
+    #card-input { border: round $panel; background: $background; padding: 0 1; }
+    #card-input:focus { border: round $primary; background: $background; }
+    #card-feedback { padding: 1 0 0 0; height: auto; min-height: 3; }
+    #drill-steps { height: auto; }
+    #drill-status { height: auto; padding-top: 1; }
+    CardScreen > .keybar, DrillScreen > .keybar, LessonScreen > .keybar { dock: bottom; }
+
+    #results-panel { height: 1fr; }
+    #note { padding: 0 0 1 0; color: $success; height: auto; }
+    #results { height: 1fr; background: $background; }
+    #results-legend { height: 1; }
+
+    #stats-view { height: 1fr; padding: 0 2; }
     .section-label { color: $text-muted; text-style: bold; height: 1; margin-top: 1; }
     DataTable { background: $background; height: auto; max-height: 14; margin-top: 1; }
     DataTable > .datatable--header { background: $surface; color: $text-muted; text-style: bold; }
-    #stats-view { height: 1fr; }
-    #overview { height: auto; }
-
-    .screen-head { padding: 1 2 0 2; color: $text-muted; height: auto; }
-    .screen-title { padding: 1 2; color: $accent; text-style: bold; height: auto; }
-    .screen-body { padding: 0 1; height: 1fr; }
-    .help { padding: 1 2; color: $text-muted; height: auto; }
-    #note { padding: 0 2 1 2; color: $success; height: auto; }
-    #results { margin: 0 2; max-height: 1fr; }
-
-    #card-input { margin: 0 2; border: tall $surface; background: $surface; }
-    #card-input:focus { border: tall $accent; }
-    #card-feedback { padding: 1 2; height: auto; }
-    #drill-steps { padding: 0 2; height: auto; }
+    #overview { height: auto; margin-top: 1; }
     """
 
     def __init__(self) -> None:
         super().__init__()
+        self.animation_level = "none"  # tabs, scrolling and the rest switch instantly
         self.lessons = load_lessons()
         self.progress = Progress()
         self.decks = load_decks()
@@ -1035,3 +1043,6 @@ class VimniscientApp(App):
         self.call_from_thread(
             self.push_screen, LessonScreen(vimgolf_lesson(challenge), on_results), lambda _: done()
         )
+
+    def action_stats(self) -> None:
+        self.push_screen(StatsScreen())
