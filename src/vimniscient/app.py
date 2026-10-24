@@ -8,6 +8,7 @@ Omarchy theme in use (Catppuccin Mocha's own palette by default).
 
 import asyncio
 import os
+import re
 import time
 from collections.abc import Callable
 from dataclasses import replace
@@ -17,6 +18,7 @@ from pathlib import Path
 from rich.text import Text
 from textual.app import App, ComposeResult
 from textual.binding import Binding
+from textual.content import Content
 from textual.containers import Horizontal, Vertical, VerticalScroll
 from textual.screen import Screen
 from textual.theme import Theme
@@ -75,6 +77,10 @@ DEFAULT_THEME = "vimniscient-mocha"
 TASK_HELP = (
     "The goal shows in the top window, your text below. When they match, the next task loads by "
     "itself. Inside Neovim: `:Hint` (twice for the answer), `:Skip`, `:Reset`, `:q` to stop."
+)
+VIMGOLF_HELP = (
+    "The goal shows in the top window, your text below; it's done when they match. Inside Neovim: "
+    "`:Reset` to start over, `:q` to stop."
 )
 RETRY_HELP = "Skip a task you can't recall and you'll see the answer, type it once, and get it again at the end."
 ROUNDS_HELP = (
@@ -161,7 +167,7 @@ def vimgolf_lesson(challenge: vimgolf.Challenge) -> Lesson:
         cursor=(1, 0),
         target=challenge.target,
         solution="—",
-        hint=f"No hints in VimGolf. Other people's solutions are on {challenge.url}.",
+        hint="No hints in VimGolf. Other people's solutions are on vimgolf.com; the link is on the results screen.",
         ft="",
         lesson_id="vimgolf",
         ref_override=ref,
@@ -195,8 +201,16 @@ def placement_lesson(lessons: list[Lesson]) -> Lesson:
     )
 
 
+def code_span(text: str) -> str:
+    """`text` as Markdown code, even when it has backticks in it (`` `a ``)."""
+    if "`" not in text:
+        return f"`{text}`"
+    fence = "`" * (max(len(run) for run in re.findall("`+", text)) + 1)
+    return f"{fence} {text} {fence}"
+
+
 def lesson_markdown(lesson: Lesson, best: dict[int, int] | None = None) -> str:
-    keys = f"**New keys** {'  '.join(f'`{k}`' for k in lesson.keys)}\n\n" if lesson.keys else ""
+    keys = f"**New keys** {'  '.join(code_span(k) for k in lesson.keys)}\n\n" if lesson.keys else ""
     tasks = ""
     if best is not None:
         rows = []
@@ -291,17 +305,17 @@ class StatsView(VerticalScroll):
         table = self.table("trouble-table", "What", "Answer", "Forgotten")
         for item in progress.hardest():
             if item.id in cards:
-                table.add_row(cards[item.id].prompt, cards[item.id].shown, str(item.lapses))
+                table.add_row(Text(cards[item.id].prompt), Text(cards[item.id].shown), str(item.lapses))
             elif item.id in tasks:
-                table.add_row(tasks[item.id].goal, tasks[item.id].solution, str(item.lapses))
+                table.add_row(Text(tasks[item.id].goal), Text(tasks[item.id].solution), str(item.lapses))
 
         table = self.table("habits-table", "Message", "Last two weeks", "All time", "Last seen")
         for habit in habits.habits()[:10]:
-            table.add_row(habit.message, str(habit.recent), str(habit.total), habit.last.isoformat())
+            table.add_row(Text(habit.message), str(habit.recent), str(habit.total), habit.last.isoformat())
 
         table = self.table("vimgolf-table", "Day", "Challenge", "Your score", "Best on vimgolf.com")
         for day, title, score, best in progress.vimgolf_history():
-            table.add_row(day, title, str(score) if score else tint(app, "not solved", "text-muted"), str(best) if best else "")
+            table.add_row(day, Text(title), str(score) if score else tint(app, "not solved", "text-muted"), str(best) if best else "")
         self.placeholders()
 
 
@@ -437,7 +451,7 @@ class MainScreen(Screen):
         progress, lessons = app.progress, app.lessons
         done = sum(progress.is_done(lesson) for lesson in lessons)
         block = progress.hardtime_block_date()
-        hardtime = "blocking" if date.today() >= block else f"hints until {block:%b %d}"
+        hardtime = "blocking" if date.today() >= block else f"blocks from {block:%b %d}"
         days = list(reversed(progress.efficiency_by_day(14)))
         efficiency = [100 * ref / keys for _, _, keys, ref in days if keys]
         parts = [streak_text(progress.streak()), f"[b]{done}/{len(lessons)}[/] lessons"]
@@ -445,14 +459,14 @@ class MainScreen(Screen):
             parts.append(f"endless best level {progress.endless_best()}")
         if has_plugin("hardtime.nvim"):
             parts.append(f"hardtime {hardtime}")
-        lines = [" · ".join(parts)]
+        lines = [Content.from_markup(" · ".join(parts))]
         top = next((h for h in habits.habits() if h.recent), None)
-        if top:
-            lines.append(f"[dim]top habit:[/] {top.message} ({top.recent}×)")
+        if top:  # hardtime's messages have brackets in them ("Use [count]k")
+            lines.append(Content.from_markup("[dim]top habit:[/] $message ($n×)", message=top.message, n=top.recent))
         if not progress.days_trained():
-            lines.append("[dim]New here? Press[/] [b $primary]p[/] [dim]for the placement test: it skips what you know.[/]")
-        lines.append("[dim]keystroke efficiency, last 14 days[/]" if efficiency else "[dim]efficiency shows up after your first lesson[/]")
-        self.query_one("#progress-text", Static).update("\n".join(lines))
+            lines.append(Content.from_markup("[dim]New here? Press[/] [b $primary]p[/] [dim]for the placement test: it skips what you know.[/]"))
+        lines.append(Content.from_markup("[dim]keystroke efficiency, last 14 days[/]" if efficiency else "[dim]efficiency shows up after your first lesson[/]"))
+        self.query_one("#progress-text", Static).update(Content("\n").join(lines))
         spark = self.query_one("#spark", Sparkline)
         spark.data = efficiency
         spark.display = bool(efficiency)
@@ -565,8 +579,9 @@ class LessonScreen(Screen):
         lesson = self.lesson
         with VerticalScroll(id="lesson-panel", classes="pane column"):
             rounds = f" {ROUNDS_HELP} {RETRY_HELP}" if lesson.week else f" {RETRY_HELP}" if lesson.id == "review" else ""
-            count = f"{plural(len(lesson.tasks), 'task')}.{rounds} " if lesson.tasks else ""
-            yield Markdown(f"{lesson_markdown(lesson)}\n\n{count}{TASK_HELP}")
+            count = f"{plural(len(lesson.tasks), 'task')}.{rounds} " if len(lesson.tasks) > 1 else ""
+            help_text = VIMGOLF_HELP if lesson.id == "vimgolf" else TASK_HELP
+            yield Markdown(f"{lesson_markdown(lesson)}\n\n{count}{help_text}")
         yield Static(keybar(("enter", "start"), ("esc", "back")), classes="keybar")
 
     def on_mount(self) -> None:
@@ -631,8 +646,8 @@ class ResultsScreen(Screen):
             round_cell = [tint(self.app, phase, "text-muted")] if two_rounds else []
             budget_cell = [str(r.budget or "")] if budgets else []
             goal = r.task.goal if len(r.task.goal) <= 40 else r.task.goal[:39] + "…"
-            table.add_row(str(i), *round_cell, goal, tint(self.app, label, colour), keys, *budget_cell,
-                          str(r.task.ref), r.keys, r.task.solution)
+            table.add_row(str(i), *round_cell, Text(goal), tint(self.app, label, colour), keys, *budget_cell,
+                          str(r.task.ref), Text(r.keys), Text(r.task.solution))
 
     def action_again(self) -> None:
         self.dismiss(True)
@@ -682,7 +697,7 @@ class CardScreen(Screen):
         panel.border_title = f"{self.title_text} · {self.decks[card.deck].title}"
         panel.border_subtitle = ("again · " if card.id in self.retried else "") + f"{min(done + 1, self.total)}/{self.total}"
         self.query_one("#card-bar", Static).update(progress_bar(done, self.total))
-        self.query_one("#card-prompt", Static).update(card.prompt)
+        self.query_one("#card-prompt", Static).update(Content(card.prompt))
         box = self.query_one("#card-input", Input)
         box.value = ""
         box.disabled = False
@@ -707,13 +722,15 @@ class CardScreen(Screen):
 
     def show_feedback(self) -> None:
         card, correct, _ = self.pending  # type: ignore[misc]
-        also = f"   [dim]also {', '.join(card.also)}[/]" if card.also else ""
-        note = f"\n[dim]{card.note}[/]" if card.note else ""
+        # answers are put in as variables: as markup, `[b` or `[d` would break it
+        also = "   [dim]also $also[/]" if card.also else ""
+        note = "\n[dim]$note[/]" if card.note else ""
+        mark = "[$success]✓[/]" if correct else "[$error]✗[/]"
+        text = Content.from_markup(f"{mark}  [b]$shown[/]{also}{note}", shown=card.shown,
+                                   also=", ".join(card.also), note=card.note)
         if correct:
-            text = f"[$success]✓[/]  [b]{card.shown}[/]{also}{note}"
             help_text = keybar(("enter", "next"), ("esc", "stop"))
         else:
-            text = f"[$error]✗[/]  [b]{card.shown}[/]{also}{note}"
             help_text = keybar(("enter", "next"), ("o", "I was right"), ("esc", "stop"))
         self.query_one("#card-feedback", Static).update(text)
         self.query_one("#card-help", Static).update(help_text)

@@ -14,7 +14,7 @@ _TOKEN_NAMES = {
     "esc": "<Esc>", "escape": "<Esc>",
     "cr": "<CR>", "enter": "<CR>", "return": "<CR>",
     "tab": "<Tab>", "bs": "<BS>", "backspace": "<BS>",
-    "space": " ", "lt": "<", "bar": "|", "bslash": "\\",
+    "space": "<Space>", "lt": "<", "bar": "|", "bslash": "\\",
     "home": "<Home>", "end": "<End>", "del": "<Del>", "delete": "<Del>",
     "up": "<Up>", "down": "<Down>", "left": "<Left>", "right": "<Right>",
 }

@@ -16,7 +16,7 @@ local function hardtime_phase()
   if not y then
     return "hint"
   end
-  local started = os.time({ year = tonumber(y), month = tonumber(m), day = tonumber(d) })
+  local started = os.time({ year = tonumber(y), month = tonumber(m), day = tonumber(d), hour = 0 })
   return os.difftime(os.time(), started) > 14 * 86400 and "block" or "hint"
 end
 

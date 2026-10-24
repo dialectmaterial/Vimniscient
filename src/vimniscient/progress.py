@@ -138,8 +138,8 @@ class Progress:
     def record(self, results: list[TaskResult]) -> None:
         ts = _now()
         for r in results:
-            if r.status == "unseen":
-                continue
+            if r.status == "unseen" or (r.status == "quit" and not r.keys):
+                continue  # not tried: opening a lesson and leaving isn't an attempt
             self.db.execute(
                 "INSERT INTO attempts (ts, lesson, task, status, count, ref, keys, hints, phase) VALUES (?,?,?,?,?,?,?,?,?)",
                 (ts, r.task.lesson_id, r.task.index, r.status, r.count, r.task.ref, r.keys, r.hints, r.task.phase),
@@ -177,7 +177,7 @@ class Progress:
     def version_for(self, task: Task) -> Task:
         """The next version of a task to practise: each recall moves on to another text."""
         (n,) = self.db.execute(
-            "SELECT COUNT(*) FROM attempts WHERE lesson = ? AND task = ? AND phase = 'recall'",
+            "SELECT COUNT(*) FROM attempts WHERE lesson = ? AND task = ? AND phase = 'recall' AND status != 'quit'",
             (task.lesson_id, task.index),
         ).fetchone()
         return task.version(n + 1)
@@ -260,6 +260,7 @@ class Progress:
     def record_endless(self, results: list[TaskResult], run: dict[str, int]) -> None:
         """Attempts go in as phase 'endless': they count for the streak, not for lessons or reviews."""
         ts = _now()
+        results = [r for r in results if not (r.status == "quit" and not r.keys)]
         for r in results:
             self.db.execute(
                 "INSERT INTO attempts (ts, lesson, task, status, count, ref, keys, hints, phase) VALUES (?,?,?,?,?,?,?,?,?)",
@@ -391,5 +392,6 @@ class Progress:
         return [self.item(item_id) for (item_id,) in rows]
 
     def hardtime_block_date(self) -> date:
+        """The day hardtime starts blocking (the Neovim config switches after 14 full days)."""
         started = date.fromisoformat(STARTED_FILE.read_text().strip())
-        return started + timedelta(days=HARDTIME_HINT_DAYS + 1)
+        return started + timedelta(days=HARDTIME_HINT_DAYS)

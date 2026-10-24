@@ -21,7 +21,9 @@
 -- the climb, or a Learn copy and later a Recall of a task that was missed. A
 -- climb or recall task has a key budget; going over it is a miss.
 
-local session = vim.json.decode(io.open(os.getenv("VIMNISCIENT_SESSION")):read("*a"))
+-- luanil: a JSON null becomes nil (vim.NIL would be truthy)
+local session = vim.json.decode(io.open(os.getenv("VIMNISCIENT_SESSION")):read("*a"),
+  { luanil = { object = true, array = true } })
 local tasks = session.tasks
 
 local practice_win = vim.api.nvim_get_current_win()
@@ -46,6 +48,35 @@ pcall(function()
   vim.list_extend(require("which-key.config").disable.bt, { "", "nofile" })
   require("which-key.buf").clear()
 end)
+-- hardtime would log the lessons' own keys as bad habits (and block them once
+-- it blocks). It turns itself on 500ms after loading, unless `enabled` is off.
+pcall(function()
+  require("hardtime.config").config.enabled = false
+  require("hardtime").disable()
+end)
+
+-- Notifiers cut long lines short (snacks doesn't wrap), so wrap to their usual width.
+local function wrap(text)
+  local width = math.max(34, math.floor(vim.o.columns * 0.4) - 6)
+  local out = {}
+  for _, line in ipairs(vim.split(text, "\n")) do
+    local current = ""
+    for word in line:gmatch("%S+") do
+      if current ~= "" and vim.fn.strdisplaywidth(current .. " " .. word) > width then
+        table.insert(out, current)
+        current = word
+      else
+        current = current == "" and word or current .. " " .. word
+      end
+    end
+    table.insert(out, current)
+  end
+  return table.concat(out, "\n")
+end
+
+local function say(msg, level, title)
+  vim.notify(wrap(msg), level, { title = title })
+end
 
 local results = {}
 for i = 1, #tasks do
@@ -171,11 +202,10 @@ local function load_task(i)
   current = i
   local task = tasks[i]
   if not endless and i > 1 and task.phase ~= tasks[i - 1].phase and task.phase == "recall" then
-    vim.notify("From memory now: new text, no keys shown.", vim.log.levels.INFO,
-      { title = "Recall" })
+    say("From memory now: new text, no keys shown.", vim.log.levels.INFO, "Recall")
   end
   if endless and task.phase == "recall" then
-    vim.notify("One you missed earlier, on new text. From memory now.", vim.log.levels.INFO, { title = "Recall" })
+    say("One you missed earlier, on new text. From memory now.", vim.log.levels.INFO, "Recall")
   end
   state = { keys = {}, done = false, hints = 0 }
   results[i].status = "quit"
@@ -228,7 +258,7 @@ local function finish(status)
   r.keys, r.count = task_keys()
   if status == "quit" then
     -- the :q that ended the lesson isn't part of the attempt
-    for _, ending in ipairs({ ":qa!<CR>", ":qa<CR>", ":q!<CR>", ":q<CR>", ":wq<CR>", ":x<CR>", "ZZ", "ZQ" }) do
+    for _, ending in ipairs({ ":qa!<CR>", ":qa<CR>", ":q!<CR>", ":q<CR>", ":wq<CR>", ":x<CR>", "ZZ", "ZQ", " qq" }) do
       if r.keys:sub(-#ending) == ending then
         r.keys = r.keys:sub(1, -#ending - 1)
         break
@@ -263,8 +293,8 @@ end
 local function retry()
   local task = tasks[current]
   finish("skipped")
-  vim.notify(string.format("The answer: %s\nType it in now; it comes back on new text at the end.", task.solution),
-    vim.log.levels.WARN, { title = "Skipped" })
+  say(string.format("The answer: %s\nType it in now; it comes back on new text at the end.", task.solution),
+    vim.log.levels.WARN, "Skipped")
   local learn = vim.tbl_extend("force", task, { phase = "learn", extra = "learn", show = task.solution,
     label = "LEARN · skipped" })
   local again = vim.tbl_extend("force", task.again, { phase = "recall", extra = "recall", n = task.n,
@@ -280,8 +310,8 @@ end
 local function miss(reason)
   local task = tasks[current]
   finish("failed")
-  vim.notify(string.format("%s\nThe answer: %s\nType it in now; it comes back on new text soon.", reason, task.solution),
-    vim.log.levels.WARN, { title = "Missed" })
+  say(string.format("%s\nThe answer: %s\nType it in now; it comes back on new text soon.", reason, task.solution),
+    vim.log.levels.WARN, "Missed")
   add_task(endless_task(task.id, task.v, "learn"))
   table.insert(climb.pending, { id = task.id, v = task.v + 1, after = climb.rung + endless.gap })
   next_task(0)
@@ -328,8 +358,8 @@ local function check()
         title = phase == "recall" and "Recalled" or "Learnt: it comes back soon on new text"
       end
     end
-    vim.notify(string.format("Solved in %d keys (ref %d)%s\n%s%s", r.count, ref, verdict, r.keys, last),
-      vim.log.levels.INFO, { title = title })
+    say(string.format("Solved in %d keys (ref %d)%s\n%s%s", r.count, ref, verdict, r.keys, last),
+      vim.log.levels.INFO, title)
     next_task(1400)
   end
 end
@@ -339,7 +369,8 @@ local ns = vim.api.nvim_create_namespace("vimniscient")
 -- once when one completes (`iw` after `c`).
 vim.on_key(function(_, typed)
   if not state.done and typed and typed ~= "" then
-    table.insert(state.keys, vim.fn.keytrans(typed))
+    -- a plain space, as the reference solutions write it
+    table.insert(state.keys, (vim.fn.keytrans(typed):gsub("<Space>", " ")))
     vim.schedule(update_winbars)
     if endless then
       vim.schedule(over_budget)
@@ -378,12 +409,14 @@ vim.api.nvim_create_autocmd("VimLeavePre", {
 vim.api.nvim_create_user_command("Hint", function()
   local task = tasks[current]
   state.hints = state.hints + 1
-  if state.hints == 1 and task.hint ~= "" then
-    vim.notify(task.hint, vim.log.levels.INFO, { title = "Hint" })
+  if task.solution == "—" then -- VimGolf: there's no reference to give away
+    say(task.hint, vim.log.levels.INFO, "Hint")
+  elseif state.hints == 1 and task.hint ~= "" then
+    say(task.hint, vim.log.levels.INFO, "Hint")
   elseif endless and task.budget and not state.done then
     miss("You asked for the answer.")
   else
-    vim.notify("Reference solution: " .. task.solution, vim.log.levels.INFO, { title = "Hint" })
+    say("Reference solution: " .. task.solution, vim.log.levels.INFO, "Hint")
   end
 end, {})
 vim.api.nvim_create_user_command("Skip", function()
@@ -407,14 +440,18 @@ vim.api.nvim_create_user_command("Reset", function()
   set_lines(practice_buf, tasks[current].start)
   vim.bo[practice_buf].undolevels = undolevels
   vim.api.nvim_win_set_cursor(practice_win, tasks[current].cursor)
+  vim.cmd("stopinsert")
+  -- a fresh start: the keys count from here (hints used still count)
+  state.keys = {}
+  update_winbars()
 end, {})
 
 if endless then
   add_task(endless_next())
   load_task(1)
-  vim.notify("Endless, from level " .. climb.level .. ". Solve within the key budget to climb; a miss shows "
-    .. "the answer, and the task comes back.\n:q stops whenever you like.", vim.log.levels.INFO, { title = "Vimniscient" })
+  say("Endless, from level " .. climb.level .. ". Solve within the key budget to climb; a miss shows "
+    .. "the answer, and the task comes back.\n:q stops whenever you like.", vim.log.levels.INFO, "Vimniscient")
 else
   load_task(1)
-  vim.notify(session.title .. "\nMake the bottom text match the goal.", vim.log.levels.INFO, { title = "Vimniscient" })
+  say(session.title .. "\nMake the bottom text match the goal.", vim.log.levels.INFO, "Vimniscient")
 end

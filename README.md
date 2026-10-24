@@ -198,6 +198,7 @@ uv run python tests/check_lessons.py --lazyvim  # LazyVim lessons, in your own c
 uv run python tests/check_answers.py            # card answers written different ways
 uv run python tests/live_lessons.py --all       # types every solution into the real runner (needs tmux)
 uv run python tests/live_retry.py               # a skipped task comes back (Learn, then Recall)
+uv run python tests/live_review.py              # a review session, as review, placement and VimGolf run
 uv run python tests/live_endless.py             # endless mode: a miss, its Learn copy and its Recall
 ```
 
