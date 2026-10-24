@@ -26,6 +26,7 @@ class Task:
     ft: str
     lesson_id: str = ""
     index: int = 0  # position in its lesson
+    ref_override: int | None = None  # when there's no reference solution (VimGolf)
 
     @property
     def item_id(self) -> str:
@@ -33,7 +34,7 @@ class Task:
 
     @property
     def ref(self) -> int:
-        return count_keys(self.solution)
+        return self.ref_override if self.ref_override is not None else count_keys(self.solution)
 
 
 @dataclass

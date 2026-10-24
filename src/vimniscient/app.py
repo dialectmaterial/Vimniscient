@@ -10,7 +10,7 @@ from textual.screen import Screen
 from textual.widgets import DataTable, Footer, Input, Markdown, OptionList, Static
 from textual.widgets.option_list import Option
 
-from vimniscient import srs
+from vimniscient import habits, srs, vimgolf
 from vimniscient.answer import is_correct
 from vimniscient.cards import Card, Deck, load_decks
 from vimniscient.lessons import Lesson, Task, load_lessons
@@ -46,6 +46,41 @@ def review_lesson(tasks: list[Task]) -> Lesson:
     )
 
 
+def vimgolf_lesson(challenge: vimgolf.Challenge) -> Lesson:
+    best = challenge.best
+    # The runner finishes by itself, so the reference is the best score minus saving (ZZ).
+    ref = max(1, best - vimgolf.SAVE_KEYS) if best else None
+    best_text = (
+        f"The best score on vimgolf.com is **{best}** ({challenge.entries} entries). VimGolf scores "
+        f"include `ZZ` to save, so your score is your keys + {vimgolf.SAVE_KEYS}."
+        if best
+        else ""
+    )
+    task = Task(
+        goal=f"VimGolf: {challenge.title}",
+        start=challenge.start,
+        cursor=(1, 0),
+        target=challenge.target,
+        solution=f"not published; see {challenge.url}",
+        hint=f"No hints in VimGolf. Solutions show on {challenge.url} once you submit one.",
+        ft="",
+        lesson_id="vimgolf",
+        ref_override=ref,
+    )
+    return Lesson(
+        id="vimgolf",
+        week=0,
+        day=0,
+        title=f"VimGolf: {challenge.title}",
+        intro=f"Today's challenge from [vimgolf.com]({challenge.url}): make the text match, in as few "
+        f"keystrokes as you can. {best_text}\n\nThis runs in your own LazyVim, so your count can differ "
+        "a little from the official one (VimGolf uses plain Vim). To submit for real: install `vim`, "
+        f"run `vimgolf setup` once, then `vimgolf put {challenge.id}`.",
+        keys=[],
+        tasks=[task],
+    )
+
+
 def placement_lesson(lessons: list[Lesson]) -> Lesson:
     """The first and last task of every lesson except the weekly reviews."""
     tasks = [t for lesson in lessons if lesson.day != 7 for t in (lesson.tasks[0], lesson.tasks[-1])]
@@ -67,6 +102,7 @@ class HomeScreen(Screen):
     BINDINGS = [
         Binding("t", "app.today", "Today"),
         Binding("c", "app.cards", "Cards"),
+        Binding("g", "app.vimgolf", "VimGolf"),
         Binding("p", "app.placement", "Placement"),
         Binding("s", "app.stats", "Stats"),
         Binding("j", "move(1)", "Down", show=False),
@@ -104,7 +140,12 @@ class HomeScreen(Screen):
         if review:
             parts.append(plural(len(review), "review task"))
         parts.append(f"{nxt.label}: {nxt.title}" if nxt else "all lessons done")
+        if not progress.vimgolf_done_today():
+            parts.append("VimGolf")
         today = "[b]Today:[/] " + " → ".join(parts) + "  [dim](press t)[/]"
+        top = next((h for h in habits.habits() if h.recent), None)
+        if top:
+            today += f"\n[dim]Top habit (hardtime): {top.message} ({top.recent}× in two weeks)[/]"
         if not progress.days_trained():
             today += "\n[dim]New here? Press p for a placement test that skips the lessons you already know.[/]"
         self.query_one("#today", Static).update(today)
@@ -157,10 +198,11 @@ class LessonScreen(Screen):
         Binding("h", "back", "Back", show=False),
     ]
 
-    def __init__(self, lesson: Lesson, placement: bool = False) -> None:
+    def __init__(self, lesson: Lesson, on_results: Callable[[list[TaskResult]], str] | None = None) -> None:
+        """`on_results` stores the results and returns a note for the results screen."""
         super().__init__()
         self.lesson = lesson
-        self.placement = placement
+        self.on_results = on_results
 
     def compose(self) -> ComposeResult:
         lesson = self.lesson
@@ -169,8 +211,8 @@ class LessonScreen(Screen):
         yield VerticalScroll(
             Markdown(
                 f"# {heading}\n\n{lesson.intro}\n\n{keys}"
-                f"{len(lesson.tasks)} tasks. The goal shows in the top window, your text below. "
-                "When they match the next task loads by itself. Inside Neovim: "
+                f"{plural(len(lesson.tasks), 'task')}. The goal shows in the top window, your text below. "
+                "When they match, the next task loads by itself. Inside Neovim: "
                 "`:Hint` (twice for the answer), `:Skip`, `:Reset`, `:q` to stop.\n\n"
                 "**Press Enter to start.**"
             )
@@ -184,15 +226,11 @@ class LessonScreen(Screen):
         app: VimniscientApp = self.app  # type: ignore[assignment]
         with app.suspend():
             results = run_lesson(self.lesson)
-        app.progress.record(results)
-        note = ""
-        if self.placement:
-            placed = app.progress.place(app.lessons, results)
-            note = (
-                "Known already: " + ", ".join(f"{p.label} ({p.title})" for p in placed)
-                if placed
-                else "No lessons skipped. Start from Week 1 · Day 1."
-            )
+        if self.on_results:
+            note = self.on_results(results)
+        else:
+            app.progress.record(results)
+            note = ""
         app.push_screen(
             ResultsScreen(self.lesson, results, note),
             lambda again: None if again else self.dismiss(results),
@@ -362,6 +400,10 @@ class StatsScreen(Screen):
             DataTable(id="accuracy-table", zebra_stripes=True),
             Static("[b]Trouble spots[/] [dim](forgotten most often)[/]", classes="heading"),
             DataTable(id="trouble-table", zebra_stripes=True),
+            Static("[b]Habits[/] [dim](what hardtime.nvim caught you doing)[/]", classes="heading"),
+            DataTable(id="habits-table", zebra_stripes=True),
+            Static("[b]VimGolf[/] [dim](your score includes ZZ, like on vimgolf.com)[/]", classes="heading"),
+            DataTable(id="vimgolf-table", zebra_stripes=True),
         )
         yield Footer()
 
@@ -415,6 +457,16 @@ class StatsScreen(Screen):
             elif item.id in tasks:
                 table.add_row(tasks[item.id].goal, tasks[item.id].solution, str(item.lapses))
 
+        table = self.query_one("#habits-table", DataTable)
+        table.add_columns("Message", "Last two weeks", "All time", "Last seen")
+        for habit in habits.habits()[:10]:
+            table.add_row(habit.message, str(habit.recent), str(habit.total), habit.last.isoformat())
+
+        table = self.query_one("#vimgolf-table", DataTable)
+        table.add_columns("Day", "Challenge", "Your score", "Best on vimgolf.com")
+        for day, title, score, best in progress.vimgolf_history():
+            table.add_row(day, title, str(score) if score else "[dim]not solved[/]", str(best) if best else "")
+
 
 class VimniscientApp(App):
     TITLE = "Vimniscient"
@@ -453,11 +505,29 @@ class VimniscientApp(App):
         if steps:
             steps[0](lambda: self.run_steps(steps[1:]))
 
+    def drill_tasks(self, exclude: list[Task]) -> list[Task]:
+        """One task from each lesson that fixes a habit hardtime keeps catching (lessons you've done only)."""
+        taken = {t.item_id for t in exclude}
+        items = self.progress.items("task")
+        tasks = []
+        for lesson_id in habits.drill_lessons():
+            lesson = next((lesson for lesson in self.lessons if lesson.id == lesson_id), None)
+            if not lesson or not self.progress.is_done(lesson):
+                continue
+            # the task that has gone worst so far
+            candidates = [t for t in lesson.tasks if t.item_id not in taken]
+            if candidates:
+                worst = min(candidates, key=lambda t: items[t.item_id].ease if t.item_id in items else 0)
+                tasks.append(worst)
+                taken.add(worst.item_id)
+        return tasks[:3]
+
     def action_today(self) -> None:
-        """Cards, then review tasks, then the next lesson."""
+        """Cards, then review tasks (plus habit drills), then the next lesson, then VimGolf."""
         progress = self.progress
         cards = progress.due_cards(self.decks, self.lessons) + progress.new_cards(self.decks, self.lessons)
         review = progress.due_tasks(self.lessons)
+        review += self.drill_tasks(review)
         nxt = progress.next_lesson(self.lessons)
         steps = []
         if cards:
@@ -466,6 +536,8 @@ class VimniscientApp(App):
             steps.append(lambda done: self.push_screen(LessonScreen(review_lesson(review)), lambda _: done()))
         if nxt:
             steps.append(lambda done: self.push_screen(LessonScreen(nxt), lambda _: done()))
+        if not progress.vimgolf_done_today():
+            steps.append(lambda done: self.start_vimgolf(done))
         if not steps:
             self.notify("Nothing due and every lesson done. Pick any lesson to practise.")
         self.run_steps(steps)
@@ -478,7 +550,45 @@ class VimniscientApp(App):
             self.notify("No cards due. Come back tomorrow.")
 
     def action_placement(self) -> None:
-        self.push_screen(LessonScreen(placement_lesson(self.lessons), placement=True))
+        def on_results(results: list[TaskResult]) -> str:
+            self.progress.record(results)
+            placed = self.progress.place(self.lessons, results)
+            if not placed:
+                return "No lessons skipped. Start from Week 1 · Day 1."
+            return "Known already: " + ", ".join(f"{p.label} ({p.title})" for p in placed)
+
+        self.push_screen(LessonScreen(placement_lesson(self.lessons), on_results))
+
+    def action_vimgolf(self) -> None:
+        self.start_vimgolf(lambda: None)
+
+    def start_vimgolf(self, done: Callable[[], None]) -> None:
+        self.notify("Fetching today's VimGolf challenge…")
+        self.run_worker(lambda: self._fetch_vimgolf(done), thread=True, exclusive=True, group="vimgolf")
+
+    def _fetch_vimgolf(self, done: Callable[[], None]) -> None:
+        # A thread of its own: sqlite connections can't cross threads, so it opens one.
+        try:
+            challenge = Progress().vimgolf_today(vimgolf.index(), vimgolf.challenge)
+        except Exception as error:  # offline, or the site changed: never take the app down
+            self.call_from_thread(self.notify, f"Couldn't get a VimGolf challenge ({error}). Skipping it.", severity="warning")
+            self.call_from_thread(done)
+            return
+        if challenge is None:
+            self.call_from_thread(self.notify, "No VimGolf challenges left to try.")
+            self.call_from_thread(done)
+            return
+
+        def on_results(results: list[TaskResult]) -> str:
+            score = self.progress.record_vimgolf(challenge.id, results[0], vimgolf.SAVE_KEYS)
+            if score is None:
+                return f"Not solved. It stays today's challenge. Try again with g. ({challenge.url})"
+            best = f", best on vimgolf.com {challenge.best}" if challenge.best else ""
+            return f"Your VimGolf score: {score} (keys + ZZ){best}. Solutions: {challenge.url}"
+
+        self.call_from_thread(
+            self.push_screen, LessonScreen(vimgolf_lesson(challenge), on_results), lambda _: done()
+        )
 
     def action_stats(self) -> None:
         self.push_screen(StatsScreen())

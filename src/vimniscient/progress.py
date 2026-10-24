@@ -9,6 +9,7 @@ from vimniscient import srs
 from vimniscient.cards import DECK_ORDER, Card, Deck
 from vimniscient.lessons import Lesson, Task
 from vimniscient.session import TaskResult
+from vimniscient.vimgolf import Challenge
 
 # VIMNISCIENT_DATA points somewhere else, e.g. for testing without touching real progress.
 DATA_DIR = Path(
@@ -54,6 +55,14 @@ CREATE TABLE IF NOT EXISTS card_log (
 CREATE TABLE IF NOT EXISTS placed (
     lesson TEXT PRIMARY KEY,
     ts TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS vimgolf (
+    id TEXT PRIMARY KEY,
+    title TEXT NOT NULL,
+    assigned TEXT NOT NULL,
+    best INTEGER,
+    score INTEGER,
+    solved TEXT
 );
 """
 
@@ -214,6 +223,57 @@ class Progress:
                     picked.append(unseen[deck].pop(0))
                     left -= 1
         return picked
+
+    # vimgolf
+
+    def vimgolf_today(self, index: list[dict], fetch) -> "Challenge | None":
+        """Today's challenge: the one given out today, else the most played one not tried yet that fits."""
+        today = date.today().isoformat()
+        row = self.db.execute("SELECT id FROM vimgolf WHERE assigned = ? ORDER BY rowid DESC LIMIT 1", (today,)).fetchone()
+        entries = {e["id"]: e for e in index}
+        if row and row[0] in entries:
+            return fetch(entries[row[0]])
+        tried = {cid for (cid,) in self.db.execute("SELECT id FROM vimgolf")}
+        for entry in index:
+            if entry["id"] in tried:
+                continue
+            challenge = fetch(entry)
+            if not challenge.fits:
+                # Remember it so it isn't fetched again tomorrow.
+                self.db.execute("INSERT OR IGNORE INTO vimgolf (id, title, assigned) VALUES (?, ?, '')", (entry["id"], entry["title"]))
+                self.db.commit()
+                continue
+            self.db.execute(
+                "INSERT INTO vimgolf (id, title, assigned, best) VALUES (?, ?, ?, ?)",
+                (challenge.id, challenge.title, today, challenge.best),
+            )
+            self.db.commit()
+            return challenge
+        return None
+
+    def record_vimgolf(self, challenge_id: str, result: TaskResult, save_keys: int) -> int | None:
+        """Store a solved run; returns the VimGolf-style score (keys + saving)."""
+        if result.status != "solved":
+            return None
+        score = result.count + save_keys
+        self.db.execute(
+            "UPDATE vimgolf SET score = MIN(COALESCE(score, ?), ?), solved = COALESCE(solved, ?) WHERE id = ?",
+            (score, score, _now(), challenge_id),
+        )
+        self.db.commit()
+        return score
+
+    def vimgolf_done_today(self) -> bool:
+        today = date.today().isoformat()
+        return self.db.execute("SELECT 1 FROM vimgolf WHERE assigned = ? AND solved IS NOT NULL", (today,)).fetchone() is not None
+
+    def vimgolf_history(self, limit: int = 10) -> list[tuple[str, str, int | None, int | None]]:
+        """(day, title, your score, best) for challenges given out, newest first."""
+        rows = self.db.execute(
+            "SELECT assigned, title, score, best FROM vimgolf WHERE assigned != '' ORDER BY assigned DESC, rowid DESC LIMIT ?",
+            (limit,),
+        )
+        return list(rows)
 
     # overview
 

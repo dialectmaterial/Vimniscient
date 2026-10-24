@@ -37,13 +37,31 @@ Optional training wheels for everyday editing: copy
 | `vimniscient list` | List the lessons |
 | `vimniscient run w1d1-words` | Run one lesson directly |
 
-In the menu: `t` today, `c` cards only, `p` placement test, `s` stats,
-`j`/`k` + Enter for any lesson, `q` to quit.
+In the menu: `t` today, `c` cards only, `g` VimGolf, `p` placement test,
+`s` stats, `j`/`k` + Enter for any lesson, `q` to quit.
 
-**Today** (`t`) is the daily routine: the cards that are due plus up to 10
-new ones, then the Vim tasks from earlier days that are due again, then the
-next lesson. Inside a lesson: `:Hint` (twice for the answer), `:Skip`,
-`:Reset`, `:q` to stop.
+**Today** (`t`) is the daily routine:
+
+1. the cards that are due, plus up to 10 new ones
+2. the Vim tasks from earlier days that are due again, plus a few habit
+   drills (see below)
+3. the next lesson
+4. one VimGolf challenge
+
+Inside a lesson: `:Hint` (twice for the answer), `:Skip`, `:Reset`, `:q` to stop.
+
+**VimGolf** (`g`) gives you a challenge from [vimgolf.com](https://www.vimgolf.com)
+every day: the most played ones you haven't tried yet that fit on screen.
+You play it in your own Neovim, and your score (keys + `ZZ`) is compared with
+the site's leaderboard. To submit officially, install `vim`, run `vimgolf setup`
+once, then run `vimgolf put <id>`.
+
+**Habits** come from [hardtime.nvim](https://github.com/m4xshen/hardtime.nvim)'s
+log. Every "Use X instead of Y" it showed you becomes a card in the *Your
+habits* deck, which is introduced first. When it keeps catching you pressing
+`hjkl` or the arrow keys, review brings back tasks from the lessons that
+teach better motions (counts, search, `f`/`t`, text objects), but only
+lessons you've already done.
 
 **Placement** (`p`) gives you two tasks from every lesson. Each lesson you
 clearly know (both tasks solved without hints, in at most about 1.5× the
@@ -59,6 +77,7 @@ but got marked wrong, press `o` ("I was right").
 
 | Deck | Where the cards come from |
 |---|---|
+| Your habits | live from hardtime.nvim's log: what it caught you doing |
 | Vim | `cards/vim.yaml`, unlocked week by week along with the lessons |
 | LazyVim | a core set in `cards/lazyvim.yaml`, plus every leader keymap in **your** Neovim config |
 | Omarchy | live from `omarchy menu keybindings --print` (what SUPER + K shows) |
@@ -81,7 +100,7 @@ another folder).
 | 3 | Macros, registers, marks, visual block, `:s` and `:g` *(planned)* |
 | 4 | LazyVim: pickers, buffers, splits, neo-tree, LSP, surround *(planned)* |
 | 5 | Omarchy, foot, tmux, shell, Zathura *(planned)* |
-| 6+ | Mixed review, VimGolf, timed rounds *(planned)* |
+| 6+ | Mixed review, timed rounds *(planned)* |
 
 ## Writing lessons
 

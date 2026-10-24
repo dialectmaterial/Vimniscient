@@ -17,8 +17,7 @@ CACHE_DIR = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "vi
 NVIM_CONFIG = Path(os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config")) / "nvim"
 
 # New cards are introduced round-robin in this order.
-DECK_ORDER = ["vim", "lazyvim", "omarchy", "tmux", "shell", "foot", "zathura"]
-DECK_TITLES = {"omarchy": "Omarchy", "tmux": "tmux"}
+DECK_ORDER = ["habits", "vim", "lazyvim", "omarchy", "tmux", "shell", "foot", "zathura"]
 
 
 @dataclass
@@ -193,4 +192,7 @@ def load_decks(live: bool = True) -> dict[str, Deck]:
         decks["tmux"] = Deck("tmux", "tmux", tmux_cards())
         lazyvim = decks.setdefault("lazyvim", Deck("lazyvim", "LazyVim"))
         lazyvim.cards += lazyvim_extra_cards(lazyvim.cards)
+        from vimniscient.habits import habit_deck
+
+        decks["habits"] = habit_deck()
     return {d: decks[d] for d in DECK_ORDER if d in decks} | {d: v for d, v in decks.items() if d not in DECK_ORDER}
