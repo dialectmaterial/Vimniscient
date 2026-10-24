@@ -1,133 +1,140 @@
 # Vimniscient
 
 <p align="center">
-<img width="427" height="442" alt="image" src="https://github.com/user-attachments/assets/0978f73d-140f-4a74-a470-a25e41fa96ad" />
+<img width="427" height="442" alt="Vimniscient" src="https://github.com/user-attachments/assets/0978f73d-140f-4a74-a470-a25e41fa96ad" />
 </p>
 
-Absolute vim, really. A daily trainer that runs its exercises in **your own Neovim**
-(LazyVim and all), so you practise in the editor you actually use.
+**Get fluent in Vim with about fifteen minutes of practice a day, in your own Neovim.**
 
-Each task shows a goal at the top, diffed against your text below. Edit
-until they match, and the next task loads by itself. Every keystroke is
-counted, and you see your keys next to the reference solution.
+You've done `vimtutor`, you can get around, and you still reach for `jjjj`
+and Backspace. Vimniscient is the next step. It gives you real editing tasks
+that run in the Neovim you use every day, with your config, plugins and
+colours. A reference solution shows you a shorter way, and spaced repetition
+brings each skill back until it sticks.
 
-## Install
+<p align="center"><img src="docs/lesson.png" alt="A lesson in Neovim: the goal at the top, your text below, keystrokes counted live" width="820"></p>
+
+## How a lesson works
+
+Each task shows the goal at the top and your text below, with the
+differences highlighted. Edit until they match, and the next task loads by
+itself. There's nothing to submit, and any way of getting there counts.
+
+Your keystrokes are counted the same way [VimGolf](https://www.vimgolf.com)
+counts them, and afterwards you see your keys next to the reference
+solution. If `ciwbuf<Esc>..` took you 14 keys and the reference does it in
+10, you'll see how.
+
+Stuck? Type `:Hint` (twice for the answer). `:Skip` and `:Reset` do what
+they say, and `:q` stops.
+
+## Quick start
+
+You need Linux (macOS should work but is untested), [Neovim](https://neovim.io) 0.10 or newer,
+Python 3.11+ and [uv](https://docs.astral.sh/uv/).
 
 ```bash
-uv tool install --editable ~/Projects/code/vimniscient
+uv tool install git+https://github.com/dialectmaterial/Vimniscient
+vimniscient
 ```
 
-Then run `vimniscient`.
+1. Press **`p`** for the placement test. It gives you two tasks from every
+   lesson and skips the ones you already know. `:Skip` whatever you don't.
+2. From then on, press **`t`** once a day.
 
-Optional training wheels for everyday editing: copy
-[`extras/nvim/vimniscient.lua`](extras/nvim/vimniscient.lua) to
-`~/.config/nvim/lua/plugins/`. It adds:
+Your progress is kept in `~/.local/share/vimniscient/`. Vimniscient doesn't
+change your Neovim config.
 
-- [hardtime.nvim](https://github.com/m4xshen/hardtime.nvim): hints about
-  bad habits for the first 14 days after your first `vimniscient` run, then it
-  blocks them (and the arrow keys).
-- [precognition.nvim](https://github.com/tris203/precognition.nvim): shows
-  where `w`, `b`, `e`, `$`, `%` … would take you. It starts hidden; toggle it
-  with `<leader>uV`. (While its hints are showing, keys typed fast after an
-  operator can get lost, `cia` + text for example. Lessons always hide it.)
+## What you'll learn
 
-## Use
+37 lessons and 194 tasks over six weeks, one lesson a day:
 
-| Command | What it does |
+| Week | Topics |
 |---|---|
-| `vimniscient` | The menu (keys below) |
-| `vimniscient list` | List the lessons |
-| `vimniscient run w1d1-words` | Run one lesson directly |
-
-Everything is on one screen, laid out like lazygit, in your Omarchy theme's colours
-(Catppuccin Mocha's own palette by default: mauve, lavender and blue):
-
-- **Today** (top left): the daily routine step by step. Enter runs one step, `t` runs them all.
-- **Lessons** (bottom left): every lesson, ✓ solved, ○ placed, ◐ started. Enter starts it.
-- On the right: whatever is highlighted (a lesson's intro and its tasks), and your progress
-  with a keystroke-efficiency sparkline.
-
-`Tab` (or `1`/`2`) moves between panes, `j`/`k` through a list. `c` cards, `d` Omarchy
-drills, `g` VimGolf, `p` placement test, `s` stats, `q` quit. Cards and drills open in
-a centred focus screen. Nothing animates.
-
-**Today** (`t`) is the daily routine:
-
-1. the cards that are due, plus up to 10 new ones
-2. Omarchy drills: the ones due, plus up to 2 new ones
-3. the Vim tasks from earlier days that are due again, plus a few habit
-   drills (see below)
-4. the next lesson
-5. one VimGolf challenge
-
-Inside a lesson: `:Hint` (twice for the answer), `:Skip`, `:Reset`, `:q` to stop.
-
-**Omarchy drills** have you do things for real, like "float the drill
-window and tile it again" or "send it to workspace 9 and fetch it back".
-The trainer opens a window titled *Vimniscient drill* for the drills, so
-your own windows are left alone. It watches Hyprland's event socket and
-ticks each step off when it actually happens. The hint (`h`, or by itself
-after 25 seconds) shows the keys from your live keybindings. Drills share
-the spaced-repetition schedule, graded by how fast you were.
-
-**VimGolf** gives you a challenge from [vimgolf.com](https://www.vimgolf.com)
-every day: the most played ones you haven't tried yet that fit on screen.
-You play it in your own Neovim, and your score (keys + `ZZ`) is compared with
-the site's leaderboard.
-
-**Habits** come from [hardtime.nvim](https://github.com/m4xshen/hardtime.nvim)'s
-log. Every "Use X instead of Y" it showed you becomes a card in the *Your
-habits* deck, which is introduced first. When it keeps catching you pressing
-`hjkl` or the arrow keys, review brings back tasks from the lessons that
-teach better motions (counts, search, `f`/`t`, text objects), but only
-lessons you've already done.
-
-**Placement** gives you two tasks from every lesson. Each lesson you
-clearly know (both tasks solved without hints, in at most about 1.5× the
-reference keys) is marked done, and its other tasks come back in review a
-week later.
-
-### Cards
-
-You type the keys for a prompt. For key sequences, `ciw`, `<C-a>`/`ctrl-a`/`^a`
-and `<leader>ff`/`space ff` are all accepted. For chords, write
-`SUPER SHIFT + B` or `super+shift+b`. When your answer meant the same thing
-but got marked wrong, press `o` ("I was right").
-
-| Deck | Where the cards come from |
-|---|---|
-| Your habits | live from hardtime.nvim's log: what it caught you doing |
-| Vim | `cards/vim.yaml`, unlocked week by week along with the lessons |
-| LazyVim | a core set in `cards/lazyvim.yaml`, plus a hand-picked list of leader keymaps, named and keyed as in **your** Neovim config |
-| Omarchy | live from `omarchy menu keybindings --print` (what SUPER + K shows) |
-| tmux | live from `omarchy-menu-tmux-keybindings --print` |
-| Shell, foot, Zathura | `cards/*.yaml`, checked against the man pages and your configs |
-
-Cards and Vim tasks share one spaced-repetition schedule (a small SM-2
-variant in `srs.py`). Getting something right pushes it further out,
-forgetting it brings it back tomorrow. A new card you get right the first
-time counts as known and skips ahead. Progress is kept in
-`~/.local/share/vimniscient/progress.db` (set `VIMNISCIENT_DATA` to use
-another folder).
-
-## Curriculum
-
-| Week | Focus |
-|---|---|
-| 1 | Text objects, `f`/`t`, line commands, counts |
-| 2 | `.`, search as a motion, `cgn`, case and numbers, insert tricks, visual mode |
+| 1 | Text objects (`ciw`, `da"`, `dap`), `f`/`t`, line commands, counts |
+| 2 | The dot command, search as a motion, `cgn`, case and numbers, getting into insert mode well, visual mode |
 | 3 | Macros, registers, marks, visual block, `:s` and `:g` |
 | 4 | Ranges (`:m`, `:t`), `:sort` and shell filters, patterns, `:norm`, more motions, indenting |
-| 5 | LazyVim's text objects (arguments, any quote/bracket, functions, classes, sub-words, numbers, calls) and comments |
-| 6 | Real edits: code, notes and data, each mixing several tools |
+| 5 | [LazyVim](https://www.lazyvim.org)'s text objects (arguments, any quote or bracket, functions, classes, sub-words) and comments. Only shown if you use LazyVim |
+| 6 | Real edits on code, notes and data, each mixing several tools |
 
-Omarchy, tmux, the shell, foot and Zathura run alongside all of this, as
-cards and live drills.
+Each week ends with a review day. Every reference solution is tested: the
+plain-Vim ones in `nvim --clean`, and all of them typed at full speed into a
+LazyVim setup.
+
+## A day with Vimniscient
+
+`t` runs the daily routine:
+
+1. **Cards**: short prompts ("Change everything inside the quotes"), where you
+   type the keys (`ci"`). The ones that are due come first, then up to 10 new ones.
+2. **Review**: tasks from earlier days that are due again.
+3. **Today's lesson**.
+4. **[VimGolf](https://www.vimgolf.com)**: one real challenge a day, starting
+   with the most played ones. You play it in your Neovim, and your score is
+   compared with the site's leaderboard.
+
+Cards and tasks share one spaced-repetition schedule, like Anki. Whatever
+went well comes back later, and whatever you forgot comes back tomorrow.
+
+<p align="center"><img src="docs/home.png" alt="The home screen: today's routine, the lessons, the selected lesson and your progress" width="820"></p>
+
+The home screen shows everything at once: today's routine, the lessons
+(✓ solved, ◐ started, ○ skipped by the placement test), the selected
+lesson, and your progress with a keystroke-efficiency graph.
+
+| Key | Action |
+|---|---|
+| `t` | Run today's routine |
+| `Enter` | Start the selected step or lesson |
+| `Tab`, `j`/`k` | Move between panes and through lists |
+| `c` / `g` / `p` | Cards / VimGolf / placement test |
+| `s` | Stats |
+| `q` | Quit |
+
+## It adapts to your setup
+
+| You have | You get |
+|---|---|
+| Neovim | Weeks 1–4 and 6, Vim and shell cards, VimGolf |
+| [LazyVim](https://www.lazyvim.org) | Week 5, plus LazyVim cards whose names and keys are read from your own config |
+| [hardtime.nvim](https://github.com/m4xshen/hardtime.nvim) | Your bad habits become cards ("You typed `2dd`. What's shorter?"). When you lean on `hjkl` a lot, review brings back the motion lessons |
+| [Omarchy](https://omarchy.org) / Hyprland | Cards for every desktop and tmux keybinding (read live), and live drills (`d`): "send this window to workspace 9 and fetch it back", checked through Hyprland's events |
+| foot, Zathura | Cards for their keys |
+
+### Optional: practice while you work
+
+[`extras/nvim/vimniscient.lua`](extras/nvim/vimniscient.lua) is a
+[lazy.nvim](https://github.com/folke/lazy.nvim) plugin spec. Copy it to
+`~/.config/nvim/lua/plugins/` if you want:
+
+- [hardtime.nvim](https://github.com/m4xshen/hardtime.nvim): hints when you
+  do things the slow way, for your first two weeks. After that it blocks
+  them, along with the arrow keys.
+- [precognition.nvim](https://github.com/tris203/precognition.nvim): shows
+  where `w`, `b`, `e`, `$` … would take you. It starts hidden; toggle it with
+  `<leader>uV`.
+
+## Questions
+
+**Why not just use vimtutor, Vim Adventures or VimGolf?** Use them! vimtutor
+teaches the basics, and this picks up after it. Vimniscient runs in your real
+editor, schedules what you need to repeat, and turns VimGolf into a daily
+habit.
+
+**Does it work with my plugins?** Yes, that's the point. For a lesson it only
+turns off what would type for you (autopairs, completion, format-on-save),
+plus [which-key](https://github.com/folke/which-key.nvim), which replays your
+keys and would make them count twice.
+
+**My answer to a card was right but got marked wrong.** Common notations are
+accepted (`<C-a>`, `ctrl-a`, `^a`; `<leader>ff`, `space ff`). If yours still
+fails, press `o` ("I was right").
 
 ## Writing lessons
 
-Lessons are YAML files in `src/vimniscient/lessons/`. In `start`, `▮` marks the
-cursor (it sits on the character after it):
+Lessons are YAML files in [`src/vimniscient/lessons/`](src/vimniscient/lessons).
+`▮` marks where the cursor starts:
 
 ```yaml
 week: 1
@@ -142,36 +149,34 @@ tasks:
       The sl▮ow brown fox.
     target: |-
       The quick brown fox.
-    solution: ciwquick<Esc>   # reference solution; its length is the "ref" count
+    solution: ciwquick<Esc>   # the reference; its length is the "ref" count
     hint: ciw changes the inner word under the cursor.
     ft: python                # optional filetype
 ```
 
-Write `␣` for a space that has to survive editors stripping trailing whitespace.
+More details:
+- `␣` stands for a space that must survive editors stripping trailing whitespace.
+- `review: true` marks a review day (the placement test skips it).
+- `lazyvim: true` marks lessons that need LazyVim.
+- Indented text needs an indentation indicator (`|2-`), or YAML strips the leading spaces.
 
-Optional lesson flags: `review: true` for a mixed review day (the placement
-test skips those), and `lazyvim: true` when the tasks need LazyVim's plugins
-(they're checked in your own config, not in `nvim --clean`). For indented
-text, give the block an indentation indicator (`|2-`), or YAML strips the
-leading spaces.
-
-Check that every reference solution really produces its target, and that card answers written in different ways match:
+Before sending a lesson, check that every solution really produces its target:
 
 ```bash
-uv run python tests/check_lessons.py            # plain Vim lessons, in nvim --clean
+uv run python tests/check_lessons.py            # plain-Vim lessons, in nvim --clean
 uv run python tests/check_lessons.py --lazyvim  # LazyVim lessons, in your own config
-uv run python tests/check_answers.py
-uv run python tests/check_drills.py             # drill steps against made-up events
-uv run python tests/live_lessons.py --all       # types every solution into the real runner (tmux)
-uv run python tests/live_drills.py              # runs every drill on your desktop (moves windows!)
+uv run python tests/check_answers.py            # card answers written different ways
+uv run python tests/live_lessons.py --all       # types every solution into the real runner (needs tmux)
 ```
 
 ## How it works
 
-`vimniscient` starts `nvim` on a scratch file with
-[`runner.lua`](src/vimniscient/nvim/runner.lua). Keystrokes are the `typed`
-part of `vim.on_key`, meaning what you pressed before any mapping applied.
-VimGolf counts keys the same way. which-key is switched off for lesson
-sessions, because it replays keys, which garbles fast input and makes keys
-count twice. Practice buffers also turn off autopairs, completion and
-format-on-save, so plugins don't type for you.
+`vimniscient` is a [Textual](https://textual.textualize.io) app. A lesson
+starts `nvim` on a scratch file with
+[`runner.lua`](src/vimniscient/nvim/runner.lua). It shows the goal in a
+diffed split, checks your text after every change, and counts the `typed`
+part of `vim.on_key`: what you pressed, before any mapping applied.
+
+## License
+
+[AGPL-3.0](LICENSE)

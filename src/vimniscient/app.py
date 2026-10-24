@@ -24,7 +24,7 @@ from textual.widgets.option_list import Option
 
 from vimniscient import drills, habits, srs, vimgolf
 from vimniscient.answer import is_correct
-from vimniscient.cards import Card, Deck, load_decks
+from vimniscient.cards import Card, Deck, has_lazyvim, load_decks
 from vimniscient.lessons import Lesson, Task, load_lessons
 from vimniscient.progress import Progress
 from vimniscient.session import TaskResult, run_lesson
@@ -886,7 +886,8 @@ class VimniscientApp(App):
     def __init__(self) -> None:
         super().__init__()
         self.animation_level = "none"  # tabs, scrolling and the rest switch instantly
-        self.lessons = load_lessons()
+        # Week 5 teaches LazyVim's own text objects; without LazyVim it's left out.
+        self.lessons = [lesson for lesson in load_lessons() if not lesson.lazyvim or has_lazyvim()]
         self.progress = Progress()
         self.decks = load_decks()
         self.drills = drills.load_drills()

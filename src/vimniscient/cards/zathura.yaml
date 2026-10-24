@@ -1,5 +1,6 @@
 deck: zathura
 title: Zathura (PDF)
+requires: zathura
 style: keys
 case_sensitive: true
 # Defaults from zathura(1); ~/.config/zathura/zathurarc doesn't change any keys.

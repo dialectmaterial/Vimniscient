@@ -4,6 +4,7 @@ user's setup (Omarchy, tmux and LazyVim keybindings)."""
 import json
 import os
 import re
+import shutil
 import subprocess
 from dataclasses import dataclass, field
 from importlib import resources
@@ -13,6 +14,7 @@ import yaml
 
 from vimniscient.answer import pretty_keys
 
+NVIM_DATA = Path(os.environ.get("XDG_DATA_HOME", Path.home() / ".local/share")) / "nvim"
 CACHE_DIR = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "vimniscient"
 NVIM_CONFIG = Path(os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config")) / "nvim"
 
@@ -48,12 +50,22 @@ class Deck:
     cards: list[Card] = field(default_factory=list)
 
 
+def has_lazyvim() -> bool:
+    """LazyVim installed through lazy.nvim (its lessons and cards need it)."""
+    return (NVIM_DATA / "lazy" / "LazyVim").is_dir()
+
+
 def _static_decks() -> dict[str, Deck]:
     decks = {}
     for f in (resources.files("vimniscient") / "cards").iterdir():
         if not f.name.endswith(".yaml"):
             continue
         data = yaml.safe_load(f.read_text(encoding="utf-8"))
+        # a deck about a program only shows up when that program is installed
+        if data.get("requires") == "lazyvim" and not has_lazyvim():
+            continue
+        if data.get("requires") not in (None, "lazyvim") and not shutil.which(data["requires"]):
+            continue
         deck = Deck(data["deck"], data["title"])
         for i, c in enumerate(data["cards"]):
             deck.cards.append(
@@ -170,10 +182,11 @@ def lazyvim_extra_cards(core: list[Card]) -> list[Card]:
 def load_decks(live: bool = True) -> dict[str, Deck]:
     decks = _static_decks()
     if live:
-        decks["omarchy"] = Deck("omarchy", "Omarchy", omarchy_cards())
-        decks["tmux"] = Deck("tmux", "tmux", tmux_cards())
-        lazyvim = decks.setdefault("lazyvim", Deck("lazyvim", "LazyVim"))
-        lazyvim.cards += lazyvim_extra_cards(lazyvim.cards)
+        for deck in (Deck("omarchy", "Omarchy", omarchy_cards()), Deck("tmux", "tmux", tmux_cards())):
+            if deck.cards:
+                decks[deck.id] = deck
+        if "lazyvim" in decks:
+            decks["lazyvim"].cards += lazyvim_extra_cards(decks["lazyvim"].cards)
         from vimniscient.habits import habit_deck
 
         decks["habits"] = habit_deck()

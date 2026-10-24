@@ -1,5 +1,6 @@
 deck: foot
 title: foot (terminal)
+requires: foot
 style: combo
 case_sensitive: false
 # Defaults from foot.ini(5), with copy/paste as set in ~/.config/foot/foot.ini.
