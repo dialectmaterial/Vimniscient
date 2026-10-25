@@ -1,8 +1,9 @@
-/* Vimniscient: Catppuccin, the app's own palette. Mocha in the dark, Latte in the light. */
+/* Vimniscient: Catppuccin's accents on greys warmed three quarters of the way toward the logo's
+   own near-black and stone white, so the logo keeps its shading. Dark first, light below. */
 :root {
-  --base: #1e1e2e; --mantle: #181825; --crust: #11111b;
-  --surface0: #313244; --surface1: #45475a; --overlay: #7f849c;
-  --text: #cdd6f4; --subtext: #a6adc8;
+  --base: #15141a; --mantle: #100e14; --crust: #0b0a0f;
+  --surface0: #282530; --surface1: #3a3644; --overlay: #7f7b8a;
+  --text: #e2e0e2; --subtext: #b2aeae;
   --mauve: #cba6f7; --lavender: #b4befe; --blue: #89b4fa; --green: #a6e3a1;
   --yellow: #f9e2af; --red: #f38ba8; --sky: #89dceb;
   --diff: #2d3f5f;
@@ -12,9 +13,9 @@
 }
 @media (prefers-color-scheme: light) {
   :root {
-    --base: #eff1f5; --mantle: #e6e9ef; --crust: #dce0e8;
-    --surface0: #ccd0da; --surface1: #bcc0cc; --overlay: #7c7f93;
-    --text: #4c4f69; --subtext: #5c5f77;
+    --base: #f4f2ef; --mantle: #eae8e5; --crust: #e0deda;
+    --surface0: #d4d0cc; --surface1: #c4c0bc; --overlay: #7e7976;
+    --text: #3e3b44; --subtext: #565158;
     --mauve: #8839ef; --lavender: #7287fd; --blue: #1e66f5; --green: #40a02b;
     --yellow: #df8e1d; --red: #d20f39; --sky: #04a5e5;
     --diff: #c9d6f5;
