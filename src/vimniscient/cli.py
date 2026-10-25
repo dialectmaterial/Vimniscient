@@ -23,7 +23,7 @@ def main() -> None:
     if args.command is None:
         from vimniscient.app import VimniscientApp
 
-        VimniscientApp().run()
+        VimniscientApp().run(mouse=False)  # keyboard only: nothing in it reacts to clicks
         return
 
     if args.command == "remind":

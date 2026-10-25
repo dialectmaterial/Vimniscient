@@ -38,6 +38,9 @@ vim.bo[goal_buf].swapfile = false
 vim.bo[goal_buf].buflisted = false
 vim.api.nvim_set_current_win(practice_win)
 
+-- Keyboard only: a click would move the cursor without a keystroke counted.
+vim.o.mouse = ""
+
 -- Don't let session plugins remember the throwaway practice file.
 pcall(function() require("persistence").stop() end)
 -- precognition's hints lose keys typed fast after an operator (`cia` + text).
