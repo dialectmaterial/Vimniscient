@@ -170,6 +170,19 @@ class Progress:
     def next_lesson(self, lessons: list[Lesson]) -> Lesson | None:
         return next((lesson for lesson in lessons if not self.is_done(lesson)), None)
 
+    def lesson_today(self) -> bool:
+        """Whether a lesson ran today. Only lessons have a Learn round, so a review
+        (whose tasks are stored under their own lesson) doesn't count."""
+        today = date.today().isoformat()
+        row = self.db.execute("SELECT 1 FROM attempts WHERE phase = 'learn' AND ts >= ? LIMIT 1", (today,)).fetchone()
+        return row is not None
+
+    def practised_today(self) -> set[str]:
+        """Item ids of the tasks tried today, in any session."""
+        today = date.today().isoformat()
+        rows = self.db.execute("SELECT lesson, task FROM attempts WHERE ts >= ? AND status != 'quit'", (today,))
+        return {f"task:{lesson}#{task}" for lesson, task in rows}
+
     def current_week(self, lessons: list[Lesson]) -> int:
         nxt = self.next_lesson(lessons)
         return nxt.week if nxt else max(lesson.week for lesson in lessons) + 1

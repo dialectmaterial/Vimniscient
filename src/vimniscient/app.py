@@ -25,16 +25,20 @@ from textual.theme import Theme
 from textual.widgets import DataTable, Input, Markdown, OptionList, Sparkline, Static
 from textual.widgets.option_list import Option
 
-from vimniscient import drills, endless, habits, srs, vimgolf
+from vimniscient import drills, endless, habits, reminders, srs, today, vimgolf
 from vimniscient.answer import is_correct
 from vimniscient.cards import Card, Deck, has_lazyvim, has_plugin, load_decks
 from vimniscient.lessons import Lesson, Task, load_lessons, two_rounds
+from vimniscient.mnemonics import hooks
 from vimniscient.progress import Progress
 from vimniscient.session import TaskResult, run_endless, run_lesson
 
 LOGO = """\
 █ █ █ █▀▄▀█ █▄ █ █ ▄▀▀ ▄▀▀ █ ██▀ █▄ █ ▀█▀
 ▀▄▀ █ █ ▀ █ █ ▀█ █ ▄██ ▀▄▄ █ █▄▄ █ ▀█  █ """
+
+# decks whose answers are Vim keys, so mnemonics.hooks() can say what they stand for
+HOOK_DECKS = {"vim", "lazyvim", "habits"}
 
 # Result labels and the theme colour each is shown in.
 STATUS = {
@@ -384,24 +388,6 @@ class MainScreen(Screen):
         self.refresh_progress()
         self.show_detail()
 
-    def plan(self) -> list[tuple[str, str, str, bool | None]]:
-        """Today's steps: (id, label, detail, still to do), then Endless (None: never done)."""
-        app: VimniscientApp = self.app  # type: ignore[assignment]
-        progress, lessons = app.progress, app.lessons
-        due, new = progress.due_cards(app.decks, lessons), progress.new_cards(app.decks, lessons)
-        todays_drills = app.todays_drills()
-        review = progress.due_tasks(lessons)
-        review += app.drill_tasks(review)
-        nxt = progress.next_lesson(lessons)
-        golf_done = progress.vimgolf_done_today()
-        return [
-            ("cards", "Cards", f"{len(due)} due · {len(new)} new" if due or new else "done", bool(due or new)),
-            ("drills", "Drills", plural(len(todays_drills), "drill") if todays_drills else "done", bool(todays_drills)),
-            ("review", "Review", plural(len(review), "task") if review else "nothing due", bool(review)),
-            ("lesson", "Lesson", f"W{nxt.week} D{nxt.day} · {nxt.title}" if nxt else "all done", nxt is not None),
-            ("vimgolf", "VimGolf", "done" if golf_done else "today's challenge", not golf_done),
-            ("endless", "Endless", f"best level {best}" if (best := progress.endless_best()) else "as long as you like", None),
-        ]
 
     PLAN_DETAIL = {
         "cards": ("Cards", "Type the keys for each prompt: Vim, LazyVim, Omarchy, tmux, the shell, foot, "
@@ -417,11 +403,16 @@ class MainScreen(Screen):
     }
 
     def refresh_plan(self) -> None:
+        app: VimniscientApp = self.app  # type: ignore[assignment]
         options = []
-        for step_id, label, detail, todo in self.plan():
-            mark = "[$secondary]∞[/]" if todo is None else "[$primary]›[/]" if todo else "[$success]✓[/]"
-            options.append(Option(f"{mark} [b]{label:<8}[/] [dim]{detail}[/]", id=step_id))
+        steps = app.plan()
+        for step in steps:
+            mark = "[$secondary]∞[/]" if step.todo is None else "[$primary]›[/]" if step.todo else "[$success]✓[/]"
+            options.append(Option(Content.from_markup(f"{mark} [b]$label[/] [dim]$detail[/]",
+                                                      label=f"{step.label:<8}", detail=step.detail), id=step.id))
         self.fill("plan", options)
+        left = sum(step.minutes for step in today.left(steps))
+        self.query_one("#plan").border_subtitle = f"about {left} min left" if left else "all done"
 
     def refresh_lessons(self) -> None:
         app: VimniscientApp = self.app  # type: ignore[assignment]
@@ -599,6 +590,22 @@ class LessonScreen(Screen):
             app.start_lesson(self.lesson, self.on_results, done=lambda: self.dismiss(True))
 
 
+def why_these_keys(missed: list[TaskResult], most: int = 3) -> Content:
+    """For the tasks you missed: the reference keys and what they stand for."""
+    lines, values, said = [], {}, set()
+    for r in {r.task.solution: r for r in missed}.values():
+        found = [h for h in hooks(r.task.solution) if h not in said]  # each hook once
+        if not found or len(lines) == most:
+            continue
+        said.update(found)
+        n = len(lines)
+        values[f"k{n}"], values[f"h{n}"] = r.task.solution, " · ".join(found)
+        lines.append(f"[b]$k{n}[/]  [$accent]$h{n}[/]")
+    if not lines:
+        return Content("")
+    return Content.from_markup("[dim]Why these keys[/]\n" + "\n".join(lines), **values)
+
+
 class ResultsScreen(Screen):
     """Dismisses with True to run the lesson again, False to move on."""
 
@@ -621,6 +628,9 @@ class ResultsScreen(Screen):
             if self.note:
                 yield Static(self.note, id="note")
             yield DataTable(id="results", cursor_type="row")
+            missed = [r for r in self.results if r.status in ("failed", "skipped")]
+            if missed:
+                yield Static(why_these_keys(missed), id="results-why")
             budget = " · budget = the most keys allowed at that level" if any(r.budget for r in self.results) else ""
             yield Static(f"[dim]ref = the reference solution's keys; fewer and you beat it{budget}[/]",
                          id="results-legend")
@@ -726,8 +736,11 @@ class CardScreen(Screen):
         also = "   [dim]also $also[/]" if card.also else ""
         note = "\n[dim]$note[/]" if card.note else ""
         mark = "[$success]✓[/]" if correct else "[$error]✗[/]"
-        text = Content.from_markup(f"{mark}  [b]$shown[/]{also}{note}", shown=card.shown,
-                                   also=", ".join(card.also), note=card.note)
+        # what the keys stand for, only now that the answer is out; louder after a miss
+        why = "\n".join(hooks(card.answers[0])) if card.deck in HOOK_DECKS else ""
+        why_markup = ("\n[dim]$why[/]" if correct else "\n[$accent]$why[/]") if why else ""
+        text = Content.from_markup(f"{mark}  [b]$shown[/]{also}{note}{why_markup}", shown=card.shown,
+                                   also=", ".join(card.also), note=card.note, why=why)
         if correct:
             help_text = keybar(("enter", "next"), ("esc", "stop"))
         else:
@@ -790,6 +803,7 @@ class DrillScreen(Screen):
         self.current: drills.DrillRun | None = None
         self.hinted = False
         self.done_count = 0
+        self.stopping = False
 
     def compose(self) -> ComposeResult:
         with Vertical(id="drill-panel", classes="pane column"):
@@ -814,6 +828,8 @@ class DrillScreen(Screen):
             self.on_hypr_event(line)
 
     async def next_drill(self) -> None:
+        if self.stopping:
+            return
         if not self.queue:
             await self.stop()
             return
@@ -902,6 +918,9 @@ class DrillScreen(Screen):
             self.finish_drill(skipped=True)
 
     async def stop(self) -> None:
+        if self.stopping:  # Esc while the next drill was about to load: stop once
+            return
+        self.stopping = True
         self.current = None
         await asyncio.to_thread(self.hypr.close_drill_window)
         self.dismiss(self.done_count)
@@ -957,6 +976,7 @@ class VimniscientApp(App):
     #note { padding: 0 0 1 0; color: $success; height: auto; }
     #results { height: 1fr; background: $background; }
     #results-legend { height: 1; }
+    #results-why { height: auto; padding: 1 0; }
 
     #stats-view { height: 1fr; padding: 0 2; }
     .section-label { color: $text-muted; text-style: bold; height: 1; margin-top: 1; }
@@ -1017,22 +1037,11 @@ class VimniscientApp(App):
         if steps:
             steps[0](lambda: self.run_steps(steps[1:]))
 
-    def drill_tasks(self, exclude: list[Task]) -> list[Task]:
-        """One task from each lesson that fixes a habit hardtime keeps catching (lessons you've done only)."""
-        taken = {t.item_id for t in exclude}
-        items = self.progress.items("task")
-        tasks = []
-        for lesson_id in habits.drill_lessons():
-            lesson = next((lesson for lesson in self.lessons if lesson.id == lesson_id), None)
-            if not lesson or not self.progress.is_done(lesson):
-                continue
-            # the task that has gone worst so far
-            candidates = [t for t in lesson.tasks if t.item_id not in taken]
-            if candidates:
-                worst = min(candidates, key=lambda t: items[t.item_id].ease if t.item_id in items else 0)
-                tasks.append(self.progress.version_for(worst))
-                taken.add(worst.item_id)
-        return tasks[:3]
+    def plan(self) -> list[today.Step]:
+        return today.plan(self.progress, self.lessons, self.decks, self.drills)
+
+    def todays_drills(self) -> list[drills.Drill]:
+        return today.todays_drills(self.progress, self.drills)
 
     def step(self, step_id: str, direct: bool = False) -> Callable[[Callable[[], None]], None] | None:
         """One step of today's routine, or None when there's nothing to do for it.
@@ -1048,8 +1057,7 @@ class VimniscientApp(App):
             if todays:
                 return lambda done: self.push_screen(DrillScreen(todays, "Omarchy drills"), lambda _: done())
         elif step_id == "review":
-            review = progress.due_tasks(self.lessons)
-            review += self.drill_tasks(review)
+            review = today.review_tasks(progress, self.lessons)
             if review and direct:
                 return lambda done: self.start_lesson(review_lesson(review), done=done)
             if review:
@@ -1081,22 +1089,27 @@ class VimniscientApp(App):
             self.notify("Nothing left for this one today.")
 
     def action_today(self) -> None:
-        """Cards, drills, review (plus habit drills), the next lesson, then VimGolf."""
-        steps = [s for s in (self.step(i) for i in ("cards", "drills", "review", "lesson", "vimgolf")) if s]
+        """Cards, drills, review (plus habit drills), the next lesson, then VimGolf:
+        whichever are still left today. One lesson a day; the Lessons list has the rest."""
+        left = {step.id for step in today.left(self.plan())}
+        steps = [s for s in (self.step(i) for i in today.ROUTINE if i in left) if s]
         if not steps:
-            self.notify("Nothing due and every lesson done. Pick any lesson to practise.")
+            self.notify("That's everything for today. Endless (e) or any lesson if you want more.")
             return
 
         def finished(done: Callable[[], None]) -> None:
-            self.notify("That's today's practice done. See you tomorrow.", title="Vimniscient")
+            if not today.left(self.plan()):
+                self.notify("That's today's practice done. See you tomorrow.", title="Vimniscient")
             done()
 
         self.run_steps([*steps, finished])
 
-    def todays_drills(self) -> list[drills.Drill]:
-        if not drills.Hyprland().available:
-            return []
-        return self.progress.due_drills(self.drills) + self.progress.new_drills(self.drills)
+    def on_unmount(self) -> None:
+        """Done for the day? Then the reminders still waiting can go."""
+        try:
+            reminders.sync(self.plan())
+        except Exception:  # never let a reminder problem lose the session
+            pass
 
     def action_drills(self) -> None:
         todays = self.todays_drills() or self.drills
