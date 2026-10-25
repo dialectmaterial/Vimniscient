@@ -55,15 +55,15 @@ tasks:
           > the limits of my world.
   - goal: 'Delete the blank lines.'
     start: |-
-      ▮phoneme
+      ▮encoding
 
-      morpheme
+      storage
 
-      lexeme
+      retrieval
     target: |-
-      phoneme
-      morpheme
-      lexeme
+      encoding
+      storage
+      retrieval
     solution: ':g/^$/d<CR>'
     hint: '^$ matches an empty line.'
     variants:
@@ -78,13 +78,13 @@ tasks:
           onset
           nucleus
           coda
-  - goal: 'Swap the two halves of every line (English=German becomes German=English).'
+  - goal: 'Swap the two halves of every line (key=meaning becomes meaning=key).'
     start: |-
-      ▮dog=Hund
-      cat=Katze
+      ▮q=record
+      @=play
     target: |-
-      Hund=dog
-      Katze=cat
+      record=q
+      play=@
     solution: ':%s/\v(.*)\=(.*)/\2=\1<CR>'
     hint: 'Two groups around the =. In very magic mode = is special, so write \=.'
     variants:

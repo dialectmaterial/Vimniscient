@@ -2,46 +2,46 @@ week: 3
 day: 1
 title: Macros
 intro: |
-  `qa` starts recording into register a, `q` stops, `@a` plays it back,
-  `3@a` plays it three times. End the macro where the next run should start
+  `q` is a quill: `qa` starts recording into register a, `q` stops, `@a` plays it back,
+  `3@a` plays it three times (read `@a` as *at a*: play what is stored at a). End the macro where the next run should start
   (usually with `j`). A macro stops by itself when a motion fails, so a big
   count like `99@a` simply runs to the end of the file.
 keys: [qa, q, '@a', '3@a', '99@a']
 tasks:
   - goal: 'Add a semicolon to every line, with a macro.'
     start: |-
-      ▮let a = 1
-      let b = 2
-      let c = 3
-      let d = 4
+      ▮let q = "quill"
+      let record = "q"
+      let stop = "q"
+      let play = "@"
     target: |-
-      let a = 1;
-      let b = 2;
-      let c = 3;
-      let d = 4;
+      let q = "quill";
+      let record = "q";
+      let stop = "q";
+      let play = "@";
     solution: 'qaA;<Esc>jq3@a'
     hint: 'qa, then A;<Esc> and j, then q. Now 3@a does the other three lines.'
     variants:
       - goal: 'Add a semicolon to every line, with a macro.'
         start: |-
-          ▮let p = 1
-          let q = 2
-          let r = 3
-          let s = 4
+          ▮let day1 = 1
+          let day3 = 3
+          let day7 = 7
+          let day14 = 14
         target: |-
-          let p = 1;
-          let q = 2;
-          let r = 3;
-          let s = 4;
+          let day1 = 1;
+          let day3 = 3;
+          let day7 = 7;
+          let day14 = 14;
   - goal: 'Put every term in double quotes.'
     start: |-
-      ▮phoneme
-      morpheme
-      lexeme
+      ▮quill
+      record
+      replay
     target: |-
-      "phoneme"
-      "morpheme"
-      "lexeme"
+      "quill"
+      "record"
+      "replay"
     solution: 'qaI"<Esc>A"<Esc>jq2@a'
     hint: 'Record I"<Esc>A"<Esc>j into a, then 2@a.'
     variants:
@@ -56,37 +56,37 @@ tasks:
           "affix"
   - goal: 'Turn every key=value into key: value.'
     start: |-
-      ▮name=Saussure
-      born=1857
-      field=linguistics
+      ▮key=q
+      means=record
+      hook=quill
     target: |-
-      name: Saussure
-      born: 1857
-      field: linguistics
+      key: q
+      means: record
+      hook: quill
     solution: 'qa0f=r:a <Esc>jq2@a'
     hint: 'Start the macro with 0 so it works wherever j left the cursor: 0 f= r: a<Space><Esc> j.'
     variants:
       - goal: 'Turn every key=value into key: value.'
         start: |-
-          ▮name=Sapir
-          born=1884
-          field=anthropology
+          ▮name=Ebbinghaus
+          born=1850
+          field=memory
         target: |-
-          name: Sapir
-          born: 1884
-          field: anthropology
-  - goal: 'Delete every second line: keep the phonemes, drop the allophones.'
+          name: Ebbinghaus
+          born: 1850
+          field: memory
+  - goal: 'Delete every second line: keep the true ones.'
     start: |-
-      ▮/p/
-      [pʰ]
-      /t/
-      [tʰ]
-      /k/
-      [kʰ]
+      ▮q records
+      q quits
+      @ plays
+      @ emails
+      . repeats
+      . ends
     target: |-
-      /p/
-      /t/
-      /k/
+      q records
+      @ plays
+      . repeats
     solution: 'qajddq2@a'
     hint: 'Record j dd: it moves to the line to drop and deletes it, which leaves you on the next keeper.'
     variants:
@@ -104,19 +104,19 @@ tasks:
           /g/
   - goal: 'Turn every dash into a star. Use a big count.'
     start: |-
-      ▮- noun
-      - verb
-      - adjective
-      - adverb
-      - pronoun
-      - preposition
+      ▮- spacing
+      - testing
+      - interleaving
+      - sleep
+      - elaboration
+      - mnemonics
     target: |-
-      * noun
-      * verb
-      * adjective
-      * adverb
-      * pronoun
-      * preposition
+      * spacing
+      * testing
+      * interleaving
+      * sleep
+      * elaboration
+      * mnemonics
     solution: 'qar*jq99@a'
     hint: 'qa r* j q, then 99@a. It stops when j can''t go further.'
     variants:

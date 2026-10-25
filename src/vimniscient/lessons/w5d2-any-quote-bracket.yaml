@@ -9,13 +9,13 @@ intro: |
   next one on the line.
 keys: [ciq, daq, cib, dib]
 tasks:
-  - goal: 'Change the text in the single quotes to z.'
+  - goal: 'Change the text in the single quotes to "any quote".'
     ft: python
     start: |-
-      x = 'a▮bc'
+      q = 'single ▮only'
     target: |-
-      x = 'z'
-    solution: 'ciqz<Esc>'
+      q = 'any quote'
+    solution: 'ciqany quote<Esc>'
     hint: 'ciq works for any kind of quote.'
     variants:
       - goal: 'Change the text in the single quotes to q.'
@@ -24,13 +24,13 @@ tasks:
         target: |-
           y = 'q'
         solution: 'ciqq<Esc>'
-  - goal: 'Change hello to bye.'
+  - goal: 'Change double to any.'
     ft: python
     start: |-
-      say("he▮llo")
+      kind("dou▮ble")
     target: |-
-      say("bye")
-    solution: 'ciqbye<Esc>'
+      kind("any")
+    solution: 'ciqany<Esc>'
     hint: 'The same ciq, now in double quotes.'
     variants:
       - goal: 'Change noun to verb.'
@@ -39,13 +39,13 @@ tasks:
         target: |-
           tag("verb")
         solution: 'ciqverb<Esc>'
-  - goal: 'Replace what is inside the brackets with c.'
+  - goal: 'Replace what is inside the brackets with any.'
     ft: python
     start: |-
-      f(▮a + b)
+      bracket(▮round + square)
     target: |-
-      f(c)
-    solution: 'cibc<Esc>'
+      bracket(any)
+    solution: 'cibany<Esc>'
     hint: 'cib is inside any bracket.'
     variants:
       - goal: 'Replace what is inside the brackets with z.'
@@ -57,9 +57,9 @@ tasks:
   - goal: 'Empty the argument list, starting from the beginning of the line.'
     ft: python
     start: |-
-      ▮call(x, y)
+      ▮brackets(emptied, out)
     target: |-
-      call()
+      brackets()
     solution: 'dib'
     hint: 'dib finds the next brackets on the line.'
     variants:

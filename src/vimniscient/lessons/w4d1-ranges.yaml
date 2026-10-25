@@ -3,20 +3,21 @@ day: 1
 title: Ranges, :m and :t
 intro: |
   Ex commands take a range: `:2,3d` deletes lines 2–3, `.` is the current
-  line, `$` the last, `%` all of them. `:m` moves lines and `:t` copies
-  them: `:m0` moves this line to the top, `:t$` copies it to the end,
+  line, `$` the last (the end, as in regex), `%` all of them. `:m` *moves*
+  lines and `:t` copies them: *t* is for *transfer*, which is what the old ed
+  editor called a copy. `:m0` moves this line to the top, `:t$` copies it to the end,
   `:1,2m$` moves lines 1–2 to the end. `:g/^/m0` reverses the whole file.
 keys: [':2,3d', ':m0', ':t$', ':1,2m$', ':g/^/m0']
 tasks:
   - goal: 'Move the last line to the top.'
     start: |-
-      phonology
-      syntax
-      ▮phonetics
+      storage
+      retrieval
+      ▮encoding
     target: |-
-      phonetics
-      phonology
-      syntax
+      encoding
+      storage
+      retrieval
     solution: ':m0<CR>'
     hint: ':m0 moves the line below line 0, which is the top.'
     variants:
@@ -29,38 +30,36 @@ tasks:
           phonology
           morphology
           syntax
-  - goal: 'Copy the heading to the end of the file.'
+  - goal: 'Copy the first line to the end of the file.'
     start: |-
-      ▮Glossary
-      ablaut
-      umlaut
+      ▮:t transfers a copy
+      to the end:
     target: |-
-      Glossary
-      ablaut
-      umlaut
-      Glossary
+      :t transfers a copy
+      to the end:
+      :t transfers a copy
     solution: ':t$<CR>'
     hint: ':t$ copies the current line below the last line, and the cursor stays put.'
     variants:
       - goal: 'Copy the heading to the end of the file.'
         start: |-
           ▮References
-          Sapir 1921
-          Boas 1911
+          Ebbinghaus 1885
+          Miller 1956
         target: |-
           References
-          Sapir 1921
-          Boas 1911
+          Ebbinghaus 1885
+          Miller 1956
           References
-  - goal: 'Delete lines 2 and 3 (the invented languages) without moving.'
+  - goal: 'Delete lines 2 and 3 (the low-utility techniques) without moving.'
     start: |-
-      ▮Latin
-      Klingon
-      Elvish
-      Greek
+      ▮testing
+      highlighting
+      rereading
+      spacing
     target: |-
-      Latin
-      Greek
+      testing
+      spacing
     solution: ':2,3d<CR>'
     hint: 'A range in front of d: :2,3d.'
     variants:
@@ -75,15 +74,15 @@ tasks:
           German
   - goal: 'Move the first two lines to the end.'
     start: |-
-      ▮syntax
-      semantics
-      phonetics
-      phonology
+      ▮:m moves
+      lines 1 and 2
+      below the last:
+      $ is the last line
     target: |-
-      phonetics
-      phonology
-      syntax
-      semantics
+      below the last:
+      $ is the last line
+      :m moves
+      lines 1 and 2
     solution: ':1,2m$<CR>'
     hint: ':1,2m$ moves lines 1 to 2 below the last line.'
     variants:

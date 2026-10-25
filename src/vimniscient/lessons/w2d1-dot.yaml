@@ -3,93 +3,94 @@ day: 1
 title: The dot command
 intro: |
   `.` repeats your last change: the whole thing, including the text you
-  typed in insert mode. Make one change carefully, then move and press `.`
-  wherever it should happen again. This is the most useful key in Vim.
+  typed in insert mode. Read it as a full stop that says *again*. Make one
+  change carefully, then move and press `.` wherever it should happen again.
+  This is the most useful key in Vim.
 keys: ['.', 'A;<Esc>j.', '>>j.', 'dw..']
 tasks:
-  - goal: 'Change both "foo" to "bar".'
+  - goal: 'Change both "cram" to "space".'
     start: |-
-      x = ▮foo + foo
+      memory = ▮cram + cram
     target: |-
-      x = bar + bar
-    solution: 'ciwbar<Esc>ww.'
+      memory = space + space
+    solution: 'ciwspace<Esc>ww.'
     hint: 'Change the first one with ciw, jump to the second with w w, then press .'
     variants:
-      - goal: 'Change both "old" to "new".'
+      - goal: 'Change both "reread" to "test".'
         start: |-
-          y = ▮old * old
+          recall = ▮reread * reread
         target: |-
-          y = new * new
-        solution: 'ciwnew<Esc>ww.'
+          recall = test * test
+        solution: 'ciwtest<Esc>ww.'
   - goal: 'Add a semicolon to every line.'
     start: |-
-      ▮let a = 1
-      let b = 2
-      let c = 3
+      ▮let full_stop = "."
+      let again = "."
+      let repeat = "."
     target: |-
-      let a = 1;
-      let b = 2;
-      let c = 3;
+      let full_stop = ".";
+      let again = ".";
+      let repeat = ".";
     solution: 'A;<Esc>j.j.'
     hint: 'A;<Esc> on the first line, then j . j .'
     variants:
       - goal: 'Add a semicolon to every line.'
         start: |-
-          ▮let p = 1
-          let q = 2
-          let r = 3
+          ▮let day1 = review
+          let day3 = review
+          let day7 = review
         target: |-
-          let p = 1;
-          let q = 2;
-          let r = 3;
+          let day1 = review;
+          let day3 = review;
+          let day7 = review;
   - goal: 'Indent both lines.'
     start: |-
-      ▮noun
-      verb
+      ▮the dot says
+      it again
     target: |2-
-          noun
-          verb
+          the dot says
+          it again
     solution: '>>j.'
     hint: '>> indents one line; . repeats it on the next.'
     variants:
       - goal: 'Indent both lines.'
         start: |-
-          ▮onset
-          coda
+          ▮encode
+          retrieve
         target: |2-
-              onset
-              coda
-  - goal: 'Delete all three "very".'
+              encode
+              retrieve
+  - goal: 'Delete all three "again".'
     start: |-
-      a ▮very very very long sentence
+      The dot ▮again again again repeats the last change.
     target: |-
-      a long sentence
+      The dot repeats the last change.
     solution: 'dw..'
     hint: 'dw once, then . twice. (3dw is just as short.)'
     variants:
-      - goal: 'Delete all three "really".'
+      - goal: 'Delete all three "cram".'
         start: |-
-          a ▮really really really short word
+          Massed ▮cram cram cram practice fades fast.
         target: |-
-          a short word
+          Massed practice fades fast.
   - goal: 'Turn the lines into a list with "- ".'
     start: |-
-      ▮phonology
-      morphology
-      syntax
+      ▮make one change
+      move
+      press the dot
     target: |-
-      - phonology
-      - morphology
-      - syntax
+      - make one change
+      - move
+      - press the dot
     solution: 'I- <Esc>j.j.'
     hint: 'I- <Esc> once, then j . j .'
     variants:
       - goal: 'Turn the lines into a list with "- ".'
         start: |-
-          ▮nominative
-          accusative
-          dative
+          ▮test yourself
+          space it out
+          sleep on it
         target: |-
-          - nominative
-          - accusative
-          - dative
+          - test yourself
+          - space it out
+          - sleep on it

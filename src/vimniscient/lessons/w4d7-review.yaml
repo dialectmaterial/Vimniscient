@@ -4,18 +4,20 @@ review: true
 title: Week 4 review
 intro: |
   Ranges, `:sort`, filters, patterns, `:norm`, motions and indenting, mixed.
+  Four weeks in, many commands should be moving from Fitts and Posner's
+  associative stage (you know them, but slowly) to the autonomous one.
 keys: [':m', ':sort', ':%!', ':%s', ':norm', '>i{']
 tasks:
-  - goal: 'Sort the linguists and remove the duplicate.'
+  - goal: 'Sort the memory researchers and remove the duplicate.'
     start: |-
-      ▮Sapir
-      Boas
-      Sapir
-      Bloomfield
+      ▮Tulving
+      Baddeley
+      Tulving
+      Bartlett
     target: |-
-      Bloomfield
-      Boas
-      Sapir
+      Baddeley
+      Bartlett
+      Tulving
     solution: ':sort u<CR>'
     hint: ':sort u'
     variants:
@@ -33,9 +35,9 @@ tasks:
     start: |-
       phonology
       syntax
-      ▮TODO: gloss the data
+      ▮TODO: review the cards
     target: |-
-      TODO: gloss the data
+      TODO: review the cards
       phonology
       syntax
     solution: ':m0<CR>'
@@ -86,11 +88,11 @@ tasks:
           Salve!
   - goal: 'Number the lines with a shell command.'
     start: |-
-      ▮Latin
-      Greek
+      ▮spacing
+      testing
     target: |-
-      1 Latin
-      2 Greek
+      1 spacing
+      2 testing
     solution: ':%!awk ''{print NR, $0}''<CR>'
     hint: 'awk ''{print NR, $0}'' prints the line number before each line. (Visual block g Ctrl-a can''t do this one.)'
     variants:

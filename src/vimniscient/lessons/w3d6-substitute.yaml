@@ -2,21 +2,23 @@ week: 3
 day: 6
 title: ':s and :g'
 intro: |
-  `:s/old/new/` replaces on the current line, `:%s/old/new/g` everywhere.
+  `:s` *substitutes*: `:s/old/new/` on the current line, `:%s/old/new/g` on
+  all lines (`%` is all of them, like 100 percent) and every match (`g`).
   An empty pattern (`:%s//new/g`) reuses your last search, so `*` then
   `:%s//x/g` renames a word. `\(…\)` groups (or `\v(…)` with very magic)
   come back as `\1`, `\2`. `:g/pat/cmd` runs a command on every matching
   line (`:g/pat/d`, `:g/pat/norm A;`), and `:v/pat/` on every line that
-  doesn't match.
+  doesn't match. `:g` is *global*: ed's `g/re/p` (global, regular
+  expression, print) is where grep got its name.
 keys: [':s', ':%s///g', '*:%s//', '\v( )\1', ':g/pat/d', ':v/pat/d', ':g/pat/norm']
 tasks:
-  - goal: 'Replace "old" with "new" on this line.'
+  - goal: 'Replace the first "old" with "new" on this line.'
     start: |-
-      ▮the old grammar
+      ▮:s substitutes old for old
     target: |-
-      the new grammar
+      :s substitutes new for old
     solution: ':s/old/new<CR>'
-    hint: ':s/old/new<Enter>. The final slash is optional.'
+    hint: ':s/old/new<Enter> changes the first match on the line. The final slash is optional.'
     variants:
       - goal: 'Replace "old" with "new" on this line.'
         start: |-
@@ -61,21 +63,21 @@ tasks:
         solution: '*:%s//pitch/g<CR>'
   - goal: 'Turn "Last, First" into "First Last".'
     start: |-
-      ▮Chomsky, Noam
-      Saussure, Ferdinand
+      ▮Ebbinghaus, Hermann
+      Miller, George
     target: |-
-      Noam Chomsky
-      Ferdinand Saussure
+      Hermann Ebbinghaus
+      George Miller
     solution: ':%s/\v(\w+), (\w+)/\2 \1<CR>'
     hint: 'With \v (very magic) ( ) are groups and + needs no backslash. \2 \1 swaps them.'
     variants:
       - goal: 'Turn "Last, First" into "First Last".'
         start: |-
-          ▮Sapir, Edward
-          Boas, Franz
+          ▮Roediger, Henry
+          Karpicke, Jeffrey
         target: |-
-          Edward Sapir
-          Franz Boas
+          Henry Roediger
+          Jeffrey Karpicke
   - goal: 'Change x to y on the first two lines only.'
     start: |-
       ▮x = 1
@@ -100,13 +102,13 @@ tasks:
         solution: 'Vj:s/a/b<CR>'
   - goal: 'Delete every comment line.'
     start: |-
-      ▮phoneme
+      ▮:g is global
       # note to self
-      allophone
+      grep is named after g/re/p
       # check this
     target: |-
-      phoneme
-      allophone
+      :g is global
+      grep is named after g/re/p
     solution: ':g/#/d<CR>'
     hint: ':g/#/d deletes every line that contains #.'
     variants:

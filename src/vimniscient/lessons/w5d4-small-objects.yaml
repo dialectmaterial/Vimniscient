@@ -3,18 +3,20 @@ day: 4
 lazyvim: true
 title: Sub-words, numbers, calls (LazyVim)
 intro: |
-  More of LazyVim's mini.ai objects: `e` is one part of a camelCase or
-  snake_case word, `d` a number, `u` a function call (`au` takes the name
-  and its arguments), and `g` the whole buffer. And there's a small
-  built-in: `]<Space>` adds a blank line below without leaving normal mode.
+  More of LazyVim's mini.ai objects: `e` is an *element*, one part of a
+  camelCase or snake_case word; `d` is *digits*, a number; `u` is a *use* of
+  a function, a call (`au` takes the name and its arguments); and `g` is
+  *global*, the whole buffer. And there's a small built-in: `]<Space>` adds a
+  blank line below without leaving normal mode (`]` goes down, and a space is
+  what it adds).
 keys: [cie, cid, cau, cag, ']<Space>']
 tasks:
-  - goal: 'Change Case to Big in the camelCase name.'
+  - goal: 'Change Cram to Review in the camelCase name.'
     start: |-
-      camel▮CaseWord
+      spaced▮CramPlan
     target: |-
-      camelBigWord
-    solution: 'cieBig<Esc>'
+      spacedReviewPlan
+    solution: 'cieReview<Esc>'
     hint: 'ie is the sub-word under the cursor.'
     variants:
       - goal: 'Change Count to Sum in the camelCase name.'
@@ -23,12 +25,12 @@ tasks:
         target: |-
           vowelSumTotal
         solution: 'cieSum<Esc>'
-  - goal: 'Change case to big in the snake_case name.'
+  - goal: 'Change cram to lag in the snake_case name.'
     start: |-
-      snake_▮case_name
+      spacing_▮cram_effect
     target: |-
-      snake_big_name
-    solution: 'ciebig<Esc>'
+      spacing_lag_effect
+    solution: 'cielag<Esc>'
     hint: 'The same ie works between underscores.'
     variants:
       - goal: 'Change height to contour in the snake_case name.'
@@ -37,12 +39,12 @@ tasks:
         target: |-
           tone_contour_value
         solution: 'ciecontour<Esc>'
-  - goal: 'Change the port to 443.'
+  - goal: 'Change the magic number to 7.'
     start: |-
-      port = 80▮80
+      magic_number = 1▮0
     target: |-
-      port = 443
-    solution: 'cid443<Esc>'
+      magic_number = 7
+    solution: 'cid7<Esc>'
     hint: 'id is the number under the cursor.'
     variants:
       - goal: 'Change the sample rate to 16000.'
@@ -51,13 +53,13 @@ tasks:
         target: |-
           rate = 16000
         solution: 'cid16000<Esc>'
-  - goal: 'Replace the whole call with 42.'
+  - goal: 'Replace the whole call with retrieve.'
     ft: python
     start: |-
-      x = ▮compute(a, b) + 1
+      strength = ▮reread(notes, twice) + 1
     target: |-
-      x = 42 + 1
-    solution: 'cau42<Esc>'
+      strength = retrieve + 1
+    solution: 'cauretrieve<Esc>'
     hint: 'au is a function call with its name and arguments.'
     variants:
       - goal: 'Replace the whole call with 1.'
@@ -66,14 +68,14 @@ tasks:
         target: |-
           y = 1 * 2
         solution: 'cau1<Esc>'
-  - goal: 'Replace the entire file with the word empty.'
+  - goal: 'Replace the entire file with the word global.'
     start: |-
-      ▮draft
-      notes
-      here
+      ▮g is
+      the whole
+      buffer
     target: |-
-      empty
-    solution: 'cagempty<Esc>'
+      global
+    solution: 'cagglobal<Esc>'
     hint: 'ag is the whole buffer.'
     variants:
       - goal: 'Replace the entire file with the word fresh.'
@@ -86,12 +88,12 @@ tasks:
         solution: 'cagfresh<Esc>'
   - goal: 'Add a blank line below without entering insert mode.'
     start: |-
-      ▮Abstract
-      Introduction
+      ▮] goes down
+      and a space is what it adds
     target: |-
-      Abstract
+      ] goes down
 
-      Introduction
+      and a space is what it adds
     solution: ']<Space>'
     hint: ']<Space> adds an empty line below, [<Space> one above.'
     variants:

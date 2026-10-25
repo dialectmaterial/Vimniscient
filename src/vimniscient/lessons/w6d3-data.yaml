@@ -7,13 +7,13 @@ keys: [':%s/\v( )', ':g/pat/d', ':sort n']
 tasks:
   - goal: 'Swap the two columns.'
     start: |-
-      ▮language,family
-      Hindi,Indo-European
-      Turkish,Turkic
+      ▮key,meaning
+      q,record
+      y,yank
     target: |-
-      family,language
-      Indo-European,Hindi
-      Turkic,Turkish
+      meaning,key
+      record,q
+      yank,y
     solution: ':%s/\v(.*),(.*)/\2,\1<CR>'
     hint: 'Two groups around the comma, swapped in the replacement.'
     variants:
@@ -43,15 +43,15 @@ tasks:
         target: |-
           labov@upenn.edu
           eckert@stanford.edu
-  - goal: 'Sort the courses by their number.'
+  - goal: 'Sort the reviews by their day.'
     start: |-
-      ▮syntax 3
-      phonetics 1
-      phonology 2
+      ▮third review 30
+      first review 1
+      second review 7
     target: |-
-      phonetics 1
-      phonology 2
-      syntax 3
+      first review 1
+      second review 7
+      third review 30
     solution: ':sort n<CR>'
     hint: ':sort n sorts by the first number on each line, wherever it is.'
     variants:

@@ -9,13 +9,13 @@ tasks:
   - goal: 'Turn the topics into a numbered list.'
     ft: markdown
     start: |-
-      ▮phonology
-      morphology
-      syntax
+      ▮encode
+      consolidate
+      retrieve
     target: |-
-      1. phonology
-      2. morphology
-      3. syntax
+      1. encode
+      2. consolidate
+      3. retrieve
     solution: '<C-v>GI0. <Esc>gvg<C-a>'
     hint: 'Put "0. " in front of every line with a block insert, reselect with gv, then g Ctrl-a counts up.'
     variants:
@@ -31,9 +31,9 @@ tasks:
   - goal: 'Make a Markdown link.'
     ft: markdown
     start: |-
-      ▮WALS https://wals.info
+      ▮Vimhelp https://vimhelp.org
     target: |-
-      [WALS](https://wals.info)
+      [Vimhelp](https://vimhelp.org)
     solution: 'i[<Esc>ea]<Esc>lr(A)<Esc>'
     hint: 'Bracket the word, replace the space with ( using r, then A) closes it.'
     variants:
@@ -42,13 +42,13 @@ tasks:
           ▮Glottolog https://glottolog.org
         target: |-
           [Glottolog](https://glottolog.org)
-  - goal: 'Make every Tone bold.'
+  - goal: 'Make every Spacing bold.'
     ft: markdown
     start: |-
-      ▮Tone is phonemic. Tone matters.
+      ▮Spacing works. Spacing lasts.
     target: |-
-      **Tone** is phonemic. **Tone** matters.
-    solution: ':s/Tone/**&**/g<CR>'
+      **Spacing** works. **Spacing** lasts.
+    solution: ':s/Spacing/**&**/g<CR>'
     hint: '& is the match, so **&** wraps it.'
     variants:
       - goal: 'Make every Stress bold.'
@@ -60,13 +60,13 @@ tasks:
   - goal: 'Push every heading one level down.'
     ft: markdown
     start: |-
-      ▮# Phonology
-      ## Vowels
-      ## Consonants
+      ▮# Memory
+      ## Encoding
+      ## Retrieval
     target: |-
-      ## Phonology
-      ### Vowels
-      ### Consonants
+      ## Memory
+      ### Encoding
+      ### Retrieval
     solution: ':%s/^#/##/<CR>'
     hint: 'Add a # at the start of every heading line.'
     variants:
@@ -82,11 +82,11 @@ tasks:
   - goal: 'Unwrap the paragraph into one line.'
     ft: markdown
     start: |-
-      ▮Language is a
-      system of
-      signs.
+      ▮Retrieval is
+      not just a test of
+      memory; it changes it.
     target: |-
-      Language is a system of signs.
+      Retrieval is not just a test of memory; it changes it.
     solution: 'vipJ'
     hint: 'vip selects the paragraph, J joins it. That works for paragraphs of any length.'
     variants:

@@ -2,7 +2,7 @@ week: 4
 day: 4
 title: ':normal on many lines'
 intro: |
-  `:norm` runs normal-mode keys on each line of a range, as if you typed
+  `:norm` is short for *normal*: it runs normal-mode keys on each line of a range, as if you typed
   them there: `:%norm A;` appends to every line, `:'<,'>norm I// ` comments
   the selection. It's a macro without recording, and often the fastest way
   to make the same edit on many lines.
@@ -10,13 +10,13 @@ keys: [':%norm A;', ':%norm dw', ":'<,'>norm I", ':%norm $x']
 tasks:
   - goal: 'Append a semicolon to every line.'
     start: |-
-      ▮a = 1
-      b = 2
-      c = 3
+      ▮norm = "normal mode"
+      keys = "typed for you"
+      lines = "every one"
     target: |-
-      a = 1;
-      b = 2;
-      c = 3;
+      norm = "normal mode";
+      keys = "typed for you";
+      lines = "every one";
     solution: ':%norm A;<CR>'
     hint: ':%norm A; runs A; on every line.'
     variants:
@@ -31,13 +31,13 @@ tasks:
           r = 3;
   - goal: 'Delete the first word of every line.'
     start: |-
-      ▮- vowel
-      - glide
-      - liquid
+      ▮- encode
+      - store
+      - retrieve
     target: |-
-      vowel
-      glide
-      liquid
+      encode
+      store
+      retrieve
     solution: ':%norm dw<CR>'
     hint: ':%norm dw deletes a word at the start of each line.'
     variants:
@@ -73,13 +73,13 @@ tasks:
           c();
   - goal: 'Remove the last character of every line.'
     start: |-
-      ▮phone,
-      phoneme,
-      allophone,
+      ▮space,
+      test,
+      sleep,
     target: |-
-      phone
-      phoneme
-      allophone
+      space
+      test
+      sleep
     solution: ':%norm $x<CR>'
     hint: '$ goes to the last character, x deletes it.'
     variants:

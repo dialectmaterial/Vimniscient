@@ -2,41 +2,42 @@ week: 2
 day: 5
 title: Getting into insert mode well
 intro: |
-  Choosing the right way into insert mode saves moving first: `o`/`O` open a
-  line below/above, `ea` appends at the end of a word, `R` overwrites text,
-  `r` replaces one character without entering insert mode, and a count
-  repeats what you type (`5i=<Esc>`). While typing, `Ctrl-w` deletes the
-  last word and `Ctrl-u` the whole line, so you rarely need Backspace.
+  Choosing the right way into insert mode saves moving first: `o`/`O` *open*
+  a line below/above, `ea` goes to the *end* of a word and *appends*, `R`
+  keeps *replacing* (you type over text), `r` replaces one character without
+  entering insert mode, and a count repeats what you type (`5i=<Esc>`). While
+  typing, `Ctrl-w` wipes the last word and `Ctrl-u` undoes the whole line, so
+  you rarely need Backspace.
 keys: [o, O, ea, R, r, 5i, "<C-w>", "<C-u>"]
 tasks:
-  - goal: 'Add the missing level between them.'
+  - goal: 'Add the line "below" between them.'
     start: |-
-      ▮phonetics
-      morphology
+      ▮o opens a line
+      O opens one above
     target: |-
-      phonetics
-      phonology
-      morphology
-    solution: 'ophonology<Esc>'
+      o opens a line
+      below
+      O opens one above
+    solution: 'obelow<Esc>'
     hint: 'o opens a new line below and starts insert mode.'
     variants:
-      - goal: 'Add the missing level between them.'
+      - goal: 'Add the missing stage between them.'
         start: |-
-          ▮syntax
-          pragmatics
+          ▮encoding
+          retrieval
         target: |-
-          syntax
-          semantics
-          pragmatics
-        solution: 'osemantics<Esc>'
-  - goal: 'Add an Abstract line above.'
+          encoding
+          storage
+          retrieval
+        solution: 'ostorage<Esc>'
+  - goal: 'Add the line "O opened this one above" above.'
     start: |-
-      ▮Introduction
+      ▮this line
     target: |-
-      Abstract
-      Introduction
-    solution: 'OAbstract<Esc>'
-    hint: 'O opens a line above.'
+      O opened this one above
+      this line
+    solution: 'OO opened this one above<Esc>'
+    hint: 'Capital O opens a line above.'
     variants:
       - goal: 'Add an Introduction line above.'
         start: |-
@@ -45,11 +46,11 @@ tasks:
           Introduction
           Method
         solution: 'OIntroduction<Esc>'
-  - goal: 'Make "morpheme" plural.'
+  - goal: 'Fix "append" to "appends".'
     start: |-
-      Two ▮morpheme combine.
+      e goes to the end, and a ▮append after it.
     target: |-
-      Two morphemes combine.
+      e goes to the end, and a appends after it.
     solution: 'eas<Esc>'
     hint: 'e goes to the end of the word, a appends after it.'
     variants:
@@ -60,10 +61,10 @@ tasks:
           Three allophones appear.
   - goal: 'Underline the title with five = signs.'
     start: |-
-      Words
+      Recall
       ▮
     target: |-
-      Words
+      Recall
       =====
     solution: '5i=<Esc>'
     hint: 'A count before i repeats the inserted text.'
@@ -75,29 +76,31 @@ tasks:
         target: |-
           Tones
           =====
-  - goal: 'Overwrite the date with 2026-10-24.'
+  - goal: 'Type the date 2026-10-26 over the zeros.'
     start: |-
-      Interview: ▮2025-01-01
+      Next review: ▮0000-00-00
     target: |-
-      Interview: 2026-10-24
-    solution: 'R2026-10-24<Esc>'
-    hint: 'R is replace mode, which types over the existing characters.'
+      Next review: 2026-10-26
+    solution: 'R2026-10-26<Esc>'
+    hint: 'R keeps replacing: it types over the existing characters.'
     variants:
       - goal: 'Overwrite the date with 2026-10-24.'
         start: |-
           Recorded: ▮2024-03-15
         target: |-
           Recorded: 2026-10-24
-  - goal: 'Fix the operator: minus should be plus.'
+        solution: 'R2026-10-24<Esc>'
+  - goal: 'Fix "keplaces" to "replaces".'
     start: |-
-      x = a ▮- b
+      r ▮keplaces one letter
     target: |-
-      x = a + b
-    solution: 'r+'
-    hint: 'r replaces one character and stays in normal mode.'
+      r replaces one letter
+    solution: 'rr'
+    hint: 'r replaces one character and stays in normal mode. Here that''s r, then r.'
     variants:
-      - goal: 'Fix the operator: times should be plus.'
+      - goal: 'Fix the operator: minus should be plus.'
         start: |-
-          y = b ▮* c
+          x = a ▮- b
         target: |-
-          y = b + c
+          x = a + b
+        solution: 'r+'

@@ -4,28 +4,29 @@ review: true
 title: Week 2 review
 intro: |
   Dot, search, cgn, case, numbers and visual mode, mixed. Look for the
-  shortest route before you start typing.
+  shortest route before you start typing. Each retrieval you do now, a few
+  days after learning, strengthens the memory more than another read would.
 keys: [".", "*", cgn, gUiw, "<C-a>", Vu, dt]
 tasks:
-  - goal: 'Uppercase every standalone "id".'
+  - goal: 'Uppercase every standalone "srs".'
     ft: python
     start: |-
-      ▮id = get_id(id)
+      ▮srs = schedule(srs)
     target: |-
-      ID = get_id(ID)
+      SRS = schedule(SRS)
     solution: '*gUiwn.'
-    hint: '* finds the other whole-word id; gUiw, then n and . for the first one.'
+    hint: '* finds the other whole-word srs; gUiw, then n and . for the first one.'
     variants:
       - goal: 'Uppercase every standalone "pos".'
         start: |-
           ▮pos = tag(pos)
         target: |-
           POS = tag(POS)
-  - goal: 'Add one to every tone number.'
+  - goal: 'Add one to every review number.'
     start: |-
-      ▮tone1 tone2 tone3
+      ▮review1 review2 review3
     target: |-
-      tone2 tone3 tone4
+      review2 review3 review4
     solution: '<C-a>w.w.'
     hint: 'Ctrl-a, then w and . to repeat it on the next ones.'
     variants:
@@ -36,9 +37,9 @@ tasks:
           case2 case3 case4
   - goal: 'Fix every "teh".'
     start: |-
-      ▮teh noun and teh verb and teh rest
+      ▮teh dot repeats teh change for teh rest
     target: |-
-      the noun and the verb and the rest
+      the dot repeats the change for the rest
     solution: '*cgnthe<Esc>..'
     hint: '* then cgn, then . . for the others.'
     variants:
@@ -49,9 +50,9 @@ tasks:
           the stem and the root and the end
   - goal: 'Lowercase the whole line.'
     start: |-
-      ▮CAPS LOOK LIKE SHOUTING
+      ▮V THEN U LOWERS THE LINE
     target: |-
-      caps look like shouting
+      v then u lowers the line
     solution: 'Vu'
     hint: 'V selects the line, u lowercases the selection.'
     variants:
@@ -60,30 +61,30 @@ tasks:
           ▮ALL CAPS HIDES CASE
         target: |-
           all caps hides case
-  - goal: 'Delete up to "Hindi".'
+  - goal: 'Delete up to "Habits".'
     start: |-
-      ▮um, so, basically: Hindi has aspiration
+      ▮well, the thing is: Habits form through repetition
     target: |-
-      Hindi has aspiration
+      Habits form through repetition
     solution: 'dtH'
-    hint: 't is case-sensitive, and the first capital H is in Hindi, so dtH.'
+    hint: 't is case-sensitive, and the first capital H is in Habits, so dtH.'
     variants:
       - goal: 'Delete up to "Hausa".'
         start: |-
-          ▮well, the thing is: Hausa has tone
+          ▮um, so, basically: Hausa has tone
         target: |-
           Hausa has tone
         hint: 't is case-sensitive, and the first capital H is in Hausa, so dtH.'
   - goal: 'Comment out all three lines with "# ".'
     ft: python
     start: |-
-      ▮a = 1
-      b = 2
-      c = 3
+      ▮cram = 1
+      reread = 2
+      highlight = 3
     target: |-
-      # a = 1
-      # b = 2
-      # c = 3
+      # cram = 1
+      # reread = 2
+      # highlight = 3
     solution: 'I# <Esc>j.j.'
     hint: 'I# <Esc>, then j . j .'
     variants:

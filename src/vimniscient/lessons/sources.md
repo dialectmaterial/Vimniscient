@@ -37,5 +37,18 @@ Every factual claim in them should trace back to one of these.
 - **Fluency illusion.** Rereading makes text feel familiar, which people
   mistake for knowing it; see Bjork, Dunlosky & Kornell (2013), Self-regulated
   learning, *Annual Review of Psychology* 64.
+- **Production effect.** Words read aloud are remembered better than words
+  read silently; MacLeod, Gopie, Hourihan, Neary & Ozubko (2010), The
+  production effect, *JEP: Learning, Memory, and Cognition* 36(3).
+- **Interleaving.** Mixed practice feels harder than blocked practice but
+  tests better later; Rohrer & Taylor (2007), The shuffling of mathematics
+  problems improves learning, *Instructional Science* 35.
+- **Variability of practice.** Practising with variation helps a skill carry
+  over to new conditions; Kerr & Booth (1978), Specific and varied practice
+  of motor skill, *Perceptual and Motor Skills* 46(2).
+- **Lag effect.** Longer gaps between reviews tend to beat shorter ones;
+  covered in Cepeda et al. (2006) above.
+- **Life dates and years used:** Ebbinghaus born 1850, *Über das Gedächtnis*
+  1885; Miller 1956; Roediger & Karpicke 2006.
 - **ed's `t`.** The ed manual: "(.,.)t(.) Copies (i.e., transfers) the
   addressed lines". **grep** takes its name from ed's `g/re/p`.

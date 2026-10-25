@@ -2,72 +2,73 @@ week: 2
 day: 3
 title: The cgn trick
 intro: |
-  `gn` selects the next search match. So `cgn` changes the next match, and
-  `.` then changes the one after that, and the one after that. Search once
-  (with `/` or `*`), `cgn` the first, then press `.` per match. Press `n`
-  to skip one you want to keep. `dgn` deletes matches the same way.
+  `gn` reads as *go to the next match* and grab it: it selects the next
+  search match. So `cgn` changes the next match, and `.` then changes the one
+  after that, and the one after that. Search once (with `/` or `*`), `cgn`
+  the first, then press `.` per match. Press `n` to skip one you want to
+  keep. `dgn` deletes matches the same way.
 keys: ['cgn', 'dgn', '*cgn', 'n.']
 tasks:
-  - goal: 'Rename every tmp to buf.'
+  - goal: 'Rename every hit to next_match.'
     ft: python
     start: |-
-      ▮tmp = read()
-      print(tmp)
-      save(tmp)
+      ▮hit = search()
+      grab(hit)
+      change(hit)
     target: |-
-      buf = read()
-      print(buf)
-      save(buf)
-    solution: '*cgnbuf<Esc>..'
-    hint: '* sets the search; cgnbuf<Esc> changes one match; . does the rest (it wraps around).'
+      next_match = search()
+      grab(next_match)
+      change(next_match)
+    solution: '*cgnnext_match<Esc>..'
+    hint: '* sets the search; cgn changes one match; . does the rest (it wraps around).'
     variants:
-      - goal: 'Rename every arr to data.'
+      - goal: 'Rename every cram to spaced.'
         start: |-
-          ▮arr = load()
-          show(arr)
-          keep(arr)
+          ▮cram = plan()
+          study(cram)
+          review(cram)
         target: |-
-          data = load()
-          show(data)
-          keep(data)
-        solution: '*cgndata<Esc>..'
+          spaced = plan()
+          study(spaced)
+          review(spaced)
+        solution: '*cgnspaced<Esc>..'
   - goal: 'Change the first and the last "the" to "a", keep the middle one.'
     start: |-
-      ▮the stem, the root and the base
+      ▮the change, the skip and the repeat
     target: |-
-      a stem, the root and a base
+      a change, the skip and a repeat
     solution: '*Ncgna<Esc>nn.'
-    hint: '* then N to go back to the first; cgna<Esc>; n n skips one; . changes the last.'
+    hint: '* then N to go back to the first; cgna<Esc> changes; n n skips one; . repeats on the last.'
     variants:
       - goal: 'Change the first and the last "the" to "a", keep the middle one.'
         start: |-
           ▮the vowel, the glide and the stop
         target: |-
           a vowel, the glide and a stop
-  - goal: 'Replace "very good" with "great" on both lines.'
+  - goal: 'Replace "very weak" with "strong" on both lines.'
     start: |-
-      ▮Her accent is very good.
-      Her grammar is very good.
+      ▮Spaced recall is very weak.
+      Tested recall is very weak.
     target: |-
-      Her accent is great.
-      Her grammar is great.
-    solution: '/very good<CR>cgngreat<Esc>.'
+      Spaced recall is strong.
+      Tested recall is strong.
+    solution: '/very weak<CR>cgnstrong<Esc>.'
     hint: 'Search for the phrase, cgn changes the whole match, . the next one.'
     variants:
-      - goal: 'Replace "very clear" with "crisp" on both lines.'
+      - goal: 'Replace "the last" with "the next" on both lines.'
         start: |-
-          ▮Her vowels are very clear.
-          Her tones are very clear.
+          ▮gn goes to the last match.
+          cgn changes the last match.
         target: |-
-          Her vowels are crisp.
-          Her tones are crisp.
-        solution: '/very clear<CR>cgncrisp<Esc>.'
-  - goal: 'Change all four foo to bar.'
+          gn goes to the next match.
+          cgn changes the next match.
+        solution: '/the last<CR>cgnthe next<Esc>.'
+  - goal: 'Change all four n to dot.'
     start: |-
-      rm ▮foo; rm foo; rm foo; rm foo
+      echo ▮n; echo n; echo n; echo n
     target: |-
-      rm bar; rm bar; rm bar; rm bar
-    solution: '*cgnbar<Esc>...'
+      echo dot; echo dot; echo dot; echo dot
+    solution: '*cgndot<Esc>...'
     hint: 'Same trick: * then cgn, then . for each remaining match.'
     variants:
       - goal: 'Change all four tmp to out.'
@@ -78,9 +79,9 @@ tasks:
         solution: '*cgnout<Esc>...'
   - goal: 'Delete every "um, ".'
     start: |-
-      So ▮um, a filler is um, a pause word um, like this.
+      dgn ▮um, deletes um, the next match um, each time.
     target: |-
-      So a filler is a pause word like this.
+      dgn deletes the next match each time.
     solution: '/um, <CR>dgn..'
     hint: 'dgn deletes the next match. Search for "um, " with the space.'
     variants:

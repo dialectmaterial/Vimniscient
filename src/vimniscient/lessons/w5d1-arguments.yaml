@@ -3,19 +3,20 @@ day: 1
 lazyvim: true
 title: Arguments (LazyVim)
 intro: |
-  LazyVim adds text objects through mini.ai. `ia`/`aa` is a function
-  argument: `cia` changes one, `daa` deletes it together with its comma, so
+  LazyVim adds text objects through mini.ai. Here `a` names an *argument*:
+  `ia` is the argument itself and `aa` an argument with its comma (the
+  second `a` is a noun, the first one *around*): `cia` changes one, `daa` deletes it together with its comma, so
   the list stays tidy. Like all mini.ai objects it also finds the next
   argument when the cursor isn't on one yet.
 keys: [cia, daa]
 tasks:
-  - goal: 'Change the middle argument to x.'
+  - goal: 'Change the middle argument to day3.'
     ft: python
     start: |-
-      f(a, ▮b, c)
+      schedule(day1, ▮day2, day7)
     target: |-
-      f(a, x, c)
-    solution: 'ciax<Esc>'
+      schedule(day1, day3, day7)
+    solution: 'ciaday3<Esc>'
     hint: 'cia changes the argument under the cursor.'
     variants:
       - goal: 'Change the middle argument to w.'
@@ -27,9 +28,9 @@ tasks:
   - goal: 'Delete the middle argument and its comma.'
     ft: python
     start: |-
-      f(a, ▮b, c)
+      study(test, ▮reread, space)
     target: |-
-      f(a, c)
+      study(test, space)
     solution: 'daa'
     hint: 'daa takes the comma with it.'
     variants:
@@ -41,9 +42,9 @@ tasks:
   - goal: 'Delete the last argument.'
     ft: python
     start: |-
-      f(a, b, ▮c)
+      learn(space, test, ▮highlight)
     target: |-
-      f(a, b)
+      learn(space, test)
     solution: 'daa'
     hint: 'For the last argument, daa removes the comma before it.'
     variants:
@@ -52,12 +53,12 @@ tasks:
           g(x, y, ▮z)
         target: |-
           g(x, y)
-  - goal: 'Drop the name parameter.'
+  - goal: 'Drop the cram parameter.'
     ft: python
     start: |-
-      def greet(self, ▮name, age):
+      def review(self, ▮cram, interval):
     target: |-
-      def greet(self, age):
+      def review(self, interval):
     solution: 'daa'
     hint: 'daa works on parameters too.'
     variants:
@@ -66,13 +67,13 @@ tasks:
           def tag(self, ▮word, pos):
         target: |-
           def tag(self, pos):
-  - goal: 'Change the first argument, starting from the beginning of the line.'
+  - goal: 'Change the first argument to hook, starting from the beginning of the line.'
     ft: python
     start: |-
-      ▮foo(a, b)
+      ▮recall(cue, delay)
     target: |-
-      foo(z, b)
-    solution: 'ciaz<Esc>'
+      recall(hook, delay)
+    solution: 'ciahook<Esc>'
     hint: 'mini.ai jumps to the next argument when the cursor isn''t on one.'
     variants:
       - goal: 'Change the first argument to q, starting from the beginning of the line.'

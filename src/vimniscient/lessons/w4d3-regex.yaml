@@ -2,21 +2,23 @@ week: 4
 day: 3
 title: Patterns in :s
 intro: |
-  Useful pieces: `^` and `$` (start and end of line), `\s` whitespace, `\d`
+  Useful pieces: `^` and `$` (start and end of line: the caret points up at
+  where the line starts, the dollar closes the bill), `\s` whitespace, `\d`
   a digit, `\+` one or more, `.*` anything. In the replacement `&` is the
-  whole match. Starting a pattern with `\v` (very magic) lets you write
+  whole match (read it as *and*: the match, and what you put around it).
+  Starting a pattern with `\v` (*very magic*) lets you write
   `(`, `+` and `|` without backslashes.
 keys: ['^', '$', '\s\+$', '\d\+', '&', '\v']
 tasks:
   - goal: 'Delete the trailing spaces.'
     start: |-
-      ▮vowel␣␣␣
-      consonant␣␣
-      glide␣
+      ▮encode␣␣␣
+      store␣␣
+      retrieve␣
     target: |-
-      vowel
-      consonant
-      glide
+      encode
+      store
+      retrieve
     solution: ':%s/\s\+$//<CR>'
     hint: '\s\+$ is one or more spaces right before the end of the line.'
     variants:
@@ -29,19 +31,19 @@ tasks:
           onset
           nucleus
           coda
-  - goal: 'Put every tone number in square brackets.'
+  - goal: 'Put every day number in square brackets.'
     start: |-
-      ▮tone 1, tone 22, tone 214
+      ▮review on day 1, day 3, day 14
     target: |-
-      tone [1], tone [22], tone [214]
+      review on day [1], day [3], day [14]
     solution: ':s/\d\+/[&]/g<CR>'
     hint: '& in the replacement is whatever matched.'
     variants:
-      - goal: 'Put every case number in square brackets.'
+      - goal: 'Put every tone number in square brackets.'
         start: |-
-          ▮case 1, case 4, case 12
+          ▮tone 1, tone 22, tone 214
         target: |-
-          case [1], case [4], case [12]
+          tone [1], tone [22], tone [214]
   - goal: 'Rewrite the date as day/month/year.'
     start: |-
       ▮2026-10-24
@@ -57,13 +59,13 @@ tasks:
           14/02/1957
   - goal: 'Make every line a list item.'
     start: |-
-      ▮phonology
-      morphology
-      syntax
+      ▮^ is the start
+      $ is the end
+      & is the match
     target: |-
-      - phonology
-      - morphology
-      - syntax
+      - ^ is the start
+      - $ is the end
+      - & is the match
     solution: ':%s/^/- /<CR>'
     hint: '^ matches the start of each line, so replacing it inserts there.'
     variants:

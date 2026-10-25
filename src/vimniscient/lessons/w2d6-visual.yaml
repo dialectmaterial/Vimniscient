@@ -2,54 +2,54 @@ week: 2
 day: 6
 title: Visual mode
 intro: |
-  `v` selects characters, `V` whole lines. Move to grow the selection, then
-  give an operator: `d`, `c`, `y`, `>`, `U` (uppercase), `u` (lowercase),
-  `J` (join). `%` jumps to the matching bracket, so `v%` selects a bracketed
-  group, and `c%` changes it without visual mode. Visual mode is for when you
-  want to *see* what you'll change. Often an operator plus a motion is
-  shorter.
+  `v` is *visual*: you see what you'll act on. `v` selects characters,
+  capital `V` whole lines. Move to grow the selection, then give an operator:
+  `d`, `c`, `y`, `>`, `U` (up: uppercase), `u` (lowercase), `J` (join). `%`
+  jumps to the matching bracket (picture two circles split by a line: a pair),
+  so `v%` selects a bracketed group, and `c%` changes it without visual mode.
+  Often an operator plus a motion is shorter.
 keys: [v, V, "V>", vU, VJ, "%", c%]
 tasks:
-  - goal: 'Delete the two filler lines with V.'
+  - goal: 'Delete the first two lines with V.'
     start: |-
-      ▮um
-      uh
-      words
+      ▮delete me
+      and me
+      V selects whole lines
     target: |-
-      words
+      V selects whole lines
     solution: 'Vjd'
     hint: 'V selects the line, j extends it, d deletes.'
     variants:
-      - goal: 'Delete the two filler lines with V.'
+      - goal: 'Delete the two low-utility techniques with V.'
         start: |-
-          ▮er
-          hmm
-          phrases
+          ▮highlighting
+          rereading
+          retrieval practice
         target: |-
-          phrases
-  - goal: 'Uppercase "stressed syllable".'
+          retrieval practice
+  - goal: 'Uppercase "visual mode".'
     start: |-
-      the ▮stressed syllable here
+      v is ▮visual mode: you see it
     target: |-
-      the STRESSED SYLLABLE here
+      v is VISUAL MODE: you see it
     solution: 'veeU'
-    hint: 'v, then e e to the end of "syllable", then U.'
+    hint: 'v, then e e to the end of "mode", then U.'
     variants:
-      - goal: 'Uppercase "focus particle".'
+      - goal: 'Uppercase "active recall".'
         start: |-
-          the ▮focus particle here
+          try ▮active recall today
         target: |-
-          the FOCUS PARTICLE here
-        hint: 'v, then e e to the end of "particle", then U.'
-  - goal: 'Join the noun phrase on the first three lines.'
+          try ACTIVE RECALL today
+        hint: 'v, then e e to the end of "recall", then U.'
+  - goal: 'Join the first three lines.'
     start: |-
-      ▮the
-      small
-      cat
-      sleeps
+      ▮J
+      joins
+      lines
+      but not this one
     target: |-
-      the small cat
-      sleeps
+      J joins lines
+      but not this one
     solution: 'VjjJ'
     hint: 'Select three lines with V j j and press J. (3J is shorter.)'
     variants:
@@ -65,33 +65,33 @@ tasks:
   - goal: 'Indent the function body.'
     ft: python
     start: |-
-      def f():
-      ▮x = 1
-      y = 2
-      return x
+      def visual():
+      ▮see()
+      select()
+      act()
     target: |-
-      def f():
-          x = 1
-          y = 2
-          return x
+      def visual():
+          see()
+          select()
+          act()
     solution: 'Vjj>'
     hint: 'V j j selects the three lines, > indents them.'
     variants:
       - goal: 'Indent the function body.'
         start: |-
-          def g():
-          ▮a = 1
-          b = 2
-          return a
+          def study():
+          ▮test()
+          space()
+          sleep()
         target: |-
-          def g():
-              a = 1
-              b = 2
-              return a
+          def study():
+              test()
+              space()
+              sleep()
   - goal: 'Replace the whole condition with "ok".'
     ft: python
     start: |-
-      if ▮(ready and (x > 0)):
+      if ▮(bracket and (partner)):
     target: |-
       if ok:
     solution: 'c%ok<Esc>'

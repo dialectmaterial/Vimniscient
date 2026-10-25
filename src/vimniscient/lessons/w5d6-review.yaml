@@ -4,7 +4,10 @@ review: true
 lazyvim: true
 title: Week 5 review
 intro: |
-  LazyVim's text objects and comments, mixed.
+  LazyVim's text objects and comments, mixed. Try saying each object's name
+  aloud as you type it: argument, quote, bracket, function, element. Words
+  said aloud are remembered better than words read silently (the production
+  effect).
 keys: [daa, ciq, cib, cif, cie, gcc]
 tasks:
   - goal: 'Remove the debug argument.'

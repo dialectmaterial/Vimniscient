@@ -4,7 +4,9 @@ title: 'Real edits: code'
 intro: |
   From here on the tasks are the kind you meet in real files, and each
   needs several of the tools you know now. There's always more than one
-  good route; the reference is just one of them.
+  good route; the reference is just one of them. Practising a skill in
+  varied settings helps it carry over to new ones (variability of
+  practice).
 keys: ['*:%s//', ':%s', 'J', 'I', 'A']
 tasks:
   - goal: 'Rename the variable s to result everywhere (but not the s in items).'
@@ -42,11 +44,11 @@ tasks:
   - goal: 'Turn the names into a Python list.'
     ft: python
     start: |-
-      ▮ada
-      alan
-      grace
+      ▮ebbinghaus
+      miller
+      cowan
     target: |-
-      names = ["ada", "alan", "grace"]
+      names = ["ebbinghaus", "miller", "cowan"]
     solution: ':%s/.*/"&",<CR>gg3J$xInames = [<Esc>A]<Esc>'
     hint: 'Quote and comma every line with :%s, go back up (gg) and join them with 3J, drop the last comma, then add the start and the end.'
     variants:

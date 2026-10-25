@@ -2,91 +2,94 @@ week: 2
 day: 2
 title: Searching as a motion
 intro: |
-  `/text<Enter>` jumps to the next match, `?text<Enter>` to the previous one,
-  `n`/`N` repeat it. `*` searches for the word under the cursor. A search is
-  a motion, so `d/STOP<Enter>` deletes up to the match. In your setup a
-  lowercase search ignores case and an uppercase letter makes it exact
-  (smartcase).
+  `/text<Enter>` jumps to the next match (the slash leans forward),
+  `?text<Enter>` to the previous one (a question asks back). `n` repeats it,
+  `N` the other way. `*` stars the word under the cursor and looks for it
+  everywhere. A search is a motion, so `d/STOP<Enter>` deletes up to the
+  match. In your setup a lowercase search ignores case and an uppercase
+  letter makes it exact (smartcase).
 keys: [/, "?", n, N, "*", d/]
 tasks:
-  - goal: 'Change "furiously" to "quietly".'
+  - goal: 'Change "backwards" to "ahead".'
     start: |-
-      ▮Colorless green ideas
-      sleep furiously
+      ▮The slash leans forward,
+      so it searches backwards
     target: |-
-      Colorless green ideas
-      sleep quietly
-    solution: '/f<CR>cwquietly<Esc>'
-    hint: 'Search for as little as you need. /f<Enter> lands on furiously already.'
+      The slash leans forward,
+      so it searches ahead
+    solution: '/b<CR>cwahead<Esc>'
+    hint: 'Search for as little as you need. /b<Enter> lands on backwards already.'
     variants:
-      - goal: 'Change "boat" to "ship".'
+      - goal: 'Change "slowly" to "fast".'
         start: |-
-          ▮The old man
-          the boat
+          ▮Forgetting starts
+          slowly, then levels off
         target: |-
-          The old man
-          the ship
-        solution: '/b<CR>cwship<Esc>'
-        hint: 'Search for as little as you need. /b<Enter> lands on boat already.'
-  - goal: 'Delete the hedging before "Chomsky".'
+          Forgetting starts
+          fast, then levels off
+        solution: '/sl<CR>cwfast<Esc>'
+        hint: 'Search for as little as you need. /sl<Enter> lands on slowly already.'
+  - goal: 'Delete the hedging before "Search".'
     start: |-
-      ▮um, well, you know, Chomsky disagreed
+      ▮er, like, honestly, Search is a motion
     target: |-
-      Chomsky disagreed
-    solution: 'd/C<CR>'
-    hint: 'd/C<Enter> deletes up to the next C (uppercase, so the search is exact).'
+      Search is a motion
+    solution: 'd/S<CR>'
+    hint: 'd/S<Enter> deletes up to the next S (uppercase, so the search is exact).'
     variants:
-      - goal: 'Delete the hedging before "Saussure".'
+      - goal: 'Delete the hedging before "Testing".'
         start: |-
-          ▮er, like, honestly, Saussure agreed
+          ▮um, well, you know, Testing beats rereading
         target: |-
-          Saussure agreed
-        solution: 'd/S<CR>'
-        hint: 'd/S<Enter> deletes up to the next S (uppercase, so the search is exact).'
-  - goal: 'Rename the second "count" to n.'
+          Testing beats rereading
+        solution: 'd/T<CR>'
+        hint: 'd/T<Enter> deletes up to the next T (uppercase, so the search is exact).'
+  - goal: 'Rename the second "starred" to found.'
     ft: python
     start: |-
-      ▮count = 0
-      total = count + 1
+      ▮starred = "this word"
+      next_one = starred
     target: |-
-      count = 0
-      total = n + 1
-    solution: '*ciwn<Esc>'
-    hint: '* jumps to the next occurrence of the word under the cursor.'
+      starred = "this word"
+      next_one = found
+    solution: '*ciwfound<Esc>'
+    hint: '* stars the word under the cursor and jumps to its next match.'
     variants:
-      - goal: 'Rename the second "size" to n.'
+      - goal: 'Rename the second whole word "interval" to n.'
         start: |-
-          ▮size = 0
-          max = size * 2
+          ▮interval = 1
+          interval_days = interval * 2
         target: |-
-          size = 0
-          max = n * 2
-  - goal: 'Delete the third "um".'
+          interval = 1
+          interval_days = n * 2
+        solution: '*ciwn<Esc>'
+        hint: '* only matches whole words, so it skips interval_days.'
+  - goal: 'Delete the third "next".'
     start: |-
-      the ▮um corpus um has um gaps
+      n means ▮next, and N means the next next one back.
     target: |-
-      the um corpus um has gaps
+      n means next, and N means the next one back.
     solution: '*ndaw'
-    hint: '* goes to the second um, n to the third, daw deletes it.'
+    hint: '* goes to the second next, n to the third, daw deletes it.'
     variants:
-      - goal: 'Delete the third "uh".'
+      - goal: 'Delete the third "yourself".'
         start: |-
-          the ▮uh data uh look uh fine
+          Test ▮yourself, then space it, then test yourself yourself again.
         target: |-
-          the uh data uh look fine
-        hint: '* goes to the second uh, n to the third, daw deletes it.'
-  - goal: 'Change the last "verb" to VERB, searching backwards.'
+          Test yourself, then space it, then test yourself again.
+        hint: '* goes to the second yourself, n to the third, daw deletes it.'
+  - goal: 'Change the last "forward" to "backward", searching backwards.'
     start: |-
-      noun verb noun verb pronou▮n
+      / leans forward and searches forward; ? asks forward, from the en▮d.
     target: |-
-      noun verb noun VERB pronoun
-    solution: '?v<CR>cwVERB<Esc>'
-    hint: '?v<Enter> searches backwards from the cursor.'
+      / leans forward and searches forward; ? asks backward, from the end.
+    solution: '?fo<CR>cwbackward<Esc>'
+    hint: '?fo<Enter> asks backwards from the cursor.'
     variants:
-      - goal: 'Change the last "noun" to NOUN, searching backwards.'
+      - goal: 'Change the last "restudy" to "testing", searching backwards.'
         start: |-
-          verb noun verb noun articl▮e
+          Restudy wins after five minutes; restudy wins after a we▮ek.
         target: |-
-          verb noun verb NOUN article
-        solution: '?no<CR>cwNOUN<Esc>'
-        hint: '?no<Enter> searches backwards for the start of noun.'
+          Restudy wins after five minutes; testing wins after a week.
+        solution: '?res<CR>cwtesting<Esc>'
+        hint: '?res<Enter> searches backwards for the start of restudy.'

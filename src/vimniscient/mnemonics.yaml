@@ -7,9 +7,9 @@
 #        invented reading that fits what the key does.
 
 # Operators: the verbs
-c: {means: change, hook: "c changes: delete, then drop into insert mode to write the new text"}
-d: {means: delete, hook: "d deletes, and what it deletes goes into a register, so it's really a cut"}
-y: {means: yank, hook: "yank is Vim's older word for copy: you yank text out to put it back elsewhere"}
+c: {means: change, hook: "c changes: it deletes, then you type the new text"}
+d: {means: delete, hook: "d deletes (into a register, so really it cuts)"}
+y: {means: yank, hook: "y yanks: Vim's older word for copy"}
 p: {means: put, hook: "p puts the last yank or delete after the cursor; P puts it before"}
 gU: {means: make uppercase, hook: "U is Up: gU raises letters to capitals"}
 gu: {means: make lowercase, hook: "u is down: gu lowers letters"}
@@ -27,8 +27,8 @@ s: {means: sentence, hook: "s is a sentence: up to . ! or ? and a space"}
 p (object): {means: paragraph, hook: "p is a paragraph: lines up to the next blank line"}
 t (object): {means: tag, hook: "t is a tag: the text between <b> and </b>"}
 '" (object)': {means: double-quoted string, hook: "the quote mark names the pair you mean"}
-( b: {means: "( ) block; b = bracket", hook: "( or b: the brackets themselves name the object"}
-"[": {means: "[ ] block", hook: "[ names the square brackets"}
+"( (object)": {means: "( ) block", hook: "the bracket names the pair: ( or ) for round ones"}
+"[ (object)": {means: "[ ] block", hook: "[ names the square brackets"}
 q (object): {means: any quote (LazyVim), hook: "q is quote: whichever quote is nearest"}
 b (object): {means: any bracket (LazyVim), hook: "b is bracket: (), [] or {}, the nearest one"}
 a (object): {means: argument (LazyVim), hook: "ia/aa: an argument, between commas"}
@@ -40,7 +40,7 @@ u (object): {means: usage / function call (LazyVim), hook: "u is use: a call lik
 g (object): {means: entire buffer (LazyVim), hook: "g is global: the whole file"}
 
 # Motions
-h j k l: {means: "left, down, up, right", hook: "j hooks down below the line, k reaches up; h is leftmost, l is rightmost"}
+h j k l: {means: "left, down, up, right", hook: "j hooks down below the line, k reaches up"}
 w (motion): {means: next word start, hook: "w walks to the next word"}
 b: {means: back a word, hook: "b goes back"}
 e: {means: end of word, hook: "e is end"}
@@ -75,7 +75,7 @@ x: {means: delete character, hook: "x crosses a letter out"}
 xp ddp: {means: swap characters / lines, hook: "cut, then put back one further: a swap"}
 r: {means: replace one character, hook: "r replaces one letter"}
 R: {means: Replace mode, hook: "R keeps replacing: you type over the text"}
-~: {means: switch case, hook: "the tilde wave flips the letter"}
+"~": {means: switch case, hook: "the tilde wave flips the letter"}
 <C-a>: {means: add, hook: "Ctrl-a adds 1 to the number"}
 <C-x>: {means: subtract, hook: "Ctrl-x takes 1 away, crossed out"}
 g<C-a>: {means: add in sequence, hook: "g makes the add grow down the block: 1, 2, 3"}

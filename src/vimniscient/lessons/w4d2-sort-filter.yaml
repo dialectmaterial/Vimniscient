@@ -2,21 +2,22 @@ week: 4
 day: 2
 title: ':sort and shell filters'
 intro: |
-  `:sort` sorts lines (`:sort n` numerically, `:sort u` drops duplicates).
+  `:sort` sorts lines (`:sort n` as numbers, `:sort u` keeps the unique ones).
   `:%!cmd` sends the lines through a shell command and replaces them with
   its output, so any Unix tool becomes an editing command: `:%!column -t`
-  aligns a table. `:r !cmd` inserts a command's output below the cursor.
+  aligns a table. Read `!` as *hand it to the shell*. `:r !cmd` *reads* a
+  command's output in below the cursor.
 keys: [':sort', ':sort n', ':sort u', ':%!cmd', ':r !cmd']
 tasks:
   - goal: 'Sort the fields.'
     start: |-
-      ▮syntax
-      morphology
-      phonology
+      ▮testing
+      mnemonics
+      spacing
     target: |-
-      morphology
-      phonology
-      syntax
+      mnemonics
+      spacing
+      testing
     solution: ':sort<CR>'
     hint: ':sort sorts every line by default.'
     variants:
@@ -29,17 +30,17 @@ tasks:
           phonetics
           pragmatics
           semantics
-  - goal: 'Sort by the number of native speakers (millions), not alphabetically.'
+  - goal: 'Sort the review schedule by day, not alphabetically.'
     start: |-
-      ▮Native speakers, millions
-      380 English
-      345 Hindi
-      75 Turkish
+      ▮Review after, days
+      30 third review
+      7 second review
+      1 first review
     target: |-
-      Native speakers, millions
-      75 Turkish
-      345 Hindi
-      380 English
+      Review after, days
+      1 first review
+      7 second review
+      30 third review
     solution: ':sort n<CR>'
     hint: ':sort n sorts by number; a line without one (the heading) stays first.'
     variants:
@@ -56,15 +57,15 @@ tasks:
           230 Bengali
   - goal: 'Sort and remove the duplicates.'
     start: |-
-      ▮noun
-      verb
-      noun
-      adjective
-      verb
+      ▮test
+      space
+      test
+      sleep
+      space
     target: |-
-      adjective
-      noun
-      verb
+      sleep
+      space
+      test
     solution: ':sort u<CR>'
     hint: ':sort u keeps only one of each line.'
     variants:
@@ -81,11 +82,11 @@ tasks:
           stop
   - goal: 'Line the table up in columns.'
     start: |-
-      ▮word class gloss
-      cats noun cat.PL
+      ▮key means hook
+      q record quill
     target: |-
-      word  class  gloss
-      cats  noun   cat.PL
+      key  means   hook
+      q    record  quill
     solution: ':%!column -t<CR>'
     hint: ':%! sends every line through a shell command. column -t aligns columns.'
     variants:

@@ -2,7 +2,8 @@ week: 4
 day: 6
 title: Indenting
 intro: |
-  `>` and `<` are operators like `d`: `>>` and `<<` for one line, `>i{`
+  `>` and `<` are operators like `d`, and the arrow points the way the text
+  moves: `>>` and `<<` for one line, `>i{`
   for everything inside braces, `>G` to the end of the file. In visual mode
   a count indents several levels at once (`Vj2>`). The indent width here is
   4 spaces.
@@ -10,14 +11,14 @@ keys: ['>>', '<<', '>i{', '>G', 'V2>']
 tasks:
   - goal: 'Indent everything inside the braces.'
     start: |-
-      if x {
-      ▮a()
-      b()
+      if indent {
+      ▮push_right()
+      push_right()
       }
     target: |-
-      if x {
-          a()
-          b()
+      if indent {
+          push_right()
+          push_right()
       }
     solution: '>i{'
     hint: '>i{ indents the inside of the braces.'
@@ -35,9 +36,9 @@ tasks:
           }
   - goal: 'Remove one level of indentation.'
     start: |2-
-              ▮noun phrase
+              ▮< pulls it back
     target: |2-
-          noun phrase
+          < pulls it back
     solution: '<<'
     hint: '<< outdents the line.'
     variants:
@@ -48,11 +49,11 @@ tasks:
               verb phrase
   - goal: 'Indent both lines by two levels.'
     start: |-
-      ▮subject
-      object
+      ▮2> shifts
+      twice
     target: |2-
-              subject
-              object
+              2> shifts
+              twice
     solution: 'Vj2>'
     hint: 'Select the lines with V j, then 2> indents twice.'
     variants:

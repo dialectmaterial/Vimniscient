@@ -2,7 +2,8 @@ week: 3
 day: 4
 title: Marks and jumps
 intro: |
-  `ma` sets mark a. `'a` jumps to its line, `` `a `` to its exact spot, and
+  `m` marks a spot: `ma` sets mark a. The plain quote `'a` goes to its line,
+  the backtick `` `a `` to its exact letter, and
   both work as motions: `d'a` deletes the lines from here to the mark,
   `` c`a `` changes from the mark to the cursor. ` `` ` (two backticks)
   jumps back to where you were before the last jump (`G`, `/`, `%` …).
@@ -11,11 +12,11 @@ tasks:
   - goal: 'Delete all the lines between BEGIN and END.'
     start: |-
       ▮BEGIN
-      noun: dog
-      verb: run
-      adj: red
-      adv: fast
-      prep: on
+      rereading
+      highlighting
+      summarizing
+      copying notes
+      listening again
       END
     target: |-
       BEGIN
@@ -35,21 +36,21 @@ tasks:
         target: |-
           BEGIN
           END
-  - goal: 'Copy kindergarten and angst under "Used in English".'
+  - goal: 'Copy the two mark lines under "Cheat sheet".'
     start: |-
-      ▮== German ==
-      kindergarten
-      angst
-      == Used in English ==
+      ▮== Marks ==
+      m marks a spot
+      ' jumps to its line
+      == Cheat sheet ==
     target: |-
-      == German ==
-      kindergarten
-      angst
-      == Used in English ==
-      kindergarten
-      angst
+      == Marks ==
+      m marks a spot
+      ' jumps to its line
+      == Cheat sheet ==
+      m marks a spot
+      ' jumps to its line
     solution: 'jmajy''aGp'
-    hint: 'ma on kindergarten, j to angst, y''a yanks back to the mark, G p pastes at the end.'
+    hint: 'ma on the first line, j to the second, y''a yanks back to the mark, G p pastes at the end.'
     variants:
       - goal: 'Copy rendezvous and déjà vu under "Used in English".'
         start: |-
@@ -65,13 +66,13 @@ tasks:
           rendezvous
           déjà vu
         hint: 'ma on rendezvous, j to déjà vu, y''a yanks back to the mark, G p pastes at the end.'
-  - goal: 'Change "very common " to "typical ", using a mark.'
+  - goal: 'Change "rough, line-wise " to "humble ", using a mark.'
     start: |-
-      A ▮very common word order is SVO
+      The ▮rough, line-wise backtick lands on the exact letter
     target: |-
-      A typical word order is SVO
-    solution: 'mafwc`atypical <Esc>'
-    hint: 'ma, go to the w of word, then c`a changes from the mark up to the cursor.'
+      The humble backtick lands on the exact letter
+    solution: 'mafbc`ahumble <Esc>'
+    hint: 'ma, go to the b of backtick, then c`a changes from the mark up to the cursor.'
     variants:
       - goal: 'Change "most frequent " to "commonest ", using a mark.'
         start: |-
@@ -82,15 +83,15 @@ tasks:
         hint: 'ma, go to the E of English, then c`a changes from the mark up to the cursor.'
   - goal: 'Fix the typo on the last line, then jump back and fix the first.'
     start: |-
-      ▮teh first word
-      middle
-      middle
-      teh last word
+      ▮teh start
+      `` jumps between
+      the last two spots
+      teh end
     target: |-
-      the first word
-      middle
-      middle
-      the last word
+      the start
+      `` jumps between
+      the last two spots
+      the end
     solution: 'Gcwthe<Esc>``.'
     hint: 'G is a jump, so `` takes you back. Then . repeats the change.'
     variants:

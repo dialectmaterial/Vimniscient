@@ -2,43 +2,44 @@ week: 2
 day: 4
 title: Case and numbers
 intro: |
-  `~` flips the case of one character. `gU`, `gu` and `g~` are operators:
-  `gUiw` uppercases a word, `guu` lowercases a line. `Ctrl-a` adds one to the
-  next number on the line and `Ctrl-x` subtracts one; with a count, `30
-  Ctrl-a` adds thirty. The cursor doesn't need to be on the number.
+  `~` flips the case of one character: the tilde is a little wave. `gU`, `gu`
+  and `g~` are operators: U is *up* (capitals), u is down. `gUiw` uppercases
+  a word, `guu` lowercases a line. `Ctrl-a` *adds* one to the next number on
+  the line and `Ctrl-x` crosses one out; with a count, `30 Ctrl-a` adds
+  thirty. The cursor doesn't need to be on the number.
 keys: ["~", gUiw, guu, g~iw, "<C-a>", "<C-x>"]
 tasks:
-  - goal: 'Capitalise the language name.'
+  - goal: 'Capitalise the first letter.'
     start: |-
-      ▮english is Germanic
+      ▮tilde flips one letter
     target: |-
-      English is Germanic
+      Tilde flips one letter
     solution: '~'
     hint: '~ flips the case of the character under the cursor.'
     variants:
-      - goal: 'Capitalise the language name.'
+      - goal: 'Capitalise the name.'
         start: |-
-          ▮dutch is West Germanic
+          ▮ebbinghaus tested himself
         target: |-
-          Dutch is West Germanic
-  - goal: 'Uppercase "ipa".'
+          Ebbinghaus tested himself
+  - goal: 'Uppercase "up".'
     start: |-
-      the ▮ipa chart
+      gU raises ▮up to capitals
     target: |-
-      the IPA chart
+      gU raises UP to capitals
     solution: 'gUiw'
     hint: 'gU is the uppercase operator; iw is the word.'
     variants:
-      - goal: 'Uppercase "apa".'
+      - goal: 'Uppercase "srs".'
         start: |-
-          the ▮apa alphabet
+          an ▮srs schedules your reviews
         target: |-
-          the APA alphabet
+          an SRS schedules your reviews
   - goal: 'Make the whole line lowercase.'
     start: |-
-      ▮WHISPERED VOWELS ARE QUIET
+      ▮GU LOWERS THE WHOLE LINE
     target: |-
-      whispered vowels are quiet
+      gu lowers the whole line
     solution: 'guu'
     hint: 'guu lowercases the line (gu + u, like dd).'
     variants:
@@ -47,55 +48,55 @@ tasks:
           ▮DON'T SHOUT THE GLOSSES
         target: |-
           don't shout the glosses
-  - goal: 'Latin has six cases: fix the number.'
+  - goal: 'Make the sentence true: Ctrl-a adds 1.'
     start: |-
-      ▮Latin has 5 cases
+      ▮Ctrl-a adds 0 to the number
     target: |-
-      Latin has 6 cases
+      Ctrl-a adds 1 to the number
     solution: '<C-a>'
     hint: 'Ctrl-a adds one to the next number on the line.'
     variants:
-      - goal: 'German has four cases: fix the number.'
+      - goal: 'Fitts and Posner named three stages of skill: fix the number.'
         start: |-
-          ▮German has 3 cases
+          ▮Fitts and Posner named 2 stages of skill
         target: |-
-          German has 4 cases
-  - goal: 'Saussure died in 1913: add 30 to the year.'
+          Fitts and Posner named 3 stages of skill
+  - goal: 'Ebbinghaus published in 1885: add 30 to the year.'
     start: |-
-      ▮Saussure died in 1883
+      ▮Ebbinghaus published in 1855
     target: |-
-      Saussure died in 1913
+      Ebbinghaus published in 1885
     solution: '30<C-a>'
     hint: 'With a count, Ctrl-a adds that many.'
     variants:
-      - goal: 'Sapir was born in 1884: add 30 to the year.'
+      - goal: 'Miller''s magical number came out in 1956: add 30 to the year.'
         start: |-
-          ▮Sapir was born in 1854
+          ▮Miller's magical number came out in 1926
         target: |-
-          Sapir was born in 1884
-  - goal: 'Syntactic Structures came out a year earlier: fix it.'
+          Miller's magical number came out in 1956
+  - goal: 'Make the sentence true: 3 take away 1 leaves 2.'
     start: |-
-      ▮Syntactic Structures: 1958
+      ▮Ctrl-x leaves 3 when you take 1 from 3
     target: |-
-      Syntactic Structures: 1957
+      Ctrl-x leaves 2 when you take 1 from 3
     solution: '<C-x>'
-    hint: 'Ctrl-x subtracts one.'
+    hint: 'Ctrl-x takes one away from the next number.'
     variants:
-      - goal: 'The Course came out a year earlier: fix it.'
+      - goal: 'Cowan''s estimate is about four chunks: fix the number.'
         start: |-
-          ▮Course in General Linguistics: 1917
+          ▮Cowan's working memory holds about 5 chunks
         target: |-
-          Course in General Linguistics: 1916
+          Cowan's working memory holds about 4 chunks
   - goal: 'Flip the case of the first word.'
     start: |-
-      ▮sAUSSURE and the sign
+      ▮tILDE flips the case
     target: |-
-      Saussure and the sign
+      Tilde flips the case
     solution: 'g~iw'
-    hint: 'g~ toggles case over a motion or text object.'
+    hint: 'g~ flips case over a motion or text object.'
     variants:
       - goal: 'Flip the case of the first word.'
         start: |-
-          ▮cHOMSKY and generative grammar
+          ▮eBBINGHAUS and the forgetting curve
         target: |-
-          Chomsky and generative grammar
+          Ebbinghaus and the forgetting curve

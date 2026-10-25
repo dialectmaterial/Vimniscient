@@ -2,22 +2,24 @@ week: 4
 day: 5
 title: More motions
 intro: |
-  Some motions worth knowing with an operator: `}` to the next blank line
+  Some motions worth knowing with an operator. The braces hug a block: `{` is
+  its top and `}` its bottom, the next blank line
   (`d}` deletes to the end of the paragraph), `G` and `gg` (`dG` deletes to
-  the end of the file), `0` (`d0` deletes back to the start of the line).
-  And two small ones: `gJ` joins without adding a space, and `xp` swaps two
-  characters.
+  the end of the file), `0`, column zero (`d0` deletes back to the start of
+  the line). And two small ones: `gJ` joins without a space, like a German
+  compound, and `xp` swaps two characters: cross one out, put it back one
+  further.
 keys: ['d}', dG, d0, gJ, xp]
 tasks:
   - goal: 'Delete to the end of the paragraph.'
     start: |-
-      ▮um, so
-      anyway
+      ▮this paragraph
+      ends at the blank line
 
-      The lecture starts.
+      } is the bottom of a block.
     target: |-
 
-      The lecture starts.
+      } is the bottom of a block.
     solution: 'd}'
     hint: '} moves to the next blank line; d} deletes up to it.'
     variants:
@@ -47,12 +49,12 @@ tasks:
           weltanschauung
   - goal: 'Delete from here to the end of the file.'
     start: |-
-      Conclusion
-      ▮draft
-      notes
-      here
+      G goes to the end
+      ▮so dG
+      deletes
+      all this
     target: |-
-      Conclusion
+      G goes to the end
     solution: 'dG'
     hint: 'dG deletes to the last line.'
     variants:
@@ -66,9 +68,9 @@ tasks:
           Summary
   - goal: 'Fix the typo by swapping two letters.'
     start: |-
-      pho▮enme
+      xp is a sw▮pa
     target: |-
-      phoneme
+      xp is a swap
     solution: 'xp'
     hint: 'x cuts the letter, p puts it back after the next one.'
     variants:
@@ -79,9 +81,9 @@ tasks:
           morpheme
   - goal: 'Delete everything before the cursor.'
     start: |-
-      um, so ▮syntax
+      well, um, ▮0 is column zero
     target: |-
-      syntax
+      0 is column zero
     solution: 'd0'
     hint: 'd0 deletes back to the start of the line, not including the cursor.'
     variants:
