@@ -2,121 +2,122 @@ week: 1
 day: 5
 title: Whole lines and line ends
 intro: |
-  Line commands: `D` deletes to the end of the line, `C` changes to the end,
-  `cc` changes the whole line, `dd` deletes it, `J` joins the next line on.
-  `A` appends at the end and `I` inserts at the first non-blank character.
-  `ddp` swaps two lines.
+  Capitals go big: `D` deletes to the end of the line, `C` changes to the end.
+  Doubling a verb means the whole line: `dd` deletes it, `cc` changes it. `J`
+  *joins* the next line on. `A` *appends* at the end and `I` *inserts* at the
+  first non-blank character. `ddp` swaps two lines: cut, then put back one
+  further down.
 keys: [D, C, cc, dd, J, ddp, A, I]
 tasks:
   - goal: 'Delete the rest of the line.'
     start: |-
-      Grammar is a system.▮ Usage is something else.
+      D is a big d: it deletes to the end.▮ Everything after the cursor goes.
     target: |-
-      Grammar is a system.
+      D is a big d: it deletes to the end.
     solution: 'D'
     hint: 'D deletes from the cursor to the end of the line.'
     variants:
       - goal: 'Delete the rest of the line.'
         start: |-
-          Speech comes first.▮ Writing came much later.
+          Sleep helps new memories settle.▮ An all-nighter does not.
         target: |-
-          Speech comes first.
-  - goal: 'Change the rest of the line to 44.'
+          Sleep helps new memories settle.
+  - goal: 'Change the rest of the line to "the end of the line".'
     start: |-
-      phonemes in English: ▮about forty or so
+      C changes to: ▮somewhere in the middle
     target: |-
-      phonemes in English: 44
-    solution: 'C44<Esc>'
+      C changes to: the end of the line
+    solution: 'Cthe end of the line<Esc>'
     hint: 'C changes from the cursor to the end of the line.'
     variants:
-      - goal: 'Change the rest of the line to 5.'
+      - goal: 'Change the rest of the line to "seven, plus or minus two".'
         start: |-
-          vowels in Spanish: ▮a handful, maybe
+          magical number (Miller, 1956): ▮a dozen or so
         target: |-
-          vowels in Spanish: 5
-        solution: 'C5<Esc>'
-  - goal: 'Replace the middle line with "phonology".'
+          magical number (Miller, 1956): seven, plus or minus two
+        solution: 'Cseven, plus or minus two<Esc>'
+  - goal: 'Replace the middle line with "storage".'
     start: |-
-      phonetics
-      ▮astrology
-      semantics
+      encoding
+      ▮forgetting
+      retrieval
     target: |-
-      phonetics
-      phonology
-      semantics
-    solution: 'ccphonology<Esc>'
-    hint: 'cc changes the whole line, wherever the cursor is.'
+      encoding
+      storage
+      retrieval
+    solution: 'ccstorage<Esc>'
+    hint: 'cc, the doubled verb, changes the whole line, wherever the cursor is.'
     variants:
-      - goal: 'Replace the middle line with "semantics".'
+      - goal: 'Replace the middle line with "associative".'
         start: |-
-          syntax
-          ▮numerology
-          pragmatics
+          cognitive
+          ▮hypnotic
+          autonomous
         target: |-
-          syntax
-          semantics
-          pragmatics
-        solution: 'ccsemantics<Esc>'
+          cognitive
+          associative
+          autonomous
+        solution: 'ccassociative<Esc>'
   - goal: 'Join the two lines.'
     start: |-
-      ▮Every language has
-      vowels and consonants.
+      ▮J joins this line
+      and the next one.
     target: |-
-      Every language has vowels and consonants.
+      J joins this line and the next one.
     solution: 'J'
     hint: 'J joins the next line onto this one, with one space.'
     variants:
       - goal: 'Join the two lines.'
         start: |-
-          ▮No language is
-          more primitive than another.
+          ▮The spacing effect is among the
+          best-replicated findings on memory.
         target: |-
-          No language is more primitive than another.
-  - goal: 'Put the levels in order, from sound up.'
+          The spacing effect is among the best-replicated findings on memory.
+  - goal: 'Put the stages of skill in order: cognitive first.'
     start: |-
-      ▮morphology
-      phonology
-      syntax
+      ▮associative
+      cognitive
+      autonomous
     target: |-
-      phonology
-      morphology
-      syntax
+      cognitive
+      associative
+      autonomous
     solution: 'ddp'
     hint: 'dd cuts the line, p puts it below the next one.'
     variants:
-      - goal: 'Put the units in order, from small to large.'
+      - goal: 'Put the stages of memory in order: encoding first.'
         start: |-
-          ▮phrase
-          word
-          sentence
+          ▮storage
+          encoding
+          retrieval
         target: |-
-          word
-          phrase
-          sentence
+          encoding
+          storage
+          retrieval
   - goal: 'Add a semicolon at the end.'
     start: |-
-      ▮console.log("hi")
+      ▮console.log("A appends at the end")
     target: |-
-      console.log("hi");
+      console.log("A appends at the end");
     solution: 'A;<Esc>'
     hint: 'A appends at the end of the line, wherever the cursor is.'
     variants:
       - goal: 'Add a semicolon at the end.'
         start: |-
-          ▮return tokens
+          ▮return "A is for append"
         target: |-
-          return tokens;
+          return "A is for append";
   - goal: 'Comment the line out with "# ".'
     ft: python
     start: |-
-      x = ▮1
+      insert = ▮"I puts you at the start"
     target: |-
-      # x = 1
+      # insert = "I puts you at the start"
     solution: 'I# <Esc>'
     hint: 'I inserts at the start of the line.'
     variants:
       - goal: 'Comment the line out with "# ".'
         start: |-
-          y = ▮2
+          cram = ▮True
         target: |-
-          # y = 2
+          # cram = True

@@ -2,96 +2,97 @@ week: 1
 day: 2
 title: Quotes, brackets and tags
 intro: |
-  The same `i`/`a` trick works on pairs: `i"` is inside the quotes, `a"`
-  includes them. Brackets: `i(` `i[` `i{` `i<`, and `it` for inside an HTML
-  tag. For quotes the cursor doesn't even have to be inside: `ci"` jumps to
-  the next quoted string on the line.
+  The same `i`/`a` trick works on pairs, and the noun is simply the pair's own
+  sign: `i"` is inside the quotes, `a"` takes the quotes too. Brackets name
+  themselves the same way: `i(` `i[` `i{` `i<`. `t` is for *tag*: `it` is
+  inside an HTML tag. For quotes the cursor doesn't even have to be inside:
+  `ci"` jumps to the next quoted string on the line.
 keys: ['ci"', 'da"', 'di(', 'da(', 'di[', 'cit']
 tasks:
-  - goal: 'Change the name to Noam.'
+  - goal: 'Set the string to "change inside".'
     ft: python
     start: |-
-      name = "▮Alice"
+      ci_quote = "▮delete outside"
     target: |-
-      name = "Noam"
-    solution: 'ci"Noam<Esc>'
-    hint: 'ci" changes everything inside the quotes.'
+      ci_quote = "change inside"
+    solution: 'ci"change inside<Esc>'
+    hint: 'c changes, i keeps it inside, " names the pair: ci".'
     variants:
-      - goal: 'Change the language to Hopi.'
+      - goal: 'Fix the citation to "Atkinson & Raugh, 1975".'
         start: |-
-          lang = "▮Zulu"
+          keyword_method = "▮Atkinson, 1957"
         target: |-
-          lang = "Hopi"
-        solution: 'ci"Hopi<Esc>'
-  - goal: 'Change the greeting to "hi", starting from the beginning of the line.'
+          keyword_method = "Atkinson & Raugh, 1975"
+        solution: 'ci"Atkinson & Raugh, 1975<Esc>'
+  - goal: 'Change the string to "spaced", starting from the beginning of the line.'
     ft: python
     start: |-
-      ▮greeting = "hello world"
+      ▮best_schedule = "one long cram"
     target: |-
-      greeting = "hi"
-    solution: 'ci"hi<Esc>'
+      best_schedule = "spaced"
+    solution: 'ci"spaced<Esc>'
     hint: 'You don''t have to move first. ci" finds the next quotes on the line.'
     variants:
-      - goal: 'Change the gloss to "dog", starting from the beginning of the line.'
+      - goal: 'Change the string to "testing yourself", starting from the beginning of the line.'
         start: |-
-          ▮gloss = "big brown dog"
+          ▮learn_by = "rereading"
         target: |-
-          gloss = "dog"
-        solution: 'ci"dog<Esc>'
+          learn_by = "testing yourself"
+        solution: 'ci"testing yourself<Esc>'
   - goal: 'Empty the inner parentheses.'
     ft: python
     start: |-
-      print(len(wo▮rds))
+      di_paren(empties(▮this_part))
     target: |-
-      print(len())
+      di_paren(empties())
     solution: 'di('
     hint: 'di( deletes inside the innermost parentheses around the cursor.'
     variants:
       - goal: 'Empty the inner parentheses.'
         start: |-
-          print(sorted(ton▮es))
+          forget(cramming(the_night_bef▮ore))
         target: |-
-          print(sorted())
+          forget(cramming())
   - goal: 'Delete the argument list, parentheses included.'
     ft: python
     start: |-
-      result = total(▮a, b) + 1
+      da = deletes(▮around, it) + parens
     target: |-
-      result = total + 1
+      da = deletes + parens
     solution: 'da('
-    hint: 'da( deletes the parentheses too. (dab is the same thing.)'
+    hint: 'a is around: da( deletes the parentheses too. (dab is the same thing.)'
     variants:
       - goal: 'Delete the argument list, parentheses included.'
         start: |-
-          n = count(▮vowels, word) * 2
+          recall = retrieval(▮practice, tests) * 2
         target: |-
-          n = count * 2
+          recall = retrieval * 2
   - goal: 'Empty the list.'
     ft: python
     start: |-
-      tags = [▮"noun", "verb"]
+      di_bracket_leaves = [▮"just", "the", "brackets"]
     target: |-
-      tags = []
+      di_bracket_leaves = []
     solution: 'di['
-    hint: 'di[ works like di(, for square brackets.'
+    hint: 'di[ works like di(: the bracket names the pair.'
     variants:
       - goal: 'Empty the list.'
         start: |-
-          cases = [▮"nom", "acc", "gen"]
+          excuses_not_to_practise = [▮"busy", "tired", "later"]
         target: |-
-          cases = []
-  - goal: 'Change the text inside the tag to "strong".'
+          excuses_not_to_practise = []
+  - goal: 'Change the text inside the tag to "t is for tag".'
     ft: html
     start: |-
-      <b>bo▮ld text</b>
+      <b>t is for ti▮tle</b>
     target: |-
-      <b>strong</b>
-    solution: 'citstrong<Esc>'
-    hint: 'it is the inner tag object. cit changes the tag''s content.'
+      <b>t is for tag</b>
+    solution: 'citt is for tag<Esc>'
+    hint: 't is the tag object. cit changes the tag''s content and keeps the tags.'
     variants:
-      - goal: 'Change the text inside the tag to "emphasis".'
+      - goal: 'Change the text inside the tag to "Ebbinghaus, 1885".'
         start: |-
-          <i>it▮alic gloss</i>
+          <i>Ebbing▮haus, 1858</i>
         target: |-
-          <i>emphasis</i>
-        solution: 'citemphasis<Esc>'
+          <i>Ebbinghaus, 1885</i>
+        solution: 'citEbbinghaus, 1885<Esc>'

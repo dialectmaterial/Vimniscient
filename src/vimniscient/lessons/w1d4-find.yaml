@@ -2,91 +2,93 @@ week: 1
 day: 4
 title: Find and till on a line
 intro: |
-  `f{char}` jumps *onto* the next {char} on the line, `t{char}` jumps *till*
-  just before it. `F` and `T` go backwards. `;` repeats the last one, `,`
-  repeats it the other way. With an operator they become precise: `dt,`
-  deletes up to the comma, `ct;` changes up to the semicolon.
+  `f{char}` *finds* the next {char} on the line and lands *on* it; `t{char}`
+  goes *till* it and stops just before. Capital `F` and `T` look backwards.
+  `;` repeats the last one (a semicolon says *and so on*), `,` repeats it the
+  other way (a comma steps back). With a verb they become precise: `dt,`
+  deletes till the comma, `ct;` changes till the semicolon.
 keys: [f, t, F, T, ";", ",", dt, ct]
 tasks:
-  - goal: 'Delete everything up to "common".'
+  - goal: 'Delete everything up to "just".'
     start: |-
-      Clicks are ▮really quite common in Zulu.
+      t means till: it stops ▮way way just before the letter.
     target: |-
-      Clicks are common in Zulu.
-    solution: 'dtc'
-    hint: 'dtc deletes till the next c after the cursor; really and quite have none.'
+      t means till: it stops just before the letter.
+    solution: 'dtj'
+    hint: 'dtj deletes till the next j after the cursor; "way way" has none.'
     variants:
-      - goal: 'Delete everything up to "contrastive".'
+      - goal: 'Delete everything up to "links".'
         start: |-
-          Tones are ▮very often contrastive in Thai.
+          The keyword method ▮kind of links a new word to a sound-alike image.
         target: |-
-          Tones are contrastive in Thai.
-        hint: 'dtc deletes till the next c after the cursor; very and often have none.'
-  - goal: 'Change the value to 42 (keep the semicolon).'
+          The keyword method links a new word to a sound-alike image.
+        solution: 'dtl'
+        hint: 'dtl deletes till the next l after the cursor; "kind of" has none.'
+  - goal: 'Change the value to "till" (keep the semicolon).'
     start: |-
-      let x = ▮old_value; let y = 2;
+      let t = ▮"through"; let f = "find";
     target: |-
-      let x = 42; let y = 2;
-    solution: 'ct;42<Esc>'
-    hint: 'ct; changes up to, not including, the semicolon.'
+      let t = "till"; let f = "find";
+    solution: 'ct;"till"<Esc>'
+    hint: 'ct; changes till, not including, the semicolon.'
     variants:
-      - goal: 'Change the value to 5 (keep the semicolon).'
+      - goal: 'Change the value to 1 (keep the semicolon).'
         start: |-
-          let n = ▮count_vowels; let m = 0;
+          let review_after = ▮never; let forgotten = true;
         target: |-
-          let n = 5; let m = 0;
-        solution: 'ct;5<Esc>'
+          let review_after = 1; let forgotten = true;
+        solution: 'ct;1<Esc>'
   - goal: 'Keep only the folder path: delete the file name.'
     start: |-
-      corpora/english/brown/ca01.tx▮t
+      memory/keys/vim/forgotten.tx▮t
     target: |-
-      corpora/english/brown/
+      memory/keys/vim/
     solution: 'T/D'
-    hint: 'T/ jumps back to just after the last slash; D deletes to the end of the line.'
+    hint: 'Capital T goes backwards: T/ stops just after the last slash; D deletes to the end of the line.'
     variants:
       - goal: 'Keep only the folder path: delete the file name.'
         start: |-
-          corpora/dutch/cgn/fn000123.wa▮v
+          science/testing-effect/roediger-2006/notes.t▮xt
         target: |-
-          corpora/dutch/cgn/
+          science/testing-effect/roediger-2006/
   - goal: 'Turn the third comma into a semicolon.'
     start: |-
-      ▮nouns, verbs, adjectives, adverbs
+      ▮spacing, testing, mnemonics, sleep
     target: |-
-      nouns, verbs, adjectives; adverbs
+      spacing, testing, mnemonics; sleep
     solution: '3f,r;'
-    hint: 'f, then ; ; walks comma by comma. A count is shorter: 3f, and then r; replaces the character.'
+    hint: 'f, then ; ; walks comma by comma ("and so on"). A count is shorter: 3f, and then r; replaces the character.'
     variants:
       - goal: 'Turn the third comma into a semicolon.'
         start: |-
-          ▮Bantu, Romance, Slavic, Turkic
+          ▮Ebbinghaus, Bartlett, Tulving, Baddeley
         target: |-
-          Bantu, Romance, Slavic; Turkic
-  - goal: 'Replace the whole int(input()) call with 42.'
+          Ebbinghaus, Bartlett, Tulving; Baddeley
+  - goal: 'Replace the whole before(char) call with on_it.'
     ft: python
     start: |-
-      value = ▮int(input())  # read a number
+      f_lands = ▮before(char)  # t stops before it
     target: |-
-      value = 42  # read a number
-    solution: 'ct 42<Esc>'
-    hint: 't works with a space too. ct<Space> changes up to the next space.'
+      f_lands = on_it  # t stops before it
+    solution: 'ct on_it<Esc>'
+    hint: 't works with a space too. ct<Space> changes till the next space.'
     variants:
-      - goal: 'Replace the whole len(set(words)) call with 0.'
+      - goal: 'Replace the whole reread(notes()) call with retrieve.'
         start: |-
-          n = ▮len(set(words))  # vocabulary size
+          best = ▮reread(notes())  # retrieval wins
         target: |-
-          n = 0  # vocabulary size
-        solution: 'ct 0<Esc>'
+          best = retrieve  # retrieval wins
+        solution: 'ct retrieve<Esc>'
   - goal: 'Delete the part in brackets: from the cursor up to and including the ")".'
     start: |-
-      Phonemes▮ (sound units) contrast.
+      f lands on▮ (not before) the letter.
     target: |-
-      Phonemes contrast.
+      f lands on the letter.
     solution: 'df)'
-    hint: 'df) deletes onto the ), so the bracket goes too.'
+    hint: 'f finds and lands on the ), so df) deletes the bracket too.'
     variants:
       - goal: 'Delete the part in brackets: from the cursor up to and including the ")".'
         start: |-
-          Allophones▮ (variants of a phoneme) vary.
+          Spaced reviews▮ (a day, then a week) beat cramming.
         target: |-
-          Allophones vary.
+          Spaced reviews beat cramming.

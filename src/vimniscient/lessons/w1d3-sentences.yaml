@@ -2,117 +2,117 @@ week: 1
 day: 3
 title: Sentences and paragraphs
 intro: |
-  Bigger text objects: `is`/`as` for a sentence, `ip`/`ap` for a paragraph
-  (a block of lines between empty lines). `ap` includes the empty line after
-  it, so `dap` leaves no gap. Any operator works on them, including `>` to
-  indent and `y` to yank.
+  Bigger nouns: `s` is a *sentence* and `p` a *paragraph* (a block of lines
+  between empty lines). `is`/`ip` are the thing itself; `as`/`ap` take the
+  space or empty line after it too, so `dap` leaves no gap. Any verb works on
+  them, including `>` (the arrow points the way the text moves) and `y`.
 keys: [dap, yap, cis, das, ">ip"]
 tasks:
   - goal: 'Delete the middle paragraph.'
     start: |-
-      Phonetics studies speech sounds.
+      dap deletes a paragraph.
 
-      Syntax ▮studies sentences.
-      It can wait until later.
+      This paragraph ▮is padding.
+      It can go.
 
-      Semantics studies meaning.
+      It leaves no double gap behind.
     target: |-
-      Phonetics studies speech sounds.
+      dap deletes a paragraph.
 
-      Semantics studies meaning.
+      It leaves no double gap behind.
     solution: 'dap'
-    hint: 'dap deletes the paragraph and the empty line after it.'
+    hint: 'd deletes, a takes the empty line after it, p is the paragraph.'
     variants:
       - goal: 'Delete the middle paragraph.'
         start: |-
-          Morphology studies words.
+          Ebbinghaus learned nonsense syllables and tested himself.
 
-          Pragmatics ▮studies use.
-          It can wait.
+          This paragraph ▮is a distraction.
+          It can go.
 
-          Syntax studies sentences.
+          Forgetting was fastest right after learning.
         target: |-
-          Morphology studies words.
+          Ebbinghaus learned nonsense syllables and tested himself.
 
-          Syntax studies sentences.
+          Forgetting was fastest right after learning.
   - goal: 'Duplicate the first paragraph.'
     start: |-
-      ▮Colorless green ideas sleep furiously.
+      ▮Retrieving a memory makes it stronger.
 
       Done.
     target: |-
-      Colorless green ideas sleep furiously.
+      Retrieving a memory makes it stronger.
 
-      Colorless green ideas sleep furiously.
+      Retrieving a memory makes it stronger.
 
       Done.
     solution: 'yapP'
-    hint: 'yap yanks the paragraph with its empty line; P puts it above the cursor.'
+    hint: 'yap yanks a paragraph with its empty line; P puts it above the cursor.'
     variants:
       - goal: 'Duplicate the first paragraph.'
         start: |-
-          ▮The horse raced past the barn fell.
+          ▮yap yanks a paragraph; P puts it above.
 
           Done.
         target: |-
-          The horse raced past the barn fell.
+          yap yanks a paragraph; P puts it above.
 
-          The horse raced past the barn fell.
+          yap yanks a paragraph; P puts it above.
 
           Done.
-  - goal: 'Fix the wrong sentence: it should say "Verbs describe actions."'
+  - goal: 'Fix the wrong sentence: it should say "A sentence ends at a full stop."'
     start: |-
-      Nouns name things. Verbs describe ▮colours. Adjectives describe things.
+      s is for sentence. A sentence ends at a ▮comma. cis changes just one.
     target: |-
-      Nouns name things. Verbs describe actions. Adjectives describe things.
-    solution: 'cisVerbs describe actions.<Esc>'
+      s is for sentence. A sentence ends at a full stop. cis changes just one.
+    solution: 'cisA sentence ends at a full stop.<Esc>'
     hint: 'cis changes the inner sentence and leaves the spaces around it.'
     variants:
-      - goal: 'Fix the wrong sentence: it should say "Stops block the air."'
+      - goal: 'Fix the wrong sentence: it should say "Spacing beats cramming."'
         start: |-
-          Vowels are voiced. Stops ▮are fricatives. Nasals use the nose.
+          Mnemonics tie the new to the known. Cramming beats ▮spacing. Testing beats rereading.
         target: |-
-          Vowels are voiced. Stops block the air. Nasals use the nose.
-        solution: 'cisStops block the air.<Esc>'
+          Mnemonics tie the new to the known. Spacing beats cramming. Testing beats rereading.
+        solution: 'cisSpacing beats cramming.<Esc>'
   - goal: 'Delete the middle sentence.'
     start: |-
-      Sapir taught Whorf. Whorf ▮worked in fire insurance. Whorf studied Hopi.
+      das deletes a sentence. This one ▮is wrong. Its space goes too.
     target: |-
-      Sapir taught Whorf. Whorf studied Hopi.
+      das deletes a sentence. Its space goes too.
     solution: 'das'
     hint: 'das deletes a sentence plus the space after it.'
     variants:
       - goal: 'Delete the middle sentence.'
         start: |-
-          Labov studied New York. Labov ▮sold ice cream. Labov counted variants.
+          Miller wrote of seven, plus or minus two. Miller ▮sold ice cream. Cowan later argued for about four.
         target: |-
-          Labov studied New York. Labov counted variants.
-  - goal: 'Indent the three levels.'
+          Miller wrote of seven, plus or minus two. Cowan later argued for about four.
+  - goal: 'Indent the three stages.'
     start: |-
-      Levels:
+      Stages of skill (Fitts & Posner):
 
-      ▮phonology
-      morphology
-      syntax
+      ▮cognitive
+      associative
+      autonomous
     target: |-
-      Levels:
+      Stages of skill (Fitts & Posner):
 
-          phonology
-          morphology
-          syntax
+          cognitive
+          associative
+          autonomous
     solution: '>ip'
-    hint: '>ip indents the inner paragraph. (Indent here is 4 spaces.)'
+    hint: '> points right, ip is the inner paragraph. (Indent here is 4 spaces.)'
     variants:
-      - goal: 'Indent the three cases.'
+      - goal: 'Indent the three lines.'
         start: |-
-          Cases:
+          What ip covers:
 
-          ▮nominative
-          accusative
-          genitive
+          ▮this line
+          this line
+          and this one
         target: |-
-          Cases:
+          What ip covers:
 
-              nominative
-              accusative
-              genitive
+              this line
+              this line
+              and this one

@@ -4,80 +4,82 @@ review: true
 title: Week 1 review
 intro: |
   A mix of everything from this week. Try each one before reaching for
-  `:Hint`, and try to match the reference keystroke count.
+  `:Hint`, and try to match the reference keystroke count. Mixing topics like
+  this is harder than doing one at a time, and that's the point: you have to
+  pick the right command, not just repeat the last one.
 keys: [ciw, ci(, das, dd, daw, ct, ">ip", "3f,"]
 tasks:
-  - goal: 'Switch the mode to light.'
+  - goal: 'Fix what c stands for: change.'
     ft: python
     start: |-
-      config = {"mode": "▮dark"}
+      keys = {"c": "▮copy"}
     target: |-
-      config = {"mode": "light"}
-    solution: 'ciwlight<Esc>'
+      keys = {"c": "change"}
+    solution: 'ciwchange<Esc>'
     hint: 'ciw or ci" both work.'
     variants:
-      - goal: 'Switch the language to en.'
+      - goal: 'Fix what y stands for: yank.'
         start: |-
-          config = {"lang": "▮nl"}
+          keys = {"y": "▮yell"}
         target: |-
-          config = {"lang": "en"}
-        solution: 'ciwen<Esc>'
-  - goal: 'Replace all three arguments with z.'
+          keys = {"y": "yank"}
+        solution: 'ciwyank<Esc>'
+  - goal: 'Replace all three arguments with space.'
     ft: python
     start: |-
-      f(▮a, b, c)
+      remember(▮cram, cram, cram)
     target: |-
-      f(z)
-    solution: 'ci(z<Esc>'
+      remember(space)
+    solution: 'ci(space<Esc>'
     hint: 'ci( changes everything inside the parentheses.'
     variants:
-      - goal: 'Replace all three arguments with w.'
+      - goal: 'Replace all three arguments with test.'
         start: |-
-          g(▮x, y, z)
+          learn(▮read, read, read)
         target: |-
-          g(w)
-        solution: 'ci(w<Esc>'
+          learn(test)
+        solution: 'ci(test<Esc>'
   - goal: 'Delete the wrong sentence.'
     start: |-
-      B is voiced. ▮P is a vowel. K is velar.
+      d deletes. ▮y means yell. c changes.
     target: |-
-      B is voiced. K is velar.
+      d deletes. c changes.
     solution: 'das'
     hint: 'das deletes a sentence and its trailing space.'
     variants:
       - goal: 'Delete the wrong sentence.'
         start: |-
-          M is nasal. ▮S is a stop. L is lateral.
+          Testing helps recall. ▮Rereading beats testing. Spacing helps too.
         target: |-
-          M is nasal. L is lateral.
-  - goal: 'Delete the sys and re imports.'
+          Testing helps recall. Spacing helps too.
+  - goal: 'Delete the cramming and highlighting imports.'
     ft: python
     start: |-
-      import os
-      ▮import sys
-      import re
-      import json
+      import spacing
+      ▮import cramming
+      import highlighting
+      import testing
     target: |-
-      import os
-      import json
+      import spacing
+      import testing
     solution: '2dd'
     hint: 'A count works on dd too.'
     variants:
-      - goal: 'Delete the os and sys imports.'
+      - goal: 'Delete the cram and reread imports.'
         start: |-
-          import re
-          ▮import os
-          import sys
-          import nltk
+          import sleep
+          ▮import cram
+          import reread
+          import retrieval
         target: |-
-          import re
-          import nltk
-  - goal: 'Change the subdomain to new.'
+          import sleep
+          import retrieval
+  - goal: 'Change the subdomain to www.'
     start: |-
-      url = 'https://▮old.example.org'
+      url = 'https://▮old.vimhelp.org'
     target: |-
-      url = 'https://new.example.org'
-    solution: 'ciwnew<Esc>'
+      url = 'https://www.vimhelp.org'
+    solution: 'ciwwww<Esc>'
     hint: 'A dot ends a word, so ciw only takes "old". ct. works too.'
     variants:
       - goal: 'Change the subdomain to www.'
@@ -85,26 +87,25 @@ tasks:
           url = 'https://▮test.wals.info'
         target: |-
           url = 'https://www.wals.info'
-        solution: 'ciwwww<Esc>'
   - goal: 'Indent the body of the function.'
     ft: python
     start: |-
-      def f():
-      ▮x = 1
-      return x
+      def shift_right():
+      ▮arrow = ">"
+      return arrow
     target: |-
-      def f():
-          x = 1
-          return x
+      def shift_right():
+          arrow = ">"
+          return arrow
     solution: '>j'
     hint: '> with a motion indents lines: >j indents this line and the next.'
     variants:
       - goal: 'Indent the body of the function.'
         start: |-
-          def g():
-          ▮n = 0
-          return n
+          def review():
+          ▮due = tomorrow
+          return due
         target: |-
-          def g():
-              n = 0
-              return n
+          def review():
+              due = tomorrow
+              return due

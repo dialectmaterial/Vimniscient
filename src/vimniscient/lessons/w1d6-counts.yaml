@@ -2,102 +2,103 @@ week: 1
 day: 6
 title: Counts
 intro: |
-  Put a number in front and it repeats: `3dw` deletes three words, `3dd`
-  three lines, `5x` five characters, `3J` joins three lines, `2f,` finds the
-  second comma. `c2w` changes two words. Counting is often shorter than
-  pressing a key again and again.
+  A number in front repeats the command, and it reads like a numeral before a
+  noun: `3dw` *delete three words*, `3dd` three lines, `5x` cross out five
+  characters, `3J` join three lines, `2f,` find the second comma. `c2w`
+  changes two words. Counting is often shorter than pressing a key again and
+  again.
 keys: [3dw, 3dd, c2w, 5x, "3f,", 3J]
 tasks:
-  - goal: 'Delete the three fillers "um uh er".'
+  - goal: 'Delete the three words "one two three".'
     start: |-
-      Fillers ▮um uh er are common in speech.
+      A count repeats: 3dw ▮one two three deletes three words.
     target: |-
-      Fillers are common in speech.
+      A count repeats: 3dw deletes three words.
     solution: '3dw'
     hint: '3dw deletes three words, with their spaces.'
     variants:
-      - goal: 'Delete the three hedges "kinda sorta basically".'
+      - goal: 'Delete the three words "over and over".'
         start: |-
-          Hedges ▮kinda sorta basically are vague.
+          Rereading ▮over and over feels fluent but fades.
         target: |-
-          Hedges are vague.
-  - goal: 'Delete the three invented languages.'
+          Rereading feels fluent but fades.
+  - goal: 'Delete the three low-utility techniques (Dunlosky et al., 2013).'
     start: |-
-      Latin
-      ▮Klingon
-      Quenya
-      Dothraki
-      Greek
+      practice testing
+      ▮highlighting
+      rereading
+      summarizing
+      distributed practice
     target: |-
-      Latin
-      Greek
+      practice testing
+      distributed practice
     solution: '3dd'
     hint: '3dd deletes three lines, starting at the cursor.'
     variants:
-      - goal: 'Delete the three constructed languages.'
+      - goal: 'Delete the three middle lines.'
         start: |-
-          Hopi
-          ▮Esperanto
-          Lojban
-          Volapük
-          Navajo
+          3dd deletes
+          ▮this line,
+          this line,
+          this line,
+          and stops.
         target: |-
-          Hopi
-          Navajo
-  - goal: 'Change "very large" to "small".'
+          3dd deletes
+          and stops.
+  - goal: 'Change "three words" to "two words".'
     start: |-
-      a ▮very large corpus
+      c2w changes ▮three words.
     target: |-
-      a small corpus
-    solution: 'c2wsmall<Esc>'
+      c2w changes two words.
+    solution: 'c2wtwo words<Esc>'
     hint: 'c2w changes two words.'
     variants:
-      - goal: 'Change "very old" to "recent".'
+      - goal: 'Change "feels easy" to "can feel hard".'
         start: |-
-          a ▮very old manuscript
+          Learning ▮feels easy when it is working.
         target: |-
-          a recent manuscript
-        solution: 'c2wrecent<Esc>'
-  - goal: 'Fix the number: about 7000 languages, not 700 million.'
+          Learning can feel hard when it is working.
+        solution: 'c2wcan feel hard<Esc>'
+  - goal: 'Fix the number: 7, not 700000.'
     start: |-
-      There are about 7000▮00000 languages.
+      The magical number is 7▮00000, plus or minus two.
     target: |-
-      There are about 7000 languages.
+      The magical number is 7, plus or minus two.
     solution: '5x'
-    hint: '5x deletes five characters.'
+    hint: 'x crosses out a character; 5x crosses out five.'
     variants:
-      - goal: 'Fix the number: Spanish has 5 vowels.'
+      - goal: 'Fix the number: about 4 chunks.'
         start: |-
-          Spanish has 5▮00000 vowels.
+          Cowan put working memory at about 4▮00000 chunks.
         target: |-
-          Spanish has 5 vowels.
-  - goal: 'Delete from the third comma to the end (Klingon isn''t Indo-Aryan).'
+          Cowan put working memory at about 4 chunks.
+  - goal: 'Delete from the third comma to the end (highlighting is the odd one out).'
     start: |-
-      ▮Hindi, Urdu, Punjabi, Klingon
+      ▮spacing, testing, interleaving, highlighting
     target: |-
-      Hindi, Urdu, Punjabi
+      spacing, testing, interleaving
     solution: '3f,D'
-    hint: '3f, jumps to the third comma, D deletes from there.'
+    hint: '3f, finds the third comma, D deletes from there.'
     variants:
-      - goal: 'Delete from the third comma to the end (Basque isn''t Uralic).'
+      - goal: 'Delete from the third comma to the end (x isn''t a find command).'
         start: |-
-          ▮Finnish, Estonian, Hungarian, Basque
+          ▮f finds, t tills, F looks back, x crosses out
         target: |-
-          Finnish, Estonian, Hungarian
+          f finds, t tills, F looks back
   - goal: 'Join the three lines into one.'
     start: |-
-      ▮voiced
-      bilabial
-      plosive
+      ▮3J
+      joins
+      three
     target: |-
-      voiced bilabial plosive
+      3J joins three
     solution: '3J'
-    hint: '3J joins three lines.'
+    hint: 'J joins; 3J joins three lines.'
     variants:
       - goal: 'Join the three lines into one.'
         start: |-
-          ▮voiceless
-          alveolar
-          fricative
+          ▮chunk
+          by
+          chunk
         target: |-
-          voiceless alveolar fricative
+          chunk by chunk

@@ -2,95 +2,104 @@ week: 1
 day: 1
 title: Word text objects
 intro: |
-  An operator (`c` change, `d` delete, `y` yank) followed by a text object acts
-  on a whole thing, wherever the cursor is inside it. `iw` is the *inner word*,
-  `aw` is *a word* plus the space after it. `iW`/`aW` are WORDs: everything
-  between spaces, punctuation included.
+  Read a Vim command as a small sentence: a verb, then a noun. The verbs are
+  `c` *change*, `d` *delete* and `y` *yank* (Vim's old word for copy). The noun
+  is a text object: `i` *inner* or `a` (*a word*, or *around* it), then what
+  kind of thing, `w` for *word*. So `ciw` reads *change inner word*, and it
+  works from anywhere inside the word. `iw` is the word alone, `aw` takes its
+  space too. Capital `W` is a big WORD: everything between two spaces, dots
+  included.
 keys: [ciw, diw, daw, ciW, yiw, viwp]
 tasks:
-  - goal: 'Change "phone" to "phoneme" (the cursor is in the middle of the word).'
+  - goal: 'Fix "while" to "whole" (the cursor is in the middle of the word).'
     start: |-
-      A pho▮ne is the smallest unit of sound.
+      ciw is change inner word: it swaps the wh▮ile word, wherever the cursor sits.
     target: |-
-      A phoneme is the smallest unit of sound.
-    solution: 'ciwphoneme<Esc>'
-    hint: 'ciw changes the inner word under the cursor, from anywhere inside it.'
+      ciw is change inner word: it swaps the whole word, wherever the cursor sits.
+    solution: 'ciwwhole<Esc>'
+    hint: 'c changes, i keeps it inner, w names the word: ciw, from anywhere inside it.'
     variants:
-      - goal: 'Fix "langauge" (the cursor is in the middle of the word).'
+      - goal: 'Fix "spaec" to "space" (the cursor is in the middle of the word).'
         start: |-
-          Every lang▮auge has vowels.
+          The i in ciw means inner: just the word, never the spa▮ec around it.
         target: |-
-          Every language has vowels.
-        solution: 'ciwlanguage<Esc>'
-  - goal: 'Delete one "very", including its space.'
+          The i in ciw means inner: just the word, never the space around it.
+        solution: 'ciwspace<Esc>'
+  - goal: 'Delete one "own", including its space.'
     start: |-
-      Morphology is a ve▮ry very rich field.
+      The a in daw is around: the word and its own ▮own space.
     target: |-
-      Morphology is a very rich field.
+      The a in daw is around: the word and its own space.
     solution: 'daw'
-    hint: 'daw deletes a word and the space after it, so no double space is left.'
+    hint: 'd deletes, a takes the word with its space, w is the word: daw leaves no double space.'
     variants:
-      - goal: 'Delete one "really", including its space.'
+      - goal: 'Delete the second "behind".'
         start: |-
-          Syntax is a re▮ally really deep topic.
+          daw leaves no double space behind be▮hind.
         target: |-
-          Syntax is a really deep topic.
-  - goal: 'Replace the whole URL with "the atlas".'
+          daw leaves no double space behind.
+        solution: 'daw'
+  - goal: 'Write the dotted "e.v.e.r.y.t.h.i.n.g" as "everything".'
     start: |-
-      See www.wa▮ls.info for maps.
+      Big W, big WORD: ciW takes e.v.e.r.y▮.t.h.i.n.g between two spaces.
     target: |-
-      See the atlas for maps.
-    solution: 'ciWthe atlas<Esc>'
+      Big W, big WORD: ciW takes everything between two spaces.
+    solution: 'ciWeverything<Esc>'
     hint: 'A WORD (capital W) runs from space to space, dots included. Try ciW.'
     variants:
-      - goal: 'Replace the whole URL with "the article".'
+      - goal: 'Replace the whole URL with "a URL".'
         start: |-
-          Read en.wiki▮pedia.org/wiki/Tone first.
+          ciW sees www.wa▮ls.info as one WORD: dots do not split it.
         target: |-
-          Read the article first.
-        solution: 'ciWthe article<Esc>'
-  - goal: 'Change the function name to compute_sum.'
+          ciW sees a URL as one WORD: dots do not split it.
+        solution: 'ciWa URL<Esc>'
+  - goal: 'Spell the function name out as change_inner_word.'
     ft: python
     start: |-
-      def ▮calc_total(items):
-          return sum(items)
+      def ▮chg_in_wd(word, new):
+          """c = change, i = inner, w = word."""
+          return new
     target: |-
-      def compute_sum(items):
-          return sum(items)
-    solution: 'ciwcompute_sum<Esc>'
+      def change_inner_word(word, new):
+          """c = change, i = inner, w = word."""
+          return new
+    solution: 'ciwchange_inner_word<Esc>'
     hint: 'Underscores belong to a word, so ciw takes the whole name.'
     variants:
-      - goal: 'Change the function name to vowel_count.'
+      - goal: 'Spell the function name out as delete_a_word.'
         start: |-
-          def ▮count_vowels(word):
-              return len(word)
+          def ▮del_a_wd(text):
+              """d = delete, a = a word and its space, w = word."""
+              return text
         target: |-
-          def vowel_count(word):
-              return len(word)
-        solution: 'ciwvowel_count<Esc>'
-  - goal: 'Copy "noun" over "verb".'
+          def delete_a_word(text):
+              """d = delete, a = a word and its space, w = word."""
+              return text
+        solution: 'ciwdelete_a_word<Esc>'
+  - goal: 'Copy "word" over "noun".'
     start: |-
-      copy ▮noun onto verb
+      viwp puts the ▮word you yanked over the other noun
     target: |-
-      copy noun onto noun
-    solution: 'yiwwwviwp'
-    hint: 'yiw yanks the word; jump with w w; viwp selects the other word and pastes over it.'
+      viwp puts the word you yanked over the other word
+    solution: 'yiw$viwp'
+    hint: 'yiw yanks the inner word; $ jumps to the last one; viwp selects it and puts the yank over it.'
     variants:
-      - goal: 'Copy "stem" over "root".'
+      - goal: 'Copy "verb" over "noun".'
         start: |-
-          copy ▮stem onto root
+          Put is a ▮verb, and yank is a noun.
         target: |-
-          copy stem onto stem
-  - goal: 'Delete the duplicated "the".'
+          Put is a verb, and yank is a verb.
+        solution: 'yiw$bviwp'
+  - goal: 'Delete the doubled "the".'
     start: |-
-      Meaning is ▮the the use of a word.
+      daw: delete a word, and ▮the the space after it.
     target: |-
-      Meaning is the use of a word.
+      daw: delete a word, and the space after it.
     solution: 'daw'
     hint: 'daw takes the word and its trailing space.'
     variants:
-      - goal: 'Delete the duplicated "a".'
+      - goal: 'Delete the doubled "like".'
         start: |-
-          A word is ▮a a unit of meaning.
+          Doubled words ▮like like this one are what daw is for.
         target: |-
-          A word is a unit of meaning.
+          Doubled words like this one are what daw is for.
