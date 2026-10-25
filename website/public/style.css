@@ -1,5 +1,5 @@
 /* Vimniscient: Catppuccin's accents on greys warmed three quarters of the way toward the logo's
-   own near-black and stone white, so the logo keeps its shading. Dark first, light below. */
+   own near-black and stone white, so the logo keeps its shading. Always dark, whatever the visitor's system is set to. */
 :root {
   --base: #15141a; --mantle: #100e14; --crust: #0b0a0f;
   --surface0: #282530; --surface1: #3a3644; --overlay: #7f7b8a;
@@ -10,17 +10,6 @@
   --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   --sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   color-scheme: dark;
-}
-@media (prefers-color-scheme: light) {
-  :root {
-    --base: #f4f2ef; --mantle: #eae8e5; --crust: #e0deda;
-    --surface0: #d4d0cc; --surface1: #c4c0bc; --overlay: #7e7976;
-    --text: #3e3b44; --subtext: #565158;
-    --mauve: #8839ef; --lavender: #7287fd; --blue: #1e66f5; --green: #40a02b;
-    --yellow: #df8e1d; --red: #d20f39; --sky: #04a5e5;
-    --diff: #c9d6f5;
-    color-scheme: light;
-  }
 }
 
 * { box-sizing: border-box; }
@@ -65,14 +54,10 @@ section { margin: 0 0 96px; }
   display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 48px; align-items: center;
 }
 .hero-text { min-width: 0; max-width: 720px; }
-/* The logo is drawn on near-black. In the dark theme, lighten lets that black
-   take on the page colour while every lit pixel stays; in the light theme it
-   sits on a dark tile of its own. */
+/* The logo is drawn on near-black: lighten lets that black take on the page
+   colour while every lit pixel stays. */
 .logo { order: 2; display: block; }
 .logo img { display: block; width: 100%; height: auto; mix-blend-mode: lighten; }
-@media (prefers-color-scheme: light) {
-  .logo img { mix-blend-mode: normal; background: #111013; border-radius: 20px; box-shadow: 0 12px 32px rgb(17 16 19 / .18); }
-}
 h1 {
   font: 800 clamp(32px, 5.4vw, 56px)/1.08 var(--mono); letter-spacing: -.04em; margin: 0 0 24px;
 }
