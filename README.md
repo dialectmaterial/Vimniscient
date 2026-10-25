@@ -12,8 +12,6 @@ that run in the Neovim you use every day, with your config, plugins and
 colours. A reference solution shows you a shorter way, and spaced repetition
 brings each skill back until it sticks.
 
-**Website:** [vimniscient.com](https://vimniscient.com)
-
 <p align="center"><img src="docs/lesson.png" alt="A lesson in Neovim: the goal at the top, your text below, keystrokes counted live" width="820"></p>
 
 ## How a lesson works
@@ -32,14 +30,6 @@ Every lesson has two rounds:
 Every task has more than one text, and each review gives you the next one.
 That way you remember the skill, not the sentence.
 
-The texts are mnemonic: most of them say what the key you're practising
-stands for (`ciw` is *change inner word*, `:t` is ed's *transfer*), and the
-rest are facts about how memory and skill learning work, with sources in
-[`lessons/sources.md`](src/vimniscient/lessons/sources.md). After you answer a
-card, or at the end of a lesson for the tasks you missed, Vimniscient shows
-what each part of the keys stands for. It never shows that before you answer,
-because that would give the answer away.
-
 Can't recall one? `:Skip` it. You'll see the answer, type it once with the
 keys shown, and get the task again at the end of the session, on its other text.
 
@@ -50,6 +40,46 @@ solution. If `ciwbuf<Esc>..` took you 14 keys and the reference does it in
 
 Stuck? Type `:Hint` (twice for the answer). `:Skip` and `:Reset` do what
 they say, and `:q` stops.
+
+## Texts that teach the keys
+
+Most Vim keys are abbreviations, and a command reads like a small sentence:
+a verb, then what it acts on. `ciw` is *change inner word*, `dap` is *delete
+a paragraph*, `yi"` is *yank inside the quotes* (yank is Vim's old word for
+copy). Once you know the words, you can read commands you've never seen.
+
+So the practice texts are about the keys you're practising. Each one says
+what the key stands for, and your edit makes the sentence true:
+
+```text
+ciw is change inner word: it swaps the wh▮ile word, wherever the cursor sits.
+```
+
+Fix *while* with `ciw` and the line says how `ciw` works. Keys that don't
+stand for anything get a picture to hang them on: `;` repeats your last `f`
+search, like a semicolon saying *and so on*; `%` jumps between brackets, two
+circles split by a line; `q` records a macro, a quill writing down what you
+do. Some come with a bit of history: `:t` copies lines because the old `ed`
+editor called a copy a *transfer*, and `grep` is named after `ed`'s `g/re/p`.
+
+The other texts are short facts about how memory and skill learning work
+(spacing, testing yourself, why mixed practice feels harder), the ideas
+Vimniscient itself is built on. Every one has a source in
+[`lessons/sources.md`](src/vimniscient/lessons/sources.md).
+
+After you answer a card, and at the end of a lesson for the tasks you missed,
+Vimniscient shows what each part of the keys stands for:
+
+```text
+✗  ciw
+c changes: it deletes, then you type the new text
+i is inner: only the thing itself, no space or brackets
+w is a word of letters, digits and underscores
+```
+
+You never see this before you answer. Trying to recall something first, and
+only then seeing the answer and its meaning, makes it stick better than
+reading it up front.
 
 ## Quick start
 
@@ -251,27 +281,6 @@ starts `nvim` on a scratch file with
 [`runner.lua`](src/vimniscient/nvim/runner.lua). It shows the goal in a
 diffed split, checks your text after every change, and counts the `typed`
 part of `vim.on_key`: what you pressed, before any mapping applied.
-
-- [`today.py`](src/vimniscient/today.py) works out today's routine and how
-  long what's left takes; the home screen and the reminders both use it.
-- [`reminders.py`](src/vimniscient/reminders.py) sends the reminders as
-  Omarchy reminders (systemd timers named `omarchy-reminder-*`), each of
-  which checks again when it fires.
-- [`mnemonics.py`](src/vimniscient/mnemonics.py) splits keys like `ciw` or
-  `:%s//x/g` into parts and looks each one up in `mnemonics.yaml`.
-
-### The website
-
-[vimniscient.com](https://vimniscient.com) is the static site in
-[`website/public/`](website/public), served by Cloudflare Workers. To try it
-locally and to publish it (needs Node 22.18+ and the
-[`cf`](https://developers.cloudflare.com/cf/) CLI, signed in):
-
-```bash
-cd website && npm install
-npx cf dev       # serves it locally
-npx cf deploy    # publish
-```
 
 ## License
 

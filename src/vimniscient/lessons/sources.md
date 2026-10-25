@@ -50,5 +50,10 @@ Every factual claim in them should trace back to one of these.
   covered in Cepeda et al. (2006) above.
 - **Life dates and years used:** Ebbinghaus born 1850, *Über das Gedächtnis*
   1885; Miller 1956; Roediger & Karpicke 2006.
+- **Recall before the answer.** Trying to retrieve an answer, even
+  unsuccessfully, before seeing it improves later memory of it; Kornell,
+  Hays & Bjork (2009), Unsuccessful retrieval attempts enhance subsequent
+  learning, *JEP: Learning, Memory, and Cognition* 35(4). This is why the
+  app shows what keys stand for only after you answer.
 - **ed's `t`.** The ed manual: "(.,.)t(.) Copies (i.e., transfers) the
   addressed lines". **grep** takes its name from ed's `g/re/p`.
