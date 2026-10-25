@@ -92,7 +92,7 @@ h1 em { font-style: normal; color: var(--mauve); }
 .copy:hover { background: var(--lavender); }
 .copy.done { background: var(--green); }
 .install-note { color: var(--overlay); font-size: 14px; margin: 12px 0 0; }
-.install-note code { font-size: .9em; }
+.install-note code { font-size: .9em; white-space: nowrap; }
 
 /* the terminal demo */
 .demo-wrap { margin-bottom: 104px; }

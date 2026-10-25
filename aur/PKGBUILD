@@ -1,0 +1,28 @@
+# Maintainer: Dimitri F. Crooijmans
+# The AUR package for Vimniscient. It builds from the PyPI release, so
+# publish there first, then bump pkgver, run `updpkgsums` and
+# `makepkg --printsrcinfo > .SRCINFO`, and push this folder to the AUR.
+
+pkgname=vimniscient
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Get fluent in Vim in fifteen minutes a day, in your own Neovim"
+arch=('any')
+url="https://vimniscient.com"
+license=('AGPL-3.0-or-later')
+depends=('python' 'python-textual' 'python-yaml' 'neovim')
+makedepends=('python-build' 'python-installer' 'python-hatchling' 'python-wheel')
+optdepends=('hyprland: live drills for Omarchy and Hyprland keybindings'
+            'tmux: cards for your tmux keys')
+source=("https://files.pythonhosted.org/packages/source/${pkgname::1}/$pkgname/$pkgname-$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+build() {
+  cd "$pkgname-$pkgver"
+  python -m build --wheel --no-isolation
+}
+
+package() {
+  cd "$pkgname-$pkgver"
+  python -m installer --destdir="$pkgdir" dist/*.whl
+}

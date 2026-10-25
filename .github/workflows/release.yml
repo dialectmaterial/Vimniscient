@@ -1,0 +1,29 @@
+# Pushing a tag like v0.1.0 builds Vimniscient and publishes it to PyPI.
+# PyPI trusts this workflow directly ("trusted publishing"), so no token is
+# stored anywhere. The tag has to match the version in pyproject.toml.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  pypi:
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write  # lets PyPI check that the upload comes from this workflow
+      contents: write  # for the GitHub release
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
+      - name: Check the tag matches the version
+        run: |
+          version=$(uv version --short)
+          test "v$version" = "$GITHUB_REF_NAME" || { echo "tag $GITHUB_REF_NAME, version $version"; exit 1; }
+      - run: uv build
+      - run: uv publish
+      - uses: softprops/action-gh-release@v3
+        with:
+          files: dist/*
+          generate_release_notes: true

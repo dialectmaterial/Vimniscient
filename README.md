@@ -12,7 +12,7 @@ that run in the Neovim you use every day, with your config, plugins and
 colours. A reference solution shows you a shorter way, and spaced repetition
 brings each skill back until it sticks.
 
-<p align="center"><img src="docs/lesson.png" alt="A lesson in Neovim: the goal at the top, your text below, keystrokes counted live" width="820"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/dialectmaterial/Vimniscient/main/docs/lesson.png" alt="A lesson in Neovim: the goal at the top, your text below, keystrokes counted live" width="820"></p>
 
 ## How a lesson works
 
@@ -65,7 +65,7 @@ editor called a copy a *transfer*, and `grep` is named after `ed`'s `g/re/p`.
 The other texts are short facts about how memory and skill learning work
 (spacing, testing yourself, why mixed practice feels harder), the ideas
 Vimniscient itself is built on. Every one has a source in
-[`lessons/sources.md`](src/vimniscient/lessons/sources.md).
+[`lessons/sources.md`](https://github.com/dialectmaterial/Vimniscient/blob/main/src/vimniscient/lessons/sources.md).
 
 After you answer a card, and at the end of a lesson for the tasks you missed,
 Vimniscient shows what each part of the keys stands for:
@@ -83,13 +83,15 @@ reading it up front.
 
 ## Quick start
 
-You need Linux (macOS should work but is untested), [Neovim](https://neovim.io) 0.10 or newer,
-Python 3.11+ and [uv](https://docs.astral.sh/uv/).
+You need Linux (macOS should work but is untested), [Neovim](https://neovim.io) 0.10 or newer
+and Python 3.11+.
 
 ```bash
-uv tool install git+https://github.com/dialectmaterial/Vimniscient
+uv tool install vimniscient    # or: pipx install vimniscient
 vimniscient
 ```
+
+On Arch or [Omarchy](https://omarchy.org), it's in the AUR: `yay -S vimniscient`.
 
 1. Press **`p`** for the placement test. It gives you two tasks from every
    lesson and skips the ones you already know. `:Skip` whatever you don't.
@@ -142,7 +144,7 @@ last one ended.
 Cards and tasks share one spaced-repetition schedule, like Anki. Whatever
 went well comes back later, and whatever you forgot comes back tomorrow.
 
-<p align="center"><img src="docs/home.png" alt="The home screen: today's routine, the lessons, the selected lesson and your progress" width="820"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/dialectmaterial/Vimniscient/main/docs/home.png" alt="The home screen: today's routine, the lessons, the selected lesson and your progress" width="820"></p>
 
 The home screen shows everything at once: today's routine, the lessons
 (✓ solved, ◐ started, ○ skipped by the placement test), the selected
@@ -170,7 +172,7 @@ lesson, and your progress with a keystroke-efficiency graph.
 
 ### Optional: practice while you work
 
-[`extras/nvim/vimniscient.lua`](extras/nvim/vimniscient.lua) is a
+[`extras/nvim/vimniscient.lua`](https://github.com/dialectmaterial/Vimniscient/blob/main/extras/nvim/vimniscient.lua) is a
 [lazy.nvim](https://github.com/folke/lazy.nvim) plugin spec. Copy it to
 `~/.config/nvim/lua/plugins/` if you want:
 
@@ -218,7 +220,7 @@ fails, press `o` ("I was right").
 
 ## Writing lessons
 
-Lessons are YAML files in [`src/vimniscient/lessons/`](src/vimniscient/lessons).
+Lessons are YAML files in [`src/vimniscient/lessons/`](https://github.com/dialectmaterial/Vimniscient/blob/main/src/vimniscient/lessons).
 `▮` marks where the cursor starts:
 
 ```yaml
@@ -256,10 +258,10 @@ The texts are mnemonic. Where you can, write a sentence that says what the
 key stands for, so that the edit leaves it true: `ciw is change inner word:
 it swaps the wh▮ile word` (fix it with `ciw`). What each key officially means,
 and the hook to use where it means nothing, is in
-[`mnemonics.yaml`](src/vimniscient/mnemonics.yaml). The app reads the same
+[`mnemonics.yaml`](https://github.com/dialectmaterial/Vimniscient/blob/main/src/vimniscient/mnemonics.yaml). The app reads the same
 file to say what a key stands for after you answer. Other sentences are about
 how memory and skill learning work; every such fact needs a source in
-[`lessons/sources.md`](src/vimniscient/lessons/sources.md). Code tasks stay
+[`lessons/sources.md`](https://github.com/dialectmaterial/Vimniscient/blob/main/src/vimniscient/lessons/sources.md). Code tasks stay
 code, with the meaning in names and strings.
 
 Before sending a lesson, check that every solution (variants included) really produces its target:
@@ -278,10 +280,10 @@ uv run python tests/live_endless.py             # endless mode: a miss, its Lear
 
 `vimniscient` is a [Textual](https://textual.textualize.io) app. A lesson
 starts `nvim` on a scratch file with
-[`runner.lua`](src/vimniscient/nvim/runner.lua). It shows the goal in a
+[`runner.lua`](https://github.com/dialectmaterial/Vimniscient/blob/main/src/vimniscient/nvim/runner.lua). It shows the goal in a
 diffed split, checks your text after every change, and counts the `typed`
 part of `vim.on_key`: what you pressed, before any mapping applied.
 
 ## License
 
-[AGPL-3.0](LICENSE)
+[AGPL-3.0](https://github.com/dialectmaterial/Vimniscient/blob/main/LICENSE)
