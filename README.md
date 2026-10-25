@@ -12,6 +12,8 @@ that run in the Neovim you use every day, with your config, plugins and
 colours. A reference solution shows you a shorter way, and spaced repetition
 brings each skill back until it sticks.
 
+**Website:** [vimniscient.com](https://vimniscient.com)
+
 <p align="center"><img src="docs/lesson.png" alt="A lesson in Neovim: the goal at the top, your text below, keystrokes counted live" width="820"></p>
 
 ## How a lesson works
@@ -29,6 +31,14 @@ Every lesson has two rounds:
 
 Every task has more than one text, and each review gives you the next one.
 That way you remember the skill, not the sentence.
+
+The texts are mnemonic: most of them say what the key you're practising
+stands for (`ciw` is *change inner word*, `:t` is ed's *transfer*), and the
+rest are facts about how memory and skill learning work, with sources in
+[`lessons/sources.md`](src/vimniscient/lessons/sources.md). After you answer a
+card, or at the end of a lesson for the tasks you missed, Vimniscient shows
+what each part of the keys stands for. It never shows that before you answer,
+because that would give the answer away.
 
 Can't recall one? `:Skip` it. You'll see the answer, type it once with the
 keys shown, and get the task again at the end of the session, on its other text.
@@ -53,7 +63,10 @@ vimniscient
 
 1. Press **`p`** for the placement test. It gives you two tasks from every
    lesson and skips the ones you already know. `:Skip` whatever you don't.
-2. From then on, press **`t`** once a day.
+2. From then on, press **`t`** once a day. The Today pane shows what's left
+   and about how many minutes it takes.
+3. On [Omarchy](https://omarchy.org), `vimniscient reminders install` reminds
+   you when you start your day (see [reminders](#optional-reminders-omarchy)).
 
 Your progress is kept in `~/.local/share/vimniscient/`. Vimniscient doesn't
 change your Neovim config.
@@ -138,6 +151,25 @@ lesson, and your progress with a keystroke-efficiency graph.
   where `w`, `b`, `e`, `$` … would take you. It starts hidden; toggle it with
   `<leader>uV`.
 
+### Optional: reminders (Omarchy)
+
+```sh
+vimniscient reminders install
+```
+
+The first reminder comes when you start using the computer: at login, or at the first unlock
+after 07:00. It lists what's left of today's routine and about how long each
+part takes ("about 13 min left today"). Click it to open Vimniscient. While something is
+left, another reminder comes every three hours until 21:30, and each one works out again
+what's left. Once you've done everything for the day, no more reminders come.
+
+The follow-ups are ordinary Omarchy reminders, so they show in the bar and in
+`omarchy reminder show`, and `omarchy reminder clear` cancels them.
+`vimniscient reminders` shows what's left and when the next one comes, and
+`vimniscient reminders uninstall` turns them off. Today counts as done once
+the cards, drills and review are cleared and you've done one lesson and the
+VimGolf challenge.
+
 ## Questions
 
 **Why not just use vimtutor, Vim Adventures or VimGolf?** Use them! vimtutor
@@ -190,6 +222,16 @@ More details:
 - `lazyvim: true` marks lessons that need LazyVim.
 - Indented text needs an indentation indicator (`|2-`), or YAML strips the leading spaces.
 
+The texts are mnemonic. Where you can, write a sentence that says what the
+key stands for, so that the edit leaves it true: `ciw is change inner word:
+it swaps the wh▮ile word` (fix it with `ciw`). What each key officially means,
+and the hook to use where it means nothing, is in
+[`mnemonics.yaml`](src/vimniscient/mnemonics.yaml). The app reads the same
+file to say what a key stands for after you answer. Other sentences are about
+how memory and skill learning work; every such fact needs a source in
+[`lessons/sources.md`](src/vimniscient/lessons/sources.md). Code tasks stay
+code, with the meaning in names and strings.
+
 Before sending a lesson, check that every solution (variants included) really produces its target:
 
 ```bash
@@ -209,6 +251,27 @@ starts `nvim` on a scratch file with
 [`runner.lua`](src/vimniscient/nvim/runner.lua). It shows the goal in a
 diffed split, checks your text after every change, and counts the `typed`
 part of `vim.on_key`: what you pressed, before any mapping applied.
+
+- [`today.py`](src/vimniscient/today.py) works out today's routine and how
+  long what's left takes; the home screen and the reminders both use it.
+- [`reminders.py`](src/vimniscient/reminders.py) sends the reminders as
+  Omarchy reminders (systemd timers named `omarchy-reminder-*`), each of
+  which checks again when it fires.
+- [`mnemonics.py`](src/vimniscient/mnemonics.py) splits keys like `ciw` or
+  `:%s//x/g` into parts and looks each one up in `mnemonics.yaml`.
+
+### The website
+
+[vimniscient.com](https://vimniscient.com) is the static site in
+[`website/public/`](website/public), served by Cloudflare Workers. To try it
+locally and to publish it (needs Node 22.18+ and the
+[`cf`](https://developers.cloudflare.com/cf/) CLI, signed in):
+
+```bash
+cd website && npm install
+npx cf dev       # serves it locally
+npx cf deploy    # publish
+```
 
 ## License
 
