@@ -11,6 +11,6 @@ export default defineConfig({
       notFoundHandling: "404-page",
     },
     domains: ["vimniscient.com", "www.vimniscient.com"],
-    workersDev: true,
+    workersDev: false, // the account has no workers.dev subdomain; the site lives on its domains
   },
 });
