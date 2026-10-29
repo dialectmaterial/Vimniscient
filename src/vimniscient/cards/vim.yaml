@@ -38,6 +38,9 @@ cards:
   - {week: 1, day: 6, prompt: Go to the first line of the file, answer: [gg]}
   - {week: 1, day: 6, prompt: Go to the last line of the file, answer: [G]}
   - {week: 1, day: 6, prompt: Go to line 42, answer: [42G, ':42<CR>', '42gg']}
+  - {week: 1, day: 6, prompt: Move down five lines, answer: [5j]}
+  - {week: 1, day: 6, prompt: Half a page down, answer: ['<C-d>'], note: 'Ctrl-d goes down; Ctrl-u goes up.'}
+  - {week: 1, day: 6, prompt: Half a page up, answer: ['<C-u>'], note: 'Ctrl-u goes up; Ctrl-d goes down.'}
   # week 2: dot, search, cgn, case, numbers, insert, visual
   - {week: 2, day: 1, prompt: Repeat the last change, answer: [.]}
   - {week: 2, day: 2, prompt: Search forward for the word under the cursor, answer: ['*']}
@@ -86,8 +89,6 @@ cards:
   - {week: 4, prompt: Go back to where you last stopped inserting and insert there, answer: [gi]}
   - {week: 4, prompt: Scroll so the cursor line is in the middle of the screen, answer: [zz]}
   - {week: 4, prompt: Scroll so the cursor line is at the top, answer: [zt]}
-  - {week: 4, prompt: Half a page down, answer: ['<C-d>']}
-  - {week: 4, prompt: Half a page up, answer: ['<C-u>']}
   - {week: 4, prompt: Move to the top of the screen, answer: [H]}
   - {week: 4, prompt: Move to the middle of the screen, answer: [M]}
   - {week: 4, prompt: Move to the bottom of the screen, answer: [L]}

@@ -5,9 +5,10 @@ intro: |
   A number in front repeats the command, and it reads like a numeral before a
   noun: `3dw` *delete three words*, `3dd` three lines, `5x` cross out five
   characters, `3J` join three lines, `2f,` find the second comma. `c2w`
-  changes two words. Counting is often shorter than pressing a key again and
-  again.
-keys: [3dw, 3dd, c2w, 5x, "3f,", 3J]
+  changes two words. It works on motions too: `4j` goes four lines down, `3k`
+  three up, and the relative numbers down the side count the lines for you.
+  Counting is often shorter than pressing a key again and again.
+keys: [3dw, 3dd, c2w, 5x, "3f,", 3J, 4j, 3k]
 tasks:
   - goal: 'Delete the three words "one two three".'
     start: |-
@@ -213,3 +214,138 @@ tasks:
           lines
         target: |-
           J glues lines
+  - goal: 'Delete the line four lines below the cursor.'
+    start: |-
+      ▮4j jumps four lines down,
+      then dd cuts the line.
+      The number column counts for you:
+      it says how far each line is.
+      this is the line to cut
+      and this one stays.
+    target: |-
+      4j jumps four lines down,
+      then dd cuts the line.
+      The number column counts for you:
+      it says how far each line is.
+      and this one stays.
+    solution: '4jdd'
+    hint: 'Relative numbers show how far a line is: 4j goes four down, dd cuts it.'
+    variants:
+      - goal: 'Delete the wrong line, three below the cursor.'
+        start: |-
+          ▮Miller: seven, plus or minus two
+          Cowan: about four
+          Ebbinghaus: 1885
+          Cramming: the best method
+          Roediger: 2006
+        target: |-
+          Miller: seven, plus or minus two
+          Cowan: about four
+          Ebbinghaus: 1885
+          Roediger: 2006
+        solution: '3jdd'
+      - goal: 'Delete the line five lines below the cursor.'
+        start: |-
+          ▮count first, then move:
+          one
+          two
+          three
+          four
+          five is the line to cut
+          six
+        target: |-
+          count first, then move:
+          one
+          two
+          three
+          four
+          six
+        solution: '5jdd'
+      - goal: 'Delete the stage that isn''t one of Fitts and Posner''s, two lines down.'
+        start: |-
+          ▮cognitive
+          associative
+          hypnotic
+          autonomous
+        target: |-
+          cognitive
+          associative
+          autonomous
+        solution: '2jdd'
+      - goal: 'Delete the low-utility technique, four lines down.'
+        start: |-
+          ▮spacing
+          testing
+          interleaving
+          sleep
+          highlighting
+          elaboration
+        target: |-
+          spacing
+          testing
+          interleaving
+          sleep
+          elaboration
+
+  - goal: 'Fix "Teh" three lines up.'
+    start: |-
+      Teh count goes first,
+      then the motion,
+      then the verb.
+      ▮k counts up.
+    target: |-
+      The count goes first,
+      then the motion,
+      then the verb.
+      k counts up.
+    solution: '3kciwThe<Esc>'
+    hint: 'k goes up; a count in front says how far. Then ciw fixes the word.'
+    variants:
+      - goal: 'Fix "Mlier" three lines up.'
+        start: |-
+          Mlier: seven
+          Cowan: four
+          Bjork: difficulties
+          ▮Ebbinghaus: 1885
+        target: |-
+          Miller: seven
+          Cowan: four
+          Bjork: difficulties
+          Ebbinghaus: 1885
+        solution: '3kciwMiller<Esc>'
+      - goal: 'Fix "Cogntive" two lines up.'
+        start: |-
+          Cogntive
+          associative
+          ▮autonomous
+        target: |-
+          Cognitive
+          associative
+          autonomous
+        solution: '2kciwCognitive<Esc>'
+      - goal: 'Fix "Spcaing" four lines up.'
+        start: |-
+          Spcaing beats cramming,
+          testing beats rereading,
+          sleep helps,
+          mixing helps,
+          ▮and 4k counts up.
+        target: |-
+          Spacing beats cramming,
+          testing beats rereading,
+          sleep helps,
+          mixing helps,
+          and 4k counts up.
+        solution: '4kciwSpacing<Esc>'
+      - goal: 'Fix "Rleative" three lines up.'
+        start: |-
+          Rleative numbers
+          show the count,
+          so 3k goes
+          ▮three lines up.
+        target: |-
+          Relative numbers
+          show the count,
+          so 3k goes
+          three lines up.
+        solution: '3kciwRelative<Esc>'

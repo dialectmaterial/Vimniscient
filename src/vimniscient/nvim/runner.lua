@@ -92,6 +92,9 @@ for _, win in ipairs({ goal_win, practice_win }) do
   vim.wo[win].foldcolumn = "1" -- a space of padding, as in the app's input box
   vim.wo[win].wrap = false
 end
+-- Relative numbers by your text: how far a line is, to put a count in front of j or k.
+vim.wo[practice_win].number = true
+vim.wo[practice_win].relativenumber = true
 
 -- The frame stands in for the statusline and tabline; plugins may set them
 -- again while starting up, so they're put back once that's done.

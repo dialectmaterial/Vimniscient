@@ -122,7 +122,10 @@ LazyVim setup.
 
 ## A day with Vimniscient
 
-`t` runs the daily routine:
+`t` runs the daily routine. It's made to fit 15 minutes (`vimniscient minutes
+20` changes that): the lesson first, then as many due reviews and cards as fit,
+and what doesn't fit waits for tomorrow. The time estimates follow how fast you
+actually go once you've done a few lessons.
 
 1. **Cards**: short prompts ("Change everything inside the quotes"), where you
    type the keys (`ci"`). The ones that are due come first, then up to 10 new ones.
@@ -181,8 +184,8 @@ lesson, and your progress with a keystroke-efficiency graph.
 `~/.config/nvim/lua/plugins/` if you want:
 
 - [hardtime.nvim](https://github.com/m4xshen/hardtime.nvim): hints when you
-  do things the slow way, for your first two weeks. After that it blocks
-  them, along with the arrow keys.
+  do things the slow way. Once you've done week 2 (and four weeks have
+  passed), it blocks them, along with the arrow keys.
 - [precognition.nvim](https://github.com/tris203/precognition.nvim): shows
   where `w`, `b`, `e`, `$` … would take you. It starts hidden; toggle it with
   `<leader>uV`.
@@ -275,6 +278,7 @@ uv run python tests/check_lessons.py --lazyvim  # LazyVim lessons, in your own c
 uv run python tests/check_answers.py            # card answers written different ways
 uv run python tests/check_timing.py             # task times: old progress databases upgrade safely
 uv run python tests/check_generate.py           # generated texts: reproducible, and they solve in Neovim
+uv run python tests/check_today.py              # the daily budget, SRS scheduling, card introductions, hardtime
 uv run python tests/live_lessons.py --all       # types every solution into the real runner (needs tmux)
 uv run python tests/live_retry.py               # a skipped task comes back (Learn, then Recall)
 uv run python tests/live_review.py              # a review session, as review, placement and VimGolf run

@@ -15,11 +15,16 @@ from vimniscient.vimgolf import Challenge
 DATA_DIR = Path(
     os.environ.get("VIMNISCIENT_DATA") or Path(os.environ.get("XDG_DATA_HOME", Path.home() / ".local/share")) / "vimniscient"
 )
-# Read by ~/.config/nvim/lua/plugins/vimniscient.lua to time hardtime's switch to blocking.
 STARTED_FILE = DATA_DIR / "started"
-HARDTIME_HINT_DAYS = 14
+# hardtime hints until you've learnt the alternatives it points to (week 2: counts,
+# find, search, the dot) and at least four weeks have passed, then it blocks.
+# The phase goes in HARDTIME_FILE, read by ~/.config/nvim/lua/plugins/vimniscient.lua.
+HARDTIME_FILE = DATA_DIR / "hardtime"
+HARDTIME_MIN_DAYS = 28
+HARDTIME_AFTER = "w2d7-review"
 
 NEW_CARDS_PER_DAY = 10
+VIM_FIRST_WEEKS = 2  # new cards are Vim ones first until the lessons pass this week
 NEW_DRILLS_PER_DAY = 2
 MAX_DUE_CARDS = 30
 MAX_REVIEW_TASKS = 5
@@ -103,6 +108,9 @@ class Progress:
         for column in ("seconds", "first"):
             if column not in columns:
                 self.db.execute(f"ALTER TABLE attempts ADD COLUMN {column} REAL")
+        # cards typed with the answer shown (introductions): they count as practice, not as answers
+        if "intro" not in {row[1] for row in self.db.execute("PRAGMA table_info(card_log)")}:
+            self.db.execute("ALTER TABLE card_log ADD COLUMN intro INTEGER NOT NULL DEFAULT 0")
         self.db.commit()
 
     # spaced repetition items
@@ -201,7 +209,7 @@ class Progress:
         ).fetchone()
         return task.choice(n + 1, f"{task.item_id}:{n}")
 
-    def due_tasks(self, lessons: list[Lesson]) -> list[Task]:
+    def due_tasks(self, lessons: list[Lesson], limit: int | None = MAX_REVIEW_TASKS) -> list[Task]:
         """Tasks from earlier days that are due for review, most overdue first."""
         today = date.today()
         tasks = {t.item_id: t for lesson in lessons for t in lesson.tasks}
@@ -209,7 +217,7 @@ class Progress:
             (item for item in self.items("task").values() if item.due <= today and item.id in tasks),
             key=lambda item: (item.due, -item.lapses),
         )
-        return [self.version_for(tasks[item.id]) for item in due[:MAX_REVIEW_TASKS]]
+        return [self.version_for(tasks[item.id]) for item in due[:limit]]
 
     def place(self, lessons: list[Lesson], results: list[TaskResult]) -> list[Lesson]:
         """Mark lessons as known from a placement run; returns the lessons placed."""
@@ -237,15 +245,16 @@ class Progress:
 
     # cards
 
-    def log_card(self, card: Card, correct: bool, answer: str) -> None:
+    def log_card(self, card: Card, correct: bool, answer: str, intro: bool = False) -> None:
         self.db.execute(
-            "INSERT INTO card_log (ts, card, correct, answer) VALUES (?,?,?,?)", (_now(), card.id, int(correct), answer)
+            "INSERT INTO card_log (ts, card, correct, answer, intro) VALUES (?,?,?,?,?)",
+            (_now(), card.id, int(correct), answer, int(intro)),
         )
         self.db.commit()
 
     def ever_right(self, card_id: str) -> bool:
         """Whether this card was ever answered from memory (not just typed when introduced)."""
-        return self.db.execute("SELECT 1 FROM card_log WHERE card = ? AND correct = 1 LIMIT 1", (card_id,)).fetchone() is not None
+        return self.db.execute("SELECT 1 FROM card_log WHERE card = ? AND correct = 1 AND intro = 0 LIMIT 1", (card_id,)).fetchone() is not None
 
     def unlocked(self, decks: dict[str, Deck], lessons: list[Lesson]) -> list[Card]:
         """Cards for lessons you've done: a card with a `day` waits for that day's lesson,
@@ -255,12 +264,12 @@ class Progress:
         return [card for deck in decks.values() for card in deck.cards
                 if (card.week, card.day) < reached or card.week == reached[0] and not card.day]
 
-    def due_cards(self, decks: dict[str, Deck], lessons: list[Lesson]) -> list[Card]:
+    def due_cards(self, decks: dict[str, Deck], lessons: list[Lesson], limit: int | None = MAX_DUE_CARDS) -> list[Card]:
         today = date.today()
         items = self.items("card")
         due = [c for c in self.unlocked(decks, lessons) if c.id in items and items[c.id].due <= today]
         due.sort(key=lambda c: items[c.id].due)
-        return due[:MAX_DUE_CARDS]
+        return due[:limit]
 
     def new_cards(self, decks: dict[str, Deck], lessons: list[Lesson]) -> list[Card]:
         """Today's unseen cards, taking turns between decks."""
@@ -275,6 +284,12 @@ class Progress:
             cards.sort(key=lambda c: c.order)
         picked: list[Card] = []
         order = [d for d in DECK_ORDER if d in unseen] + [d for d in unseen if d not in DECK_ORDER]
+        # In the first weeks, Vim (and your own habits) before the other decks.
+        if self.current_week(lessons) <= VIM_FIRST_WEEKS:
+            for deck in ("habits", "vim"):
+                while left > 0 and unseen.get(deck):
+                    picked.append(unseen[deck].pop(0))
+                    left -= 1
         while left > 0 and any(unseen.get(d) for d in order):
             for deck in order:
                 if left > 0 and unseen.get(deck):
@@ -399,6 +414,22 @@ class Progress:
             day -= timedelta(days=1)
         return n
 
+    def typical_task_seconds(self) -> float | None:
+        """The median time of a timed task, once there are enough of them to go by."""
+        rows = [s for (s,) in self.db.execute(
+            "SELECT seconds FROM attempts WHERE seconds IS NOT NULL ORDER BY id DESC LIMIT 200")]
+        return sorted(rows)[len(rows) // 2] if len(rows) >= 10 else None
+
+    def seconds_today(self, card_seconds: float, task_seconds: float) -> float:
+        """About how long you've practised today: timed tasks as timed, the rest estimated."""
+        today = date.today().isoformat()
+        timed, untimed = self.db.execute(
+            "SELECT COALESCE(SUM(seconds), 0), SUM(seconds IS NULL) FROM attempts WHERE ts >= ? AND status != 'quit'",
+            (today,)).fetchone()
+        (cards,) = self.db.execute("SELECT COUNT(*) FROM card_log WHERE ts >= ?", (today,)).fetchone()
+        (drills,) = self.db.execute("SELECT COALESCE(SUM(seconds), 0) FROM drill_log WHERE ts >= ?", (today,)).fetchone()
+        return timed + (untimed or 0) * task_seconds + cards * card_seconds + drills
+
     def speed_by_lesson(self, recent: int = 3) -> dict[str, tuple[int, float, float, float | None]]:
         """Per lesson, from tasks solved from memory (Recall, reviews, Endless) that were timed:
         how many, the median time of the first `recent` and of the latest `recent`, and the
@@ -438,7 +469,7 @@ class Progress:
     def card_accuracy(self, limit: int = 7) -> list[tuple[str, int, int]]:
         """(day, answered, correct) for recent card days."""
         rows = self.db.execute(
-            "SELECT substr(ts, 1, 10) AS d, COUNT(*), SUM(correct) FROM card_log GROUP BY d ORDER BY d DESC LIMIT ?",
+            "SELECT substr(ts, 1, 10) AS d, COUNT(*), SUM(correct) FROM card_log WHERE intro = 0 GROUP BY d ORDER BY d DESC LIMIT ?",
             (limit,),
         )
         return list(rows)
@@ -447,7 +478,19 @@ class Progress:
         rows = self.db.execute("SELECT id FROM items WHERE lapses > 0 ORDER BY lapses DESC, ease ASC LIMIT ?", (limit,))
         return [self.item(item_id) for (item_id,) in rows]
 
-    def hardtime_block_date(self) -> date:
-        """The day hardtime starts blocking (the Neovim config switches after 14 full days)."""
+    def hardtime_earliest(self) -> date:
+        """The first day hardtime may block, lessons allowing."""
         started = date.fromisoformat(STARTED_FILE.read_text().strip())
-        return started + timedelta(days=HARDTIME_HINT_DAYS)
+        return started + timedelta(days=HARDTIME_MIN_DAYS)
+
+    def hardtime_blocks(self, lessons: list[Lesson]) -> bool:
+        after = next((lesson for lesson in lessons if lesson.id == HARDTIME_AFTER), None)
+        return date.today() >= self.hardtime_earliest() and (after is None or self.is_done(after))
+
+    def sync_hardtime(self, lessons: list[Lesson]) -> bool:
+        """Write hardtime's phase for the Neovim config; True when it blocks."""
+        blocks = self.hardtime_blocks(lessons)
+        phase = "block" if blocks else "hint"
+        if not HARDTIME_FILE.exists() or HARDTIME_FILE.read_text().strip() != phase:
+            HARDTIME_FILE.write_text(phase + "\n")
+        return blocks

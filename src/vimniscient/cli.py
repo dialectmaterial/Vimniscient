@@ -16,6 +16,8 @@ def main() -> None:
     remind = sub.add_parser("remind", help="notify about today's practice if any is left (for timers and hooks)")
     remind.add_argument("--login", action="store_true", help="you just started using the computer")
     remind.add_argument("--check", action="store_true", help="a follow-up reminder firing")
+    budget = sub.add_parser("minutes", help="how long today's routine is meant to take (15 by default)")
+    budget.add_argument("minutes", type=int, nargs="?", help="set it; leave it out to see it")
     setup = sub.add_parser("reminders", help="daily practice reminders through Omarchy")
     setup.add_argument("action", choices=["install", "uninstall", "status"], nargs="?", default="status")
     args = parser.parse_args()
@@ -35,6 +37,15 @@ def main() -> None:
         from vimniscient import reminders
 
         print(reminders.remind("check" if args.check else "login"))
+        return
+    if args.command == "minutes":
+        from vimniscient import settings
+
+        if args.minutes is not None:
+            if args.minutes < 1:
+                parser.error("at least one minute")
+            settings.set_minutes(args.minutes)
+        print(f"Today's routine takes about {settings.minutes()} minutes. ({settings.CONFIG})")
         return
     if args.command == "reminders":
         from vimniscient import reminders

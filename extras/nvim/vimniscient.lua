@@ -1,23 +1,22 @@
 -- Training wheels for Vimniscient (~/Projects/code/vimniscient).
 --
--- hardtime.nvim: hints only for the first 14 days after the first
--- `vimniscient` run, then it blocks bad habits and arrow keys.
+-- hardtime.nvim: hints first. It blocks bad habits and arrow keys once
+-- Vimniscient says so: after week 2 (counts, find, search, the dot: what its
+-- hints point you to) and four weeks at the earliest. The app writes the phase
+-- to ~/.local/share/vimniscient/hardtime.
 -- precognition.nvim: shows where motions land; toggle with <leader>uV.
 -- It starts hidden: while its hints are showing, keys typed fast after an
 -- operator get lost (`cia` + text, or `ciw` right after startup).
 
 local function hardtime_phase()
-  local f = io.open(vim.fn.expand("~/.local/share/vimniscient/started"), "r")
+  local data = os.getenv("XDG_DATA_HOME") or vim.fn.expand("~/.local/share")
+  local f = io.open(data .. "/vimniscient/hardtime", "r")
   if not f then
     return "hint"
   end
-  local y, m, d = f:read("*l"):match("(%d+)-(%d+)-(%d+)")
+  local phase = vim.trim(f:read("*a") or "")
   f:close()
-  if not y then
-    return "hint"
-  end
-  local started = os.time({ year = tonumber(y), month = tonumber(m), day = tonumber(d), hour = 0 })
-  return os.difftime(os.time(), started) > 14 * 86400 and "block" or "hint"
+  return phase == "block" and "block" or "hint"
 end
 
 return {

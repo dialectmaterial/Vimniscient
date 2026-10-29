@@ -28,7 +28,7 @@ from textual.theme import Theme
 from textual.widgets import DataTable, Input, Markdown, OptionList, Sparkline, Static
 from textual.widgets.option_list import Option
 
-from vimniscient import drills, endless, habits, reminders, srs, today, vimgolf
+from vimniscient import drills, endless, habits, reminders, settings, srs, today, vimgolf
 from vimniscient.answer import is_correct
 from vimniscient.cards import Card, Deck, has_lazyvim, has_plugin, load_decks
 from vimniscient.lessons import Lesson, Task, load_lessons, two_rounds
@@ -428,7 +428,8 @@ class MainScreen(Screen):
                                                       label=f"{step.label:<8}", detail=step.detail), id=step.id))
         self.fill("plan", options)
         left = sum(step.minutes for step in today.left(steps))
-        self.query_one("#plan").border_subtitle = f"about {left} min left" if left else "all done"
+        self.query_one("#plan").border_subtitle = (f"about {left} of {settings.minutes()} min left" if left
+                                                  else "all done")
 
     def refresh_lessons(self) -> None:
         app: VimniscientApp = self.app  # type: ignore[assignment]
@@ -457,8 +458,9 @@ class MainScreen(Screen):
         app: VimniscientApp = self.app  # type: ignore[assignment]
         progress, lessons = app.progress, app.lessons
         done = sum(progress.is_done(lesson) for lesson in lessons)
-        block = progress.hardtime_block_date()
-        hardtime = "blocking" if date.today() >= block else f"blocks from {block:%b %d}"
+        earliest = progress.hardtime_earliest()
+        hardtime = ("blocking" if progress.sync_hardtime(lessons)
+                    else f"blocks after week 2, from {max(earliest, date.today()):%b %d} at the earliest")
         days = list(reversed(progress.efficiency_by_day(14)))
         efficiency = [100 * ref / keys for _, _, keys, ref in days if keys]
         parts = [streak_text(progress.streak()), f"[b]{done}/{len(lessons)}[/] lessons"]
@@ -830,6 +832,7 @@ class CardScreen(Screen):
         app: VimniscientApp = self.app  # type: ignore[assignment]
         if self.intro:  # typed with the answer shown: scheduled for tomorrow, not scored
             app.progress.grade(card.id, "card", srs.GOOD)
+            app.progress.log_card(card, True, answer, intro=True)  # still practice, for the streak
             return
         if card.id in self.retried:
             return
@@ -1128,8 +1131,12 @@ class VimniscientApp(App):
         if steps:
             steps[0](lambda: self.run_steps(steps[1:]))
 
+    def work(self) -> today.Work:
+        """Today's cards, drills and review, as much as fits the daily budget."""
+        return today.todays_work(self.progress, self.lessons, self.decks, self.drills)
+
     def plan(self) -> list[today.Step]:
-        return today.plan(self.progress, self.lessons, self.decks, self.drills)
+        return today.plan(self.progress, self.lessons, self.decks, self.drills, self.work())
 
     def todays_drills(self) -> list[drills.Drill]:
         return today.todays_drills(self.progress, self.drills)
@@ -1140,15 +1147,15 @@ class VimniscientApp(App):
         `direct` starts lessons without their intro screen (the main screen shows it already)."""
         progress = self.progress
         if step_id == "cards":
-            cards = progress.due_cards(self.decks, self.lessons) + progress.new_cards(self.decks, self.lessons)
+            cards = self.work().cards
             if cards:
                 return lambda done: self.push_screen(CardScreen(cards, self.decks, "Today's cards"), lambda _: done())
         elif step_id == "drills":
-            todays = self.todays_drills()
+            todays = self.work().drills
             if todays:
                 return lambda done: self.push_screen(DrillScreen(todays, "Omarchy drills"), lambda _: done())
         elif step_id == "review":
-            review = today.review_tasks(progress, self.lessons)
+            review = self.work().review
             if review and direct:
                 return lambda done: self.start_lesson(review_lesson(review), done=done)
             if review:
