@@ -31,6 +31,7 @@ class Card:
     style: str  # keys | combo
     case_sensitive: bool
     week: int = 0
+    day: int = 0  # the lesson (in `week`) that teaches it; 0 for none
     note: str = ""
     order: int = 0  # position within the deck for introducing new cards
 
@@ -82,6 +83,7 @@ def _static_decks() -> dict[str, Deck]:
                     style=data.get("style", "keys"),
                     case_sensitive=data.get("case_sensitive", True),
                     week=c.get("week", 0),
+                    day=c.get("day", 0),
                     note=c.get("note", data.get("note", "")),
                     order=i,
                 )

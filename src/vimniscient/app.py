@@ -684,6 +684,7 @@ class CardScreen(Screen):
         self.title_text = title
         self.retried: set[str] = set()
         self.pending: tuple[Card, bool, str] | None = None
+        self.intro = False  # the card on screen is new to you: its answer is shown, you type it once
         self.correct = 0
         self.answered = 0
 
@@ -706,7 +707,12 @@ class CardScreen(Screen):
         done = self.total - len([c for c in self.queue if c.id not in self.retried])
         panel = self.query_one("#card-panel")
         panel.border_title = f"{self.title_text} · {self.decks[card.deck].title}"
-        panel.border_subtitle = ("again · " if card.id in self.retried else "") + f"{min(done + 1, self.total)}/{self.total}"
+        app: VimniscientApp = self.app  # type: ignore[assignment]
+        # never answered from memory, and not introduced since the last miss
+        item = app.progress.item(card.id)
+        self.intro = card.id not in self.retried and not app.progress.ever_right(card.id) and (not item or item.reps == 0)
+        again = "new · " if self.intro else "again · " if card.id in self.retried else ""
+        panel.border_subtitle = again + f"{min(done + 1, self.total)}/{self.total}"
         self.query_one("#card-bar", Static).update(progress_bar(done, self.total))
         self.query_one("#card-prompt", Static).update(Content(card.prompt))
         box = self.query_one("#card-input", Input)
@@ -718,14 +724,26 @@ class CardScreen(Screen):
             else "the keys as typed: <C-x> for Ctrl-x, <leader> for Space"
         )
         box.focus()
-        self.query_one("#card-feedback", Static).update("")
+        self.query_one("#card-feedback", Static).update(self.introduction(card) if self.intro else "")
         self.query_one("#card-help", Static).update(keybar(("enter", "check"), ("esc", "stop")))
+
+    def introduction(self, card: Card, again: bool = False) -> Content:
+        """A new card's answer, to type once; it's asked from memory next time."""
+        why = "\n".join(hooks(card.answers[0])) if card.deck in HOOK_DECKS else ""
+        lead = "[$error]✗[/]  type it as shown:" if again else "[$accent]new[/]  type it once:"
+        note = "\n[dim]$note[/]" if card.note else ""
+        return Content.from_markup(f"{lead} [b]$shown[/]{note}" + ("\n[dim]$why[/]" if why else ""),
+                                   shown=card.shown, note=card.note, why=why)
 
     def on_input_submitted(self, event: Input.Submitted) -> None:
         if self.pending or not self.queue:
             return
         card = self.queue[0]
         correct = is_correct(event.value, card.answers, card.style, card.case_sensitive)
+        if self.intro and not correct:  # copying it out: try again
+            event.input.value = ""
+            self.query_one("#card-feedback", Static).update(self.introduction(card, again=True))
+            return
         self.pending = (card, correct, event.value)
         event.input.disabled = True
         self.set_focus(None)
@@ -757,6 +775,9 @@ class CardScreen(Screen):
         self.pending = None
         self.queue.pop(0)
         app: VimniscientApp = self.app  # type: ignore[assignment]
+        if self.intro:  # typed with the answer shown: scheduled for tomorrow, not scored
+            app.progress.grade(card.id, "card", srs.GOOD)
+            return
         if card.id in self.retried:
             return
         self.answered += 1

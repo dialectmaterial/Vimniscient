@@ -14,6 +14,7 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 
 from vimniscient.cards import Card, Deck
+from vimniscient.keys import split_keys
 
 LOG = Path(os.environ.get("XDG_STATE_HOME", Path.home() / ".local/state")) / "nvim" / "hardtime.nvim.log"
 
@@ -81,11 +82,12 @@ def habit_deck() -> Deck:
         if not m:
             continue
         better, worse = m.group(1), m.group(2)
+        n = len(split_keys(better))
         deck.cards.append(
             Card(
                 deck="habits",
                 id=f"habits:{habit.message}",
-                prompt=f"hardtime caught you typing {worse}. What's the better way?",
+                prompt=f"You typed {worse}. hardtime knows the same edit in {n} key{'' if n == 1 else 's'}: which?",
                 answers=[better],
                 style="keys",
                 case_sensitive=True,

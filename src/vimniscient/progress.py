@@ -237,9 +237,17 @@ class Progress:
         )
         self.db.commit()
 
+    def ever_right(self, card_id: str) -> bool:
+        """Whether this card was ever answered from memory (not just typed when introduced)."""
+        return self.db.execute("SELECT 1 FROM card_log WHERE card = ? AND correct = 1 LIMIT 1", (card_id,)).fetchone() is not None
+
     def unlocked(self, decks: dict[str, Deck], lessons: list[Lesson]) -> list[Card]:
-        week = self.current_week(lessons)
-        return [card for deck in decks.values() for card in deck.cards if card.week <= week]
+        """Cards for lessons you've done: a card with a `day` waits for that day's lesson,
+        one with only a `week` comes in when that week starts."""
+        nxt = self.next_lesson(lessons)
+        reached = (nxt.week, nxt.day) if nxt else (max(lesson.week for lesson in lessons) + 1, 0)
+        return [card for deck in decks.values() for card in deck.cards
+                if (card.week, card.day) < reached or card.week == reached[0] and not card.day]
 
     def due_cards(self, decks: dict[str, Deck], lessons: list[Lesson]) -> list[Card]:
         today = date.today()

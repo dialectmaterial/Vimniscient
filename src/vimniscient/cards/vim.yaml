@@ -2,82 +2,83 @@ deck: vim
 title: Vim
 style: keys
 case_sensitive: true
-# `week` unlocks a card once the lessons reach that week.
+# A card comes in once you've done the lesson for its `week` and `day` (the
+# lesson that teaches it); with no `day`, once the lessons reach its week.
 cards:
   # week 1: text objects, find/till, lines, counts
-  - {week: 1, prompt: Change the word under the cursor, answer: [ciw]}
-  - {week: 1, prompt: Delete a word and the space after it, answer: [daw]}
-  - {week: 1, prompt: 'Change a WORD (space to space, punctuation included)', answer: [ciW]}
-  - {week: 1, prompt: Yank the word under the cursor, answer: [yiw]}
-  - {week: 1, prompt: Change everything inside the double quotes, answer: ['ci"']}
-  - {week: 1, prompt: Delete the quotes and what is inside them, answer: ['da"']}
-  - {week: 1, prompt: Delete inside the parentheses, answer: [di(, dib, di)]}
-  - {week: 1, prompt: Delete the parentheses and their content, answer: [da(, dab, da)]}
-  - {week: 1, prompt: Change inside curly braces, answer: ['ci{', ciB, 'ci}']}
-  - {week: 1, prompt: Change the text inside an HTML tag, answer: [cit]}
-  - {week: 1, prompt: Delete the paragraph (and the blank line after it), answer: [dap]}
-  - {week: 1, prompt: Yank the paragraph, answer: [yap]}
-  - {week: 1, prompt: Change the sentence, answer: [cis]}
-  - {week: 1, prompt: Indent the paragraph, answer: ['>ip']}
-  - {week: 1, prompt: Jump onto the next comma on the line, answer: ['f,']}
-  - {week: 1, prompt: Jump to just before the next comma, answer: ['t,']}
-  - {week: 1, prompt: 'Repeat the last f/t/F/T', answer: [;]}
-  - {week: 1, prompt: 'Repeat the last f/t/F/T in the other direction', answer: [',']}
-  - {week: 1, prompt: Delete up to (not including) the next closing parenthesis, answer: [dt)]}
-  - {week: 1, prompt: Change up to the semicolon, answer: [ct;]}
-  - {week: 1, prompt: Delete to the end of the line, answer: [D, d$]}
-  - {week: 1, prompt: Change to the end of the line, answer: [C, c$]}
-  - {week: 1, prompt: Change the whole line, answer: [cc]}
-  - {week: 1, prompt: Join the next line onto this one, answer: [J]}
-  - {week: 1, prompt: Swap this line with the one below, answer: [ddp]}
-  - {week: 1, prompt: Append at the end of the line, answer: [A]}
-  - {week: 1, prompt: Insert at the first non-blank character of the line, answer: [I]}
-  - {week: 1, prompt: Delete three lines, answer: [3dd, d2j]}
-  - {week: 1, prompt: Change the next two words, answer: [c2w, 2cw]}
-  - {week: 1, prompt: Go to the first line of the file, answer: [gg]}
-  - {week: 1, prompt: Go to the last line of the file, answer: [G]}
-  - {week: 1, prompt: Go to line 42, answer: [42G, ':42<CR>', '42gg']}
+  - {week: 1, day: 1, prompt: 'Change the whole word under the cursor, wherever in it the cursor is', answer: [ciw], note: 'cw only changes from the cursor to the end of the word.'}
+  - {week: 1, day: 1, prompt: Delete a word and the space after it, answer: [daw]}
+  - {week: 1, day: 1, prompt: 'Change a WORD (space to space, punctuation included)', answer: [ciW]}
+  - {week: 1, day: 1, prompt: Yank the word under the cursor, answer: [yiw]}
+  - {week: 1, day: 2, prompt: Change everything inside the double quotes, answer: ['ci"']}
+  - {week: 1, day: 2, prompt: Delete the quotes and what is inside them, answer: ['da"']}
+  - {week: 1, day: 2, prompt: Delete inside the parentheses, answer: [di(, dib, di)]}
+  - {week: 1, day: 2, prompt: Delete the parentheses and their content, answer: [da(, dab, da)]}
+  - {week: 1, day: 2, prompt: Change inside curly braces, answer: ['ci{', ciB, 'ci}']}
+  - {week: 1, day: 2, prompt: Change the text inside an HTML tag, answer: [cit]}
+  - {week: 1, day: 3, prompt: Delete the paragraph (and the blank line after it), answer: [dap]}
+  - {week: 1, day: 3, prompt: Yank the paragraph, answer: [yap]}
+  - {week: 1, day: 3, prompt: Change the sentence, answer: [cis]}
+  - {week: 1, day: 3, prompt: Indent the paragraph, answer: ['>ip']}
+  - {week: 1, day: 4, prompt: Jump onto the next comma on the line, answer: ['f,']}
+  - {week: 1, day: 4, prompt: Jump to just before the next comma, answer: ['t,']}
+  - {week: 1, day: 4, prompt: 'Repeat the last f/t/F/T', answer: [;]}
+  - {week: 1, day: 4, prompt: 'Repeat the last f/t/F/T in the other direction', answer: [',']}
+  - {week: 1, day: 4, prompt: Delete up to (not including) the next closing parenthesis, answer: [dt)]}
+  - {week: 1, day: 4, prompt: Change up to the semicolon, answer: [ct;]}
+  - {week: 1, day: 5, prompt: Delete to the end of the line, answer: [D, d$]}
+  - {week: 1, day: 5, prompt: Change to the end of the line, answer: [C, c$]}
+  - {week: 1, day: 5, prompt: Change the whole line, answer: [cc]}
+  - {week: 1, day: 5, prompt: Join the next line onto this one, answer: [J]}
+  - {week: 1, day: 5, prompt: Swap this line with the one below, answer: [ddp]}
+  - {week: 1, day: 5, prompt: Append at the end of the line, answer: [A]}
+  - {week: 1, day: 5, prompt: Insert at the first non-blank character of the line, answer: [I]}
+  - {week: 1, day: 6, prompt: Delete three lines, answer: [3dd, d2j]}
+  - {week: 1, day: 6, prompt: Change the next two words, answer: [c2w, 2cw]}
+  - {week: 1, day: 6, prompt: Go to the first line of the file, answer: [gg]}
+  - {week: 1, day: 6, prompt: Go to the last line of the file, answer: [G]}
+  - {week: 1, day: 6, prompt: Go to line 42, answer: [42G, ':42<CR>', '42gg']}
   # week 2: dot, search, cgn, case, numbers, insert, visual
-  - {week: 2, prompt: Repeat the last change, answer: [.]}
-  - {week: 2, prompt: Search forward for the word under the cursor, answer: ['*']}
-  - {week: 2, prompt: Search backward for the word under the cursor, answer: ['#']}
-  - {week: 2, prompt: Next search match, answer: [n]}
-  - {week: 2, prompt: Previous search match, answer: [N]}
-  - {week: 2, prompt: 'Change the next search match (then . repeats it)', answer: [cgn]}
-  - {week: 2, prompt: Delete the next search match, answer: [dgn]}
-  - {week: 2, prompt: Uppercase the word under the cursor, answer: [gUiw, gUaw]}
-  - {week: 2, prompt: Lowercase the whole line, answer: [guu, gugu]}
-  - {week: 2, prompt: Toggle the case of one character, answer: ['~']}
-  - {week: 2, prompt: Add one to the next number on the line, answer: [<C-a>]}
-  - {week: 2, prompt: Subtract one from the next number on the line, answer: [<C-x>]}
-  - {week: 2, prompt: Open a new line below and start typing, answer: [o]}
-  - {week: 2, prompt: Open a new line above and start typing, answer: [O]}
-  - {week: 2, prompt: Append after the end of the current word, answer: [ea]}
-  - {week: 2, prompt: Enter replace mode (type over text), answer: [R]}
-  - {week: 2, prompt: Replace one character with x, answer: [rx]}
-  - {week: 2, prompt: 'In insert mode: delete the word before the cursor', answer: [<C-w>]}
-  - {week: 2, prompt: 'In insert mode: delete back to the start of the line', answer: [<C-u>]}
-  - {week: 2, prompt: Start visual line mode, answer: [V]}
-  - {week: 2, prompt: Start visual block mode, answer: [<C-v>]}
-  - {week: 2, prompt: Reselect the last visual selection, answer: [gv]}
-  - {week: 2, prompt: Jump to the matching bracket, answer: ['%']}
-  - {week: 2, prompt: Uppercase the visual selection, answer: [U]}
+  - {week: 2, day: 1, prompt: Repeat the last change, answer: [.]}
+  - {week: 2, day: 2, prompt: Search forward for the word under the cursor, answer: ['*']}
+  - {week: 2, day: 2, prompt: Search backward for the word under the cursor, answer: ['#']}
+  - {week: 2, day: 2, prompt: Next search match, answer: [n]}
+  - {week: 2, day: 2, prompt: Previous search match, answer: [N]}
+  - {week: 2, day: 3, prompt: 'Change the next search match (then . repeats it)', answer: [cgn]}
+  - {week: 2, day: 3, prompt: Delete the next search match, answer: [dgn]}
+  - {week: 2, day: 4, prompt: Uppercase the word under the cursor, answer: [gUiw, gUaw]}
+  - {week: 2, day: 4, prompt: Lowercase the whole line, answer: [guu, gugu]}
+  - {week: 2, day: 4, prompt: Toggle the case of one character, answer: ['~']}
+  - {week: 2, day: 4, prompt: Add one to the next number on the line, answer: [<C-a>]}
+  - {week: 2, day: 4, prompt: Subtract one from the next number on the line, answer: [<C-x>]}
+  - {week: 2, day: 5, prompt: Open a new line below and start typing, answer: [o]}
+  - {week: 2, day: 5, prompt: Open a new line above and start typing, answer: [O]}
+  - {week: 2, day: 5, prompt: Append after the end of the current word, answer: [ea]}
+  - {week: 2, day: 5, prompt: Enter replace mode (type over text), answer: [R]}
+  - {week: 2, day: 5, prompt: Replace one character with x, answer: [rx]}
+  - {week: 2, day: 5, prompt: 'In insert mode: delete the word before the cursor', answer: [<C-w>]}
+  - {week: 2, day: 5, prompt: 'In insert mode: delete back to the start of the line', answer: [<C-u>]}
+  - {week: 2, day: 6, prompt: Start visual line mode, answer: [V]}
+  - {week: 2, day: 6, prompt: Start visual block mode, answer: [<C-v>]}
+  - {week: 2, day: 6, prompt: Reselect the last visual selection, answer: [gv]}
+  - {week: 2, day: 6, prompt: Jump to the matching bracket, answer: ['%']}
+  - {week: 2, day: 6, prompt: Uppercase the visual selection, answer: [U]}
   # week 3: macros, registers, marks, visual block, :s, :g
-  - {week: 3, prompt: Record a macro into register a, answer: [qa]}
-  - {week: 3, prompt: Play the macro in register a, answer: ['@a']}
-  - {week: 3, prompt: Replay the last played macro, answer: ['@@']}
-  - {week: 3, prompt: Yank the line into register a, answer: ['"ayy']}
-  - {week: 3, prompt: Paste from register a, answer: ['"ap']}
-  - {week: 3, prompt: 'Paste the last yank (not the last delete)', answer: ['"0p']}
-  - {week: 3, prompt: 'In insert mode: paste register a', answer: [<C-r>a]}
-  - {week: 3, prompt: Set mark a, answer: [ma]}
-  - {week: 3, prompt: Jump to the line of mark a, answer: ["'a"]}
-  - {week: 3, prompt: Jump to the exact position of mark a, answer: ['`a']}
-  - {week: 3, prompt: Jump back to where you were before the last jump, answer: ['``', "''"]}
-  - {week: 3, prompt: 'Visual block: insert the same text on every line', answer: [<C-v>jI]}
-  - {week: 3, prompt: Replace every foo with bar in the whole file, answer: [':%s/foo/bar/g<CR>']}
-  - {week: 3, prompt: Delete every line containing TODO, answer: [':g/TODO/d<CR>']}
-  - {week: 3, prompt: Run the normal command A; on every selected line, answer: [":'<,'>norm A;<CR>", ":norm A;<CR>"]}
+  - {week: 3, day: 1, prompt: Record a macro into register a, answer: [qa]}
+  - {week: 3, day: 1, prompt: Play the macro in register a, answer: ['@a']}
+  - {week: 3, day: 2, prompt: Replay the last played macro, answer: ['@@']}
+  - {week: 3, day: 3, prompt: Yank the line into register a, answer: ['"ayy']}
+  - {week: 3, day: 3, prompt: Paste from register a, answer: ['"ap']}
+  - {week: 3, day: 3, prompt: 'Paste the last yank (not the last delete)', answer: ['"0p']}
+  - {week: 3, day: 3, prompt: 'In insert mode: paste register a', answer: [<C-r>a]}
+  - {week: 3, day: 4, prompt: Set mark a, answer: [ma]}
+  - {week: 3, day: 4, prompt: Jump to the line of mark a, answer: ["'a"]}
+  - {week: 3, day: 4, prompt: Jump to the exact position of mark a, answer: ['`a']}
+  - {week: 3, day: 4, prompt: Jump back to where you were before the last jump, answer: ['``', "''"]}
+  - {week: 3, day: 5, prompt: 'Visual block: insert the same text on every line', answer: [<C-v>jI]}
+  - {week: 3, day: 6, prompt: Replace every foo with bar in the whole file, answer: [':%s/foo/bar/g<CR>']}
+  - {week: 3, day: 6, prompt: Delete every line containing TODO, answer: [':g/TODO/d<CR>']}
+  - {week: 3, day: 6, prompt: Run the normal command A; on every selected line, answer: [":'<,'>norm A;<CR>", ":norm A;<CR>"]}
   # week 4 and later: windows, jumps, scrolling
   - {week: 4, prompt: Jump to the older position in the jump list, answer: [<C-o>]}
   - {week: 4, prompt: Jump to the newer position in the jump list, answer: [<C-i>, <Tab>]}
@@ -90,4 +91,4 @@ cards:
   - {week: 4, prompt: Move to the top of the screen, answer: [H]}
   - {week: 4, prompt: Move to the middle of the screen, answer: [M]}
   - {week: 4, prompt: Move to the bottom of the screen, answer: [L]}
-  - {week: 4, prompt: Move to the next paragraph, answer: ['}']}
+  - {week: 4, day: 5, prompt: Move to the next paragraph, answer: ['}']}

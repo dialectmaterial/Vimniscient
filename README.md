@@ -126,6 +126,8 @@ LazyVim setup.
 
 1. **Cards**: short prompts ("Change everything inside the quotes"), where you
    type the keys (`ci"`). The ones that are due come first, then up to 10 new ones.
+   A new card shows its answer and you type it once; from the next day on it's
+   from memory. Vim cards come in after the lesson that teaches them.
 2. **Review**: tasks from earlier days that are due again.
 3. **Today's lesson**.
 
