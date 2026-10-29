@@ -4,7 +4,7 @@
 # `makepkg --printsrcinfo > .SRCINFO`, and push this folder to the AUR.
 
 pkgname=vimniscient
-pkgver=0.1.0
+pkgver=0.2.0
 pkgrel=1
 pkgdesc="Get fluent in Vim in fifteen minutes a day, in your own Neovim"
 arch=('any')

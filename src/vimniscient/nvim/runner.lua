@@ -293,6 +293,16 @@ local function paint(buf, lines)
   end
 end
 
+-- The practice box's footer: the mode and the keys so far.
+local function footer_for(task, count)
+  local mode = MODES[vim.fn.mode():sub(1, 1)] or vim.fn.mode()
+  local keys = task.budget and string.format("keys %d of %d · ref %d", count, task.budget, task.ref)
+    or string.format("keys %d · ref %d", count, task.ref)
+  return " " .. mode .. " · " .. keys .. " "
+end
+
+local footer_text, laid_out_lines = "", 0
+
 function redraw()
   local task = tasks[current]
   if not task or not vim.api.nvim_win_is_valid(frame_win) then
@@ -357,13 +367,12 @@ function redraw()
     relative = "win", win = frame_win, row = goal_row, col = 2, width = box, height = goal_h,
     title = { { "─", "VimniscientBox" }, { " goal ", MUTED } }, title_pos = "left",
   })
-  local mode = MODES[vim.fn.mode():sub(1, 1)] or vim.fn.mode()
-  local keys = task.budget and string.format("keys %d of %d · ref %d", count, task.budget, task.ref)
-    or string.format("keys %d · ref %d", count, task.ref)
+  footer_text = footer_for(task, count)
+  laid_out_lines = start_lines
   vim.api.nvim_win_set_config(practice_win, {
     relative = "win", win = frame_win, row = goal_row + goal_h + 2, col = 2, width = box, height = practice_h,
     title = { { "─", "VimniscientFrame" }, { " you ", TITLE } }, title_pos = "left",
-    footer = { { " " .. mode .. " · " .. keys .. " ", MUTED }, { "─", "VimniscientFrame" } }, footer_pos = "right",
+    footer = { { footer_text, MUTED }, { "─", "VimniscientFrame" } }, footer_pos = "right",
   })
 
   local commands = task.solution == "—" and { { ":Reset", "start over" }, { ":q", "stop" } }
@@ -374,6 +383,29 @@ function redraw()
   end
   paint(keys_buf, { bar })
   vim.api.nvim_win_set_config(keys_win, { relative = "editor", row = rows, col = 0, width = columns, height = 1 })
+end
+
+-- Keys and mode changes only touch the footer, once per batch of keys: laying the
+-- whole frame out again on every key made a held j lag behind.
+local footer_due = false
+local function update_footer()
+  footer_due = false
+  local task = tasks[current]
+  if not task or not vim.api.nvim_win_is_valid(practice_win) then
+    return
+  end
+  local text = footer_for(task, select(2, task_keys()))
+  if text ~= footer_text then
+    footer_text = text
+    vim.api.nvim_win_set_config(practice_win, { footer = { { text, MUTED }, { "─", "VimniscientFrame" } },
+      footer_pos = "right" })
+  end
+end
+local function footer_soon()
+  if not footer_due then
+    footer_due = true
+    vim.schedule(update_footer)
+  end
 end
 
 local function set_lines(buf, lines)
@@ -576,9 +608,12 @@ vim.on_key(function(_, typed)
     table.insert(state.keys, (vim.fn.keytrans(typed):gsub("<Space>", " ")))
     if state.fresh then -- what was said about the last task has been read
       state.fresh = false
-      feedback = {}
+      if #feedback > 0 then
+        feedback = {}
+        vim.schedule(redraw)
+      end
     end
-    vim.schedule(redraw)
+    footer_soon()
     if endless then
       vim.schedule(over_budget)
     end
@@ -591,11 +626,19 @@ vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
   buffer = practice_buf,
   callback = function() vim.schedule(check) end,
 })
--- The boxes grow with the text, and the footer shows the mode.
-vim.api.nvim_create_autocmd({ "TextChangedI", "ModeChanged", "VimResized" }, {
+-- The boxes grow with the text (only a change in line count needs a new layout),
+-- and the footer shows the mode.
+vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
   group = group,
-  callback = function() vim.schedule(redraw) end,
+  buffer = practice_buf,
+  callback = function()
+    if vim.api.nvim_buf_line_count(practice_buf) ~= laid_out_lines then
+      vim.schedule(redraw)
+    end
+  end,
 })
+vim.api.nvim_create_autocmd("ModeChanged", { group = group, callback = footer_soon })
+vim.api.nvim_create_autocmd("VimResized", { group = group, callback = function() vim.schedule(redraw) end })
 if endless then
   vim.api.nvim_create_autocmd("CmdlineLeave", {
     group = group,
