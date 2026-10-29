@@ -3,6 +3,7 @@
 import json
 import os
 import subprocess
+import sys
 import tempfile
 from dataclasses import dataclass
 from importlib import resources
@@ -26,6 +27,14 @@ class TaskResult:
     budget: int | None = None  # endless mode: the most keys allowed
     seconds: float | None = None  # from the task appearing to it ending; None when not timed
     first: float | None = None  # before the first key
+
+
+def mouse_wheel(on: bool) -> None:
+    """With the mouse off, terminals like foot turn the wheel into arrow keys (alternate
+    scroll mode, DECSET 1007): it would scroll lists, and type arrows into lessons.
+    Off while Vimniscient runs, Neovim included; back on when it quits."""
+    sys.__stdout__.write("\x1b[?1007h" if on else "\x1b[?1007l")
+    sys.__stdout__.flush()
 
 
 def task_json(t: Task) -> dict:
@@ -55,11 +64,15 @@ def run_nvim(session: dict, first: list[str]) -> list[dict]:
         session_path.write_text(json.dumps(session | {"result_path": str(result_path), "colors": COLORS or None}), encoding="utf-8")
         # cwd=tmp keeps session plugins away from the user's real projects;
         # -i NONE gives every lesson clean registers and history.
-        subprocess.run(
-            ["nvim", "-i", "NONE", str(practice), "-S", str(runner_path)],
-            cwd=tmp,
-            env=os.environ | {"VIMNISCIENT_SESSION": str(session_path)},
-        )
+        mouse_wheel(False)  # the runner turns the mouse off; this keeps the wheel from typing arrows
+        try:
+            subprocess.run(
+                ["nvim", "-i", "NONE", str(practice), "-S", str(runner_path)],
+                cwd=tmp,
+                env=os.environ | {"VIMNISCIENT_SESSION": str(session_path)},
+            )
+        finally:
+            mouse_wheel(True)
         return json.loads(result_path.read_text()) if result_path.exists() else []
 
 

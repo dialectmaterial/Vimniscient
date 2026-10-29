@@ -34,7 +34,7 @@ from vimniscient.cards import Card, Deck, has_lazyvim, has_plugin, load_decks
 from vimniscient.lessons import Lesson, Task, load_lessons, two_rounds
 from vimniscient.mnemonics import hooks
 from vimniscient.progress import Progress
-from vimniscient.session import COLORS, TaskResult, run_endless, run_lesson
+from vimniscient.session import COLORS, TaskResult, mouse_wheel, run_endless, run_lesson
 
 LOGO = """\
 █ █ █ █▀▄▀█ █▄ █ █ ▄▀▀ ▄▀▀ █ ██▀ █▄ █ ▀█▀
@@ -1078,6 +1078,7 @@ class VimniscientApp(App):
             self.register_theme(theme)
         theme = omarchy_theme()
         self.theme = theme if theme in self.available_themes else DEFAULT_THEME
+        mouse_wheel(False)
         COLORS.update(self.lesson_colors())
         self.push_screen(MainScreen())
 
@@ -1107,6 +1108,7 @@ class VimniscientApp(App):
         session = replace(lesson, tasks=two_rounds(lesson)) if lesson.week else lesson
         with self.suspend():
             results = run_lesson(session, retry=bool(lesson.week) or lesson.id == "review")
+        mouse_wheel(False)  # coming back from Neovim
         if on_results:
             note = on_results(results)
         else:
@@ -1231,6 +1233,7 @@ class VimniscientApp(App):
         pool = {t.item_id: t for t, _ in rungs}
         with self.suspend():
             results = run_endless(pool, [(t.item_id, v) for t, v in rungs], start, endless.RAMP, endless.GAP)
+        mouse_wheel(False)
         run = endless.summary(results, start)
         self.progress.record_endless(results, run)
         note = (f"Level {run['start']} → {run['level']} · {plural(run['missed'], 'miss', 'misses')}, "

@@ -23,7 +23,12 @@ def main() -> None:
     if args.command is None:
         from vimniscient.app import VimniscientApp
 
-        VimniscientApp().run(mouse=False)  # keyboard only: nothing in it reacts to clicks
+        from vimniscient.session import mouse_wheel
+
+        try:
+            VimniscientApp().run(mouse=False)  # keyboard only: nothing in it reacts to clicks or the wheel
+        finally:
+            mouse_wheel(True)
         return
 
     if args.command == "remind":
