@@ -73,14 +73,18 @@ with tempfile.TemporaryDirectory() as data:
         tmux("kill-session", "-t", SESSION)
         db = sqlite3.connect(os.path.join(data, "progress.db"))
         rows = db.execute(
-            "SELECT task, status, count, ref, keys, phase FROM attempts WHERE lesson = ? ORDER BY id", (lesson.id,)
+            "SELECT task, status, count, ref, keys, phase, seconds, first FROM attempts WHERE lesson = ? ORDER BY id",
+            (lesson.id,)
         ).fetchall()
         db.execute("DELETE FROM attempts WHERE lesson = ?", (lesson.id,))
         db.commit()
-        bad = [r for r in rows if r[1] != "solved" or r[2] != r[3]]
+        # solved at the reference count, and timed: the first key comes before the end
+        bad = [r for r in rows if r[1] != "solved" or r[2] != r[3] or not (r[6] and 0 <= (r[7] or 0) <= r[6])]
         failed += len(bad) + (len(session) - len(rows))
-        for task, status, count, ref, keys, phase in bad:
-            print(f"FAIL {lesson.id}#{task + 1} ({phase}): {status} {count}/{ref} typed {keys!r}")
-        print(f"{lesson.id}: {len(rows) - len(bad)}/{len(session)} ok", flush=True)
+        for task, status, count, ref, keys, phase, seconds, first in bad:
+            print(f"FAIL {lesson.id}#{task + 1} ({phase}): {status} {count}/{ref} typed {keys!r} in {seconds}s (first key {first}s)")
+        times = sorted(r[6] for r in rows if r[6])
+        typical = f", {times[len(times) // 2]:.1f}s a task" if times else ""
+        print(f"{lesson.id}: {len(rows) - len(bad)}/{len(session)} ok{typical}", flush=True)
 print(f"{failed} problems")
 sys.exit(1 if failed else 0)

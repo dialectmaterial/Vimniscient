@@ -73,6 +73,7 @@ def main() -> None:
         db = sqlite3.connect(os.path.join(data, "progress.db"))
         rows = db.execute("SELECT lesson, task, status FROM attempts WHERE phase = 'endless' ORDER BY id").fetchall()
         run = db.execute("SELECT start, level, climbed, missed, fixed FROM endless_runs").fetchall()
+        timed = db.execute("SELECT seconds FROM attempts WHERE phase = 'endless'").fetchall()
 
     expected = [(task.lesson_id, task.index, outcome) for _, task, outcome in plan]
     problems = 0
@@ -81,6 +82,10 @@ def main() -> None:
         ok = got == want
         problems += not ok
         print(f"{'ok  ' if ok else 'FAIL'} {plan[i][0]:6} want {want} got {got}")
+    untimed = [r for r in timed if not r[0] or r[0] <= 0]
+    if untimed or not timed:
+        problems += 1
+        print(f"FAIL {len(untimed)} of {len(timed)} endless attempts without a time")
     print("run:", run)
     if run != [(1, 4, 3, 1, 1)]:
         problems += 1

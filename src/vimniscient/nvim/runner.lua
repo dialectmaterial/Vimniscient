@@ -393,7 +393,7 @@ local function load_task(i)
   if endless and task.phase == "recall" then
     tell({ { "Recall  ", TITLE }, { "one you missed earlier, on new text. From memory now.", MUTED } })
   end
-  state = { keys = {}, done = false, hints = 0 }
+  state = { keys = {}, done = false, hints = 0, started = vim.uv.hrtime() }
   results[i].status = "quit"
 
   set_lines(goal_buf, task.target)
@@ -455,6 +455,11 @@ local function finish(status)
     r.count = 0
   end
   r.hints = state.hints
+  -- seconds from the task appearing to it ending (:Reset doesn't restart the
+  -- clock), and before the first key: time spent working out what to do
+  local now = vim.uv.hrtime()
+  r.seconds = (now - state.started) / 1e9
+  r.first = state.first and (state.first - state.started) / 1e9
   state.done = true
   if endless then
     write_results() -- an endless run has no last task, so keep the file current
@@ -562,6 +567,7 @@ local ns = vim.api.nvim_create_namespace("vimniscient")
 vim.on_key(function(_, typed)
   if not state.done and typed and typed ~= "" then
     -- a plain space, as the reference solutions write it
+    state.first = state.first or vim.uv.hrtime()
     table.insert(state.keys, (vim.fn.keytrans(typed):gsub("<Space>", " ")))
     if state.fresh then -- what was said about the last task has been read
       state.fresh = false

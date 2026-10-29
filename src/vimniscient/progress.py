@@ -99,7 +99,11 @@ class Progress:
         columns = {row[1] for row in self.db.execute("PRAGMA table_info(attempts)")}
         if "phase" not in columns:  # databases from before the Learn/Recall rounds
             self.db.execute("ALTER TABLE attempts ADD COLUMN phase TEXT NOT NULL DEFAULT 'recall'")
-            self.db.commit()
+        # from before tasks were timed: those attempts keep NULL, unknown
+        for column in ("seconds", "first"):
+            if column not in columns:
+                self.db.execute(f"ALTER TABLE attempts ADD COLUMN {column} REAL")
+        self.db.commit()
 
     # spaced repetition items
 
@@ -141,8 +145,10 @@ class Progress:
             if r.status == "unseen" or (r.status == "quit" and not r.keys):
                 continue  # not tried: opening a lesson and leaving isn't an attempt
             self.db.execute(
-                "INSERT INTO attempts (ts, lesson, task, status, count, ref, keys, hints, phase) VALUES (?,?,?,?,?,?,?,?,?)",
-                (ts, r.task.lesson_id, r.task.index, r.status, r.count, r.task.ref, r.keys, r.hints, r.task.phase),
+                "INSERT INTO attempts (ts, lesson, task, status, count, ref, keys, hints, phase, seconds, first) "
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                (ts, r.task.lesson_id, r.task.index, r.status, r.count, r.task.ref, r.keys, r.hints, r.task.phase,
+                 r.seconds, r.first),
             )
             # Only recall says whether you know it; the Learn round shows the keys.
             grade = srs.task_grade(r.status, r.count, r.task.ref, r.hints)
@@ -284,8 +290,10 @@ class Progress:
         results = [r for r in results if not (r.status == "quit" and not r.keys)]
         for r in results:
             self.db.execute(
-                "INSERT INTO attempts (ts, lesson, task, status, count, ref, keys, hints, phase) VALUES (?,?,?,?,?,?,?,?,?)",
-                (ts, r.task.lesson_id, r.task.index, r.status, r.count, r.task.ref, r.keys, r.hints, "endless"),
+                "INSERT INTO attempts (ts, lesson, task, status, count, ref, keys, hints, phase, seconds, first) "
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                (ts, r.task.lesson_id, r.task.index, r.status, r.count, r.task.ref, r.keys, r.hints, "endless",
+                 r.seconds, r.first),
             )
         if results:
             self.db.execute(

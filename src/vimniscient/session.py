@@ -24,6 +24,8 @@ class TaskResult:
     hints: int
     level: int = 0  # endless mode: the level the task was given at
     budget: int | None = None  # endless mode: the most keys allowed
+    seconds: float | None = None  # from the task appearing to it ending; None when not timed
+    first: float | None = None  # before the first key
 
 
 def task_json(t: Task) -> dict:
@@ -96,6 +98,8 @@ def run_lesson(lesson: Lesson, retry: bool = False) -> list[TaskResult]:
                 keys=r.get("keys", ""),
                 count=r.get("count", 0),
                 hints=r.get("hints", 0),
+                seconds=r.get("seconds"),
+                first=r.get("first"),
             )
         )
     return results
@@ -126,6 +130,8 @@ def run_endless(pool: dict[str, Task], rungs: list[tuple[str, int]], level: int,
             hints=r["hints"],
             level=r["level"],
             budget=r.get("budget"),
+            seconds=r.get("seconds"),
+            first=r.get("first"),
         )
         for r in raw
         if r.get("id") in pool and r["status"] != "unseen"

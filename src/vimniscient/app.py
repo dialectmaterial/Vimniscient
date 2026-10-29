@@ -653,8 +653,10 @@ class ResultsScreen(Screen):
         panel.border_subtitle = self.subtitle or (f"{solved}/{len(recall)} recalled" if two_rounds else f"{solved}/{len(recall)} solved")
         self.query_one("#results-bar", Static).update(progress_bar(solved, len(recall)))
         verb = "recalled" if two_rounds else "solved"
+        times = sorted(r.seconds for r in recall if r.status == "solved" and r.seconds is not None)
+        typical = f" · {times[len(times) // 2]:.1f}s a task" if times else ""  # the median
         self.query_one("#results-summary", Static).update(
-            f"{solved} of {len(recall)} {verb}" + (f" · {beat} beat the reference" if beat else ""))
+            f"{solved} of {len(recall)} {verb}" + (f" · {beat} beat the reference" if beat else "") + typical)
 
         budgets = any(r.budget for r in results)
         table = Table(box=None, show_header=True, header_style="dim", expand=True, padding=(0, 1, 0, 0), pad_edge=False)
@@ -662,10 +664,11 @@ class ResultsScreen(Screen):
         table.add_column("task", ratio=3, no_wrap=True, overflow="ellipsis")
         table.add_column("you typed", ratio=2, no_wrap=True, overflow="ellipsis")
         table.add_column("budget" if budgets else "ref", justify="right", no_wrap=True)
+        table.add_column("time", justify="right", no_wrap=True)
 
         def rows(title: str, round_results: list[TaskResult]) -> None:
             if title:
-                table.add_row("", Text(title, style="dim bold"), "", "")
+                table.add_row("", Text(title, style="dim bold"), "", "", "")
             for r in round_results:
                 label, colour = STATUS[r.status]
                 mark = {"solved": "✓", "unseen": "·"}.get(r.status, "✗")
@@ -679,17 +682,19 @@ class ResultsScreen(Screen):
                     keys = Text.assemble((f"{label}  ", "dim"), tint(self.app, r.task.solution, "accent"))
                     count = tint(self.app, str(r.budget or r.task.ref), "text-muted")
                 goal = f"level {r.level} · {r.task.goal}" if r.task.phase == "climb" else r.task.goal
-                table.add_row(tint(self.app, mark, colour), Text(goal), keys, count)
+                seconds = tint(self.app, f"{r.seconds:.1f}s", "text-muted") if r.seconds is not None and r.status != "unseen" else ""
+                table.add_row(tint(self.app, mark, colour), Text(goal), keys, count, seconds)
 
         if two_rounds:
             learn = [r for r in results if r.task.phase == "learn"]
             rows("Recall", recall)
-            table.add_row("", "", "", "")
+            table.add_row("", "", "", "", "")
             rows(f"Learn · {sum(r.status == 'solved' for r in learn)}/{len(learn)} typed with the keys shown", learn)
         else:
             rows("", results)
-        legend = Text("n/ref: your keys and the reference solution's; fewer and you beat it" if not budgets
-                      else "n/budget: your keys and the most allowed at that level", style="dim")
+        legend = Text(("n/ref: your keys and the reference solution's; fewer and you beat it" if not budgets
+                       else "n/budget: your keys and the most allowed at that level")
+                      + "\ntime: from the task appearing to it ending; just for you, nothing is graded on it", style="dim")
         self.query_one("#results-list", Static).update(Group(table, Text(""), legend))
         panel.focus()
 
