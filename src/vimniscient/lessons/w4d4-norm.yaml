@@ -29,6 +29,22 @@ tasks:
           p = 1;
           q = 2;
           r = 3;
+      - start: |-
+          ▮a = "append"
+          n = "normal"
+          l = "lines"
+        target: |-
+          a = "append";
+          n = "normal";
+          l = "lines";
+      - start: |-
+          ▮gap = 1
+          gap = 3
+          gap = 7
+        target: |-
+          gap = 1;
+          gap = 3;
+          gap = 7;
   - goal: 'Delete the first word of every line.'
     start: |-
       ▮- encode
@@ -50,6 +66,22 @@ tasks:
           stop
           fricative
           nasal
+      - start: |-
+          ▮* spacing
+          * testing
+          * sleep
+        target: |-
+          spacing
+          testing
+          sleep
+      - start: |-
+          ▮1 cognitive
+          2 associative
+          3 autonomous
+        target: |-
+          cognitive
+          associative
+          autonomous
   - goal: 'Comment out the first two lines with "// ".'
     start: |-
       ▮one();
@@ -71,6 +103,22 @@ tasks:
           // a();
           // b();
           c();
+      - start: |-
+          ▮cram();
+          reread();
+          test();
+        target: |-
+          // cram();
+          // reread();
+          test();
+      - start: |-
+          ▮x();
+          y();
+          z();
+        target: |-
+          // x();
+          // y();
+          z();
   - goal: 'Remove the last character of every line.'
     start: |-
       ▮space,
@@ -92,3 +140,19 @@ tasks:
           onset
           nucleus
           coda
+      - start: |-
+          ▮encode.
+          store.
+          retrieve.
+        target: |-
+          encode
+          store
+          retrieve
+      - start: |-
+          ▮f!
+          t!
+          F!
+        target: |-
+          f
+          t
+          F

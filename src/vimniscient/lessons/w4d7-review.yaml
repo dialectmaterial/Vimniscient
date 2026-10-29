@@ -31,6 +31,24 @@ tasks:
           Eckert
           Labov
           Trudgill
+      - start: |-
+          ▮Miller
+          Cowan
+          Miller
+          Bjork
+        target: |-
+          Bjork
+          Cowan
+          Miller
+      - start: |-
+          ▮Roediger
+          Karpicke
+          Roediger
+          Dunlosky
+        target: |-
+          Dunlosky
+          Karpicke
+          Roediger
   - goal: 'Move the TODO line to the top.'
     start: |-
       phonology
@@ -52,6 +70,22 @@ tasks:
           TODO: check the tags
           morphology
           semantics
+      - start: |-
+          spacing
+          testing
+          ▮TODO: sleep on it
+        target: |-
+          TODO: sleep on it
+          spacing
+          testing
+      - start: |-
+          yank
+          put
+          ▮TODO: learn :m
+        target: |-
+          TODO: learn :m
+          yank
+          put
   - goal: 'Quote every word.'
     start: |-
       ▮sit sat seat
@@ -65,6 +99,14 @@ tasks:
           ▮ship sheep chip
         target: |-
           "ship" "sheep" "chip"
+      - start: |-
+          ▮f t F T
+        target: |-
+          "f" "t" "F" "T"
+      - start: |-
+          ▮encode store retrieve
+        target: |-
+          "encode" "store" "retrieve"
   - goal: 'Add "!" to the end of every line.'
     start: |-
       ▮Hallo
@@ -86,6 +128,22 @@ tasks:
           Bonjour!
           Guten Tag!
           Salve!
+      - start: |-
+          ▮Test
+          Space
+          Sleep
+        target: |-
+          Test!
+          Space!
+          Sleep!
+      - start: |-
+          ▮Yank
+          Put
+          Repeat
+        target: |-
+          Yank!
+          Put!
+          Repeat!
   - goal: 'Number the lines with a shell command.'
     start: |-
       ▮spacing
@@ -103,3 +161,15 @@ tasks:
         target: |-
           1 Hopi
           2 Zuni
+      - start: |-
+          ▮encode
+          store
+        target: |-
+          1 encode
+          2 store
+      - start: |-
+          ▮Miller
+          Cowan
+        target: |-
+          1 Miller
+          2 Cowan

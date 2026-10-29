@@ -30,6 +30,22 @@ tasks:
           phonology
           morphology
           syntax
+      - start: |-
+          associative
+          autonomous
+          ▮cognitive
+        target: |-
+          cognitive
+          associative
+          autonomous
+      - start: |-
+          day 7
+          day 30
+          ▮day 1
+        target: |-
+          day 1
+          day 7
+          day 30
   - goal: 'Copy the first line to the end of the file.'
     start: |-
       ▮:t transfers a copy
@@ -51,6 +67,22 @@ tasks:
           Ebbinghaus 1885
           Miller 1956
           References
+      - start: |-
+          ▮Spacing beats cramming,
+          says Cepeda, so again:
+        target: |-
+          Spacing beats cramming,
+          says Cepeda, so again:
+          Spacing beats cramming,
+      - start: |-
+          ▮Notes
+          Miller 1956
+          Cowan 2001
+        target: |-
+          Notes
+          Miller 1956
+          Cowan 2001
+          Notes
   - goal: 'Delete lines 2 and 3 (the low-utility techniques) without moving.'
     start: |-
       ▮testing
@@ -72,6 +104,22 @@ tasks:
         target: |-
           Dutch
           German
+      - start: |-
+          ▮spacing
+          cramming
+          rereading
+          testing
+        target: |-
+          spacing
+          testing
+      - start: |-
+          ▮range
+          line 2
+          line 3
+          kept
+        target: |-
+          range
+          kept
   - goal: 'Move the first two lines to the end.'
     start: |-
       ▮:m moves
@@ -97,6 +145,26 @@ tasks:
           morphology
           pragmatics
           semantics
+      - start: |-
+          ▮retrieve
+          forget
+          encode
+          store
+        target: |-
+          encode
+          store
+          retrieve
+          forget
+      - start: |-
+          ▮$ is the last line
+          :m moves
+          1,2 is the range
+          so these come first
+        target: |-
+          1,2 is the range
+          so these come first
+          $ is the last line
+          :m moves
   - goal: 'Reverse the order of the lines.'
     start: |-
       ▮sentence
@@ -122,3 +190,23 @@ tasks:
           clause
           sentence
           paragraph
+      - start: |-
+          ▮chunk
+          word
+          letter
+          stroke
+        target: |-
+          stroke
+          letter
+          word
+          chunk
+      - start: |-
+          ▮day 30
+          day 7
+          day 3
+          day 1
+        target: |-
+          day 1
+          day 3
+          day 7
+          day 30

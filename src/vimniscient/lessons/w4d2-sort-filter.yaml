@@ -30,6 +30,22 @@ tasks:
           phonetics
           pragmatics
           semantics
+      - start: |-
+          ▮sleep
+          interleaving
+          retrieval
+        target: |-
+          interleaving
+          retrieval
+          sleep
+      - start: |-
+          ▮yank
+          delete
+          change
+        target: |-
+          change
+          delete
+          yank
   - goal: 'Sort the review schedule by day, not alphabetically.'
     start: |-
       ▮Review after, days
@@ -55,6 +71,24 @@ tasks:
           86 Vietnamese
           125 Japanese
           230 Bengali
+      - start: |-
+          ▮Published, year
+          2006 Roediger
+          1885 Ebbinghaus
+          1956 Miller
+        target: |-
+          Published, year
+          1885 Ebbinghaus
+          1956 Miller
+          2006 Roediger
+      - start: |-
+          ▮Chunks held
+          7 Miller
+          4 Cowan
+        target: |-
+          Chunks held
+          4 Cowan
+          7 Miller
   - goal: 'Sort and remove the duplicates.'
     start: |-
       ▮test
@@ -80,6 +114,26 @@ tasks:
           glide
           nasal
           stop
+      - start: |-
+          ▮reread
+          cram
+          reread
+          highlight
+          cram
+        target: |-
+          cram
+          highlight
+          reread
+      - start: |-
+          ▮f
+          t
+          f
+          T
+          t
+        target: |-
+          T
+          f
+          t
   - goal: 'Line the table up in columns.'
     start: |-
       ▮key means hook
@@ -97,6 +151,18 @@ tasks:
         target: |-
           form  gloss   tag
           dogs  dog.PL  N
+      - start: |-
+          ▮name year number
+          Miller 1956 7
+        target: |-
+          name    year  number
+          Miller  1956  7
+      - start: |-
+          ▮op means
+          d delete
+        target: |-
+          op  means
+          d   delete
   - goal: 'Sort only the first two lines.'
     start: |-
       ▮syntax
@@ -122,6 +188,26 @@ tasks:
           tone
           wug
           blick
+      - start: |-
+          ▮testing
+          spacing
+          zzz
+          aaa
+        target: |-
+          spacing
+          testing
+          zzz
+          aaa
+      - start: |-
+          ▮yank
+          put
+          wug
+          blick
+        target: |-
+          put
+          yank
+          wug
+          blick
   - goal: 'Insert the output of a shell command (echo wug) below this line.'
     start: |-
       ▮Nonce word:
@@ -139,3 +225,17 @@ tasks:
           blick
         solution: ':r !echo blick<CR>'
         hint: ':r !echo blick reads the command''s output into the file.'
+      - goal: 'Insert the output of a shell command (echo recall) below this line.'
+        start: |-
+          ▮:r reads in:
+        target: |-
+          :r reads in:
+          recall
+        solution: ':r !echo recall<CR>'
+      - goal: 'Insert the output of a shell command (echo spacing) below this line.'
+        start: |-
+          ▮Best schedule:
+        target: |-
+          Best schedule:
+          spacing
+        solution: ':r !echo spacing<CR>'

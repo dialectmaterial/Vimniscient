@@ -32,6 +32,22 @@ tasks:
         target: |-
 
           The seminar begins.
+      - start: |-
+          ▮filler
+          more filler
+
+          Spacing beats cramming.
+        target: |-
+
+          Spacing beats cramming.
+      - start: |-
+          ▮} jumps
+          to the blank line
+
+          below a block.
+        target: |-
+
+          below a block.
   - goal: 'Join the two halves of the compound with no space.'
     start: |-
       ▮sprach
@@ -47,6 +63,16 @@ tasks:
           anschauung
         target: |-
           weltanschauung
+      - start: |-
+          ▮zeit
+          geist
+        target: |-
+          zeitgeist
+      - start: |-
+          ▮kinder
+          garten
+        target: |-
+          kindergarten
   - goal: 'Delete from here to the end of the file.'
     start: |-
       G goes to the end
@@ -66,6 +92,19 @@ tasks:
           notes
         target: |-
           Summary
+      - start: |-
+          Keep this
+          ▮drop
+          drop
+          drop
+        target: |-
+          Keep this
+      - start: |-
+          G is the last line
+          ▮dG
+          cuts to it
+        target: |-
+          G is the last line
   - goal: 'Fix the typo by swapping two letters.'
     start: |-
       xp is a sw▮pa
@@ -79,6 +118,14 @@ tasks:
           mor▮hpeme
         target: |-
           morpheme
+      - start: |-
+          x cuts, p p▮tus it back
+        target: |-
+          x cuts, p puts it back
+      - start: |-
+          Cowan said fo▮ru
+        target: |-
+          Cowan said four
   - goal: 'Delete everything before the cursor.'
     start: |-
       well, um, ▮0 is column zero
@@ -92,3 +139,11 @@ tasks:
           well, ▮semantics
         target: |-
           semantics
+      - start: |-
+          so, basically, ▮spacing works
+        target: |-
+          spacing works
+      - start: |-
+          um, ▮d0 deletes back to column zero
+        target: |-
+          d0 deletes back to column zero

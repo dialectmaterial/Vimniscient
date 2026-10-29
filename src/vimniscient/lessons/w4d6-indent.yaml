@@ -34,6 +34,26 @@ tasks:
               c()
               d()
           }
+      - start: |-
+          for card {
+          ▮recall()
+          check()
+          }
+        target: |-
+          for card {
+              recall()
+              check()
+          }
+      - start: |-
+          if due {
+          ▮review()
+          schedule()
+          }
+        target: |-
+          if due {
+              review()
+              schedule()
+          }
   - goal: 'Remove one level of indentation.'
     start: |2-
               ▮< pulls it back
@@ -47,6 +67,14 @@ tasks:
                   ▮verb phrase
         target: |2-
               verb phrase
+      - start: |-
+          ␣       ▮< outdents
+        target: |-
+          ␣   < outdents
+      - start: |-
+          ␣       ▮spaced review
+        target: |-
+          ␣   spaced review
   - goal: 'Indent both lines by two levels.'
     start: |-
       ▮2> shifts
@@ -64,6 +92,18 @@ tasks:
         target: |2-
                   topic
                   comment
+      - start: |-
+          ▮twice
+          the shift
+        target: |-
+          ␣       twice
+                  the shift
+      - start: |-
+          ▮encode
+          store
+        target: |-
+          ␣       encode
+                  store
   - goal: 'Indent from here to the end of the file.'
     start: |-
       S
@@ -85,3 +125,19 @@ tasks:
           CP
               C
               TP
+      - start: |-
+          Stages
+          ▮cognitive
+          associative
+        target: |-
+          Stages
+              cognitive
+              associative
+      - start: |-
+          Review
+          ▮recall
+          check
+        target: |-
+          Review
+              recall
+              check
