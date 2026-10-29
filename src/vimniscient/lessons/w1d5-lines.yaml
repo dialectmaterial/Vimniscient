@@ -22,6 +22,18 @@ tasks:
           Sleep helps new memories settle.▮ An all-nighter does not.
         target: |-
           Sleep helps new memories settle.
+      - start: |-
+          D deletes from the cursor to the end.▮ This part goes.
+        target: |-
+          D deletes from the cursor to the end.
+      - start: |-
+          Test yourself, then check.▮ Just rereading is enough.
+        target: |-
+          Test yourself, then check.
+      - start: |-
+          Capital D goes big.▮ All of this disappears at once.
+        target: |-
+          Capital D goes big.
   - goal: 'Change the rest of the line to "the end of the line".'
     start: |-
       C changes to: ▮somewhere in the middle
@@ -36,6 +48,24 @@ tasks:
         target: |-
           magical number (Miller, 1956): seven, plus or minus two
         solution: 'Cseven, plus or minus two<Esc>'
+      - goal: 'Change the rest of the line to "the rest of the line".'
+        start: |-
+          C is a big c: it changes ▮just a word
+        target: |-
+          C is a big c: it changes the rest of the line
+        solution: 'Cthe rest of the line<Esc>'
+      - goal: 'Change the rest of the line to "1885".'
+        start: |-
+          Ebbinghaus published Über das Gedächtnis in ▮1958
+        target: |-
+          Ebbinghaus published Über das Gedächtnis in 1885
+        solution: 'C1885<Esc>'
+      - goal: 'Change the rest of the line to "high utility".'
+        start: |-
+          Dunlosky et al. (2013) rate practice testing as ▮low utility
+        target: |-
+          Dunlosky et al. (2013) rate practice testing as high utility
+        solution: 'Chigh utility<Esc>'
   - goal: 'Replace the middle line with "storage".'
     start: |-
       encoding
@@ -58,6 +88,36 @@ tasks:
           associative
           autonomous
         solution: 'ccassociative<Esc>'
+      - goal: 'Replace the middle line with "cc changes a line".'
+        start: |-
+          dd deletes a line
+          ▮xx changes a line
+          yy yanks a line
+        target: |-
+          dd deletes a line
+          cc changes a line
+          yy yanks a line
+        solution: 'cccc changes a line<Esc>'
+      - goal: 'Replace the middle line with "interleaving".'
+        start: |-
+          spacing
+          ▮cramming
+          testing
+        target: |-
+          spacing
+          interleaving
+          testing
+        solution: 'ccinterleaving<Esc>'
+      - goal: 'Replace the middle line with "Cowan: 4".'
+        start: |-
+          Miller: 7
+          ▮Cowan: 10
+          Ebbinghaus: 1885
+        target: |-
+          Miller: 7
+          Cowan: 4
+          Ebbinghaus: 1885
+        solution: 'ccCowan: 4<Esc>'
   - goal: 'Join the two lines.'
     start: |-
       ▮J joins this line
@@ -73,6 +133,21 @@ tasks:
           best-replicated findings on memory.
         target: |-
           The spacing effect is among the best-replicated findings on memory.
+      - start: |-
+          ▮Retrieval practice beat
+          restudying a week later.
+        target: |-
+          Retrieval practice beat restudying a week later.
+      - start: |-
+          ▮gJ joins with no space;
+          J adds one.
+        target: |-
+          gJ joins with no space; J adds one.
+      - start: |-
+          ▮Sleep after learning helps
+          memories stabilise.
+        target: |-
+          Sleep after learning helps memories stabilise.
   - goal: 'Put the stages of skill in order: cognitive first.'
     start: |-
       ▮associative
@@ -94,6 +169,33 @@ tasks:
           encoding
           storage
           retrieval
+      - goal: 'Put the review gaps in order: shortest first.'
+        start: |-
+          ▮week
+          day
+          month
+        target: |-
+          day
+          week
+          month
+      - goal: 'Put the steps of ddp in order: cut first.'
+        start: |-
+          ▮put
+          cut
+          and that is ddp
+        target: |-
+          cut
+          put
+          and that is ddp
+      - goal: 'Put the years in order: earliest first.'
+        start: |-
+          ▮1956 Miller
+          1885 Ebbinghaus
+          2001 Cowan
+        target: |-
+          1885 Ebbinghaus
+          1956 Miller
+          2001 Cowan
   - goal: 'Add a semicolon at the end.'
     start: |-
       ▮console.log("A appends at the end")
@@ -107,6 +209,18 @@ tasks:
           ▮return "A is for append"
         target: |-
           return "A is for append";
+      - start: |-
+          ▮let append = "A"
+        target: |-
+          let append = "A";
+      - start: |-
+          ▮const gap = reviewAfter(days)
+        target: |-
+          const gap = reviewAfter(days);
+      - start: |-
+          ▮print("A goes to the end")
+        target: |-
+          print("A goes to the end");
   - goal: 'Comment the line out with "# ".'
     ft: python
     start: |-
@@ -121,3 +235,15 @@ tasks:
           cram = ▮True
         target: |-
           # cram = True
+      - start: |-
+          highlight = ▮True
+        target: |-
+          # highlight = True
+      - start: |-
+          start = ▮"I goes to the first letter"
+        target: |-
+          # start = "I goes to the first letter"
+      - start: |-
+          all_nighter = ▮plan()
+        target: |-
+          # all_nighter = plan()

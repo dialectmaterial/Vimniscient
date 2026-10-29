@@ -35,6 +35,38 @@ tasks:
           Ebbinghaus learned nonsense syllables and tested himself.
 
           Forgetting was fastest right after learning.
+      - start: |-
+          a is around: the paragraph and the blank line after it.
+
+          This line ▮is filler.
+          So is this one.
+
+          One gap stays.
+        target: |-
+          a is around: the paragraph and the blank line after it.
+
+          One gap stays.
+      - start: |-
+          Spacing: one review today.
+
+          Cram ▮it all
+          the night before.
+
+          Another review next week.
+        target: |-
+          Spacing: one review today.
+
+          Another review next week.
+      - start: |-
+          Fitts and Posner named three stages of skill.
+
+          There ▮are only two.
+
+          The last one is autonomous.
+        target: |-
+          Fitts and Posner named three stages of skill.
+
+          The last one is autonomous.
   - goal: 'Duplicate the first paragraph.'
     start: |-
       ▮Retrieving a memory makes it stronger.
@@ -60,6 +92,36 @@ tasks:
           yap yanks a paragraph; P puts it above.
 
           Done.
+      - start: |-
+          ▮Spaced repetition: see it again, later.
+
+          Done.
+        target: |-
+          Spaced repetition: see it again, later.
+
+          Spaced repetition: see it again, later.
+
+          Done.
+      - start: |-
+          ▮P puts above, p puts below.
+
+          Done.
+        target: |-
+          P puts above, p puts below.
+
+          P puts above, p puts below.
+
+          Done.
+      - start: |-
+          ▮Recall first, then check the answer.
+
+          Done.
+        target: |-
+          Recall first, then check the answer.
+
+          Recall first, then check the answer.
+
+          Done.
   - goal: 'Fix the wrong sentence: it should say "A sentence ends at a full stop."'
     start: |-
       s is for sentence. A sentence ends at a ▮comma. cis changes just one.
@@ -74,6 +136,24 @@ tasks:
         target: |-
           Mnemonics tie the new to the known. Spacing beats cramming. Testing beats rereading.
         solution: 'cisSpacing beats cramming.<Esc>'
+      - goal: 'Fix the wrong sentence: it should say "He used nonsense syllables."'
+        start: |-
+          Ebbinghaus tested himself. He used real ▮words. The curve dropped fast.
+        target: |-
+          Ebbinghaus tested himself. He used nonsense syllables. The curve dropped fast.
+        solution: 'cisHe used nonsense syllables.<Esc>'
+      - goal: 'Fix the wrong sentence: it should say "The i means inner."'
+        start: |-
+          cis keeps the spaces. The i means ▮around. das takes one along.
+        target: |-
+          cis keeps the spaces. The i means inner. das takes one along.
+        solution: 'cisThe i means inner.<Esc>'
+      - goal: 'Fix the wrong sentence: it should say "Sleep helps memories settle."'
+        start: |-
+          Learn in the evening. Memories fade in ▮sleep. Review in the morning.
+        target: |-
+          Learn in the evening. Sleep helps memories settle. Review in the morning.
+        solution: 'cisSleep helps memories settle.<Esc>'
   - goal: 'Delete the middle sentence.'
     start: |-
       das deletes a sentence. This one ▮is wrong. Its space goes too.
@@ -87,6 +167,18 @@ tasks:
           Miller wrote of seven, plus or minus two. Miller ▮sold ice cream. Cowan later argued for about four.
         target: |-
           Miller wrote of seven, plus or minus two. Cowan later argued for about four.
+      - start: |-
+          a is around: a sentence and its space. This sentence ▮is spare. The next one moves up.
+        target: |-
+          a is around: a sentence and its space. The next one moves up.
+      - start: |-
+          Roediger and Karpicke tested a week later. Rereading ▮won. Retrieval practice did best.
+        target: |-
+          Roediger and Karpicke tested a week later. Retrieval practice did best.
+      - start: |-
+          Rereading feels fluent. Fluent means ▮known. It is an illusion.
+        target: |-
+          Rereading feels fluent. It is an illusion.
   - goal: 'Indent the three stages.'
     start: |-
       Stages of skill (Fitts & Posner):
@@ -116,3 +208,40 @@ tasks:
               this line
               this line
               and this one
+      - goal: 'Indent the three difficulties.'
+        start: |-
+          Desirable difficulties (Bjork):
+
+          ▮spacing
+          testing
+          interleaving
+        target: |-
+          Desirable difficulties (Bjork):
+
+              spacing
+              testing
+              interleaving
+      - goal: 'Indent the three lines.'
+        start: |-
+          > pushes right:
+
+          ▮one
+          two
+          three
+        target: |-
+          > pushes right:
+
+              one
+              two
+              three
+      - goal: 'Indent the two techniques.'
+        start: |-
+          High utility (Dunlosky 2013):
+
+          ▮practice testing
+          distributed practice
+        target: |-
+          High utility (Dunlosky 2013):
+
+              practice testing
+              distributed practice

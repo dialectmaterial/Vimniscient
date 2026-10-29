@@ -24,6 +24,24 @@ tasks:
         target: |-
           keyword_method = "Atkinson & Raugh, 1975"
         solution: 'ci"Atkinson & Raugh, 1975<Esc>'
+      - goal: 'Set the string to "the quote names the pair".'
+        start: |-
+          quote_object = "▮brackets name it"
+        target: |-
+          quote_object = "the quote names the pair"
+        solution: 'ci"the quote names the pair<Esc>'
+      - goal: 'Fix the citation to "Cepeda et al., 2006".'
+        start: |-
+          spacing_review = "▮Cepeda, 2016"
+        target: |-
+          spacing_review = "Cepeda et al., 2006"
+        solution: 'ci"Cepeda et al., 2006<Esc>'
+      - goal: 'Set the string to "without the quotes".'
+        start: |-
+          inner_quote = "▮with the quotes"
+        target: |-
+          inner_quote = "without the quotes"
+        solution: 'ci"without the quotes<Esc>'
   - goal: 'Change the string to "spaced", starting from the beginning of the line.'
     ft: python
     start: |-
@@ -39,6 +57,24 @@ tasks:
         target: |-
           learn_by = "testing yourself"
         solution: 'ci"testing yourself<Esc>'
+      - goal: 'Change the string to "seven, plus or minus two", starting from the beginning of the line.'
+        start: |-
+          ▮miller_1956 = "ten"
+        target: |-
+          miller_1956 = "seven, plus or minus two"
+        solution: 'ci"seven, plus or minus two<Esc>'
+      - goal: 'Change the string to "about four", starting from the beginning of the line.'
+        start: |-
+          ▮cowan_chunks = "seven"
+        target: |-
+          cowan_chunks = "about four"
+        solution: 'ci"about four<Esc>'
+      - goal: 'Change the string to "the next quotes", starting from the beginning of the line.'
+        start: |-
+          ▮ci_quote_finds = "nothing"
+        target: |-
+          ci_quote_finds = "the next quotes"
+        solution: 'ci"the next quotes<Esc>'
   - goal: 'Empty the inner parentheses.'
     ft: python
     start: |-
@@ -53,6 +89,18 @@ tasks:
           forget(cramming(the_night_bef▮ore))
         target: |-
           forget(cramming())
+      - start: |-
+          inner_paren(keeps(▮only_the_brackets))
+        target: |-
+          inner_paren(keeps())
+      - start: |-
+          restudy(feels(better_at_fi▮ve_minutes))
+        target: |-
+          restudy(feels())
+      - start: |-
+          sleep(stabilises(▮new_memories))
+        target: |-
+          sleep(stabilises())
   - goal: 'Delete the argument list, parentheses included.'
     ft: python
     start: |-
@@ -67,6 +115,18 @@ tasks:
           recall = retrieval(▮practice, tests) * 2
         target: |-
           recall = retrieval * 2
+      - start: |-
+          ebbinghaus = curve(▮forgetting, steep) + 1885
+        target: |-
+          ebbinghaus = curve + 1885
+      - start: |-
+          parens_go = da(▮inside, and, out) + too
+        target: |-
+          parens_go = da + too
+      - start: |-
+          skill = stages(▮cognitive, associative, autonomous) * 3
+        target: |-
+          skill = stages * 3
   - goal: 'Empty the list.'
     ft: python
     start: |-
@@ -81,6 +141,18 @@ tasks:
           excuses_not_to_practise = [▮"busy", "tired", "later"]
         target: |-
           excuses_not_to_practise = []
+      - start: |-
+          bracket_names_the_pair = [▮"square", "ones"]
+        target: |-
+          bracket_names_the_pair = []
+      - start: |-
+          high_utility = [▮"highlighting", "rereading"]
+        target: |-
+          high_utility = []
+      - start: |-
+          cram_plan = [▮"everything", "tonight"]
+        target: |-
+          cram_plan = []
   - goal: 'Change the text inside the tag to "t is for tag".'
     ft: html
     start: |-
@@ -96,3 +168,21 @@ tasks:
         target: |-
           <i>Ebbinghaus, 1885</i>
         solution: 'citEbbinghaus, 1885<Esc>'
+      - goal: 'Change the text inside the tag to "Miller, 1956".'
+        start: |-
+          <em>Miller, 19▮65</em>
+        target: |-
+          <em>Miller, 1956</em>
+        solution: 'citMiller, 1956<Esc>'
+      - goal: 'Change the text inside the tag to "the tags stay".'
+        start: |-
+          <b>the tags ▮go</b>
+        target: |-
+          <b>the tags stay</b>
+        solution: 'citthe tags stay<Esc>'
+      - goal: 'Change the text inside the tag to "Roediger & Karpicke, 2006".'
+        start: |-
+          <i>Roediger, 20▮16</i>
+        target: |-
+          <i>Roediger & Karpicke, 2006</i>
+        solution: 'citRoediger & Karpicke, 2006<Esc>'

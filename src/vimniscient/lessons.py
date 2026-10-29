@@ -10,7 +10,8 @@ review don't just replay a sentence you remember. A variant inherits whatever
 it doesn't set (the solution, hint and filetype).
 
 A lesson runs in two rounds: Learn, with the keys shown, then Recall, the same
-skills on the other texts, shuffled, without the keys.
+skills on other texts, shuffled, without the keys. Which texts it picks
+changes from day to day.
 """
 
 import random
@@ -138,11 +139,16 @@ def _load(source: str, name: str) -> Lesson:
 
 
 def two_rounds(lesson: Lesson, day: date | None = None) -> list[Task]:
-    """Learn (each task as written, keys shown), then Recall (the next version
-    of each, shuffled, keys hidden). The order changes from day to day."""
-    learn = [t.as_phase("learn") for t in lesson.tasks]
-    recall = [t.version(1).as_phase("recall") for t in lesson.tasks]
-    random.Random(f"{lesson.id}:{day or date.today()}").shuffle(recall)
+    """Learn (keys shown), then Recall (the same skills on other texts, shuffled,
+    keys hidden). Which texts, and the order, change from day to day, so a
+    lesson done again isn't the sentences you remember."""
+    rng = random.Random(f"{lesson.id}:{day or date.today()}")
+    learn, recall = [], []
+    for t in lesson.tasks:
+        first, second = rng.sample(range(t.versions), 2) if t.versions > 1 else (0, 0)
+        learn.append(t.version(first).as_phase("learn"))
+        recall.append(t.version(second).as_phase("recall"))
+    rng.shuffle(recall)
     return learn + recall
 
 

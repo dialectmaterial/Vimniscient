@@ -22,6 +22,21 @@ tasks:
           Rereading ▮over and over feels fluent but fades.
         target: |-
           Rereading feels fluent but fades.
+      - goal: 'Delete the three words "again and again".'
+        start: |-
+          Rereading ▮again and again feels like knowing.
+        target: |-
+          Rereading feels like knowing.
+      - goal: 'Delete the three words "one two three".'
+        start: |-
+          A count before ▮one two three dw repeats it.
+        target: |-
+          A count before dw repeats it.
+      - goal: 'Delete the three words "at first sometimes".'
+        start: |-
+          Spaced practice ▮at first sometimes feels slower but lasts.
+        target: |-
+          Spaced practice feels slower but lasts.
   - goal: 'Delete the three low-utility techniques (Dunlosky et al., 2013).'
     start: |-
       practice testing
@@ -45,6 +60,36 @@ tasks:
         target: |-
           3dd deletes
           and stops.
+      - goal: 'Delete the three low-utility habits.'
+        start: |-
+          keep:
+          ▮cram
+          reread
+          highlight
+          space it out
+        target: |-
+          keep:
+          space it out
+      - goal: 'Delete the three middle lines.'
+        start: |-
+          3 is the count,
+          ▮one
+          two
+          three
+          dd is the verb.
+        target: |-
+          3 is the count,
+          dd is the verb.
+      - goal: 'Delete the three placeholder lines.'
+        start: |-
+          Miller 1956
+          ▮x
+          y
+          z
+          Cowan 2001
+        target: |-
+          Miller 1956
+          Cowan 2001
   - goal: 'Change "three words" to "two words".'
     start: |-
       c2w changes ▮three words.
@@ -59,6 +104,24 @@ tasks:
         target: |-
           Learning can feel hard when it is working.
         solution: 'c2wcan feel hard<Esc>'
+      - goal: 'Change "seven items" to "about four".'
+        start: |-
+          Cowan said ▮seven items, give or take.
+        target: |-
+          Cowan said about four, give or take.
+        solution: 'c2wabout four<Esc>'
+      - goal: 'Change "three things" to "two words".'
+        start: |-
+          c2w: change ▮three things.
+        target: |-
+          c2w: change two words.
+        solution: 'c2wtwo words<Esc>'
+      - goal: 'Change "feel easy" to "feel harder".'
+        start: |-
+          Spacing makes reviews ▮feel easy, yet results last.
+        target: |-
+          Spacing makes reviews feel harder, yet results last.
+        solution: 'c2wfeel harder<Esc>'
   - goal: 'Fix the number: 7, not 700000.'
     start: |-
       The magical number is 7▮00000, plus or minus two.
@@ -72,6 +135,21 @@ tasks:
           Cowan put working memory at about 4▮00000 chunks.
         target: |-
           Cowan put working memory at about 4 chunks.
+      - goal: 'Fix the year: 1885.'
+        start: |-
+          Ebbinghaus published in 1885▮00000.
+        target: |-
+          Ebbinghaus published in 1885.
+      - goal: 'Delete the five x letters.'
+        start: |-
+          x crosses out ▮xxxxxone letter at a time.
+        target: |-
+          x crosses out one letter at a time.
+      - goal: 'Fix the number: 3 stages.'
+        start: |-
+          Fitts and Posner named 3▮00000 stages of skill.
+        target: |-
+          Fitts and Posner named 3 stages of skill.
   - goal: 'Delete from the third comma to the end (highlighting is the odd one out).'
     start: |-
       ▮spacing, testing, interleaving, highlighting
@@ -85,6 +163,21 @@ tasks:
           ▮f finds, t tills, F looks back, x crosses out
         target: |-
           f finds, t tills, F looks back
+      - goal: 'Delete from the third comma to the end (coffee is not a stage of memory).'
+        start: |-
+          ▮encoding, storage, retrieval, coffee
+        target: |-
+          encoding, storage, retrieval
+      - goal: 'Delete from the third comma to the end (Fitts and Posner name three stages).'
+        start: |-
+          ▮cognitive, associative, autonomous, hypnotic
+        target: |-
+          cognitive, associative, autonomous
+      - goal: 'Delete from the third comma to the end (z is not an operator).'
+        start: |-
+          ▮c changes, d deletes, y yanks, z naps
+        target: |-
+          c changes, d deletes, y yanks
   - goal: 'Join the three lines into one.'
     start: |-
       ▮3J
@@ -102,3 +195,21 @@ tasks:
           chunk
         target: |-
           chunk by chunk
+      - start: |-
+          ▮f
+          finds
+          forward
+        target: |-
+          f finds forward
+      - start: |-
+          ▮test,
+          wait,
+          retest
+        target: |-
+          test, wait, retest
+      - start: |-
+          ▮J
+          glues
+          lines
+        target: |-
+          J glues lines

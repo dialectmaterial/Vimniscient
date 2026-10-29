@@ -24,6 +24,24 @@ tasks:
         target: |-
           keys = {"y": "yank"}
         solution: 'ciwyank<Esc>'
+      - goal: 'Fix what d stands for: delete.'
+        start: |-
+          keys = {"d": "▮duplicate"}
+        target: |-
+          keys = {"d": "delete"}
+        solution: 'ciwdelete<Esc>'
+      - goal: 'Fix what p stands for: put.'
+        start: |-
+          keys = {"p": "▮paste"}
+        target: |-
+          keys = {"p": "put"}
+        solution: 'ciwput<Esc>'
+      - goal: 'Fix what t stands for: till.'
+        start: |-
+          keys = {"t": "▮to"}
+        target: |-
+          keys = {"t": "till"}
+        solution: 'ciwtill<Esc>'
   - goal: 'Replace all three arguments with space.'
     ft: python
     start: |-
@@ -39,6 +57,24 @@ tasks:
         target: |-
           learn(test)
         solution: 'ci(test<Esc>'
+      - goal: 'Replace both arguments with retrieve.'
+        start: |-
+          retain(▮reread, reread)
+        target: |-
+          retain(retrieve)
+        solution: 'ci(retrieve<Esc>'
+      - goal: 'Replace all three arguments with later.'
+        start: |-
+          review(▮now, now, now)
+        target: |-
+          review(later)
+        solution: 'ci(later<Esc>'
+      - goal: 'Replace all the arguments with 4.'
+        start: |-
+          chunks(▮1, 2, 3, 4, 5, 6, 7)
+        target: |-
+          chunks(4)
+        solution: 'ci(4<Esc>'
   - goal: 'Delete the wrong sentence.'
     start: |-
       d deletes. ▮y means yell. c changes.
@@ -52,6 +88,18 @@ tasks:
           Testing helps recall. ▮Rereading beats testing. Spacing helps too.
         target: |-
           Testing helps recall. Spacing helps too.
+      - start: |-
+          y yanks. ▮p means paste. P puts above.
+        target: |-
+          y yanks. P puts above.
+      - start: |-
+          Sleep helps memory. ▮Cramming beats spacing. Review tomorrow.
+        target: |-
+          Sleep helps memory. Review tomorrow.
+      - start: |-
+          f finds. ▮t means to. F looks back.
+        target: |-
+          f finds. F looks back.
   - goal: 'Delete the cramming and highlighting imports.'
     ft: python
     start: |-
@@ -74,6 +122,33 @@ tasks:
         target: |-
           import sleep
           import retrieval
+      - goal: 'Delete the highlight and reread imports.'
+        start: |-
+          import testing
+          ▮import highlight
+          import reread
+          import spacing
+        target: |-
+          import testing
+          import spacing
+      - goal: 'Delete the blocking and massing imports.'
+        start: |-
+          import interleaving
+          ▮import blocking
+          import massing
+          import sleep
+        target: |-
+          import interleaving
+          import sleep
+      - goal: 'Delete the copy and paste imports (Vim says yank and put).'
+        start: |-
+          import yank
+          ▮import copy
+          import paste
+          import put
+        target: |-
+          import yank
+          import put
   - goal: 'Change the subdomain to www.'
     start: |-
       url = 'https://▮old.vimhelp.org'
@@ -87,6 +162,18 @@ tasks:
           url = 'https://▮test.wals.info'
         target: |-
           url = 'https://www.wals.info'
+      - start: |-
+          url = 'https://▮old.neovim.io'
+        target: |-
+          url = 'https://www.neovim.io'
+      - start: |-
+          url = 'https://▮beta.vim.org'
+        target: |-
+          url = 'https://www.vim.org'
+      - start: |-
+          url = 'https://▮m.wikipedia.org'
+        target: |-
+          url = 'https://www.wikipedia.org'
   - goal: 'Indent the body of the function.'
     ft: python
     start: |-
@@ -109,3 +196,27 @@ tasks:
           def review():
               due = tomorrow
               return due
+      - start: |-
+          def chunk():
+          ▮size = 4
+          return size
+        target: |-
+          def chunk():
+              size = 4
+              return size
+      - start: |-
+          def put():
+          ▮text = yanked
+          return text
+        target: |-
+          def put():
+              text = yanked
+              return text
+      - start: |-
+          def sleep():
+          ▮memories = stable
+          return memories
+        target: |-
+          def sleep():
+              memories = stable
+              return memories

@@ -24,6 +24,24 @@ tasks:
           The keyword method links a new word to a sound-alike image.
         solution: 'dtl'
         hint: 'dtl deletes till the next l after the cursor; "kind of" has none.'
+      - goal: 'Delete everything up to "just".'
+        start: |-
+          dt stops ▮a bit early: just before the letter.
+        target: |-
+          dt stops just before the letter.
+        solution: 'dtj'
+      - goal: 'Delete everything up to "himself".'
+        start: |-
+          Ebbinghaus tested ▮mainly himself, his only subject.
+        target: |-
+          Ebbinghaus tested himself, his only subject.
+        solution: 'dth'
+      - goal: 'Delete everything up to "helps".'
+        start: |-
+          Spacing ▮really, truly helps memory last.
+        target: |-
+          Spacing helps memory last.
+        solution: 'dth'
   - goal: 'Change the value to "till" (keep the semicolon).'
     start: |-
       let t = ▮"through"; let f = "find";
@@ -38,6 +56,24 @@ tasks:
         target: |-
           let review_after = 1; let forgotten = true;
         solution: 'ct;1<Esc>'
+      - goal: 'Change the value to "find" (keep the semicolon).'
+        start: |-
+          let f = ▮"till"; let t = "till";
+        target: |-
+          let f = "find"; let t = "till";
+        solution: 'ct;"find"<Esc>'
+      - goal: 'Change the value to 4 (keep the semicolon).'
+        start: |-
+          let working_memory = ▮7; let source = "Cowan";
+        target: |-
+          let working_memory = 4; let source = "Cowan";
+        solution: 'ct;4<Esc>'
+      - goal: 'Change the value to 7 (keep the semicolon).'
+        start: |-
+          let gap_days = ▮0; let review = "spaced";
+        target: |-
+          let gap_days = 7; let review = "spaced";
+        solution: 'ct;7<Esc>'
   - goal: 'Keep only the folder path: delete the file name.'
     start: |-
       memory/keys/vim/forgotten.tx▮t
@@ -51,6 +87,18 @@ tasks:
           science/testing-effect/roediger-2006/notes.t▮xt
         target: |-
           science/testing-effect/roediger-2006/
+      - start: |-
+          lessons/week-1/till/backwards.ya▮ml
+        target: |-
+          lessons/week-1/till/
+      - start: |-
+          notes/miller/magical-number/seven.m▮d
+        target: |-
+          notes/miller/magical-number/
+      - start: |-
+          vim/motions/capital-T/goes-back.tx▮t
+        target: |-
+          vim/motions/capital-T/
   - goal: 'Turn the third comma into a semicolon.'
     start: |-
       ▮spacing, testing, mnemonics, sleep
@@ -64,6 +112,18 @@ tasks:
           ▮Ebbinghaus, Bartlett, Tulving, Baddeley
         target: |-
           Ebbinghaus, Bartlett, Tulving; Baddeley
+      - start: |-
+          ▮f, t, F, T
+        target: |-
+          f, t, F; T
+      - start: |-
+          ▮cognitive, associative, autonomous, done
+        target: |-
+          cognitive, associative, autonomous; done
+      - start: |-
+          ▮encode, store, retrieve, forget
+        target: |-
+          encode, store, retrieve; forget
   - goal: 'Replace the whole before(char) call with on_it.'
     ft: python
     start: |-
@@ -79,6 +139,24 @@ tasks:
         target: |-
           best = retrieve  # retrieval wins
         solution: 'ct retrieve<Esc>'
+      - goal: 'Replace the whole at(char) call with till.'
+        start: |-
+          t_stops = ▮at(char)  # one short of it
+        target: |-
+          t_stops = till  # one short of it
+        solution: 'ct till<Esc>'
+      - goal: 'Replace the whole cram(all_night) call with sleep_on_it.'
+        start: |-
+          memory = ▮cram(all_night)  # sleep helps
+        target: |-
+          memory = sleep_on_it  # sleep helps
+        solution: 'ct sleep_on_it<Esc>'
+      - goal: 'Replace the whole miller(seven) call with cowan(4).'
+        start: |-
+          chunks = ▮miller(seven)  # Cowan says four
+        target: |-
+          chunks = cowan(4)  # Cowan says four
+        solution: 'ct cowan(4)<Esc>'
   - goal: 'Delete the part in brackets: from the cursor up to and including the ")".'
     start: |-
       f lands on▮ (not before) the letter.
@@ -92,3 +170,15 @@ tasks:
           Spaced reviews▮ (a day, then a week) beat cramming.
         target: |-
           Spaced reviews beat cramming.
+      - start: |-
+          F finds backwards▮ (to the left) on the line.
+        target: |-
+          F finds backwards on the line.
+      - start: |-
+          The forgetting curve▮ (Ebbinghaus, 1885) drops fast at first.
+        target: |-
+          The forgetting curve drops fast at first.
+      - start: |-
+          Interleaving▮ (mixing topics) feels harder but lasts.
+        target: |-
+          Interleaving feels harder but lasts.
