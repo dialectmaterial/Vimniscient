@@ -1,6 +1,7 @@
 """Run a review session (tasks without round labels, as review, placement and
 VimGolf have) through the real runner, skipping one task: it has to come back
-as a Learn copy and again at the end. Runs in a hidden tmux session.
+as a Learn copy and again at the end. The skipped one is a generated text, so
+the one at the end is another generated text. Runs in a hidden tmux session.
 
     uv run python tests/live_review.py
 """
@@ -16,7 +17,7 @@ from live_endless import SESSION, tmux, type_keys
 from vimniscient.lessons import load_lessons
 
 lessons = {lesson.id: lesson for lesson in load_lessons()}
-tasks = [lessons["w1d2-pairs"].tasks[0].version(1), lessons["w1d4-find"].tasks[1], lessons["w1d5-lines"].tasks[0]]
+tasks = [lessons["w1d2-pairs"].tasks[0].version(1), lessons["w1d1-words"].tasks[1].generate("live"), lessons["w1d5-lines"].tasks[0]]
 skipped = tasks[1]
 plan = [(tasks[0], "solved"), (skipped, "skipped"), (skipped.as_phase("learn"), "solved"),
         (tasks[2], "solved"), (skipped.next_version(), "solved")]
@@ -27,7 +28,7 @@ from vimniscient.lessons import load_lessons
 from vimniscient.progress import Progress
 from vimniscient.session import run_lesson
 lessons = {lesson.id: lesson for lesson in load_lessons()}
-tasks = [lessons["w1d2-pairs"].tasks[0].version(1), lessons["w1d4-find"].tasks[1], lessons["w1d5-lines"].tasks[0]]
+tasks = [lessons["w1d2-pairs"].tasks[0].version(1), lessons["w1d1-words"].tasks[1].generate("live"), lessons["w1d5-lines"].tasks[0]]
 Progress().record(run_lesson(review_lesson(tasks), retry=True))
 """
 
