@@ -29,6 +29,30 @@ tasks:
           fast, then levels off
         solution: '/sl<CR>cwfast<Esc>'
         hint: 'Search for as little as you need. /sl<Enter> lands on slowly already.'
+      - goal: 'Change "back" to "forward".'
+        start: |-
+          ▮Searching forward,
+          the slash leans back
+        target: |-
+          Searching forward,
+          the slash leans forward
+        solution: '/b<CR>cwforward<Esc>'
+      - goal: 'Change "faster" to "slower".'
+        start: |-
+          ▮Spaced practice
+          fades faster than massed
+        target: |-
+          Spaced practice
+          fades slower than massed
+        solution: '/fas<CR>cwslower<Esc>'
+      - goal: 'Change "guess" to "match".'
+        start: |-
+          ▮Search is a motion:
+          d/ deletes up to a guess
+        target: |-
+          Search is a motion:
+          d/ deletes up to a match
+        solution: '/g<CR>cwmatch<Esc>'
   - goal: 'Delete the hedging before "Search".'
     start: |-
       ▮er, like, honestly, Search is a motion
@@ -44,6 +68,24 @@ tasks:
           Testing beats rereading
         solution: 'd/T<CR>'
         hint: 'd/T<Enter> deletes up to the next T (uppercase, so the search is exact).'
+      - goal: 'Delete the hedging before "Slash".'
+        start: |-
+          ▮so, basically, Slash leans forward
+        target: |-
+          Slash leans forward
+        solution: 'd/S<CR>'
+      - goal: 'Delete the hedging before "Spacing".'
+        start: |-
+          ▮well, sort of, Spacing beats cramming
+        target: |-
+          Spacing beats cramming
+        solution: 'd/S<CR>'
+      - goal: 'Delete the hedging before "Retrieval".'
+        start: |-
+          ▮well, anyway, Retrieval builds memory
+        target: |-
+          Retrieval builds memory
+        solution: 'd/R<CR>'
   - goal: 'Rename the second "starred" to found.'
     ft: python
     start: |-
@@ -64,6 +106,30 @@ tasks:
           interval_days = n * 2
         solution: '*ciwn<Esc>'
         hint: '* only matches whole words, so it skips interval_days.'
+      - goal: 'Rename the second whole word "star" to match.'
+        start: |-
+          ▮star = "*"
+          found = star
+        target: |-
+          star = "*"
+          found = match
+        solution: '*ciwmatch<Esc>'
+      - goal: 'Rename the second whole word "chunk" to n.'
+        start: |-
+          ▮chunk = 4
+          chunk_count = chunk + 1
+        target: |-
+          chunk = 4
+          chunk_count = n + 1
+        solution: '*ciwn<Esc>'
+      - goal: 'Rename the second whole word "gap" to days.'
+        start: |-
+          ▮gap = 7
+          next_review = today + gap
+        target: |-
+          gap = 7
+          next_review = today + days
+        solution: '*ciwdays<Esc>'
   - goal: 'Delete the third "next".'
     start: |-
       n means ▮next, and N means the next next one back.
@@ -78,6 +144,21 @@ tasks:
         target: |-
           Test yourself, then space it, then test yourself again.
         hint: '* goes to the second yourself, n to the third, daw deletes it.'
+      - goal: 'Delete the third "star".'
+        start: |-
+          The ▮star finds the next star, then the star star after.
+        target: |-
+          The star finds the next star, then the star after.
+      - goal: 'Delete the third "it".'
+        start: |-
+          Space ▮it out, test it, then test it it again.
+        target: |-
+          Space it out, test it, then test it again.
+      - goal: 'Delete the third "back".'
+        start: |-
+          N goes ▮back, n goes on, so go back back once.
+        target: |-
+          N goes back, n goes on, so go back once.
   - goal: 'Change the last "forward" to "backward", searching backwards.'
     start: |-
       / leans forward and searches forward; ? asks forward, from the en▮d.
@@ -93,3 +174,21 @@ tasks:
           Restudy wins after five minutes; testing wins after a week.
         solution: '?res<CR>cwtesting<Esc>'
         hint: '?res<Enter> searches backwards for the start of restudy.'
+      - goal: 'Change the last "forward" to "backward", searching backwards.'
+        start: |-
+          ? asks backward; / leans forward; ? looks forward from the en▮d.
+        target: |-
+          ? asks backward; / leans forward; ? looks backward from the end.
+        solution: '?fo<CR>cwbackward<Esc>'
+      - goal: 'Change the last "seven" to "four", searching backwards.'
+        start: |-
+          Miller said seven; Cowan said seven▮.
+        target: |-
+          Miller said seven; Cowan said four.
+        solution: '?se<CR>cwfour<Esc>'
+      - goal: 'Change the last "wins" to "loses", searching backwards.'
+        start: |-
+          Cramming wins at first; cramming wins in the lon▮g run.
+        target: |-
+          Cramming wins at first; cramming loses in the long run.
+        solution: '?w<CR>cwloses<Esc>'

@@ -22,6 +22,24 @@ tasks:
         target: |-
           recall = test * test
         solution: 'ciwtest<Esc>ww.'
+      - goal: 'Change both "reread" to "test".'
+        start: |-
+          memory = ▮reread + reread
+        target: |-
+          memory = test + test
+        solution: 'ciwtest<Esc>ww.'
+      - goal: 'Change both "once" to "again".'
+        start: |-
+          dot = ▮once + once
+        target: |-
+          dot = again + again
+        solution: 'ciwagain<Esc>ww.'
+      - goal: 'Change both "hour" to "day".'
+        start: |-
+          gap = ▮hour * hour
+        target: |-
+          gap = day * day
+        solution: 'ciwday<Esc>ww.'
   - goal: 'Add a semicolon to every line.'
     start: |-
       ▮let full_stop = "."
@@ -43,6 +61,30 @@ tasks:
           let day1 = review;
           let day3 = review;
           let day7 = review;
+      - start: |-
+          ▮let say = "once"
+          let again = "twice"
+          let repeat = "thrice"
+        target: |-
+          let say = "once";
+          let again = "twice";
+          let repeat = "thrice";
+      - start: |-
+          ▮let encode = 1
+          let store = 2
+          let retrieve = 3
+        target: |-
+          let encode = 1;
+          let store = 2;
+          let retrieve = 3;
+      - start: |-
+          ▮let chunk_a = 4
+          let chunk_b = 4
+          let chunk_c = 4
+        target: |-
+          let chunk_a = 4;
+          let chunk_b = 4;
+          let chunk_c = 4;
   - goal: 'Indent both lines.'
     start: |-
       ▮the dot says
@@ -60,6 +102,24 @@ tasks:
         target: |2-
               encode
               retrieve
+      - start: |-
+          ▮repeat
+          the change
+        target: |-
+          ␣   repeat
+              the change
+      - start: |-
+          ▮cognitive
+          associative
+        target: |-
+          ␣   cognitive
+              associative
+      - start: |-
+          ▮space it
+          test it
+        target: |-
+          ␣   space it
+              test it
   - goal: 'Delete all three "again".'
     start: |-
       The dot ▮again again again repeats the last change.
@@ -73,6 +133,21 @@ tasks:
           Massed ▮cram cram cram practice fades fast.
         target: |-
           Massed practice fades fast.
+      - goal: 'Delete all three extra "soon".'
+        start: |-
+          Spaced reviews ▮soon soon soon beat one long cram.
+        target: |-
+          Spaced reviews beat one long cram.
+      - goal: 'Delete the three extra "page".'
+        start: |-
+          Rereading the page ▮page page page feels fluent.
+        target: |-
+          Rereading the page feels fluent.
+      - goal: 'Delete all three "dot".'
+        start: |-
+          The . key ▮dot dot dot repeats your last change.
+        target: |-
+          The . key repeats your last change.
   - goal: 'Turn the lines into a list with "- ".'
     start: |-
       ▮make one change
@@ -94,3 +169,27 @@ tasks:
           - test yourself
           - space it out
           - sleep on it
+      - start: |-
+          ▮encode
+          store
+          retrieve
+        target: |-
+          - encode
+          - store
+          - retrieve
+      - start: |-
+          ▮I inserts at the start
+          j moves down
+          the dot repeats
+        target: |-
+          - I inserts at the start
+          - j moves down
+          - the dot repeats
+      - start: |-
+          ▮cognitive
+          associative
+          autonomous
+        target: |-
+          - cognitive
+          - associative
+          - autonomous

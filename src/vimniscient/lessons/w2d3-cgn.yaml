@@ -32,6 +32,36 @@ tasks:
           study(spaced)
           review(spaced)
         solution: '*cgnspaced<Esc>..'
+      - goal: 'Rename every reread to retrieve.'
+        start: |-
+          ▮reread = plan()
+          study(reread)
+          log(reread)
+        target: |-
+          retrieve = plan()
+          study(retrieve)
+          log(retrieve)
+        solution: '*cgnretrieve<Esc>..'
+      - goal: 'Rename every x to match.'
+        start: |-
+          ▮x = gn()
+          c(x)
+          dot(x)
+        target: |-
+          match = gn()
+          c(match)
+          dot(match)
+        solution: '*cgnmatch<Esc>..'
+      - goal: 'Rename every massed to spaced.'
+        start: |-
+          ▮massed = schedule()
+          run(massed)
+          save(massed)
+        target: |-
+          spaced = schedule()
+          run(spaced)
+          save(spaced)
+        solution: '*cgnspaced<Esc>..'
   - goal: 'Change the first and the last "the" to "a", keep the middle one.'
     start: |-
       ▮the change, the skip and the repeat
@@ -45,6 +75,18 @@ tasks:
           ▮the vowel, the glide and the stop
         target: |-
           a vowel, the glide and a stop
+      - start: |-
+          ▮the star, the next and the dot
+        target: |-
+          a star, the next and a dot
+      - start: |-
+          ▮the test, the wait and the retest
+        target: |-
+          a test, the wait and a retest
+      - start: |-
+          ▮the cue, the gap and the recall
+        target: |-
+          a cue, the gap and a recall
   - goal: 'Replace "very weak" with "strong" on both lines.'
     start: |-
       ▮Spaced recall is very weak.
@@ -63,6 +105,30 @@ tasks:
           gn goes to the next match.
           cgn changes the next match.
         solution: '/the last<CR>cgnthe next<Esc>.'
+      - goal: 'Replace "is best" with "fades" on both lines.'
+        start: |-
+          ▮Massed practice is best.
+          Cramming practice is best.
+        target: |-
+          Massed practice fades.
+          Cramming practice fades.
+        solution: '/is best<CR>cgnfades<Esc>.'
+      - goal: 'Replace "one match" with "the next match" on both lines.'
+        start: |-
+          ▮cgn changes one match.
+          The dot changes one match.
+        target: |-
+          cgn changes the next match.
+          The dot changes the next match.
+        solution: '/one match<CR>cgnthe next match<Esc>.'
+      - goal: 'Replace "high utility" with "low utility" on both lines.'
+        start: |-
+          ▮Highlighting is high utility.
+          Rereading is high utility.
+        target: |-
+          Highlighting is low utility.
+          Rereading is low utility.
+        solution: '/high utility<CR>cgnlow utility<Esc>.'
   - goal: 'Change all four n to dot.'
     start: |-
       echo ▮n; echo n; echo n; echo n
@@ -77,6 +143,24 @@ tasks:
         target: |-
           cp out; cp out; cp out; cp out
         solution: '*cgnout<Esc>...'
+      - goal: 'Change all four it to again.'
+        start: |-
+          say ▮it; say it; say it; say it
+        target: |-
+          say again; say again; say again; say again
+        solution: '*cgnagain<Esc>...'
+      - goal: 'Change all four old to new.'
+        start: |-
+          mv ▮old; mv old; mv old; mv old
+        target: |-
+          mv new; mv new; mv new; mv new
+        solution: '*cgnnew<Esc>...'
+      - goal: 'Change all four cram to space.'
+        start: |-
+          test ▮cram; test cram; test cram; test cram
+        target: |-
+          test space; test space; test space; test space
+        solution: '*cgnspace<Esc>...'
   - goal: 'Delete every "um, ".'
     start: |-
       dgn ▮um, deletes um, the next match um, each time.
@@ -92,3 +176,21 @@ tasks:
           It's a word that is just filler.
         solution: '/like, <CR>dgn..'
         hint: 'dgn deletes the next match. Search for "like, " with the space.'
+      - goal: 'Delete every "so, ".'
+        start: |-
+          dgn ▮so, deletes so, every match so, in turn.
+        target: |-
+          dgn deletes every match in turn.
+        solution: '/so, <CR>dgn..'
+      - goal: 'Delete every "uh, ".'
+        start: |-
+          Spacing ▮uh, beats uh, cramming uh, easily.
+        target: |-
+          Spacing beats cramming easily.
+        solution: '/uh, <CR>dgn..'
+      - goal: 'Delete every "er, ".'
+        start: |-
+          Testing ▮er, beats er, rereading er, later.
+        target: |-
+          Testing beats rereading later.
+        solution: '/er, <CR>dgn..'

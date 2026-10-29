@@ -22,6 +22,21 @@ tasks:
           ▮pos = tag(pos)
         target: |-
           POS = tag(POS)
+      - goal: 'Uppercase every standalone "url".'
+        start: |-
+          ▮url = parse(url)
+        target: |-
+          URL = parse(URL)
+      - goal: 'Uppercase every standalone "pdf".'
+        start: |-
+          ▮pdf = open(pdf)
+        target: |-
+          PDF = open(PDF)
+      - goal: 'Uppercase every standalone "tla".'
+        start: |-
+          ▮tla = expand(tla)
+        target: |-
+          TLA = expand(TLA)
   - goal: 'Add one to every review number.'
     start: |-
       ▮review1 review2 review3
@@ -35,6 +50,21 @@ tasks:
           ▮case1 case2 case3
         target: |-
           case2 case3 case4
+      - goal: 'Add one to every day number.'
+        start: |-
+          ▮day1 day2 day3
+        target: |-
+          day2 day3 day4
+      - goal: 'Add one to every step number.'
+        start: |-
+          ▮step1 step2 step3
+        target: |-
+          step2 step3 step4
+      - goal: 'Add one to every chunk number.'
+        start: |-
+          ▮chunk1 chunk2 chunk3
+        target: |-
+          chunk2 chunk3 chunk4
   - goal: 'Fix every "teh".'
     start: |-
       ▮teh dot repeats teh change for teh rest
@@ -48,6 +78,21 @@ tasks:
           ▮hte stem and hte root and hte end
         target: |-
           the stem and the root and the end
+      - goal: 'Fix every "teh".'
+        start: |-
+          ▮teh star, teh match, teh change
+        target: |-
+          the star, the match, the change
+      - goal: 'Fix every "hte".'
+        start: |-
+          ▮hte gap, hte test, hte review
+        target: |-
+          the gap, the test, the review
+      - goal: 'Fix every "eth".'
+        start: |-
+          ▮eth cue and eth recall and eth answer
+        target: |-
+          the cue and the recall and the answer
   - goal: 'Lowercase the whole line.'
     start: |-
       ▮V THEN U LOWERS THE LINE
@@ -61,6 +106,18 @@ tasks:
           ▮ALL CAPS HIDES CASE
         target: |-
           all caps hides case
+      - start: |-
+          ▮LOWER THE WHOLE LINE
+        target: |-
+          lower the whole line
+      - start: |-
+          ▮SLEEP HELPS MEMORIES SETTLE
+        target: |-
+          sleep helps memories settle
+      - start: |-
+          ▮TESTING BEATS REREADING
+        target: |-
+          testing beats rereading
   - goal: 'Delete up to "Habits".'
     start: |-
       ▮well, the thing is: Habits form through repetition
@@ -75,6 +132,23 @@ tasks:
         target: |-
           Hausa has tone
         hint: 't is case-sensitive, and the first capital H is in Hausa, so dtH.'
+      - goal: 'Delete up to "Hermann".'
+        start: |-
+          ▮so, like, you know: Hermann Ebbinghaus tested himself
+        target: |-
+          Hermann Ebbinghaus tested himself
+      - goal: 'Delete up to "Memory".'
+        start: |-
+          ▮okay, so, in short: Memory fades fast at first
+        target: |-
+          Memory fades fast at first
+        solution: 'dtM'
+      - goal: 'Delete up to "Testing".'
+        start: |-
+          ▮right, well, see: Testing beats rereading
+        target: |-
+          Testing beats rereading
+        solution: 'dtT'
   - goal: 'Comment out all three lines with "# ".'
     ft: python
     start: |-
@@ -97,3 +171,27 @@ tasks:
           # x = 1
           # y = 2
           # z = 3
+      - start: |-
+          ▮massed = 1
+          blocked = 2
+          reread = 3
+        target: |-
+          # massed = 1
+          # blocked = 2
+          # reread = 3
+      - start: |-
+          ▮a = 1
+          b = 2
+          c = 3
+        target: |-
+          # a = 1
+          # b = 2
+          # c = 3
+      - start: |-
+          ▮print(1)
+          print(2)
+          print(3)
+        target: |-
+          # print(1)
+          # print(2)
+          # print(3)

@@ -27,6 +27,27 @@ tasks:
           retrieval practice
         target: |-
           retrieval practice
+      - goal: 'Delete the first two lines with V.'
+        start: |-
+          ▮cram
+          all night
+          sleep on it
+        target: |-
+          sleep on it
+      - goal: 'Delete the first two lines with V.'
+        start: |-
+          ▮V is linewise,
+          so both lines go
+          and this one stays
+        target: |-
+          and this one stays
+      - goal: 'Delete the two wrong estimates with V.'
+        start: |-
+          ▮seven chunks
+          ten chunks
+          about four chunks (Cowan)
+        target: |-
+          about four chunks (Cowan)
   - goal: 'Uppercase "visual mode".'
     start: |-
       v is ▮visual mode: you see it
@@ -41,6 +62,21 @@ tasks:
         target: |-
           try ACTIVE RECALL today
         hint: 'v, then e e to the end of "recall", then U.'
+      - goal: 'Uppercase "spaced retrieval".'
+        start: |-
+          practise ▮spaced retrieval daily
+        target: |-
+          practise SPACED RETRIEVAL daily
+      - goal: 'Uppercase "visual selections".'
+        start: |-
+          U turns ▮visual selections up
+        target: |-
+          U turns VISUAL SELECTIONS up
+      - goal: 'Uppercase "working memory".'
+        start: |-
+          Cowan studied ▮working memory limits
+        target: |-
+          Cowan studied WORKING MEMORY limits
   - goal: 'Join the first three lines.'
     start: |-
       ▮J
@@ -62,6 +98,30 @@ tasks:
         target: |-
           a big dog
           barks
+      - start: |-
+          ▮spaced
+          retrieval
+          practice
+          works
+        target: |-
+          spaced retrieval practice
+          works
+      - start: |-
+          ▮V
+          then
+          J
+          joins
+        target: |-
+          V then J
+          joins
+      - start: |-
+          ▮nonsense
+          syllable
+          lists
+          fade
+        target: |-
+          nonsense syllable lists
+          fade
   - goal: 'Indent the function body.'
     ft: python
     start: |-
@@ -88,6 +148,36 @@ tasks:
               test()
               space()
               sleep()
+      - start: |-
+          def swap():
+          ▮cut()
+          move()
+          put()
+        target: |-
+          def swap():
+              cut()
+              move()
+              put()
+      - start: |-
+          def chunk():
+          ▮group()
+          label()
+          recall()
+        target: |-
+          def chunk():
+              group()
+              label()
+              recall()
+      - start: |-
+          def review():
+          ▮wait()
+          recall()
+          check()
+        target: |-
+          def review():
+              wait()
+              recall()
+              check()
   - goal: 'Replace the whole condition with "ok".'
     ft: python
     start: |-
@@ -102,3 +192,15 @@ tasks:
           while ▮(i < n and (ok)):
         target: |-
           while ok:
+      - start: |-
+          if ▮(spaced or (tested)):
+        target: |-
+          if ok:
+      - start: |-
+          while ▮(due and (not done)):
+        target: |-
+          while ok:
+      - start: |-
+          elif ▮(sleep and (review)):
+        target: |-
+          elif ok:
