@@ -24,7 +24,6 @@ def main() -> None:
 
     if args.command is None:
         from vimniscient.app import VimniscientApp
-
         from vimniscient.session import mouse_wheel
 
         try:

@@ -33,8 +33,9 @@ def mouse_wheel(on: bool) -> None:
     """With the mouse off, terminals like foot turn the wheel into arrow keys (alternate
     scroll mode, DECSET 1007): it would scroll lists, and type arrows into lessons.
     Off while Vimniscient runs, Neovim included; back on when it quits."""
-    sys.__stdout__.write("\x1b[?1007h" if on else "\x1b[?1007l")
-    sys.__stdout__.flush()
+    if sys.__stdout__ and sys.__stdout__.isatty():
+        sys.__stdout__.write("\x1b[?1007h" if on else "\x1b[?1007l")
+        sys.__stdout__.flush()
 
 
 def task_json(t: Task) -> dict:

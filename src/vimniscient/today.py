@@ -91,6 +91,7 @@ class Work:
     lesson: Lesson | None
     due_cards: int
     due_review: int
+    due_drills: int
     new_cards: int  # of `cards`, the new ones
     seconds: dict[str, float]  # about how long each step takes
     budget: float  # seconds left of today's budget, before this work
@@ -133,6 +134,7 @@ def todays_work(progress: Progress, lessons: list[Lesson], decks: dict[str, Deck
         lesson=lesson,
         due_cards=len(due_cards),
         due_review=len(review),
+        due_drills=len(todays_drills_),
         new_cards=take["new"],
         seconds={
             "cards": len(cards) * CARD_SECONDS,
@@ -171,7 +173,8 @@ def plan(progress: Progress, lessons: list[Lesson], decks: dict[str, Deck], dril
         review_detail = f"done · {work.due_review} wait for tomorrow" if work.due_review else "nothing due"
     return [
         Step("cards", "Cards", cards_detail, bool(work.cards), minutes(work.seconds["cards"])),
-        Step("drills", "Drills", plural(len(work.drills), "drill") if work.drills else "done",
+        Step("drills", "Drills", plural(len(work.drills), "drill") if work.drills
+             else f"{plural(work.due_drills, 'drill')} wait for tomorrow" if work.due_drills else "done",
              bool(work.drills), minutes(work.seconds["drills"])),
         Step("review", "Review", review_detail, bool(work.review), minutes(work.seconds["review"])),
         Step("lesson", "Lesson", lesson_detail, work.lesson is not None, minutes(work.seconds["lesson"])),
