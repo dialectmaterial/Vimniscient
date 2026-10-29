@@ -32,6 +32,26 @@ tasks:
           [TP]
           [C]
           [V]
+      - start: |-
+          ▮q
+          a
+          at
+          dot
+        target: |-
+          [q]
+          [a]
+          [at]
+          [dot]
+      - start: |-
+          ▮encode
+          store
+          retrieve
+          forget
+        target: |-
+          [encode]
+          [store]
+          [retrieve]
+          [forget]
   - goal: 'Prefix every line with "> ".'
     start: |-
       ▮Words mean
@@ -53,6 +73,22 @@ tasks:
           > The limits of
           > my language mean
           > the limits of my world.
+      - start: |-
+          ▮Test yourself,
+          space it out,
+          sleep on it.
+        target: |-
+          > Test yourself,
+          > space it out,
+          > sleep on it.
+      - start: |-
+          ▮Recall it
+          before you
+          check it.
+        target: |-
+          > Recall it
+          > before you
+          > check it.
   - goal: 'Delete the blank lines.'
     start: |-
       ▮encoding
@@ -78,6 +114,26 @@ tasks:
           onset
           nucleus
           coda
+      - start: |-
+          ▮cognitive
+
+          associative
+
+          autonomous
+        target: |-
+          cognitive
+          associative
+          autonomous
+      - start: |-
+          ▮record
+
+          stop
+
+          play
+        target: |-
+          record
+          stop
+          play
   - goal: 'Swap the two halves of every line (key=meaning becomes meaning=key).'
     start: |-
       ▮q=record
@@ -95,6 +151,20 @@ tasks:
         target: |-
           Haus=house
           Wasser=water
+      - goal: 'Swap the two halves of every line (key=meaning becomes meaning=key).'
+        start: |-
+          ▮f=find
+          t=till
+        target: |-
+          find=f
+          till=t
+      - goal: 'Swap the two halves of every line (name=number becomes number=name).'
+        start: |-
+          ▮Miller=7
+          Cowan=4
+        target: |-
+          7=Miller
+          4=Cowan
   - goal: 'Duplicate the first line to the end, then delete the second line. Keep the right line in the register.'
     start: |-
       ▮competence
@@ -116,3 +186,19 @@ tasks:
           langue
           parole
           langue
+      - start: |-
+          ▮spacing
+          noise
+          testing
+        target: |-
+          spacing
+          testing
+          spacing
+      - start: |-
+          ▮the yank
+          noise
+          the delete
+        target: |-
+          the yank
+          the delete
+          the yank

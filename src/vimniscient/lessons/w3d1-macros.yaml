@@ -33,6 +33,26 @@ tasks:
           let day3 = 3;
           let day7 = 7;
           let day14 = 14;
+      - start: |-
+          ▮let macro = "a"
+          let q = "record"
+          let at = "play"
+          let dot = "again"
+        target: |-
+          let macro = "a";
+          let q = "record";
+          let at = "play";
+          let dot = "again";
+      - start: |-
+          ▮let encode = 1
+          let store = 2
+          let retrieve = 3
+          let forget = 4
+        target: |-
+          let encode = 1;
+          let store = 2;
+          let retrieve = 3;
+          let forget = 4;
   - goal: 'Put every term in double quotes.'
     start: |-
       ▮quill
@@ -54,6 +74,22 @@ tasks:
           "stem"
           "root"
           "affix"
+      - start: |-
+          ▮spacing
+          testing
+          sleep
+        target: |-
+          "spacing"
+          "testing"
+          "sleep"
+      - start: |-
+          ▮cognitive
+          associative
+          autonomous
+        target: |-
+          "cognitive"
+          "associative"
+          "autonomous"
   - goal: 'Turn every key=value into key: value.'
     start: |-
       ▮key=q
@@ -75,6 +111,22 @@ tasks:
           name: Ebbinghaus
           born: 1850
           field: memory
+      - start: |-
+          ▮name=Miller
+          year=1956
+          number=7
+        target: |-
+          name: Miller
+          year: 1956
+          number: 7
+      - start: |-
+          ▮verb=d
+          means=delete
+          hook=cut
+        target: |-
+          verb: d
+          means: delete
+          hook: cut
   - goal: 'Delete every second line: keep the true ones.'
     start: |-
       ▮q records
@@ -102,6 +154,29 @@ tasks:
           /b/
           /d/
           /g/
+      - start: |-
+          ▮q starts recording
+          q quits Vim
+          q stops it
+          @ sends email
+          @a plays it back
+          @@ deletes it
+        target: |-
+          q starts recording
+          q stops it
+          @a plays it back
+      - goal: 'Delete every second line: keep the high-utility ones.'
+        start: |-
+          ▮testing helps
+          highlighting helps
+          spacing helps
+          rereading helps
+          interleaving helps
+          summarizing helps
+        target: |-
+          testing helps
+          spacing helps
+          interleaving helps
   - goal: 'Turn every dash into a star. Use a big count.'
     start: |-
       ▮- spacing
@@ -135,3 +210,31 @@ tasks:
           * dative
           * ablative
           * vocative
+      - start: |-
+          ▮- encode
+          - store
+          - retrieve
+          - forget
+          - relearn
+          - recall
+        target: |-
+          * encode
+          * store
+          * retrieve
+          * forget
+          * relearn
+          * recall
+      - start: |-
+          ▮- record
+          - stop
+          - play
+          - repeat
+          - count
+          - stop at the end
+        target: |-
+          * record
+          * stop
+          * play
+          * repeat
+          * count
+          * stop at the end

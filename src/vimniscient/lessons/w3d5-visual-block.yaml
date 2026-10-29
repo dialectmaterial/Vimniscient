@@ -30,6 +30,22 @@ tasks:
           # p = 1
           # q = 2
           # r = 3
+      - start: |-
+          ▮q = "record"
+          at = "play"
+          dot = "again"
+        target: |-
+          # q = "record"
+          # at = "play"
+          # dot = "again"
+      - start: |-
+          ▮x1 = cram()
+          x2 = reread()
+          x3 = highlight()
+        target: |-
+          # x1 = cram()
+          # x2 = reread()
+          # x3 = highlight()
   - goal: 'Add a semicolon to lines of different lengths.'
     start: |-
       ▮x = 1
@@ -51,6 +67,22 @@ tasks:
           a = 1;
           bb = 22;
           ccc = 333;
+      - start: |-
+          ▮d = 1
+          dd = 2
+          d3w = 3
+        target: |-
+          d = 1;
+          dd = 2;
+          d3w = 3;
+      - start: |-
+          ▮gap = 1
+          gap2 = 3
+          gap_three = 7
+        target: |-
+          gap = 1;
+          gap2 = 3;
+          gap_three = 7;
   - goal: 'Delete the "1 | " column.'
     start: |-
       ▮1 | spacing
@@ -72,6 +104,22 @@ tasks:
           Hopi
           Zuni
           Navajo
+      - start: |-
+          ▮1 | encode
+          2 | store
+          3 | retrieve
+        target: |-
+          encode
+          store
+          retrieve
+      - start: |-
+          ▮1 | Ctrl-v
+          2 | cuts a
+          3 | block
+        target: |-
+          Ctrl-v
+          cuts a
+          block
   - goal: 'Number the lines 1, 2, 3.'
     start: |-
       ▮0. encode
@@ -93,6 +141,22 @@ tasks:
           1. Dutch
           2. German
           3. Frisian
+      - start: |-
+          ▮0. cognitive
+          0. associative
+          0. autonomous
+        target: |-
+          1. cognitive
+          2. associative
+          3. autonomous
+      - start: |-
+          ▮0. record
+          0. stop
+          0. replay
+        target: |-
+          1. record
+          2. stop
+          3. replay
   - goal: 'Change every "cram" to "test" at once.'
     start: |-
       ▮cram: day 1
@@ -115,3 +179,23 @@ tasks:
           noun: 2
           noun: 3
         solution: '<C-v>jjecnoun<Esc>'
+      - goal: 'Change every "mass" to "space" at once.'
+        start: |-
+          ▮mass: day 1
+          mass: day 2
+          mass: day 3
+        target: |-
+          space: day 1
+          space: day 2
+          space: day 3
+        solution: '<C-v>jjecspace<Esc>'
+      - goal: 'Change every "read" to "test" at once.'
+        start: |-
+          ▮read: 1
+          read: 2
+          read: 3
+        target: |-
+          test: 1
+          test: 2
+          test: 3
+        solution: '<C-v>jjectest<Esc>'

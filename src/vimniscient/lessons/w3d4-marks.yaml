@@ -36,6 +36,28 @@ tasks:
         target: |-
           BEGIN
           END
+      - start: |-
+          ▮BEGIN
+          cram
+          reread
+          highlight
+          summarize
+          skim
+          END
+        target: |-
+          BEGIN
+          END
+      - start: |-
+          ▮BEGIN
+          mark
+          jump
+          line
+          letter
+          back
+          END
+        target: |-
+          BEGIN
+          END
   - goal: 'Copy the two mark lines under "Cheat sheet".'
     start: |-
       ▮== Marks ==
@@ -66,6 +88,32 @@ tasks:
           rendezvous
           déjà vu
         hint: 'ma on rendezvous, j to déjà vu, y''a yanks back to the mark, G p pastes at the end.'
+      - goal: 'Copy day 1 and day 7 under "Plan".'
+        start: |-
+          ▮== Spacing ==
+          day 1
+          day 7
+          == Plan ==
+        target: |-
+          == Spacing ==
+          day 1
+          day 7
+          == Plan ==
+          day 1
+          day 7
+      - goal: 'Copy the two jump lines under "Notes".'
+        start: |-
+          ▮== Jumps ==
+          'a goes to the line
+          `a goes to the letter
+          == Notes ==
+        target: |-
+          == Jumps ==
+          'a goes to the line
+          `a goes to the letter
+          == Notes ==
+          'a goes to the line
+          `a goes to the letter
   - goal: 'Change "rough, line-wise " to "humble ", using a mark.'
     start: |-
       The ▮rough, line-wise backtick lands on the exact letter
@@ -81,6 +129,18 @@ tasks:
           The commonest English word is the
         solution: 'mafEc`acommonest <Esc>'
         hint: 'ma, go to the E of English, then c`a changes from the mark up to the cursor.'
+      - goal: 'Change "quick, letter-exact " to "precise ", using a mark.'
+        start: |-
+          A ▮quick, letter-exact jump uses the backtick
+        target: |-
+          A precise jump uses the backtick
+        solution: 'mafjc`aprecise <Esc>'
+      - goal: 'Change "rarely, if ever, " to "never ", using a mark.'
+        start: |-
+          Ebbinghaus ▮rarely, if ever, used real words
+        target: |-
+          Ebbinghaus never used real words
+        solution: 'mafuc`anever <Esc>'
   - goal: 'Fix the typo on the last line, then jump back and fix the first.'
     start: |-
       ▮teh start
@@ -106,3 +166,23 @@ tasks:
           middle
           middle
           the verb
+      - start: |-
+          ▮teh mark
+          jump
+          back
+          teh spot
+        target: |-
+          the mark
+          jump
+          back
+          the spot
+      - start: |-
+          ▮teh test
+          wait
+          wait
+          teh retest
+        target: |-
+          the test
+          wait
+          wait
+          the retest

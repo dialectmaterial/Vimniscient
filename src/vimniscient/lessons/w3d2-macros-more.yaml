@@ -33,6 +33,26 @@ tasks:
           b fine
           c TODO GLOSS that
           d TODO TAG it
+      - start: |-
+          ▮1 TODO space this
+          2 done
+          3 TODO test that
+          4 TODO sleep now
+        target: |-
+          1 TODO SPACE this
+          2 done
+          3 TODO TEST that
+          4 TODO SLEEP now
+      - start: |-
+          ▮x TODO macro it
+          y skip
+          z TODO record this
+          w TODO play that
+        target: |-
+          x TODO MACRO it
+          y skip
+          z TODO RECORD this
+          w TODO PLAY that
   - goal: 'Turn every comma into " | ", using @a once and then @@.'
     start: |-
       ▮q,record
@@ -54,6 +74,22 @@ tasks:
           onset | coda
           head | dependent
           topic | comment
+      - start: |-
+          ▮key,hook
+          f,find
+          t,till
+        target: |-
+          key | hook
+          f | find
+          t | till
+      - start: |-
+          ▮Miller,seven
+          Cowan,four
+          Ebbinghaus,1885
+        target: |-
+          Miller | seven
+          Cowan | four
+          Ebbinghaus | 1885
   - goal: 'Put every line in parentheses: record on the first line, then use :norm for the rest.'
     start: |-
       ▮spacing
@@ -79,6 +115,26 @@ tasks:
           (TP)
           (CP)
           (VP)
+      - start: |-
+          ▮encode
+          store
+          retrieve
+          forget
+        target: |-
+          (encode)
+          (store)
+          (retrieve)
+          (forget)
+      - start: |-
+          ▮q
+          @a
+          @@
+          norm
+        target: |-
+          (q)
+          (@a)
+          (@@)
+          (norm)
   - goal: 'Make a numbered list of four items.'
     start: |-
       ▮1. Test yourself.
@@ -98,3 +154,17 @@ tasks:
           2. Review after a delay.
           3. Review after a delay.
           4. Review after a delay.
+      - start: |-
+          ▮1. Space your reviews.
+        target: |-
+          1. Space your reviews.
+          2. Space your reviews.
+          3. Space your reviews.
+          4. Space your reviews.
+      - start: |-
+          ▮1. Record, then replay.
+        target: |-
+          1. Record, then replay.
+          2. Record, then replay.
+          3. Record, then replay.
+          4. Record, then replay.

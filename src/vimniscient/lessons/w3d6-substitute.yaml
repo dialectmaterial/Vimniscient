@@ -25,6 +25,16 @@ tasks:
           ▮the old theory
         target: |-
           the new theory
+      - goal: 'Replace "old" with "new" on this line.'
+        start: |-
+          ▮the old estimate: four chunks
+        target: |-
+          the new estimate: four chunks
+      - goal: 'Replace the first "old" with "new" on this line.'
+        start: |-
+          ▮old review, old gap
+        target: |-
+          new review, old gap
   - goal: 'Use American spelling everywhere.'
     start: |-
       ▮the colour of a vowel
@@ -43,6 +53,18 @@ tasks:
           a labor of phonetics
           is my endeavor
         hint: ':%s/our/or/g works, but look: the only u''s are in labour and endeavour. :%s/u//g'
+      - start: |-
+          ▮the behaviour
+          of a neighbour
+        target: |-
+          the behavior
+          of a neighbor
+      - start: |-
+          ▮my favourite
+          honour
+        target: |-
+          my favorite
+          honor
   - goal: 'Rename the word case (only the whole word) to kasus.'
     start: |-
       ▮case caseless case
@@ -61,6 +83,22 @@ tasks:
           pitch toneless pitch
           the pitch contour
         solution: '*:%s//pitch/g<CR>'
+      - goal: 'Rename the word gap (only the whole word) to lag.'
+        start: |-
+          ▮gap gapless gap
+          the gap widens
+        target: |-
+          lag gapless lag
+          the lag widens
+        solution: '*:%s//lag/g<CR>'
+      - goal: 'Rename the word star (only the whole word) to asterisk.'
+        start: |-
+          ▮star starry star
+          the star key
+        target: |-
+          asterisk starry asterisk
+          the asterisk key
+        solution: '*:%s//asterisk/g<CR>'
   - goal: 'Turn "Last, First" into "First Last".'
     start: |-
       ▮Ebbinghaus, Hermann
@@ -78,6 +116,18 @@ tasks:
         target: |-
           Henry Roediger
           Jeffrey Karpicke
+      - start: |-
+          ▮Posner, Michael
+          Fitts, Paul
+        target: |-
+          Michael Posner
+          Paul Fitts
+      - start: |-
+          ▮Bjork, Robert
+          Cowan, Nelson
+        target: |-
+          Robert Bjork
+          Nelson Cowan
   - goal: 'Change x to y on the first two lines only.'
     start: |-
       ▮x = 1
@@ -100,6 +150,26 @@ tasks:
           b = 2
           a = 3
         solution: 'Vj:s/a/b<CR>'
+      - goal: 'Change n to m on the first two lines only.'
+        start: |-
+          ▮n = 1
+          n = 2
+          n = 3
+        target: |-
+          m = 1
+          m = 2
+          n = 3
+        solution: 'Vj:s/n/m<CR>'
+      - goal: 'Change old to new on the first two lines only.'
+        start: |-
+          ▮old = 1
+          old = 2
+          old = 3
+        target: |-
+          new = 1
+          new = 2
+          old = 3
+        solution: 'Vj:s/old/new<CR>'
   - goal: 'Delete every comment line.'
     start: |-
       ▮:g is global
@@ -121,6 +191,22 @@ tasks:
         target: |-
           morpheme
           allomorph
+      - start: |-
+          ▮spacing
+          # todo
+          testing
+          # later
+        target: |-
+          spacing
+          testing
+      - start: |-
+          ▮g is global
+          # delete me
+          d deletes
+          # me too
+        target: |-
+          g is global
+          d deletes
   - goal: 'Keep only the error lines.'
     start: |-
       ▮error: unglossed word
@@ -142,6 +228,24 @@ tasks:
         target: |-
           error: no gloss
           error: bad tag
+      - goal: 'Keep only the keep lines.'
+        start: |-
+          ▮keep: testing
+          drop: rereading
+          keep: spacing
+          drop: cramming
+        target: |-
+          keep: testing
+          keep: spacing
+        solution: ':v/keep/d<CR>'
+      - start: |-
+          ▮error: no target
+          info: ok
+          error: bad key
+          note: fine
+        target: |-
+          error: no target
+          error: bad key
   - goal: 'Add a semicolon to every call line, but not to the comment.'
     start: |-
       ▮call(a)
@@ -164,3 +268,23 @@ tasks:
           # skip
           emit(y);
         solution: ':g/emit/norm A;<CR>'
+      - goal: 'Add a semicolon to every put line, but not to the comment.'
+        start: |-
+          ▮put(a)
+          # skip
+          put(b)
+        target: |-
+          put(a);
+          # skip
+          put(b);
+        solution: ':g/put/norm A;<CR>'
+      - goal: 'Add a semicolon to every yank line, but not to the comment.'
+        start: |-
+          ▮yank(x)
+          # skip
+          yank(y)
+        target: |-
+          yank(x);
+          # skip
+          yank(y);
+        solution: ':g/yank/norm A;<CR>'
