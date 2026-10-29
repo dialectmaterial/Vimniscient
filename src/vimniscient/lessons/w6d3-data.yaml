@@ -26,6 +26,22 @@ tasks:
           gloss,word
           dog,Hund
           cat,Katze
+      - start: |-
+          ▮name,year
+          Miller,1956
+          Cowan,2001
+        target: |-
+          year,name
+          1956,Miller
+          2001,Cowan
+      - start: |-
+          ▮op,means
+          c,change
+          d,delete
+        target: |-
+          means,op
+          change,c
+          delete,d
   - goal: 'Keep only the email addresses.'
     start: |-
       ▮id 1, email: sapir@yale.edu
@@ -43,6 +59,18 @@ tasks:
         target: |-
           labov@upenn.edu
           eckert@stanford.edu
+      - start: |-
+          ▮id 5, email: spaced@example.org
+          id 6, email: tested@example.org
+        target: |-
+          spaced@example.org
+          tested@example.org
+      - start: |-
+          ▮id 7, email: recall@example.com
+          id 8, email: review@example.com
+        target: |-
+          recall@example.com
+          review@example.com
   - goal: 'Sort the reviews by their day.'
     start: |-
       ▮third review 30
@@ -64,6 +92,24 @@ tasks:
           semantics 2
           syntax 3
           pragmatics 4
+      - goal: 'Sort the researchers by year.'
+        start: |-
+          ▮Cowan 2001
+          Ebbinghaus 1885
+          Miller 1956
+        target: |-
+          Ebbinghaus 1885
+          Miller 1956
+          Cowan 2001
+      - goal: 'Sort the stages by their number.'
+        start: |-
+          ▮autonomous 3
+          cognitive 1
+          associative 2
+        target: |-
+          cognitive 1
+          associative 2
+          autonomous 3
   - goal: 'Drop the DEBUG lines, then the timestamps.'
     start: |-
       ▮10:01 INFO tagging started
@@ -83,3 +129,17 @@ tasks:
         target: |-
           INFO parsing started
           INFO parsing done
+      - start: |-
+          ▮08:00 INFO review started
+          08:01 DEBUG card 12
+          08:02 INFO review done
+        target: |-
+          INFO review started
+          INFO review done
+      - start: |-
+          ▮07:30 INFO macro recorded
+          07:31 DEBUG register a
+          07:32 INFO macro played
+        target: |-
+          INFO macro recorded
+          INFO macro played

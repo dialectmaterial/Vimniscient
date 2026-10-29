@@ -41,6 +41,34 @@ tasks:
               return count
         solution: '*:%s//count/g<CR>'
         hint: '* searches for the whole word n; :%s//count/g replaces every match.'
+      - goal: 'Rename the variable k to known everywhere.'
+        start: |-
+          def recall(cards):
+              ▮k = 0
+              for c in cards:
+                  k += 1
+              return k
+        target: |-
+          def recall(cards):
+              known = 0
+              for c in cards:
+                  known += 1
+              return known
+        solution: '*:%s//known/g<CR>'
+      - goal: 'Rename the variable g to gap everywhere (but not inside gaps).'
+        start: |-
+          def gaps(days):
+              ▮g = 1
+              for d in days:
+                  g *= 2
+              return g
+        target: |-
+          def gaps(days):
+              gap = 1
+              for d in days:
+                  gap *= 2
+              return gap
+        solution: '*:%s//gap/g<CR>'
   - goal: 'Turn the names into a Python list.'
     ft: python
     start: |-
@@ -59,6 +87,18 @@ tasks:
           cldf
         target: |-
           names = ["ipa", "wals", "cldf"]
+      - start: |-
+          ▮spacing
+          testing
+          sleep
+        target: |-
+          names = ["spacing", "testing", "sleep"]
+      - start: |-
+          ▮miller
+          cowan
+          bjork
+        target: |-
+          names = ["miller", "cowan", "bjork"]
   - goal: 'Make it a method: add self, and use self. for the two attributes.'
     ft: python
     start: |-
@@ -79,6 +119,20 @@ tasks:
               print(self.word, self.pos)
         solution: 'f)iself<Esc>j:s/\v(word|pos)/self.&/g<CR>'
         hint: 'f) i self. Then on the next line, \v(word|pos) matches either word.'
+      - start: |-
+          ▮def recall():
+              print(cue, delay)
+        target: |-
+          def recall(self):
+              print(self.cue, self.delay)
+        solution: 'f)iself<Esc>j:s/\v(cue|delay)/self.&/g<CR>'
+      - start: |-
+          ▮def review():
+              print(gap, due)
+        target: |-
+          def review(self):
+              print(self.gap, self.due)
+        solution: 'f)iself<Esc>j:s/\v(gap|due)/self.&/g<CR>'
   - goal: 'Turn the dict literal into a dict() call.'
     ft: python
     start: |-
@@ -93,3 +147,11 @@ tasks:
           ▮t = {"x": 3, "y": 4}
         target: |-
           t = dict(x=3, y=4)
+      - start: |-
+          ▮r = {"c": 1, "d": 2}
+        target: |-
+          r = dict(c=1, d=2)
+      - start: |-
+          ▮m = {"miller": 7, "cowan": 4}
+        target: |-
+          m = dict(miller=7, cowan=4)

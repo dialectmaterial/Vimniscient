@@ -28,6 +28,22 @@ tasks:
           1. semantics
           2. pragmatics
           3. discourse
+      - start: |-
+          ▮cognitive
+          associative
+          autonomous
+        target: |-
+          1. cognitive
+          2. associative
+          3. autonomous
+      - start: |-
+          ▮spacing
+          testing
+          interleaving
+        target: |-
+          1. spacing
+          2. testing
+          3. interleaving
   - goal: 'Make a Markdown link.'
     ft: markdown
     start: |-
@@ -42,6 +58,14 @@ tasks:
           ▮Glottolog https://glottolog.org
         target: |-
           [Glottolog](https://glottolog.org)
+      - start: |-
+          ▮Neovim https://neovim.io
+        target: |-
+          [Neovim](https://neovim.io)
+      - start: |-
+          ▮Anki https://apps.ankiweb.net
+        target: |-
+          [Anki](https://apps.ankiweb.net)
   - goal: 'Make every Spacing bold.'
     ft: markdown
     start: |-
@@ -57,6 +81,18 @@ tasks:
         target: |-
           **Stress** is lexical. **Stress** shifts.
         solution: ':s/Stress/**&**/g<CR>'
+      - goal: 'Make every Testing bold.'
+        start: |-
+          ▮Testing works. Testing lasts.
+        target: |-
+          **Testing** works. **Testing** lasts.
+        solution: ':s/Testing/**&**/g<CR>'
+      - goal: 'Make every Sleep bold.'
+        start: |-
+          ▮Sleep helps. Sleep settles.
+        target: |-
+          **Sleep** helps. **Sleep** settles.
+        solution: ':s/Sleep/**&**/g<CR>'
   - goal: 'Push every heading one level down.'
     ft: markdown
     start: |-
@@ -79,6 +115,22 @@ tasks:
           ## Syntax
           ### Phrases
           ### Clauses
+      - start: |-
+          ▮# Learning
+          ## Spacing
+          ## Testing
+        target: |-
+          ## Learning
+          ### Spacing
+          ### Testing
+      - start: |-
+          ▮# Vim
+          ## Motions
+          ## Operators
+        target: |-
+          ## Vim
+          ### Motions
+          ### Operators
   - goal: 'Unwrap the paragraph into one line.'
     ft: markdown
     start: |-
@@ -97,3 +149,15 @@ tasks:
           use.
         target: |-
           The meaning of a word is its use.
+      - start: |-
+          ▮Spacing feels
+          harder, and that
+          is the point.
+        target: |-
+          Spacing feels harder, and that is the point.
+      - start: |-
+          ▮Sleep after
+          learning helps memories
+          stabilise.
+        target: |-
+          Sleep after learning helps memories stabilise.
