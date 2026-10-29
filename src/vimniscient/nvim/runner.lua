@@ -26,17 +26,83 @@ local session = vim.json.decode(io.open(os.getenv("VIMNISCIENT_SESSION")):read("
   { luanil = { object = true, array = true } })
 local tasks = session.tasks
 
-local practice_win = vim.api.nvim_get_current_win()
-local practice_buf = vim.api.nvim_get_current_buf()
+-- Looks: one centred column, like the app's card screen (see the CSS in
+-- app.py): a rounded frame titled with the lesson, a progress bar, the goal in
+-- bold, the goal text and your text in two boxes, feedback under them, and the
+-- commands along the bottom. The boxes are floats over the frame; the window
+-- the practice file opened in stays behind them, blank.
+local function scratch()
+  local buf = vim.api.nvim_create_buf(false, true)
+  vim.bo[buf].bufhidden = "wipe"
+  return buf
+end
 
-vim.cmd("aboveleft new")
-local goal_win = vim.api.nvim_get_current_win()
-local goal_buf = vim.api.nvim_get_current_buf()
-vim.bo[goal_buf].buftype = "nofile"
-vim.bo[goal_buf].bufhidden = "wipe"
-vim.bo[goal_buf].swapfile = false
-vim.bo[goal_buf].buflisted = false
-vim.api.nvim_set_current_win(practice_win)
+local back_win = vim.api.nvim_get_current_win()
+local practice_buf = vim.api.nvim_get_current_buf()
+vim.bo[practice_buf].bufhidden = "hide"
+vim.api.nvim_win_set_buf(back_win, scratch())
+local goal_buf = scratch()
+local frame_buf = scratch()
+local keys_buf = scratch()
+
+-- The app's theme colours when it sent them, else the colourscheme's own.
+local colors = session.colors
+local function hl(name, link, fg, extra)
+  local spec = colors and vim.tbl_extend("force", { fg = colors[fg], bg = colors.background }, extra or {})
+    or { link = link }
+  vim.api.nvim_set_hl(0, name, spec)
+end
+local function set_colors()
+  hl("VimniscientNormal", "NormalFloat", "foreground")
+  hl("VimniscientFrame", "FloatBorder", "primary")
+  hl("VimniscientBox", "FloatBorder", "panel")
+  hl("VimniscientTitle", "Title", "primary", { bold = true })
+  hl("VimniscientMuted", "Comment", "muted")
+  hl("VimniscientStrong", "Bold", "foreground", { bold = true })
+  hl("VimniscientTodo", "NonText", "panel")
+  hl("VimniscientRight", "DiagnosticOk", "success")
+  hl("VimniscientWrong", "DiagnosticError", "error")
+  hl("VimniscientAccent", "Special", "accent")
+end
+set_colors()
+vim.api.nvim_create_autocmd("ColorScheme", { callback = set_colors })
+
+local look = "Normal:VimniscientNormal,NormalFloat:VimniscientNormal,FloatTitle:VimniscientTitle,"
+  .. "FloatFooter:VimniscientMuted,EndOfBuffer:VimniscientNormal"
+vim.wo[back_win].winhighlight = look
+vim.wo[back_win].fillchars = "eob: "
+vim.wo[back_win].number = false
+vim.wo[back_win].relativenumber = false
+vim.wo[back_win].signcolumn = "no"
+vim.wo[back_win].cursorline = false
+
+local function float(buf, enter, config)
+  local win = vim.api.nvim_open_win(buf, enter, vim.tbl_extend("keep", config,
+    { relative = "editor", row = 0, col = 0, width = 10, height = 1, style = "minimal" }))
+  vim.wo[win].winhighlight = look .. ",FloatBorder:" .. (config.border and "VimniscientBox" or "VimniscientNormal")
+  return win
+end
+local frame_win = float(frame_buf, false, { border = "rounded", focusable = false, zindex = 40 })
+vim.wo[frame_win].winhighlight = look .. ",FloatBorder:VimniscientFrame"
+local keys_win = float(keys_buf, false, { focusable = false, zindex = 40 })
+local goal_win = float(goal_buf, false, { border = "rounded", zindex = 45 })
+local practice_win = float(practice_buf, true, { border = "rounded", zindex = 45 })
+vim.wo[practice_win].winhighlight = look .. ",FloatBorder:VimniscientFrame"
+for _, win in ipairs({ goal_win, practice_win }) do
+  vim.wo[win].foldcolumn = "1" -- a space of padding, as in the app's input box
+  vim.wo[win].wrap = false
+end
+
+-- The frame stands in for the statusline and tabline; plugins may set them
+-- again while starting up, so they're put back once that's done.
+local function quiet_ui()
+  vim.o.laststatus = 0
+  vim.o.showtabline = 0
+  vim.o.ruler = false
+end
+quiet_ui()
+vim.api.nvim_create_autocmd("User", { pattern = "VeryLazy", callback = function() vim.defer_fn(quiet_ui, 50) end })
+vim.defer_fn(quiet_ui, 300)
 
 -- Keyboard only: a click would move the cursor without a keystroke counted.
 vim.o.mouse = ""
@@ -58,27 +124,57 @@ pcall(function()
   require("hardtime").disable()
 end)
 
--- Notifiers cut long lines short (snacks doesn't wrap), so wrap to their usual width.
-local function wrap(text)
-  local width = math.max(34, math.floor(vim.o.columns * 0.4) - 6)
-  local out = {}
-  for _, line in ipairs(vim.split(text, "\n")) do
-    local current = ""
-    for word in line:gmatch("%S+") do
-      if current ~= "" and vim.fn.strdisplaywidth(current .. " " .. word) > width then
-        table.insert(out, current)
-        current = word
-      else
-        current = current == "" and word or current .. " " .. word
+-- Text as lines of { text, highlight } chunks, wrapped at word boundaries.
+local function wrap(chunks, width)
+  local lines, line, used = {}, {}, 0
+  for _, chunk in ipairs(chunks) do
+    local text, group = chunk[1], chunk[2]
+    if text == "\n" then
+      table.insert(lines, line)
+      line, used = {}, 0
+    else
+      for space, word in text:gmatch("(%s*)(%S+)") do
+        local w = vim.fn.strdisplaywidth(word)
+        if used > 0 and used + #space + w > width then
+          table.insert(lines, line)
+          line, used, space = {}, 0, ""
+        end
+        table.insert(line, { space .. word, group })
+        used = used + #space + w
+      end
+      local trailing = text:match("%s+$")
+      if trailing and used > 0 then
+        table.insert(line, { trailing, group })
+        used = used + #trailing
       end
     end
-    table.insert(out, current)
   end
-  return table.concat(out, "\n")
+  table.insert(lines, line)
+  return lines
 end
 
-local function say(msg, level, title)
-  vim.notify(wrap(msg), level, { title = title })
+-- What the frame says under the boxes: how a task went, a hint, what's next.
+-- It stays until the first key typed on the task after it.
+local feedback = {}
+local redraw -- defined with the layout below
+
+local function tell(chunks)
+  feedback = chunks
+  if redraw then
+    redraw()
+  end
+end
+
+local MUTED, STRONG, RIGHT, WRONG, ACCENT, TITLE =
+  "VimniscientMuted", "VimniscientStrong", "VimniscientRight", "VimniscientWrong", "VimniscientAccent", "VimniscientTitle"
+
+-- What the keys stand for, one per line: dim after a solve, accent after a miss.
+local function why(task, group)
+  local out = {}
+  for _, hook in ipairs(task.why or {}) do
+    vim.list_extend(out, { { "\n" }, { hook, group } })
+  end
+  return out
 end
 
 local results = {}
@@ -166,26 +262,113 @@ local function task_keys()
   return table.concat(kept), #kept
 end
 
-local function esc(s)
-  return (s:gsub("%%", "%%%%"))
+local MODES = { n = "NORMAL", i = "INSERT", v = "VISUAL", V = "V-LINE", ["\22"] = "V-BLOCK", R = "REPLACE",
+  c = "COMMAND", o = "PENDING", s = "SELECT", t = "TERMINAL" }
+local BAR = 40 -- as wide as the app's progress bar
+local frame_ns = vim.api.nvim_create_namespace("vimniscient-frame")
+
+-- Write chunk lines into a buffer, highlighting each chunk.
+local function paint(buf, lines)
+  local text = {}
+  for i, line in ipairs(lines) do
+    text[i] = table.concat(vim.tbl_map(function(c) return c[1] end, line))
+  end
+  vim.bo[buf].modifiable = true
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, text)
+  vim.bo[buf].modifiable = false
+  vim.api.nvim_buf_clear_namespace(buf, frame_ns, 0, -1)
+  for i, line in ipairs(lines) do
+    local col = 0
+    for _, c in ipairs(line) do
+      if c[2] and #c[1] > 0 then
+        vim.api.nvim_buf_set_extmark(buf, frame_ns, i - 1, col, { end_col = col + #c[1], hl_group = c[2] })
+      end
+      col = col + #c[1]
+    end
+  end
 end
 
-local function update_winbars()
+function redraw()
   local task = tasks[current]
-  if not task then
+  if not task or not vim.api.nvim_win_is_valid(frame_win) then
     return
   end
   local _, count = task_keys()
-  vim.wo[goal_win].winbar = string.format(
-    "%%#Title# %s %%* %s",
-    esc(task.label or string.format("GOAL %d/%d", current, #tasks)), esc(task.goal)
-  )
-  local show = task.show and task.show ~= "" and string.format("  %%#Title#type%%* %s", esc(task.show)) or ""
+  local columns, rows = vim.o.columns, vim.o.lines - vim.o.cmdheight - 1 -- the key line takes one
+  local outer = math.min(columns - 2, 80)
+  local width = outer - 2 - 4 -- inside the border and two columns of padding each side
+  local box = width - 2
+
+  local lines = { {} }
+  if not endless then
+    local done = state.done and current or current - 1
+    local filled = math.floor(BAR * done / #tasks + 0.5)
+    table.insert(lines, { { string.rep("━", filled), TITLE }, { string.rep("━", BAR - filled), "VimniscientTodo" } })
+    table.insert(lines, {})
+  end
+  vim.list_extend(lines, wrap({ { task.goal, TITLE } }, width))
+  if task.show and task.show ~= "" then
+    table.insert(lines, { { "type  ", MUTED }, { task.show, STRONG } })
+  end
+  table.insert(lines, {})
+
+  local start_lines = #vim.api.nvim_buf_get_lines(practice_buf, 0, -1, false)
+  local goal_h, practice_h = math.max(1, #task.target), math.max(1, #task.target, start_lines)
+  local said = wrap(feedback, width)
+  local fixed = #lines + 4 + 1 + math.max(3, #said) + 1 -- two box borders, then feedback with a line around it
+  local over = fixed + goal_h + practice_h - (rows - 2)
+  if over > 0 then
+    local cut = math.min(over, math.max(0, goal_h - 3))
+    goal_h, over = goal_h - cut, over - cut
+    practice_h = math.max(3, practice_h - math.max(0, over))
+  end
+
+  local goal_row = #lines
+  for _ = 1, goal_h + 2 + practice_h + 2 do
+    table.insert(lines, {})
+  end
+  table.insert(lines, {})
+  for _, line in ipairs(said) do
+    table.insert(lines, line)
+  end
+  for _ = #said, 2 do
+    table.insert(lines, {})
+  end
+  table.insert(lines, {})
+  for i, line in ipairs(lines) do
+    lines[i] = vim.list_extend({ { "  " } }, line)
+  end
+  paint(frame_buf, lines)
+
+  local height = math.min(#lines, rows - 2)
+  local label = (task.label or string.format("task %d/%d", current, #tasks)):lower()
+  vim.api.nvim_win_set_config(frame_win, {
+    relative = "editor", width = outer - 2, height = height,
+    row = math.max(0, math.floor((rows - height - 2) / 2)), col = math.floor((columns - outer) / 2),
+    title = { { "─", "VimniscientFrame" }, { " " .. session.title .. " ", TITLE } }, title_pos = "left",
+    footer = { { " " .. label .. " ", MUTED }, { "─", "VimniscientFrame" } }, footer_pos = "right",
+  })
+  vim.api.nvim_win_set_config(goal_win, {
+    relative = "win", win = frame_win, row = goal_row, col = 2, width = box, height = goal_h,
+    title = { { "─", "VimniscientBox" }, { " goal ", MUTED } }, title_pos = "left",
+  })
+  local mode = MODES[vim.fn.mode():sub(1, 1)] or vim.fn.mode()
   local keys = task.budget and string.format("keys %d of %d · ref %d", count, task.budget, task.ref)
     or string.format("keys %d · ref %d", count, task.ref)
-  vim.wo[practice_win].winbar = string.format(
-    "%%#Title# YOU %%* %s%s %%=:Hint  :Skip  :Reset  :q quit ", keys, show
-  )
+  vim.api.nvim_win_set_config(practice_win, {
+    relative = "win", win = frame_win, row = goal_row + goal_h + 2, col = 2, width = box, height = practice_h,
+    title = { { "─", "VimniscientFrame" }, { " you ", TITLE } }, title_pos = "left",
+    footer = { { " " .. mode .. " · " .. keys .. " ", MUTED }, { "─", "VimniscientFrame" } }, footer_pos = "right",
+  })
+
+  local commands = task.solution == "—" and { { ":Reset", "start over" }, { ":q", "stop" } }
+    or { { ":Hint", "a clue, twice for the answer" }, { ":Skip", "skip" }, { ":Reset", "start over" }, { ":q", "stop" } }
+  local bar = { { " " } }
+  for i, c in ipairs(commands) do
+    vim.list_extend(bar, { { (i > 1 and "  " or "") .. c[1], TITLE }, { " " .. c[2], MUTED } })
+  end
+  paint(keys_buf, { bar })
+  vim.api.nvim_win_set_config(keys_win, { relative = "editor", row = rows, col = 0, width = columns, height = 1 })
 end
 
 local function set_lines(buf, lines)
@@ -205,10 +388,10 @@ local function load_task(i)
   current = i
   local task = tasks[i]
   if not endless and i > 1 and task.phase ~= tasks[i - 1].phase and task.phase == "recall" then
-    say("From memory now: new text, no keys shown.", vim.log.levels.INFO, "Recall")
+    tell({ { "Recall  ", TITLE }, { "from memory now: new text, no keys shown.", MUTED } })
   end
   if endless and task.phase == "recall" then
-    say("One you missed earlier, on new text. From memory now.", vim.log.levels.INFO, "Recall")
+    tell({ { "Recall  ", TITLE }, { "one you missed earlier, on new text. From memory now.", MUTED } })
   end
   state = { keys = {}, done = false, hints = 0 }
   results[i].status = "quit"
@@ -238,13 +421,15 @@ local function load_task(i)
   vim.fn.setreg("/", "")
   vim.cmd("nohlsearch")
 
-  vim.api.nvim_win_set_height(goal_win, math.max(3, math.min(12, #task.target + 1)))
   for _, win in ipairs({ goal_win, practice_win }) do
     vim.api.nvim_win_call(win, function() vim.cmd("diffthis") end)
     vim.wo[win].foldenable = false
+    vim.wo[win].foldcolumn = "1"
   end
   vim.cmd("diffupdate")
 
+  state.fresh = true
+  redraw()
   vim.api.nvim_set_current_win(practice_win)
   vim.api.nvim_win_set_cursor(practice_win, task.cursor)
   -- Every task starts in normal mode (LazyVim's visual > keeps the selection).
@@ -252,7 +437,7 @@ local function load_task(i)
   if vim.fn.mode():find("^[vVsS\22\19]") then
     vim.api.nvim_feedkeys(vim.keycode("<Esc>"), "nx", false)
   end
-  update_winbars()
+  redraw()
 end
 
 local function finish(status)
@@ -296,8 +481,8 @@ end
 local function retry()
   local task = tasks[current]
   finish("skipped")
-  say(string.format("The answer: %s\nType it in now; it comes back on new text at the end.", task.solution),
-    vim.log.levels.WARN, "Skipped")
+  tell(vim.list_extend({ { "✗  ", WRONG }, { task.solution, STRONG },
+    { "\n" }, { "Type it in now; it comes back on new text at the end.", MUTED } }, why(task, ACCENT)))
   local learn = vim.tbl_extend("force", task, { phase = "learn", extra = "learn", show = task.solution,
     label = "LEARN · skipped" })
   local again = vim.tbl_extend("force", task.again, { phase = "recall", extra = "recall", n = task.n,
@@ -313,8 +498,8 @@ end
 local function miss(reason)
   local task = tasks[current]
   finish("failed")
-  say(string.format("%s\nThe answer: %s\nType it in now; it comes back on new text soon.", reason, task.solution),
-    vim.log.levels.WARN, "Missed")
+  tell(vim.list_extend({ { "✗  ", WRONG }, { task.solution, STRONG }, { "   " .. reason, MUTED },
+    { "\n" }, { "Type it in now; it comes back on new text soon.", MUTED } }, why(task, ACCENT)))
   add_task(endless_task(task.id, task.v, "learn"))
   table.insert(climb.pending, { id = task.id, v = task.v + 1, after = climb.rung + endless.gap })
   next_task(0)
@@ -349,20 +534,24 @@ local function check()
     finish("solved")
     local r = results[current]
     local ref = tasks[current].ref
-    local verdict = r.count < ref and "  beat the ref!" or r.count == ref and "  matched the ref" or ""
-    local last = current == #tasks and not endless and "\nLesson done." or ""
-    local title = "Vimniscient"
+    local verdict = r.count < ref and " · beat the ref!" or r.count == ref and " · matched the ref" or ""
+    local said = { { "✓  ", RIGHT }, { r.keys, STRONG },
+      { string.format("   %d %s · ref %d%s", r.count, r.count == 1 and "key" or "keys", ref, verdict), MUTED } }
+    if r.keys ~= task.solution and task.solution ~= "—" then
+      vim.list_extend(said, { { "\n" }, { "ref  ", MUTED }, { task.solution, STRONG } })
+    end
     if endless then
-      local phase = tasks[current].phase
+      local phase = task.phase
       if phase == "climb" then
         climb.level = climb.level + 1
-        title = string.format("Level %d", climb.level)
-      else
-        title = phase == "recall" and "Recalled" or "Learnt: it comes back soon on new text"
       end
+      local next = phase == "climb" and string.format("Level %d", climb.level)
+        or phase == "recall" and "Recalled" or "Learnt: it comes back soon on new text"
+      vim.list_extend(said, { { "\n" }, { next, TITLE } })
+    elseif current == #tasks then
+      vim.list_extend(said, { { "\n" }, { "Lesson done.", TITLE } })
     end
-    say(string.format("Solved in %d keys (ref %d)%s\n%s%s", r.count, ref, verdict, r.keys, last),
-      vim.log.levels.INFO, title)
+    tell(vim.list_extend(said, why(task, MUTED)))
     next_task(1400)
   end
 end
@@ -374,7 +563,11 @@ vim.on_key(function(_, typed)
   if not state.done and typed and typed ~= "" then
     -- a plain space, as the reference solutions write it
     table.insert(state.keys, (vim.fn.keytrans(typed):gsub("<Space>", " ")))
-    vim.schedule(update_winbars)
+    if state.fresh then -- what was said about the last task has been read
+      state.fresh = false
+      feedback = {}
+    end
+    vim.schedule(redraw)
     if endless then
       vim.schedule(over_budget)
     end
@@ -386,6 +579,11 @@ vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
   group = group,
   buffer = practice_buf,
   callback = function() vim.schedule(check) end,
+})
+-- The boxes grow with the text, and the footer shows the mode.
+vim.api.nvim_create_autocmd({ "TextChangedI", "ModeChanged", "VimResized" }, {
+  group = group,
+  callback = function() vim.schedule(redraw) end,
 })
 if endless then
   vim.api.nvim_create_autocmd("CmdlineLeave", {
@@ -412,14 +610,13 @@ vim.api.nvim_create_autocmd("VimLeavePre", {
 vim.api.nvim_create_user_command("Hint", function()
   local task = tasks[current]
   state.hints = state.hints + 1
-  if task.solution == "—" then -- VimGolf: there's no reference to give away
-    say(task.hint, vim.log.levels.INFO, "Hint")
-  elseif state.hints == 1 and task.hint ~= "" then
-    say(task.hint, vim.log.levels.INFO, "Hint")
+  if task.solution == "—" -- VimGolf: there's no reference to give away
+    or state.hints == 1 and task.hint ~= "" then
+    tell({ { "hint  ", ACCENT }, { task.hint } })
   elseif endless and task.budget and not state.done then
     miss("You asked for the answer.")
   else
-    say("Reference solution: " .. task.solution, vim.log.levels.INFO, "Hint")
+    tell(vim.list_extend({ { "answer  ", ACCENT }, { task.solution, STRONG } }, why(task, MUTED)))
   end
 end, {})
 vim.api.nvim_create_user_command("Skip", function()
@@ -446,15 +643,15 @@ vim.api.nvim_create_user_command("Reset", function()
   vim.cmd("stopinsert")
   -- a fresh start: the keys count from here (hints used still count)
   state.keys = {}
-  update_winbars()
+  redraw()
 end, {})
 
 if endless then
   add_task(endless_next())
   load_task(1)
-  say("Endless, from level " .. climb.level .. ". Solve within the key budget to climb; a miss shows "
-    .. "the answer, and the task comes back.\n:q stops whenever you like.", vim.log.levels.INFO, "Vimniscient")
+  tell({ { "Endless, from level " .. climb.level .. ". ", TITLE }, { "Solve within the key budget to climb; a miss "
+    .. "shows the answer, and the task comes back. :q stops whenever you like.", MUTED } })
 else
   load_task(1)
-  say(session.title .. "\nMake the bottom text match the goal.", vim.log.levels.INFO, "Vimniscient")
+  tell({ { "Make your text match the goal; the next task loads by itself.", MUTED } })
 end

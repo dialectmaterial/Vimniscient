@@ -9,6 +9,10 @@ from importlib import resources
 from pathlib import Path
 
 from vimniscient.lessons import Lesson, Task
+from vimniscient.mnemonics import hooks
+
+# The app's theme colours (hex), so lessons look like the rest of it; set by the app.
+COLORS: dict[str, str] = {}
 
 
 @dataclass
@@ -33,6 +37,7 @@ def task_json(t: Task) -> dict:
         "solution": t.solution,
         "ft": t.ft,
         "phase": t.phase,
+        "why": hooks(t.solution) if t.solution != "—" else [],  # what the keys stand for
     }
 
 
@@ -45,7 +50,7 @@ def run_nvim(session: dict, first: list[str]) -> list[dict]:
         result_path = tmp_path / "results.json"
         practice = tmp_path / "practice.txt"
         practice.write_text("\n".join(first), encoding="utf-8")
-        session_path.write_text(json.dumps(session | {"result_path": str(result_path)}), encoding="utf-8")
+        session_path.write_text(json.dumps(session | {"result_path": str(result_path), "colors": COLORS or None}), encoding="utf-8")
         # cwd=tmp keeps session plugins away from the user's real projects;
         # -i NONE gives every lesson clean registers and history.
         subprocess.run(
@@ -74,7 +79,7 @@ def run_lesson(lesson: Lesson, retry: bool = False) -> list[TaskResult]:
             }
             | ({"again": task_json(t.next_version())} if retry and t.phase == "recall" else {})
         )
-    raw = run_nvim({"title": f"{lesson.label}: {lesson.title}", "tasks": tasks, "retry": retry}, lesson.tasks[0].start)
+    raw = run_nvim({"title": f"{lesson.label} · {lesson.title}" if lesson.week else lesson.title, "tasks": tasks, "retry": retry}, lesson.tasks[0].start)
     if not raw:  # Neovim never got going: every task unseen
         raw = [{"n": n} for n in range(len(lesson.tasks))]
     results = []

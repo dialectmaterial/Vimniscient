@@ -15,8 +15,11 @@ from dataclasses import replace
 from datetime import date
 from pathlib import Path
 
+from rich.console import Group
+from rich.table import Table
 from rich.text import Text
 from textual.app import App, ComposeResult
+from textual.color import Color
 from textual.binding import Binding
 from textual.content import Content
 from textual.containers import Horizontal, Vertical, VerticalScroll
@@ -31,7 +34,7 @@ from vimniscient.cards import Card, Deck, has_lazyvim, has_plugin, load_decks
 from vimniscient.lessons import Lesson, Task, load_lessons, two_rounds
 from vimniscient.mnemonics import hooks
 from vimniscient.progress import Progress
-from vimniscient.session import TaskResult, run_endless, run_lesson
+from vimniscient.session import COLORS, TaskResult, run_endless, run_lesson
 
 LOGO = """\
 █ █ █ █▀▄▀█ █▄ █ █ ▄▀▀ ▄▀▀ █ ██▀ █▄ █ ▀█▀
@@ -608,13 +611,16 @@ def why_these_keys(missed: list[TaskResult], most: int = 3) -> Content:
 
 
 class ResultsScreen(Screen):
-    """Dismisses with True to run the lesson again, False to move on."""
+    """How a lesson went, in the same centred column as cards and the lesson itself.
+    Dismisses with True to run the lesson again, False to move on."""
 
     BINDINGS = [
         Binding("r", "again", "Again"),
         Binding("escape", "done", "Done"),
-        Binding("enter", "done", "Done", show=False, priority=True),  # before the table's row select
+        Binding("enter", "done", "Done", show=False, priority=True),
         Binding("q", "done", "Done", show=False),
+        Binding("j", "scroll(2)", "Down", show=False),
+        Binding("k", "scroll(-2)", "Up", show=False),
     ]
 
     def __init__(self, lesson: Lesson, results: list[TaskResult], note: str = "", subtitle: str = "") -> None:
@@ -625,40 +631,70 @@ class ResultsScreen(Screen):
         self.subtitle = subtitle
 
     def compose(self) -> ComposeResult:
-        with Vertical(id="results-panel", classes="pane"):
+        with VerticalScroll(id="results-panel", classes="pane column"):
+            yield Static(id="results-bar")
+            yield Static(id="results-summary", classes="prompt")
             if self.note:
                 yield Static(self.note, id="note")
-            yield DataTable(id="results", cursor_type="row")
+            yield Static(id="results-list")
             missed = [r for r in self.results if r.status in ("failed", "skipped")]
             if missed:
                 yield Static(why_these_keys(missed), id="results-why")
-            budget = " · budget = the most keys allowed at that level" if any(r.budget for r in self.results) else ""
-            yield Static(f"[dim]ref = the reference solution's keys; fewer and you beat it{budget}[/]",
-                         id="results-legend")
         yield Static(keybar(("enter", "done"), ("r", "again")), classes="keybar")
 
     def on_mount(self) -> None:
-        recall = [r for r in self.results if r.task.phase == "recall"]
+        results = self.results
+        recall = [r for r in results if r.task.phase != "learn"]
+        two_rounds = len(recall) < len(results)
         solved = sum(r.status == "solved" for r in recall)
+        beat = sum(r.status == "solved" and r.count < r.task.ref for r in recall)
         panel = self.query_one("#results-panel")
         panel.border_title = f"{self.lesson.label} · {self.lesson.title}" if self.lesson.week else self.lesson.title
-        two_rounds = len({r.task.phase for r in self.results}) > 1
-        budgets = any(r.budget for r in self.results)
         panel.border_subtitle = self.subtitle or (f"{solved}/{len(recall)} recalled" if two_rounds else f"{solved}/{len(recall)} solved")
-        table = self.query_one(DataTable)
-        table.add_columns("#", *(["Round"] if two_rounds else []), "Task", "Result", "Keys",
-                          *(["Budget"] if budgets else []), "Ref", "You typed", "Reference")
-        for i, r in enumerate(self.results, 1):
-            keys = str(r.count) if r.status == "solved" else ""
-            if r.status == "solved" and r.count <= r.task.ref:
-                keys = tint(self.app, keys, "success")
-            label, colour = STATUS[r.status]
-            phase = f"level {r.level}" if r.task.phase == "climb" else r.task.phase
-            round_cell = [tint(self.app, phase, "text-muted")] if two_rounds else []
-            budget_cell = [str(r.budget or "")] if budgets else []
-            goal = r.task.goal if len(r.task.goal) <= 40 else r.task.goal[:39] + "…"
-            table.add_row(str(i), *round_cell, Text(goal), tint(self.app, label, colour), keys, *budget_cell,
-                          str(r.task.ref), Text(r.keys), Text(r.task.solution))
+        self.query_one("#results-bar", Static).update(progress_bar(solved, len(recall)))
+        verb = "recalled" if two_rounds else "solved"
+        self.query_one("#results-summary", Static).update(
+            f"{solved} of {len(recall)} {verb}" + (f" · {beat} beat the reference" if beat else ""))
+
+        budgets = any(r.budget for r in results)
+        table = Table(box=None, show_header=True, header_style="dim", expand=True, padding=(0, 1, 0, 0), pad_edge=False)
+        table.add_column("", width=1, no_wrap=True)
+        table.add_column("task", ratio=3, no_wrap=True, overflow="ellipsis")
+        table.add_column("you typed", ratio=2, no_wrap=True, overflow="ellipsis")
+        table.add_column("budget" if budgets else "ref", justify="right", no_wrap=True)
+
+        def rows(title: str, round_results: list[TaskResult]) -> None:
+            if title:
+                table.add_row("", Text(title, style="dim bold"), "", "")
+            for r in round_results:
+                label, colour = STATUS[r.status]
+                mark = {"solved": "✓", "unseen": "·"}.get(r.status, "✗")
+                if r.status == "solved":
+                    good = r.count <= (r.budget or r.task.ref)
+                    keys = Text(r.keys) if r.keys else Text("")
+                    count = tint(self.app, f"{r.count}/{r.budget or r.task.ref}", "success" if good else "text-muted")
+                elif r.status == "unseen":
+                    keys, count = tint(self.app, label, "text-muted"), Text("")
+                else:  # what it should have been, louder
+                    keys = Text.assemble((f"{label}  ", "dim"), tint(self.app, r.task.solution, "accent"))
+                    count = tint(self.app, str(r.budget or r.task.ref), "text-muted")
+                goal = f"level {r.level} · {r.task.goal}" if r.task.phase == "climb" else r.task.goal
+                table.add_row(tint(self.app, mark, colour), Text(goal), keys, count)
+
+        if two_rounds:
+            learn = [r for r in results if r.task.phase == "learn"]
+            rows("Recall", recall)
+            table.add_row("", "", "", "")
+            rows(f"Learn · {sum(r.status == 'solved' for r in learn)}/{len(learn)} typed with the keys shown", learn)
+        else:
+            rows("", results)
+        legend = Text("n/ref: your keys and the reference solution's; fewer and you beat it" if not budgets
+                      else "n/budget: your keys and the most allowed at that level", style="dim")
+        self.query_one("#results-list", Static).update(Group(table, Text(""), legend))
+        panel.focus()
+
+    def action_scroll(self, lines: int) -> None:
+        self.query_one("#results-panel", VerticalScroll).scroll_relative(y=lines)
 
     def action_again(self) -> None:
         self.dismiss(True)
@@ -992,13 +1028,14 @@ class VimniscientApp(App):
     #card-feedback { padding: 1 0 0 0; height: auto; min-height: 3; }
     #drill-steps { height: auto; }
     #drill-status { height: auto; padding-top: 1; }
-    CardScreen > .keybar, DrillScreen > .keybar, LessonScreen > .keybar { dock: bottom; }
+    CardScreen > .keybar, DrillScreen > .keybar, LessonScreen > .keybar, ResultsScreen > .keybar { dock: bottom; }
 
-    #results-panel { height: 1fr; }
+    ResultsScreen { align: center middle; }
+    #results-panel { width: 96; }
+    #results-bar { height: 1; }
     #note { padding: 0 0 1 0; color: $success; height: auto; }
-    #results { height: 1fr; background: $background; }
-    #results-legend { height: 1; }
-    #results-why { height: auto; padding: 1 0; }
+    #results-list { height: auto; padding-right: 1; }
+    #results-why { height: auto; padding: 1 0 0 0; }
 
     #stats-view { height: 1fr; padding: 0 2; }
     .section-label { color: $text-muted; text-style: bold; height: 1; margin-top: 1; }
@@ -1024,7 +1061,20 @@ class VimniscientApp(App):
             self.register_theme(theme)
         theme = omarchy_theme()
         self.theme = theme if theme in self.available_themes else DEFAULT_THEME
+        COLORS.update(self.lesson_colors())
         self.push_screen(MainScreen())
+
+    def lesson_colors(self) -> dict[str, str]:
+        """The theme's colours as hex, for lessons in Neovim to draw with."""
+        theme = self.current_theme
+        background = Color.parse(theme.background or "#000000")
+        foreground = Color.parse(theme.foreground or "#ffffff")
+        named = {"primary": theme.primary, "accent": theme.accent or theme.primary,
+                 "success": theme.success or theme.primary, "error": theme.error or theme.primary,
+                 "panel": theme.panel or theme.surface or theme.primary}
+        return {"background": background.hex, "foreground": foreground.hex,
+                "muted": (background + background.get_contrast_text(0.6)).hex,  # $text-muted is "auto 60%"
+                **{name: Color.parse(value).hex for name, value in named.items()}}
 
     # running things
 

@@ -37,8 +37,8 @@ def send(token: str) -> None:
 
 
 def goal_label() -> str | None:
-    """LEARN 2/6, RECALL 3/6, … from the goal window."""
-    m = re.search(r"(LEARN|RECALL|GOAL) \d+/\d+", tmux("capture-pane", "-pt", SESSION))
+    """learn 2/6, recall 3/6, … from the frame's footer."""
+    m = re.search(r"(learn|recall|task) \d+/\d+", tmux("capture-pane", "-pt", SESSION))
     return m.group(0) if m else None
 
 
