@@ -397,7 +397,7 @@ class MainScreen(Screen):
         "review": ("Review", "Vim tasks from earlier days that are due again, plus a few drills for the "
                    "habits hardtime keeps catching."),
         "vimgolf": ("VimGolf", "One challenge from vimgolf.com, the most played ones first, scored against "
-                    "the leaderboard."),
+                    "the leaderboard.\n\nNot part of `t`: an extra, whenever you feel like it (or `g`)."),
         "endless": ("Endless", ENDLESS_INTRO.format(ramp=endless.RAMP, below=endless.RESTART_BELOW)
                     + "\n\nNot part of `t`: play it whenever you have time left."),
     }
@@ -407,7 +407,8 @@ class MainScreen(Screen):
         options = []
         steps = app.plan()
         for step in steps:
-            mark = "[$secondary]∞[/]" if step.todo is None else "[$primary]›[/]" if step.todo else "[$success]✓[/]"
+            optional = "[$secondary]∞[/]" if step.id == "endless" else "[$secondary]·[/]"
+            mark = optional if step.todo is None else "[$primary]›[/]" if step.todo else "[$success]✓[/]"
             options.append(Option(Content.from_markup(f"{mark} [b]$label[/] [dim]$detail[/]",
                                                       label=f"{step.label:<8}", detail=step.detail), id=step.id))
         self.fill("plan", options)
@@ -1089,7 +1090,7 @@ class VimniscientApp(App):
             self.notify("Nothing left for this one today.")
 
     def action_today(self) -> None:
-        """Cards, drills, review (plus habit drills), the next lesson, then VimGolf:
+        """Cards, drills, review (plus habit drills), then the next lesson:
         whichever are still left today. One lesson a day; the Lessons list has the rest."""
         left = {step.id for step in today.left(self.plan())}
         steps = [s for s in (self.step(i) for i in today.ROUTINE if i in left) if s]

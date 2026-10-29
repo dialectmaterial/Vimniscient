@@ -9,7 +9,7 @@ from vimniscient.cards import Deck
 from vimniscient.lessons import Lesson, Task
 from vimniscient.progress import Progress
 
-ROUTINE = ("cards", "drills", "review", "lesson", "vimgolf")  # what `t` runs, in order
+ROUTINE = ("cards", "drills", "review", "lesson")  # what `t` runs, in order; VimGolf and Endless are extras
 
 # Rough times, for "about 12 minutes left". Erring on the long side is kinder
 # than promising five minutes and taking fifteen.
@@ -18,7 +18,6 @@ DRILL_SECONDS = 45
 REVIEW_TASK_SECONDS = 45
 LESSON_TASK_SECONDS = 35  # per round; a lesson runs every task twice (Learn, Recall)
 LESSON_READING_SECONDS = 60
-VIMGOLF_MINUTES = 5
 
 
 @dataclass
@@ -26,7 +25,7 @@ class Step:
     id: str
     label: str
     detail: str
-    todo: bool | None  # None: optional, never "left to do" (endless)
+    todo: bool | None  # None: optional, never "left to do" (VimGolf, Endless)
     minutes: int = 0  # about how long what's left of it takes
 
 
@@ -96,8 +95,8 @@ def plan(progress: Progress, lessons: list[Lesson], decks: dict[str, Deck], dril
              bool(review), minutes(len(review) * REVIEW_TASK_SECONDS)),
         Step("lesson", "Lesson", lesson_detail, nxt is not None and not lesson_done,
              lesson_minutes(nxt) if nxt and not lesson_done else 0),
-        Step("vimgolf", "VimGolf", "done" if golf_done else "today's challenge",
-             not golf_done, 0 if golf_done else VIMGOLF_MINUTES),
+        Step("vimgolf", "VimGolf", "done" if golf_done else "optional · today's challenge",
+             False if golf_done else None),
         Step("endless", "Endless", f"best level {best}" if best else "as long as you like", None),
     ]
 

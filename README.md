@@ -128,11 +128,13 @@ LazyVim setup.
    type the keys (`ci"`). The ones that are due come first, then up to 10 new ones.
 2. **Review**: tasks from earlier days that are due again.
 3. **Today's lesson**.
-4. **[VimGolf](https://www.vimgolf.com)**: one real challenge a day, starting
-   with the most played ones. You play it in your Neovim, and your score is
-   compared with the site's leaderboard.
 
-Press **`e`** for **Endless** whenever you have time left: tasks from every
+Two extras, whenever you have time left. **`g`** for
+**[VimGolf](https://www.vimgolf.com)**: a real challenge, starting with the
+most played ones. You play it in your Neovim, and your score is compared with
+the site's leaderboard.
+
+And **`e`** for **Endless**: tasks from every
 lesson, one after another, for as long as you like. Each one you solve climbs a
 level. New lessons join the mix as you climb, and the key budget shrinks from
 about twice the reference to exactly the reference by level 200. Go over the
@@ -199,15 +201,14 @@ The follow-ups are ordinary Omarchy reminders, so they show in the bar and in
 `omarchy reminder show`, and `omarchy reminder clear` cancels them.
 `vimniscient reminders` shows what's left and when the next one comes, and
 `vimniscient reminders uninstall` turns them off. Today counts as done once
-the cards, drills and review are cleared and you've done one lesson and the
-VimGolf challenge.
+the cards, drills and review are cleared and you've done one lesson.
 
 ## Questions
 
 **Why not just use vimtutor, Vim Adventures or VimGolf?** Use them! vimtutor
 teaches the basics, and this picks up after it. Vimniscient runs in your real
-editor, schedules what you need to repeat, and turns VimGolf into a daily
-habit.
+editor, schedules what you need to repeat, and brings in VimGolf challenges when you want
+one.
 
 **Does it work with my plugins?** Yes, that's the point. For a lesson it only
 turns off what would type for you (autopairs, completion, format-on-save),
