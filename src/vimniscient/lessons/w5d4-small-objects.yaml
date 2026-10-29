@@ -25,6 +25,18 @@ tasks:
         target: |-
           vowelSumTotal
         solution: 'cieSum<Esc>'
+      - goal: 'Change the sub-word "Reread" to "Recall".'
+        start: |-
+          test▮RereadPlan
+        target: |-
+          testRecallPlan
+        solution: 'cieRecall<Esc>'
+      - goal: 'Change the sub-word "Cram" to "Space".'
+        start: |-
+          night▮CramSchedule
+        target: |-
+          nightSpaceSchedule
+        solution: 'cieSpace<Esc>'
   - goal: 'Change cram to lag in the snake_case name.'
     start: |-
       spacing_▮cram_effect
@@ -39,6 +51,18 @@ tasks:
         target: |-
           tone_contour_value
         solution: 'ciecontour<Esc>'
+      - goal: 'Change the sub-word "reading" to "practice".'
+        start: |-
+          retrieval_▮reading_effect
+        target: |-
+          retrieval_practice_effect
+        solution: 'ciepractice<Esc>'
+      - goal: 'Change the sub-word "image" to "mnemonic".'
+        start: |-
+          keyword_▮image_method
+        target: |-
+          keyword_mnemonic_method
+        solution: 'ciemnemonic<Esc>'
   - goal: 'Change the magic number to 7.'
     start: |-
       magic_number = 1▮0
@@ -53,6 +77,18 @@ tasks:
         target: |-
           rate = 16000
         solution: 'cid16000<Esc>'
+      - goal: 'Change the number to 4.'
+        start: |-
+          chunks = 1▮2
+        target: |-
+          chunks = 4
+        solution: 'cid4<Esc>'
+      - goal: 'Change the number to 1885.'
+        start: |-
+          year = 18▮58
+        target: |-
+          year = 1885
+        solution: 'cid1885<Esc>'
   - goal: 'Replace the whole call with retrieve.'
     ft: python
     start: |-
@@ -68,6 +104,18 @@ tasks:
         target: |-
           y = 1 * 2
         solution: 'cau1<Esc>'
+      - goal: 'Replace the whole cram(all, night) call with space.'
+        start: |-
+          memory = ▮cram(all, night) + sleep
+        target: |-
+          memory = space + sleep
+        solution: 'causpace<Esc>'
+      - goal: 'Replace the whole use(f, x) call with 0.'
+        start: |-
+          z = ▮use(f, x) - 1
+        target: |-
+          z = 0 - 1
+        solution: 'cau0<Esc>'
   - goal: 'Replace the entire file with the word global.'
     start: |-
       ▮g is
@@ -86,6 +134,22 @@ tasks:
         target: |-
           fresh
         solution: 'cagfresh<Esc>'
+      - goal: 'Replace the whole buffer with "the whole file".'
+        start: |-
+          ▮everything
+          goes
+          globally
+        target: |-
+          the whole file
+        solution: 'cagthe whole file<Esc>'
+      - goal: 'Replace the whole buffer with "final".'
+        start: |-
+          ▮draft
+          one
+          two
+        target: |-
+          final
+        solution: 'cagfinal<Esc>'
   - goal: 'Add a blank line below without entering insert mode.'
     start: |-
       ▮] goes down
@@ -105,3 +169,17 @@ tasks:
           Method
 
           Results
+      - start: |-
+          ▮Introduction
+          Method
+        target: |-
+          Introduction
+
+          Method
+      - start: |-
+          ▮encode
+          retrieve
+        target: |-
+          encode
+
+          retrieve

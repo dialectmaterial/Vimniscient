@@ -24,6 +24,16 @@ tasks:
           load(path, ▮verbose=True, limit=9)
         target: |-
           load(path, limit=9)
+      - goal: 'Remove the hint argument.'
+        start: |-
+          review(card, ▮hint=True, gap=7)
+        target: |-
+          review(card, gap=7)
+      - goal: 'Remove the reverse argument.'
+        start: |-
+          sort(lines, ▮reverse=True, key=len)
+        target: |-
+          sort(lines, key=len)
   - goal: 'Change the path to /tmp.'
     ft: python
     start: |-
@@ -36,6 +46,17 @@ tasks:
       - goal: 'Change the path to /srv.'
         start: |-
           open(▮'/data/corpus.txt')
+        target: |-
+          open('/srv')
+        solution: 'ciq/srv<Esc>'
+      - start: |-
+          open(▮'/home/user/notes.md')
+        target: |-
+          open('/tmp')
+        solution: 'ciq/tmp<Esc>'
+      - goal: 'Change the path to /srv.'
+        start: |-
+          open(▮'/var/log/review.log')
         target: |-
           open('/srv')
         solution: 'ciq/srv<Esc>'
@@ -55,6 +76,18 @@ tasks:
           tokenCount = 0
         solution: 'cietoken<Esc>'
         hint: 'The first sub-word is word; cie changes just that.'
+      - goal: 'Change the first sub-word to "space".'
+        start: |-
+          ▮cramPlan = 1
+        target: |-
+          spacePlan = 1
+        solution: 'ciespace<Esc>'
+      - goal: 'Change the first sub-word to "test".'
+        start: |-
+          ▮readCount = 0
+        target: |-
+          testCount = 0
+        solution: 'cietest<Esc>'
   - goal: 'Comment out the print.'
     ft: python
     start: |-
@@ -73,3 +106,15 @@ tasks:
         target: |-
           y = 2
           # print(y)
+      - start: |-
+          z = 3
+          ▮print(z)
+        target: |-
+          z = 3
+          # print(z)
+      - start: |-
+          gap = 7
+          ▮print(gap)
+        target: |-
+          gap = 7
+          # print(gap)

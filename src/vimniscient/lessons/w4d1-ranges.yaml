@@ -104,7 +104,8 @@ tasks:
         target: |-
           Dutch
           German
-      - start: |-
+      - goal: 'Delete lines 2 and 3 without moving.'
+        start: |-
           ▮spacing
           cramming
           rereading
@@ -112,7 +113,8 @@ tasks:
         target: |-
           spacing
           testing
-      - start: |-
+      - goal: 'Delete lines 2 and 3 without moving.'
+        start: |-
           ▮range
           line 2
           line 3

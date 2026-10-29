@@ -39,6 +39,32 @@ tasks:
 
 
           b = 2
+      - goal: 'Delete the function reread, and the empty line daf leaves behind.'
+        start: |-
+          a = 1
+
+          def reread():
+              ▮return 0
+
+          b = 2
+        target: |-
+          a = 1
+
+
+          b = 2
+      - goal: 'Delete the function highlight, and the empty line daf leaves behind.'
+        start: |-
+          x = 1
+
+          def highlight():
+              ▮return 0
+
+          y = 2
+        target: |-
+          x = 1
+
+
+          y = 2
   - goal: 'Replace the body with pass.'
     ft: python
     start: |-
@@ -56,6 +82,18 @@ tasks:
               ▮return 2
         target: |-
           def g():
+              pass
+      - start: |-
+          def cram():
+              ▮return 0
+        target: |-
+          def cram():
+              pass
+      - start: |-
+          def summarize():
+              ▮return 3
+        target: |-
+          def summarize():
               pass
   - goal: 'Delete the class, and the empty line it leaves.'
     ft: python
@@ -89,6 +127,32 @@ tasks:
 
 
           b = 2
+      - start: |-
+          x = 1
+
+          class Highlighter:
+              ▮def mark(self):
+                  pass
+
+          y = 2
+        target: |-
+          x = 1
+
+
+          y = 2
+      - start: |-
+          a = 1
+
+          class Reread:
+              ▮def again(self):
+                  pass
+
+          b = 2
+        target: |-
+          a = 1
+
+
+          b = 2
   - goal: 'Duplicate the function below itself.'
     ft: python
     start: |-
@@ -111,3 +175,19 @@ tasks:
               return 2
           def g():
               return 2
+      - start: |-
+          def ▮test():
+              return 1
+        target: |-
+          def test():
+              return 1
+          def test():
+              return 1
+      - start: |-
+          def ▮space():
+              return 7
+        target: |-
+          def space():
+              return 7
+          def space():
+              return 7

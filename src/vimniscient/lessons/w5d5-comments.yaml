@@ -23,6 +23,14 @@ tasks:
           ▮y = 2
         target: |-
           # y = 2
+      - start: |-
+          ▮cram = True
+        target: |-
+          # cram = True
+      - start: |-
+          ▮comment = "gc"
+        target: |-
+          # comment = "gc"
   - goal: 'Uncomment the line.'
     ft: python
     start: |-
@@ -37,6 +45,14 @@ tasks:
           # ▮z = 3
         target: |-
           z = 3
+      - start: |-
+          # ▮space = True
+        target: |-
+          space = True
+      - start: |-
+          # ▮sleep = 8
+        target: |-
+          sleep = 8
   - goal: 'Comment out this line and the next.'
     ft: python
     start: |-
@@ -59,6 +75,22 @@ tasks:
           # p = 1
           # q = 2
           r = 3
+      - start: |-
+          ▮highlight = 1
+          skim = 2
+          recall = 3
+        target: |-
+          # highlight = 1
+          # skim = 2
+          recall = 3
+      - start: |-
+          ▮a = 1
+          b = 2
+          c = 3
+        target: |-
+          # a = 1
+          # b = 2
+          c = 3
   - goal: 'Comment out the first block.'
     ft: python
     start: |-
@@ -85,6 +117,26 @@ tasks:
           # q = 2
 
           r = 3
+      - start: |-
+          ▮cram = 1
+          reread = 2
+
+          test = 3
+        target: |-
+          # cram = 1
+          # reread = 2
+
+          test = 3
+      - start: |-
+          ▮a = 1
+          b = 2
+
+          c = 3
+        target: |-
+          # a = 1
+          # b = 2
+
+          c = 3
   - goal: 'Comment out the JavaScript line (a different comment style).'
     ft: javascript
     start: |-
@@ -99,3 +151,11 @@ tasks:
           ▮let y = 2;
         target: |-
           // let y = 2;
+      - start: |-
+          ▮let cram = true;
+        target: |-
+          // let cram = true;
+      - start: |-
+          ▮const gap = 7;
+        target: |-
+          // const gap = 7;

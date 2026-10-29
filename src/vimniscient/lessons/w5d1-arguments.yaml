@@ -25,6 +25,18 @@ tasks:
         target: |-
           g(x, w, z)
         solution: 'ciaw<Esc>'
+      - goal: 'Change "automatic" to "associative".'
+        start: |-
+          stages(cognitive, ▮automatic, autonomous)
+        target: |-
+          stages(cognitive, associative, autonomous)
+        solution: 'ciaassociative<Esc>'
+      - goal: 'Change "now" to "delay".'
+        start: |-
+          recall(cue, ▮now, answer)
+        target: |-
+          recall(cue, delay, answer)
+        solution: 'ciadelay<Esc>'
   - goal: 'Delete the middle argument and its comma.'
     ft: python
     start: |-
@@ -39,6 +51,14 @@ tasks:
           g(x, ▮y, z)
         target: |-
           g(x, z)
+      - start: |-
+          plan(space, ▮cram, test)
+        target: |-
+          plan(space, test)
+      - start: |-
+          keys(c, ▮x, d)
+        target: |-
+          keys(c, d)
   - goal: 'Delete the last argument.'
     ft: python
     start: |-
@@ -53,6 +73,14 @@ tasks:
           g(x, y, ▮z)
         target: |-
           g(x, y)
+      - start: |-
+          habits(test, sleep, ▮reread)
+        target: |-
+          habits(test, sleep)
+      - start: |-
+          ops(c, d, ▮z)
+        target: |-
+          ops(c, d)
   - goal: 'Drop the cram parameter.'
     ft: python
     start: |-
@@ -67,6 +95,15 @@ tasks:
           def tag(self, ▮word, pos):
         target: |-
           def tag(self, pos):
+      - goal: 'Drop the hint parameter.'
+        start: |-
+          def recall(self, ▮hint, cue):
+        target: |-
+          def recall(self, cue):
+      - start: |-
+          def schedule(self, ▮cram, gap):
+        target: |-
+          def schedule(self, gap):
   - goal: 'Change the first argument to hook, starting from the beginning of the line.'
     ft: python
     start: |-
@@ -82,3 +119,15 @@ tasks:
         target: |-
           bar(q, y)
         solution: 'ciaq<Esc>'
+      - goal: 'Change the first argument to "test", from the start of the line.'
+        start: |-
+          ▮study(cram, sleep)
+        target: |-
+          study(test, sleep)
+        solution: 'ciatest<Esc>'
+      - goal: 'Change the first argument to "four", from the start of the line.'
+        start: |-
+          ▮chunks(seven, items)
+        target: |-
+          chunks(four, items)
+        solution: 'ciafour<Esc>'

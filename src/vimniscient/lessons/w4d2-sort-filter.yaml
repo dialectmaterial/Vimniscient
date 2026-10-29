@@ -71,7 +71,8 @@ tasks:
           86 Vietnamese
           125 Japanese
           230 Bengali
-      - start: |-
+      - goal: 'Sort the researchers by year, not alphabetically.'
+        start: |-
           ▮Published, year
           2006 Roediger
           1885 Ebbinghaus
@@ -81,7 +82,8 @@ tasks:
           1885 Ebbinghaus
           1956 Miller
           2006 Roediger
-      - start: |-
+      - goal: 'Sort by the number of chunks, not alphabetically.'
+        start: |-
           ▮Chunks held
           7 Miller
           4 Cowan

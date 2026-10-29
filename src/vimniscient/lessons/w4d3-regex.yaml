@@ -60,11 +60,13 @@ tasks:
           ▮tone 1, tone 22, tone 214
         target: |-
           tone [1], tone [22], tone [214]
-      - start: |-
+      - goal: 'Put every number in square brackets.'
+        start: |-
           ▮Miller 7, Cowan 4
         target: |-
           Miller [7], Cowan [4]
-      - start: |-
+      - goal: 'Put every year in square brackets.'
+        start: |-
           ▮years 1885, 1956, 2006
         target: |-
           years [1885], [1956], [2006]
