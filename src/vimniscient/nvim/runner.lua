@@ -101,6 +101,10 @@ vim.wo[goal_win].number = true
 -- The frame stands in for the statusline and tabline; plugins may set them
 -- again while starting up, so they're put back once that's done.
 local function quiet_ui()
+  -- lualine refreshes its (hidden) statusline on every cursor move, which redraws
+  -- every float: a hundred times the drawing per key. It's off for this session.
+  pcall(function() require("lualine").hide({ unhide = false }) end)
+  pcall(vim.api.nvim_del_augroup_by_name, "lualine_stl_refresh")
   vim.o.laststatus = 0
   vim.o.showtabline = 0
   vim.o.ruler = false
@@ -293,15 +297,23 @@ local function paint(buf, lines)
   end
 end
 
--- The practice box's footer: the mode and the keys so far.
-local function footer_for(task, count)
+-- Under your box: the mode and the keys so far. It's text on the frame, not the
+-- box's border: changing a border redraws the whole box, on every key.
+local function status_for(task, count)
   local mode = MODES[vim.fn.mode():sub(1, 1)] or vim.fn.mode()
   local keys = task.budget and string.format("keys %d of %d · ref %d", count, task.budget, task.ref)
     or string.format("keys %d · ref %d", count, task.ref)
-  return " " .. mode .. " · " .. keys .. " "
+  return mode .. " · " .. keys .. "  "
 end
 
-local footer_text, laid_out_lines = "", 0
+local status_ns = vim.api.nvim_create_namespace("vimniscient-status")
+local status_text, status_row, laid_out_lines = "", 0, 0
+
+local function show_status(text)
+  status_text = text
+  vim.api.nvim_buf_set_extmark(frame_buf, status_ns, status_row, 0,
+    { id = 1, virt_text = { { text, MUTED } }, virt_text_pos = "right_align" })
+end
 
 function redraw()
   local task = tasks[current]
@@ -342,6 +354,7 @@ function redraw()
   for _ = 1, goal_h + 2 + practice_h + 2 do
     table.insert(lines, {})
   end
+  status_row = #lines
   table.insert(lines, {})
   for _, line in ipairs(said) do
     table.insert(lines, line)
@@ -354,6 +367,7 @@ function redraw()
     lines[i] = vim.list_extend({ { "  " } }, line)
   end
   paint(frame_buf, lines)
+  show_status(status_for(task, count))
 
   local height = math.min(#lines, rows - 2)
   local label = (task.label or string.format("task %d/%d", current, #tasks)):lower()
@@ -367,12 +381,10 @@ function redraw()
     relative = "win", win = frame_win, row = goal_row, col = 2, width = box, height = goal_h,
     title = { { "─", "VimniscientBox" }, { " goal ", MUTED } }, title_pos = "left",
   })
-  footer_text = footer_for(task, count)
   laid_out_lines = start_lines
   vim.api.nvim_win_set_config(practice_win, {
     relative = "win", win = frame_win, row = goal_row + goal_h + 2, col = 2, width = box, height = practice_h,
     title = { { "─", "VimniscientFrame" }, { " you ", TITLE } }, title_pos = "left",
-    footer = { { footer_text, MUTED }, { "─", "VimniscientFrame" } }, footer_pos = "right",
   })
 
   local commands = task.solution == "—" and { { ":Reset", "start over" }, { ":q", "stop" } }
@@ -385,26 +397,24 @@ function redraw()
   vim.api.nvim_win_set_config(keys_win, { relative = "editor", row = rows, col = 0, width = columns, height = 1 })
 end
 
--- Keys and mode changes only touch the footer, once per batch of keys: laying the
--- whole frame out again on every key made a held j lag behind.
-local footer_due = false
-local function update_footer()
-  footer_due = false
+-- Keys and mode changes only touch that status line, once per batch of keys:
+-- laying the whole frame out again on every key made a held j lag behind.
+local status_due = false
+local function update_status()
+  status_due = false
   local task = tasks[current]
-  if not task or not vim.api.nvim_win_is_valid(practice_win) then
+  if not task or not vim.api.nvim_buf_is_valid(frame_buf) then
     return
   end
-  local text = footer_for(task, select(2, task_keys()))
-  if text ~= footer_text then
-    footer_text = text
-    vim.api.nvim_win_set_config(practice_win, { footer = { { text, MUTED }, { "─", "VimniscientFrame" } },
-      footer_pos = "right" })
+  local text = status_for(task, select(2, task_keys()))
+  if text ~= status_text then
+    show_status(text)
   end
 end
-local function footer_soon()
-  if not footer_due then
-    footer_due = true
-    vim.schedule(update_footer)
+local function status_soon()
+  if not status_due then
+    status_due = true
+    vim.schedule(update_status)
   end
 end
 
@@ -613,7 +623,7 @@ vim.on_key(function(_, typed)
         vim.schedule(redraw)
       end
     end
-    footer_soon()
+    status_soon()
     if endless then
       vim.schedule(over_budget)
     end
@@ -627,7 +637,7 @@ vim.api.nvim_create_autocmd({ "TextChanged", "InsertLeave" }, {
   callback = function() vim.schedule(check) end,
 })
 -- The boxes grow with the text (only a change in line count needs a new layout),
--- and the footer shows the mode.
+-- and the status line under your box shows the mode.
 vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
   group = group,
   buffer = practice_buf,
@@ -637,7 +647,7 @@ vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
     end
   end,
 })
-vim.api.nvim_create_autocmd("ModeChanged", { group = group, callback = footer_soon })
+vim.api.nvim_create_autocmd("ModeChanged", { group = group, callback = status_soon })
 vim.api.nvim_create_autocmd("VimResized", { group = group, callback = function() vim.schedule(redraw) end })
 if endless then
   vim.api.nvim_create_autocmd("CmdlineLeave", {
