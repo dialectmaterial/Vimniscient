@@ -41,6 +41,8 @@ class Task:
     ref_override: int | None = None  # when there's no reference solution (VimGolf)
     variants: list["Task"] = field(default_factory=list)
     phase: str = "recall"  # learn (keys shown) | recall (from memory) | climb (endless mode)
+    generator: str = ""  # a kind in generate.py that makes new texts for this skill
+    generated: str = ""  # the seed, on a task made by the generator
     # every version of the task, this one included (not compared: it holds the task itself)
     siblings: list["Task"] = field(default_factory=list, compare=False, repr=False)
 
@@ -59,10 +61,27 @@ class Task:
 
     def next_version(self) -> "Task":
         """The version after this one, for another go on a text not just seen."""
+        if self.generated:  # a generated text: another one
+            return self.generate(self.generated + "+")
         if len(self.siblings) < 2:
             return self
         i = next(i for i, t in enumerate(self.siblings) if t.start == self.start and t.target == self.target)
         return self.siblings[(i + 1) % len(self.siblings)]
+
+    @property
+    def choices(self) -> int:
+        """The texts a recall can pick from: the versions, plus a generated one if it has a generator."""
+        return self.versions + bool(self.generator)
+
+    def choice(self, n: int, seed: str) -> "Task":
+        """Text n of the choices; the last is generated from `seed` when there's a generator."""
+        n %= self.choices
+        return self.generate(seed) if n == self.versions else self.version(n)
+
+    def generate(self, seed: str) -> "Task":
+        from vimniscient.generate import generate
+
+        return generate(self.generator, seed, self.siblings[0] if self.siblings else self)
 
     def as_phase(self, phase: str) -> "Task":
         return replace(self, phase=phase)
@@ -112,6 +131,7 @@ def _task(t: dict, parent: Task | None, lesson_id: str, index: int, ft: str) -> 
         ft=t.get("ft", parent.ft if parent else ft),
         lesson_id=lesson_id,
         index=index,
+        generator=t.get("generate", parent.generator if parent else ""),
     )
 
 
@@ -142,12 +162,14 @@ def two_rounds(lesson: Lesson, day: date | None = None) -> list[Task]:
     """Learn (keys shown), then Recall (the same skills on other texts, shuffled,
     keys hidden). Which texts, and the order, change from day to day, so a
     lesson done again isn't the sentences you remember."""
-    rng = random.Random(f"{lesson.id}:{day or date.today()}")
+    day = day or date.today()
+    rng = random.Random(f"{lesson.id}:{day}")
     learn, recall = [], []
     for t in lesson.tasks:
-        first, second = rng.sample(range(t.versions), 2) if t.versions > 1 else (0, 0)
+        first = rng.randrange(t.versions)  # Learn keeps to the written texts
+        second = rng.choice([n for n in range(t.choices) if n != first] or [first])
         learn.append(t.version(first).as_phase("learn"))
-        recall.append(t.version(second).as_phase("recall"))
+        recall.append(t.choice(second, f"{t.item_id}:{day}").as_phase("recall"))
     rng.shuffle(recall)
     return learn + recall
 

@@ -199,7 +199,7 @@ class Progress:
             "SELECT COUNT(*) FROM attempts WHERE lesson = ? AND task = ? AND phase = 'recall' AND status != 'quit'",
             (task.lesson_id, task.index),
         ).fetchone()
-        return task.version(n + 1)
+        return task.choice(n + 1, f"{task.item_id}:{n}")
 
     def due_tasks(self, lessons: list[Lesson]) -> list[Task]:
         """Tasks from earlier days that are due for review, most overdue first."""

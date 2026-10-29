@@ -18,6 +18,7 @@ tasks:
       ciw is change inner word: it swaps the whole word, wherever the cursor sits.
     solution: 'ciwwhole<Esc>'
     hint: 'c changes, i keeps it inner, w names the word: ciw, from anywhere inside it.'
+    generate: ciw-typo  # Recall and reviews can get a new text (generate.py)
     variants:
       - goal: 'Fix "spaec" to "space" (the cursor is in the middle of the word).'
         start: |-
@@ -50,6 +51,7 @@ tasks:
       The a in daw is around: the word and its own space.
     solution: 'daw'
     hint: 'd deletes, a takes the word with its space, w is the word: daw leaves no double space.'
+    generate: daw-double  # Recall and reviews can get a new text (generate.py)
     variants:
       - goal: 'Delete the second "behind".'
         start: |-
@@ -79,6 +81,7 @@ tasks:
       Big W, big WORD: ciW takes everything between two spaces.
     solution: 'ciWeverything<Esc>'
     hint: 'A WORD (capital W) runs from space to space, dots included. Try ciW.'
+    generate: ciW-dotted  # Recall and reviews can get a new text (generate.py)
     variants:
       - goal: 'Replace the whole URL with "a URL".'
         start: |-
@@ -196,6 +199,7 @@ tasks:
       daw: delete a word, and the space after it.
     solution: 'daw'
     hint: 'daw takes the word and its trailing space.'
+    generate: daw-double  # Recall and reviews can get a new text (generate.py)
     variants:
       - goal: 'Delete the doubled "like".'
         start: |-

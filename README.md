@@ -274,6 +274,7 @@ uv run python tests/check_lessons.py            # plain-Vim lessons, in nvim --c
 uv run python tests/check_lessons.py --lazyvim  # LazyVim lessons, in your own config
 uv run python tests/check_answers.py            # card answers written different ways
 uv run python tests/check_timing.py             # task times: old progress databases upgrade safely
+uv run python tests/check_generate.py           # generated texts: reproducible, and they solve in Neovim
 uv run python tests/live_lessons.py --all       # types every solution into the real runner (needs tmux)
 uv run python tests/live_retry.py               # a skipped task comes back (Learn, then Recall)
 uv run python tests/live_review.py              # a review session, as review, placement and VimGolf run
