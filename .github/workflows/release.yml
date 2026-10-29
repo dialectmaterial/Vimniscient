@@ -16,7 +16,7 @@ jobs:
       contents: write  # for the GitHub release
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@v10.3.3  # this action has no v10 tag, only exact versions
       - name: Check the tag matches the version
         run: |
           version=$(uv version --short)
