@@ -235,6 +235,8 @@ class StatsView(VerticalScroll):
         yield Static(id="overview")
         yield Static("Keystrokes · solved tasks · efficiency = reference keys ÷ your keys", classes="section-label")
         yield DataTable(id="keys-table")
+        yield Static("Speed · tasks solved from memory, first tries against your latest", classes="section-label")
+        yield DataTable(id="speed-table")
         yield Static("Decks", classes="section-label")
         yield DataTable(id="decks-table")
         yield Static("Card accuracy", classes="section-label")
@@ -276,6 +278,16 @@ class StatsView(VerticalScroll):
         table = self.table("keys-table", "Day", "Tasks", "Your keys", "Reference", "Efficiency")
         for day, n, keys, ref in progress.efficiency_by_day():
             table.add_row(day, str(n), str(keys), str(ref), f"{100 * ref / keys:.0f}%" if keys else "")
+
+        table = self.table("speed-table", "Lesson", "Timed", "First tries", "Lately", "Before the first key")
+        speed = progress.speed_by_lesson()
+        for lesson in lessons:
+            if lesson.id not in speed:
+                continue
+            n, first, latest, thinking = speed[lesson.id]
+            change = tint(app, f"{latest:.1f}s", "success" if latest < first else "text-muted")
+            table.add_row(Text(f"{lesson.label} · {lesson.title}"), str(n), f"{first:.1f}s", change,
+                          f"{thinking:.1f}s" if thinking is not None else "")
 
         items = progress.items("card")
         unlocked = {c.id for c in progress.unlocked(decks, lessons)}

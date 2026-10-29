@@ -51,5 +51,11 @@ check("new attempts", progress.db.execute("SELECT seconds, first FROM attempts W
       [(4.25, 1.5), (None, None)])
 check("opening it again", Progress().db.execute("SELECT COUNT(*) FROM attempts").fetchone(), (3,))
 
+# speed: the first tries against the latest, from memory only (Learn rounds don't count)
+for seconds in (9.0, 8.0, 7.0, 3.0, 2.0, 4.0):
+    progress.record([TaskResult(task, "solved", task.solution, task.ref, 0, seconds=seconds, first=seconds / 4)])
+progress.record([TaskResult(task.as_phase("learn"), "solved", task.solution, task.ref, 0, seconds=99.0)])
+check("speed", progress.speed_by_lesson()[task.lesson_id], (7, 8.0, 3.0, 0.75))
+
 print(f"{len(problems)} problems")
 sys.exit(1 if problems else 0)

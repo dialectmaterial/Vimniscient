@@ -399,6 +399,33 @@ class Progress:
             day -= timedelta(days=1)
         return n
 
+    def speed_by_lesson(self, recent: int = 3) -> dict[str, tuple[int, float, float, float | None]]:
+        """Per lesson, from tasks solved from memory (Recall, reviews, Endless) that were timed:
+        how many, the median time of the first `recent` and of the latest `recent`, and the
+        median time before the first key lately. Lessons with fewer than two are left out."""
+        rows = self.db.execute(
+            "SELECT lesson, seconds, first FROM attempts WHERE status = 'solved' AND phase != 'learn' "
+            "AND seconds IS NOT NULL ORDER BY id"
+        ).fetchall()
+        by_lesson: dict[str, list[tuple[float, float | None]]] = {}
+        for lesson, seconds, first in rows:
+            by_lesson.setdefault(lesson, []).append((seconds, first))
+
+        def median(values: list[float]) -> float:
+            values = sorted(values)
+            mid = len(values) // 2
+            return values[mid] if len(values) % 2 else (values[mid - 1] + values[mid]) / 2
+
+        out = {}
+        for lesson, timed in by_lesson.items():
+            if len(timed) < 2:
+                continue
+            latest = timed[-recent:]
+            firsts = [f for _, f in latest if f is not None]
+            out[lesson] = (len(timed), median([s for s, _ in timed[:recent]]), median([s for s, _ in latest]),
+                           median(firsts) if firsts else None)
+        return out
+
     def efficiency_by_day(self, limit: int = 7) -> list[tuple[str, int, int, int]]:
         """(day, solved tasks, keys typed, reference keys) for recent training days."""
         rows = self.db.execute(
