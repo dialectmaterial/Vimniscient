@@ -15,7 +15,7 @@ makedepends=('python-build' 'python-installer' 'python-hatchling' 'python-wheel'
 optdepends=('hyprland: live drills for Omarchy and Hyprland keybindings'
             'tmux: cards for your tmux keys')
 source=("https://files.pythonhosted.org/packages/source/${pkgname::1}/$pkgname/$pkgname-$pkgver.tar.gz")
-sha256sums=('SKIP')
+sha256sums=('acc230c0d9b1ac0e95755a7298073ba39b7dda0bad68c84b00dab3092045939e')
 
 build() {
   cd "$pkgname-$pkgver"

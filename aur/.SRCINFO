@@ -1,0 +1,21 @@
+pkgbase = vimniscient
+	pkgdesc = Get fluent in Vim in fifteen minutes a day, in your own Neovim
+	pkgver = 0.2.0
+	pkgrel = 1
+	url = https://vimniscient.com
+	arch = any
+	license = AGPL-3.0-or-later
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-hatchling
+	makedepends = python-wheel
+	depends = python
+	depends = python-textual
+	depends = python-yaml
+	depends = neovim
+	optdepends = hyprland: live drills for Omarchy and Hyprland keybindings
+	optdepends = tmux: cards for your tmux keys
+	source = https://files.pythonhosted.org/packages/source/v/vimniscient/vimniscient-0.2.0.tar.gz
+	sha256sums = acc230c0d9b1ac0e95755a7298073ba39b7dda0bad68c84b00dab3092045939e
+
+pkgname = vimniscient
