@@ -81,13 +81,19 @@ reading it up front.
 
 ## Quick start
 
-You need Linux and [Neovim](https://neovim.io) 0.10 or newer. It's one binary with no other
-dependencies; `uv` or `pipx` only fetch it, and the
-[releases](https://github.com/dialectmaterial/Vimniscient/releases) have it on its own too.
+You need Linux on x86-64 and [Neovim](https://neovim.io) 0.10 or newer. Vimniscient is one
+binary with no other dependencies, and this puts it in `~/.local/bin`:
 
 ```bash
-uv tool install vimniscient    # or: pipx install vimniscient, or: cargo install vimniscient
+curl -fsSL https://vimniscient.com/install.sh | sh
 vimniscient
+```
+
+Run the same command again to update. If you'd rather not use a ready-made binary, or
+you're on another system (untested), build it yourself with Rust 1.88+ and a C compiler:
+
+```bash
+cargo install vimniscient
 ```
 
 1. Press **`p`** for the placement test. It tests each skill in a few short
