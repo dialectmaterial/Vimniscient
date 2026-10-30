@@ -103,5 +103,17 @@ check("the Neovim config reads it", progress_module.HARDTIME_FILE.read_text().st
 progress_module.STARTED_FILE.write_text(date.today().isoformat() + "\n")
 check("week 2 done on day one: still hints", p.sync_hardtime(lessons), False)
 
+# Endless: practice for the streak, never a grade
+from vimniscient.session import TaskResult  # noqa: E402
+
+p = Progress()
+task = lessons[3].tasks[0]
+before = p.db.execute("SELECT * FROM items ORDER BY id").fetchall(), p.is_done(lessons[3]), p.best(lessons[3])
+p.record_endless([TaskResult(task.as_phase("climb"), "solved", task.solution, task.ref, 0, seconds=2.0, first=1.0)],
+                 {"start": 1, "level": 2, "climbed": 1, "missed": 0, "fixed": 0})
+after = p.db.execute("SELECT * FROM items ORDER BY id").fetchall(), p.is_done(lessons[3]), p.best(lessons[3])
+check("Endless grades nothing", after == before, True)
+check("but counts for the streak", p.streak() >= 1, True)
+
 print(f"{len(problems)} problems")
 sys.exit(1 if problems else 0)

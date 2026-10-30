@@ -2,6 +2,7 @@ week: 4
 day: 7
 review: true
 title: Week 4 review
+skill: mixed
 intro: |
   Ranges, `:sort`, filters, patterns, `:norm`, motions and indenting, mixed.
   Four weeks in, many commands should be moving from Fitts and Posner's

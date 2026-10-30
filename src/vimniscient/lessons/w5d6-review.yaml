@@ -3,6 +3,7 @@ day: 6
 review: true
 lazyvim: true
 title: Week 5 review
+skill: mixed
 intro: |
   LazyVim's text objects and comments, mixed. Try saying each object's name
   aloud as you type it: argument, quote, bracket, function, element. Words

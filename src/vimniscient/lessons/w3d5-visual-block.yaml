@@ -1,6 +1,7 @@
 week: 3
 day: 5
 title: Visual block
+skill: visual
 intro: |
   `Ctrl-v` cuts a vertical block out of the text: a rectangle. Then `I` inserts before it on every line,
   `A` appends after it (`$A` appends at each line's end, even when the lines

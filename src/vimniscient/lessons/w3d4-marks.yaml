@@ -1,6 +1,7 @@
 week: 3
 day: 4
 title: Marks and jumps
+skill: motions
 intro: |
   `m` marks a spot: `ma` sets mark a. The plain quote `'a` goes to its line,
   the backtick `` `a `` to its exact letter, and

@@ -1,6 +1,7 @@
 week: 1
 day: 3
 title: Sentences and paragraphs
+skill: text-objects
 intro: |
   Bigger nouns: `s` is a *sentence* and `p` a *paragraph* (a block of lines
   between empty lines). `is`/`ip` are the thing itself; `as`/`ap` take the

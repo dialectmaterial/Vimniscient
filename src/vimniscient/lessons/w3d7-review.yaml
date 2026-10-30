@@ -2,6 +2,7 @@ week: 3
 day: 7
 review: true
 title: Week 3 review
+skill: mixed
 intro: |
   Macros, registers, marks, visual block, `:s` and `:g`. Many of these have
   more than one good answer. Pick the one you'd use for real.

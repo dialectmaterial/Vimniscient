@@ -1,6 +1,7 @@
 week: 1
 day: 2
 title: Quotes, brackets and tags
+skill: text-objects
 intro: |
   The same `i`/`a` trick works on pairs, and the noun is simply the pair's own
   sign: `i"` is inside the quotes, `a"` takes the quotes too. Brackets name

@@ -1,6 +1,7 @@
 week: 4
 day: 5
 title: More motions
+skill: motions
 intro: |
   Some motions worth knowing with an operator. The braces hug a block: `{` is
   its top and `}` its bottom, the next blank line

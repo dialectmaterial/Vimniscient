@@ -1,6 +1,7 @@
 week: 4
 day: 1
 title: Ranges, :m and :t
+skill: ex
 intro: |
   Ex commands take a range: `:2,3d` deletes lines 2–3, `.` is the current
   line, `$` the last (the end, as in regex), `%` all of them. `:m` *moves*

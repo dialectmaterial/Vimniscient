@@ -2,6 +2,7 @@ week: 5
 day: 1
 lazyvim: true
 title: Arguments (LazyVim)
+skill: text-objects
 intro: |
   LazyVim adds text objects through mini.ai. Here `a` names an *argument*:
   `ia` is the argument itself and `aa` an argument with its comma (the

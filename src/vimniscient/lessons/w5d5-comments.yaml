@@ -2,6 +2,7 @@ week: 5
 day: 5
 lazyvim: true
 title: Comments (LazyVim)
+skill: edits
 intro: |
   `gc` (*go comment*) is the comment operator. It knows each language's comment syntax:
   `gcc` toggles the current line, `gcj` this line and the next, `gcip` the

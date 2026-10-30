@@ -1,6 +1,7 @@
 week: 4
 day: 3
 title: Patterns in :s
+skill: ex
 intro: |
   Useful pieces: `^` and `$` (start and end of line: the caret points up at
   where the line starts, the dollar closes the bill), `\s` whitespace, `\d`

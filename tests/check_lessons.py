@@ -11,10 +11,13 @@ import sys
 import tempfile
 from pathlib import Path
 
-from vimniscient.lessons import load_lessons
+from vimniscient.lessons import SKILLS, load_lessons
 
 lazyvim = "--lazyvim" in sys.argv
 lessons = [lesson for lesson in load_lessons() if lesson.lazyvim == lazyvim]
+for lesson in lessons:
+    if lesson.skill not in SKILLS or (lesson.review and lesson.skill != "mixed"):
+        sys.exit(f"{lesson.id}: skill {lesson.skill!r}")
 already = [
     f"{lesson.id}#{i}" for lesson in lessons for i, t in enumerate(lesson.tasks, 1)
     for v in [t, *t.variants] if v.start == v.target

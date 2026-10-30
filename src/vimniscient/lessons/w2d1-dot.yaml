@@ -1,6 +1,7 @@
 week: 2
 day: 1
 title: The dot command
+skill: repeats
 intro: |
   `.` repeats your last change: the whole thing, including the text you
   typed in insert mode. Read it as a full stop that says *again*. Make one

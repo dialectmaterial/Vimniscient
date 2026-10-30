@@ -1,6 +1,7 @@
 week: 2
 day: 3
 title: The cgn trick
+skill: repeats
 intro: |
   `gn` reads as *go to the next match* and grab it: it selects the next
   search match. So `cgn` changes the next match, and `.` then changes the one

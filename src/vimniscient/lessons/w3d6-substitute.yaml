@@ -1,6 +1,7 @@
 week: 3
 day: 6
 title: ':s and :g'
+skill: ex
 intro: |
   `:s` *substitutes*: `:s/old/new/` on the current line, `:%s/old/new/g` on
   all lines (`%` is all of them, like 100 percent) and every match (`g`).

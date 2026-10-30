@@ -1,6 +1,7 @@
 week: 2
 day: 5
 title: Getting into insert mode well
+skill: edits
 intro: |
   Choosing the right way into insert mode saves moving first: `o`/`O` *open*
   a line below/above, `ea` goes to the *end* of a word and *appends*, `R`

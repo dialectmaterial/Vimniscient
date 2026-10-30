@@ -2,6 +2,7 @@ week: 5
 day: 3
 lazyvim: true
 title: Functions and classes (LazyVim)
+skill: text-objects
 intro: |
   With treesitter, mini.ai knows your code's structure: `f` is a *function*
   (`if` its body, `af` the whole function) and `c` a *class* (`ic`, `ac`).

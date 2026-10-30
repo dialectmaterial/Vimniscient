@@ -1,6 +1,7 @@
 week: 2
 day: 4
 title: Case and numbers
+skill: edits
 intro: |
   `~` flips the case of one character: the tilde is a little wave. `gU`, `gu`
   and `g~` are operators: U is *up* (capitals), u is down. `gUiw` uppercases

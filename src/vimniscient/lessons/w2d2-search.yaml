@@ -1,6 +1,7 @@
 week: 2
 day: 2
 title: Searching as a motion
+skill: search
 intro: |
   `/text<Enter>` jumps to the next match (the slash leans forward),
   `?text<Enter>` to the previous one (a question asks back). `n` repeats it,

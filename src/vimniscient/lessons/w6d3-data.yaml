@@ -1,6 +1,7 @@
 week: 6
 day: 3
 title: 'Real edits: data'
+skill: mixed
 intro: |
   CSV, logs and lists: swap columns, pull out fields, filter and sort.
 keys: [':%s/\v( )', ':g/pat/d', ':sort n']

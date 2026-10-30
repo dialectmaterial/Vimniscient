@@ -1,6 +1,7 @@
 week: 3
 day: 3
 title: Registers
+skill: registers
 intro: |
   Every yank and delete goes into the unnamed register, so a delete can
   replace what you meant to paste. The quote mark names a register: `"a`

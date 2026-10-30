@@ -2,6 +2,7 @@ week: 5
 day: 4
 lazyvim: true
 title: Sub-words, numbers, calls (LazyVim)
+skill: text-objects
 intro: |
   More of LazyVim's mini.ai objects: `e` is an *element*, one part of a
   camelCase or snake_case word; `d` is *digits*, a number; `u` is a *use* of

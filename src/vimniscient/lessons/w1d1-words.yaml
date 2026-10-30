@@ -1,6 +1,7 @@
 week: 1
 day: 1
 title: Word text objects
+skill: text-objects
 intro: |
   Read a Vim command as a small sentence: a verb, then a noun. The verbs are
   `c` *change*, `d` *delete* and `y` *yank* (Vim's old word for copy). The noun

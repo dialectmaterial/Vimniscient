@@ -1,6 +1,7 @@
 week: 3
 day: 2
 title: Smarter macros
+skill: macros
 intro: |
   A macro can search (`/TODO<Enter>` inside it finds the next one), use
   `Ctrl-a`, and run on a range with `:2,$norm @a` (*norm* for normal mode:

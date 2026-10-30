@@ -1,6 +1,7 @@
 week: 1
 day: 4
 title: Find and till on a line
+skill: motions
 intro: |
   `f{char}` *finds* the next {char} on the line and lands *on* it; `t{char}`
   goes *till* it and stops just before. Capital `F` and `T` look backwards.

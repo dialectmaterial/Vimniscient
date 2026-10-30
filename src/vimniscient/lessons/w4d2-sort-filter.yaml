@@ -1,6 +1,7 @@
 week: 4
 day: 2
 title: ':sort and shell filters'
+skill: ex
 intro: |
   `:sort` sorts lines (`:sort n` as numbers, `:sort u` keeps the unique ones).
   `:%!cmd` sends the lines through a shell command and replaces them with

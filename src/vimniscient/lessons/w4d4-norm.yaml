@@ -1,6 +1,7 @@
 week: 4
 day: 4
 title: ':normal on many lines'
+skill: ex
 intro: |
   `:norm` is short for *normal*: it runs normal-mode keys on each line of a range, as if you typed
   them there: `:%norm A;` appends to every line, `:'<,'>norm I// ` comments

@@ -91,6 +91,9 @@ class Task:
         return self.ref_override if self.ref_override is not None else count_keys(self.solution)
 
 
+SKILLS = ("text-objects", "motions", "edits", "repeats", "search", "visual", "macros", "registers", "ex", "mixed")
+
+
 @dataclass
 class Lesson:
     id: str
@@ -102,6 +105,7 @@ class Lesson:
     tasks: list[Task]
     review: bool = False  # a mixed review day (skipped by the placement test)
     lazyvim: bool = False  # needs LazyVim's text objects/plugins (not checked in --clean)
+    skill: str = "mixed"  # one of SKILLS: what placement and skill drills go by
 
     @property
     def label(self) -> str:
@@ -155,6 +159,7 @@ def _load(source: str, name: str) -> Lesson:
         tasks=tasks,
         review=data.get("review", False),
         lazyvim=data.get("lazyvim", False),
+        skill=data["skill"],
     )
 
 

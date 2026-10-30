@@ -1,6 +1,7 @@
 week: 2
 day: 6
 title: Visual mode
+skill: visual
 intro: |
   `v` is *visual*: you see what you'll act on. `v` selects characters,
   capital `V` whole lines. Move to grow the selection, then give an operator:

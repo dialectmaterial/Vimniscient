@@ -1,6 +1,7 @@
 week: 1
 day: 5
 title: Whole lines and line ends
+skill: edits
 intro: |
   Capitals go big: `D` deletes to the end of the line, `C` changes to the end.
   Doubling a verb means the whole line: `dd` deletes it, `cc` changes it. `J`

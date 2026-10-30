@@ -1,6 +1,7 @@
 week: 4
 day: 6
 title: Indenting
+skill: edits
 intro: |
   `>` and `<` are operators like `d`, and the arrow points the way the text
   moves: `>>` and `<<` for one line, `>i{`

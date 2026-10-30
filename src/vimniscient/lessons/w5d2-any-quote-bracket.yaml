@@ -2,6 +2,7 @@ week: 5
 day: 2
 lazyvim: true
 title: Any quote, any bracket (LazyVim)
+skill: text-objects
 intro: |
   With mini.ai, `q` is *any* quote (`"`, `'` or `` ` ``) and `b` is any
   bracket (`(`, `[` or `{`). So `ciq` and `cib` work without your having to

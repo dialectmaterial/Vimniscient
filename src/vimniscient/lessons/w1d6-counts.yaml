@@ -1,6 +1,7 @@
 week: 1
 day: 6
 title: Counts
+skill: motions
 intro: |
   A number in front repeats the command, and it reads like a numeral before a
   noun: `3dw` *delete three words*, `3dd` three lines, `5x` cross out five
