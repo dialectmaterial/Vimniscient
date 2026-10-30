@@ -17,26 +17,11 @@ tasks:
     solution: '~'
     hint: '~ flips the case of the character under the cursor.'
     variants:
-      - goal: 'Capitalise the name.'
-        start: |-
-          ▮ebbinghaus tested himself
-        target: |-
-          Ebbinghaus tested himself
-      - goal: 'Capitalise the name.'
-        start: |-
-          ▮miller wrote about seven
-        target: |-
-          Miller wrote about seven
       - goal: 'Capitalise the first letter.'
         start: |-
           ▮the tilde is a wave
         target: |-
           The tilde is a wave
-      - goal: 'Capitalise the name.'
-        start: |-
-          ▮cowan argued for four
-        target: |-
-          Cowan argued for four
   - goal: 'Uppercase "up".'
     start: |-
       gU raises ▮up to capitals
@@ -45,26 +30,11 @@ tasks:
     solution: 'gUiw'
     hint: 'gU is the uppercase operator; iw is the word.'
     variants:
-      - goal: 'Uppercase "srs".'
-        start: |-
-          an ▮srs schedules your reviews
-        target: |-
-          an SRS schedules your reviews
       - goal: 'Uppercase "url".'
         start: |-
           gU sends the ▮url up to capitals
         target: |-
           gU sends the URL up to capitals
-      - goal: 'Uppercase "pspi".'
-        start: |-
-          Dunlosky's 2013 review is in ▮pspi
-        target: |-
-          Dunlosky's 2013 review is in PSPI
-      - goal: 'Uppercase "tla".'
-        start: |-
-          a ▮tla is a three-letter acronym
-        target: |-
-          a TLA is a three-letter acronym
   - goal: 'Make the whole line lowercase.'
     start: |-
       ▮GU LOWERS THE WHOLE LINE
@@ -73,23 +43,10 @@ tasks:
     solution: 'guu'
     hint: 'guu lowercases the line (gu + u, like dd).'
     variants:
-      - goal: 'Make the whole line lowercase.'
-        start: |-
-          ▮DON'T SHOUT THE GLOSSES
-        target: |-
-          don't shout the glosses
       - start: |-
           ▮LOWERCASE IS QUIETER
         target: |-
           lowercase is quieter
-      - start: |-
-          ▮SPACING BEATS CRAMMING
-        target: |-
-          spacing beats cramming
-      - start: |-
-          ▮NO NEED TO SHOUT A REVIEW
-        target: |-
-          no need to shout a review
   - goal: 'Make the sentence true: Ctrl-a adds 1.'
     start: |-
       ▮Ctrl-a adds 0 to the number
@@ -98,54 +55,24 @@ tasks:
     solution: '<C-a>'
     hint: 'Ctrl-a adds one to the next number on the line.'
     variants:
-      - goal: 'Fitts and Posner named three stages of skill: fix the number.'
+      - goal: 'Make the sentence true: two plus one is three.'
         start: |-
-          ▮Fitts and Posner named 2 stages of skill
+          ▮Ctrl-a adds, so two plus one is 2
         target: |-
-          Fitts and Posner named 3 stages of skill
-      - goal: 'Ebbinghaus was born in 1850: fix the year.'
-        start: |-
-          ▮Ebbinghaus was born in 1849
-        target: |-
-          Ebbinghaus was born in 1850
-      - goal: 'Miller''s magical number is seven: fix it.'
-        start: |-
-          ▮Miller's number is 6, plus or minus two
-        target: |-
-          Miller's number is 7, plus or minus two
-      - goal: 'Roediger and Karpicke published in 2006: fix the year.'
-        start: |-
-          ▮Roediger and Karpicke published in 2005
-        target: |-
-          Roediger and Karpicke published in 2006
-  - goal: 'Ebbinghaus published in 1885: add 30 to the year.'
+          Ctrl-a adds, so two plus one is 3
+  - goal: 'Twenty plus thirty is fifty: add 30.'
     start: |-
-      ▮Ebbinghaus published in 1855
+      ▮A count makes Ctrl-a add: twenty plus thirty is 20
     target: |-
-      Ebbinghaus published in 1885
+      A count makes Ctrl-a add: twenty plus thirty is 50
     solution: '30<C-a>'
     hint: 'With a count, Ctrl-a adds that many.'
     variants:
-      - goal: 'Miller''s magical number came out in 1956: add 30 to the year.'
+      - goal: 'The answer is 31: add 30.'
         start: |-
-          ▮Miller's magical number came out in 1926
+          ▮Count first, then Ctrl-a: the answer is 1
         target: |-
-          Miller's magical number came out in 1956
-      - goal: 'Cowan''s magical number four came out in 2001: add 30 to the year.'
-        start: |-
-          ▮Cowan's magical number four came out in 1971
-        target: |-
-          Cowan's magical number four came out in 2001
-      - goal: 'Fitts and Posner''s Human Performance came out in 1967: add 30 to the year.'
-        start: |-
-          ▮Fitts and Posner's Human Performance came out in 1937
-        target: |-
-          Fitts and Posner's Human Performance came out in 1967
-      - goal: 'Dunlosky and colleagues rated learning techniques in 2013: add 30 to the year.'
-        start: |-
-          ▮Dunlosky and colleagues rated learning techniques in 1983
-        target: |-
-          Dunlosky and colleagues rated learning techniques in 2013
+          Count first, then Ctrl-a: the answer is 31
   - goal: 'Make the sentence true: 3 take away 1 leaves 2.'
     start: |-
       ▮Ctrl-x leaves 3 when you take 1 from 3
@@ -154,26 +81,11 @@ tasks:
     solution: '<C-x>'
     hint: 'Ctrl-x takes one away from the next number.'
     variants:
-      - goal: 'Cowan''s estimate is about four chunks: fix the number.'
+      - goal: 'Make the sentence true: three less one is two.'
         start: |-
-          ▮Cowan's working memory holds about 5 chunks
+          ▮Ctrl-x crosses one off: three less one is 3
         target: |-
-          Cowan's working memory holds about 4 chunks
-      - goal: 'Fitts and Posner named three stages: fix the number.'
-        start: |-
-          ▮Fitts and Posner named 4 stages of skill
-        target: |-
-          Fitts and Posner named 3 stages of skill
-      - goal: 'Miller''s magical number is seven: fix it.'
-        start: |-
-          ▮Miller's magical number is 8, plus or minus two
-        target: |-
-          Miller's magical number is 7, plus or minus two
-      - goal: 'Ebbinghaus published in 1885: fix the year.'
-        start: |-
-          ▮Ebbinghaus published Über das Gedächtnis in 1886
-        target: |-
-          Ebbinghaus published Über das Gedächtnis in 1885
+          Ctrl-x crosses one off: three less one is 2
   - goal: 'Flip the case of the first word.'
     start: |-
       ▮tILDE flips the case
@@ -182,19 +94,6 @@ tasks:
     solution: 'g~iw'
     hint: 'g~ flips case over a motion or text object.'
     variants:
-      - goal: 'Flip the case of the first word.'
-        start: |-
-          ▮eBBINGHAUS and the forgetting curve
-        target: |-
-          Ebbinghaus and the forgetting curve
-      - start: |-
-          ▮mILLER and the magical number
-        target: |-
-          Miller and the magical number
-      - start: |-
-          ▮cOWAN and the number four
-        target: |-
-          Cowan and the number four
       - start: |-
           ▮wAVE: the tilde flips
         target: |-

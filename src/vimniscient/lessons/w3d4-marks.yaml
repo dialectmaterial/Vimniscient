@@ -12,11 +12,11 @@ tasks:
   - goal: 'Delete all the lines between BEGIN and END.'
     start: |-
       ▮BEGIN
-      rereading
-      highlighting
-      summarizing
-      copying notes
-      listening again
+      m marks
+      ' jumps
+      d deletes
+      to the mark
+      in one go
       END
     target: |-
       BEGIN
@@ -24,29 +24,6 @@ tasks:
     solution: 'jma/END<CR>kd''a'
     hint: 'Mark the first line to go (ma), find the last one, then d''a. (d/END<Enter> from the first line is a nice shortcut too.)'
     variants:
-      - goal: 'Delete all the lines between BEGIN and END.'
-        start: |-
-          ▮BEGIN
-          nom: I
-          acc: me
-          gen: my
-          dat: to me
-          abl: from me
-          END
-        target: |-
-          BEGIN
-          END
-      - start: |-
-          ▮BEGIN
-          cram
-          reread
-          highlight
-          summarize
-          skim
-          END
-        target: |-
-          BEGIN
-          END
       - start: |-
           ▮BEGIN
           mark
@@ -74,33 +51,6 @@ tasks:
     solution: 'jmajy''aGp'
     hint: 'ma on the first line, j to the second, y''a yanks back to the mark, G p pastes at the end.'
     variants:
-      - goal: 'Copy rendezvous and déjà vu under "Used in English".'
-        start: |-
-          ▮== French ==
-          rendezvous
-          déjà vu
-          == Used in English ==
-        target: |-
-          == French ==
-          rendezvous
-          déjà vu
-          == Used in English ==
-          rendezvous
-          déjà vu
-        hint: 'ma on rendezvous, j to déjà vu, y''a yanks back to the mark, G p pastes at the end.'
-      - goal: 'Copy day 1 and day 7 under "Plan".'
-        start: |-
-          ▮== Spacing ==
-          day 1
-          day 7
-          == Plan ==
-        target: |-
-          == Spacing ==
-          day 1
-          day 7
-          == Plan ==
-          day 1
-          day 7
       - goal: 'Copy the two jump lines under "Notes".'
         start: |-
           ▮== Jumps ==
@@ -122,25 +72,12 @@ tasks:
     solution: 'mafbc`ahumble <Esc>'
     hint: 'ma, go to the b of backtick, then c`a changes from the mark up to the cursor.'
     variants:
-      - goal: 'Change "most frequent " to "commonest ", using a mark.'
-        start: |-
-          The ▮most frequent English word is the
-        target: |-
-          The commonest English word is the
-        solution: 'mafEc`acommonest <Esc>'
-        hint: 'ma, go to the E of English, then c`a changes from the mark up to the cursor.'
       - goal: 'Change "quick, letter-exact " to "precise ", using a mark.'
         start: |-
           A ▮quick, letter-exact jump uses the backtick
         target: |-
           A precise jump uses the backtick
         solution: 'mafjc`aprecise <Esc>'
-      - goal: 'Change "rarely, if ever, " to "never ", using a mark.'
-        start: |-
-          Ebbinghaus ▮rarely, if ever, used real words
-        target: |-
-          Ebbinghaus never used real words
-        solution: 'mafuc`anever <Esc>'
   - goal: 'Fix the typo on the last line, then jump back and fix the first.'
     start: |-
       ▮teh start
@@ -155,17 +92,6 @@ tasks:
     solution: 'Gcwthe<Esc>``.'
     hint: 'G is a jump, so `` takes you back. Then . repeats the change.'
     variants:
-      - goal: 'Fix the typo on the last line, then jump back and fix the first.'
-        start: |-
-          ▮teh noun
-          middle
-          middle
-          teh verb
-        target: |-
-          the noun
-          middle
-          middle
-          the verb
       - start: |-
           ▮teh mark
           jump
@@ -176,13 +102,3 @@ tasks:
           jump
           back
           the spot
-      - start: |-
-          ▮teh test
-          wait
-          wait
-          teh retest
-        target: |-
-          the test
-          wait
-          wait
-          the retest

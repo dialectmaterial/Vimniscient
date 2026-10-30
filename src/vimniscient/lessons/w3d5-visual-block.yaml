@@ -21,15 +21,6 @@ tasks:
     solution: '<C-v>jjI# <Esc>'
     hint: 'Ctrl-v j j selects the first column, I# <Esc> types on every line.'
     variants:
-      - goal: 'Comment out the three lines with "# ".'
-        start: |-
-          ▮p = 1
-          q = 2
-          r = 3
-        target: |-
-          # p = 1
-          # q = 2
-          # r = 3
       - start: |-
           ▮q = "record"
           at = "play"
@@ -38,80 +29,38 @@ tasks:
           # q = "record"
           # at = "play"
           # dot = "again"
-      - start: |-
-          ▮x1 = cram()
-          x2 = reread()
-          x3 = highlight()
-        target: |-
-          # x1 = cram()
-          # x2 = reread()
-          # x3 = highlight()
   - goal: 'Add a semicolon to lines of different lengths.'
     start: |-
-      ▮x = 1
-      yy = 22
-      zzz = 333
+      ▮d = 1
+      dd = 2
+      d3w = 3
     target: |-
-      x = 1;
-      yy = 22;
-      zzz = 333;
+      d = 1;
+      dd = 2;
+      d3w = 3;
     solution: '<C-v>jj$A;<Esc>'
     hint: '$ in block mode stretches to every line''s end, so A appends after each one.'
     variants:
-      - goal: 'Add a semicolon to lines of different lengths.'
-        start: |-
-          ▮a = 1
-          bb = 22
-          ccc = 333
-        target: |-
-          a = 1;
-          bb = 22;
-          ccc = 333;
       - start: |-
-          ▮d = 1
-          dd = 2
-          d3w = 3
+          ▮end = 1
+          end2 = 3
+          end_three = 7
         target: |-
-          d = 1;
-          dd = 2;
-          d3w = 3;
-      - start: |-
-          ▮gap = 1
-          gap2 = 3
-          gap_three = 7
-        target: |-
-          gap = 1;
-          gap2 = 3;
-          gap_three = 7;
+          end = 1;
+          end2 = 3;
+          end_three = 7;
   - goal: 'Delete the "1 | " column.'
     start: |-
-      ▮1 | spacing
-      2 | testing
-      3 | sleep
+      ▮1 | block
+      2 | column
+      3 | rectangle
     target: |-
-      spacing
-      testing
-      sleep
+      block
+      column
+      rectangle
     solution: '<C-v>jj3ld'
     hint: 'Ctrl-v j j, widen the block with 3l, then d.'
     variants:
-      - goal: 'Delete the "1 | " column.'
-        start: |-
-          ▮1 | Hopi
-          2 | Zuni
-          3 | Navajo
-        target: |-
-          Hopi
-          Zuni
-          Navajo
-      - start: |-
-          ▮1 | encode
-          2 | store
-          3 | retrieve
-        target: |-
-          encode
-          store
-          retrieve
       - start: |-
           ▮1 | Ctrl-v
           2 | cuts a
@@ -122,33 +71,16 @@ tasks:
           block
   - goal: 'Number the lines 1, 2, 3.'
     start: |-
-      ▮0. encode
-      0. store
-      0. retrieve
+      ▮0. Ctrl-v
+      0. then g
+      0. then Ctrl-a
     target: |-
-      1. encode
-      2. store
-      3. retrieve
+      1. Ctrl-v
+      2. then g
+      3. then Ctrl-a
     solution: '<C-v>jjg<C-a>'
     hint: 'g Ctrl-a adds 1 to the first line, 2 to the second, 3 to the third.'
     variants:
-      - goal: 'Number the lines 1, 2, 3.'
-        start: |-
-          ▮0. Dutch
-          0. German
-          0. Frisian
-        target: |-
-          1. Dutch
-          2. German
-          3. Frisian
-      - start: |-
-          ▮0. cognitive
-          0. associative
-          0. autonomous
-        target: |-
-          1. cognitive
-          2. associative
-          3. autonomous
       - start: |-
           ▮0. record
           0. stop
@@ -157,45 +89,25 @@ tasks:
           1. record
           2. stop
           3. replay
-  - goal: 'Change every "cram" to "test" at once.'
+  - goal: 'Change every "block" to "cut" at once.'
     start: |-
-      ▮cram: day 1
-      cram: day 2
-      cram: day 3
+      ▮block: line 1
+      block: line 2
+      block: line 3
     target: |-
-      test: day 1
-      test: day 2
-      test: day 3
-    solution: '<C-v>jjectest<Esc>'
+      cut: line 1
+      cut: line 2
+      cut: line 3
+    solution: '<C-v>jjeccut<Esc>'
     hint: 'Select the block with Ctrl-v j j e, then c types the new text on every line.'
     variants:
-      - goal: 'Change every "verb" to "noun" at once.'
+      - goal: 'Change every "old" to "block" at once.'
         start: |-
-          ▮verb: 1
-          verb: 2
-          verb: 3
+          ▮old: line 1
+          old: line 2
+          old: line 3
         target: |-
-          noun: 1
-          noun: 2
-          noun: 3
-        solution: '<C-v>jjecnoun<Esc>'
-      - goal: 'Change every "mass" to "space" at once.'
-        start: |-
-          ▮mass: day 1
-          mass: day 2
-          mass: day 3
-        target: |-
-          space: day 1
-          space: day 2
-          space: day 3
-        solution: '<C-v>jjecspace<Esc>'
-      - goal: 'Change every "read" to "test" at once.'
-        start: |-
-          ▮read: 1
-          read: 2
-          read: 3
-        target: |-
-          test: 1
-          test: 2
-          test: 3
-        solution: '<C-v>jjectest<Esc>'
+          block: line 1
+          block: line 2
+          block: line 3
+        solution: '<C-v>jjecblock<Esc>'

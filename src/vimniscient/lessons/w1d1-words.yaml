@@ -32,12 +32,6 @@ tasks:
         target: |-
           Change inner word: c is the verb, iw the noun, and the cursor sits anywhere in it.
         solution: 'ciwanywhere<Esc>'
-      - goal: 'Fix "memroy" to "memory" (the cursor is in the middle of the word).'
-        start: |-
-          Testing yourself beats rereading: type ciw from mem▮roy, not from the page.
-        target: |-
-          Testing yourself beats rereading: type ciw from memory, not from the page.
-        solution: 'ciwmemory<Esc>'
       - goal: 'Fix "undersocres" to "underscores" (the cursor is in the middle of the word).'
         start: |-
           In ciw, the w is a word: letters, digits and under▮socres, nothing else.
@@ -64,11 +58,6 @@ tasks:
           daw takes a word and what is around it, its ▮its trailing space.
         target: |-
           daw takes a word and what is around it, its trailing space.
-      - goal: 'Delete one "himself".'
-        start: |-
-          Ebbinghaus tested ▮himself himself on nonsense syllables; daw cuts the echo.
-        target: |-
-          Ebbinghaus tested himself on nonsense syllables; daw cuts the echo.
       - goal: 'Delete one "so".'
         start: |-
           With daw, a means around: the word goes, and ▮so so does one space.
@@ -101,12 +90,6 @@ tasks:
         target: |-
           ciW sees a path as one WORD, slashes and all.
         solution: 'ciWa path<Esc>'
-      - goal: 'Replace "Fitts&Posner(1967)" with "Fitts-and-Posner".'
-        start: |-
-          ciW: from space to space, Fitts&Pos▮ner(1967) counts as one WORD.
-        target: |-
-          ciW: from space to space, Fitts-and-Posner counts as one WORD.
-        solution: 'ciWFitts-and-Posner<Esc>'
   - goal: 'Spell the function name out as change_inner_word.'
     ft: python
     start: |-
@@ -180,18 +163,6 @@ tasks:
         target: |-
           viwp swaps a selection for the yank, so select, then put the yank
         solution: 'yiw$viwp'
-      - goal: 'Copy "spaced" over "massed".'
-        start: |-
-          ▮spaced reviews beat massed ones, so keep them massed
-        target: |-
-          spaced reviews beat massed ones, so keep them spaced
-        solution: 'yiw$viwp'
-      - goal: 'Copy "mixed" over the last "blocked".'
-        start: |-
-          Rohrer and Taylor: blocked practice feels better than ▮mixed, yet scores below blocked
-        target: |-
-          Rohrer and Taylor: blocked practice feels better than mixed, yet scores below mixed
-        solution: 'yiw$viwp'
   - goal: 'Delete the doubled "the".'
     start: |-
       daw: delete a word, and ▮the the space after it.
@@ -206,16 +177,6 @@ tasks:
           Doubled words ▮like like this one are what daw is for.
         target: |-
           Doubled words like this one are what daw is for.
-      - goal: 'Delete the doubled "four".'
-        start: |-
-          Cowan put short-term memory at about ▮four four chunks.
-        target: |-
-          Cowan put short-term memory at about four chunks.
-      - goal: 'Delete the doubled "familiar".'
-        start: |-
-          Rereading builds a fluency illusion: the text feels ▮familiar familiar, not known.
-        target: |-
-          Rereading builds a fluency illusion: the text feels familiar, not known.
       - goal: 'Delete the doubled "and".'
         start: |-
           daw: d for delete, a for a word ▮and and its space.

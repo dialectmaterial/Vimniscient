@@ -76,18 +76,6 @@ tasks:
           tokenCount = 0
         solution: 'cietoken<Esc>'
         hint: 'The first sub-word is word; cie changes just that.'
-      - goal: 'Change the first sub-word to "space".'
-        start: |-
-          ▮cramPlan = 1
-        target: |-
-          spacePlan = 1
-        solution: 'ciespace<Esc>'
-      - goal: 'Change the first sub-word to "test".'
-        start: |-
-          ▮readCount = 0
-        target: |-
-          testCount = 0
-        solution: 'cietest<Esc>'
   - goal: 'Comment out the print.'
     ft: python
     start: |-
@@ -112,9 +100,3 @@ tasks:
         target: |-
           z = 3
           # print(z)
-      - start: |-
-          gap = 7
-          ▮print(gap)
-        target: |-
-          gap = 7
-          # print(gap)

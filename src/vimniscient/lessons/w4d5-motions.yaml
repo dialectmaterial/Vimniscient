@@ -23,23 +23,6 @@ tasks:
     solution: 'd}'
     hint: '} moves to the next blank line; d} deletes up to it.'
     variants:
-      - goal: 'Delete to the end of the paragraph.'
-        start: |-
-          ▮er, right
-          well
-
-          The seminar begins.
-        target: |-
-
-          The seminar begins.
-      - start: |-
-          ▮filler
-          more filler
-
-          Spacing beats cramming.
-        target: |-
-
-          Spacing beats cramming.
       - start: |-
           ▮} jumps
           to the blank line
@@ -50,29 +33,18 @@ tasks:
           below a block.
   - goal: 'Join the two halves of the compound with no space.'
     start: |-
-      ▮sprach
-      gefühl
+      ▮no
+      space
     target: |-
-      sprachgefühl
+      nospace
     solution: 'gJ'
     hint: 'J adds a space, gJ doesn''t.'
     variants:
-      - goal: 'Join the two halves of the compound with no space.'
-        start: |-
-          ▮welt
-          anschauung
-        target: |-
-          weltanschauung
       - start: |-
-          ▮zeit
-          geist
+          ▮g
+          join
         target: |-
-          zeitgeist
-      - start: |-
-          ▮kinder
-          garten
-        target: |-
-          kindergarten
+          gjoin
   - goal: 'Delete from here to the end of the file.'
     start: |-
       G goes to the end
@@ -84,21 +56,6 @@ tasks:
     solution: 'dG'
     hint: 'dG deletes to the last line.'
     variants:
-      - goal: 'Delete from here to the end of the file.'
-        start: |-
-          Summary
-          ▮todo
-          scratch
-          notes
-        target: |-
-          Summary
-      - start: |-
-          Keep this
-          ▮drop
-          drop
-          drop
-        target: |-
-          Keep this
       - start: |-
           G is the last line
           ▮dG
@@ -113,19 +70,10 @@ tasks:
     solution: 'xp'
     hint: 'x cuts the letter, p puts it back after the next one.'
     variants:
-      - goal: 'Fix the typo by swapping two letters.'
-        start: |-
-          mor▮hpeme
-        target: |-
-          morpheme
       - start: |-
           x cuts, p p▮tus it back
         target: |-
           x cuts, p puts it back
-      - start: |-
-          Cowan said fo▮ru
-        target: |-
-          Cowan said four
   - goal: 'Delete everything before the cursor.'
     start: |-
       well, um, ▮0 is column zero
@@ -134,15 +82,6 @@ tasks:
     solution: 'd0'
     hint: 'd0 deletes back to the start of the line, not including the cursor.'
     variants:
-      - goal: 'Delete everything before the cursor.'
-        start: |-
-          well, ▮semantics
-        target: |-
-          semantics
-      - start: |-
-          so, basically, ▮spacing works
-        target: |-
-          spacing works
       - start: |-
           um, ▮d0 deletes back to column zero
         target: |-

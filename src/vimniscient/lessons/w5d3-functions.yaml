@@ -9,12 +9,12 @@ intro: |
   replaces its body.
 keys: [daf, cif, yaf, dac]
 tasks:
-  - goal: 'Delete the function cram, and the empty line daf leaves behind.'
+  - goal: 'Delete the function delete_me, and the empty line daf leaves behind.'
     ft: python
     start: |-
       x = 1
 
-      def cram():
+      def delete_me():
           ▮return 2
 
       y = 2
@@ -26,24 +26,11 @@ tasks:
     solution: 'dafdd'
     hint: 'daf deletes the function wherever the cursor is in it. Its line stays, empty, so dd it.'
     variants:
-      - goal: 'Delete the function g, and the empty line daf leaves behind.'
+      - goal: 'Delete the function a_function, and the empty line daf leaves behind.'
         start: |-
           a = 1
 
-          def g():
-              ▮return 3
-
-          b = 2
-        target: |-
-          a = 1
-
-
-          b = 2
-      - goal: 'Delete the function reread, and the empty line daf leaves behind.'
-        start: |-
-          a = 1
-
-          def reread():
+          def a_function():
               ▮return 0
 
           b = 2
@@ -52,56 +39,30 @@ tasks:
 
 
           b = 2
-      - goal: 'Delete the function highlight, and the empty line daf leaves behind.'
-        start: |-
-          x = 1
-
-          def highlight():
-              ▮return 0
-
-          y = 2
-        target: |-
-          x = 1
-
-
-          y = 2
   - goal: 'Replace the body with pass.'
     ft: python
     start: |-
-      def highlight():
+      def function():
           ▮return 1
     target: |-
-      def highlight():
+      def function():
           pass
     solution: 'cifpass<Esc>'
     hint: 'cif changes the inner function, its body.'
     variants:
-      - goal: 'Replace the body with pass.'
-        start: |-
-          def g():
-              ▮return 2
-        target: |-
-          def g():
-              pass
       - start: |-
-          def cram():
+          def f_is_function():
               ▮return 0
         target: |-
-          def cram():
-              pass
-      - start: |-
-          def summarize():
-              ▮return 3
-        target: |-
-          def summarize():
+          def f_is_function():
               pass
   - goal: 'Delete the class, and the empty line it leaves.'
     ft: python
     start: |-
       x = 1
 
-      class Cramming:
-          ▮def night_before(self):
+      class Class:
+          ▮def method(self):
               pass
 
       y = 2
@@ -113,25 +74,11 @@ tasks:
     solution: 'dacdd'
     hint: 'dac deletes the class around the cursor; dd removes the line it leaves.'
     variants:
-      - goal: 'Delete the class, and the empty line it leaves.'
-        start: |-
-          a = 1
-
-          class Tag:
-              ▮def run(self):
-                  pass
-
-          b = 2
-        target: |-
-          a = 1
-
-
-          b = 2
       - start: |-
           x = 1
 
-          class Highlighter:
-              ▮def mark(self):
+          class C:
+              ▮def is_class(self):
                   pass
 
           y = 2
@@ -140,54 +87,24 @@ tasks:
 
 
           y = 2
-      - start: |-
-          a = 1
-
-          class Reread:
-              ▮def again(self):
-                  pass
-
-          b = 2
-        target: |-
-          a = 1
-
-
-          b = 2
   - goal: 'Duplicate the function below itself.'
     ft: python
     start: |-
-      def ▮review():
+      def ▮function():
           return 1
     target: |-
-      def review():
+      def function():
           return 1
-      def review():
+      def function():
           return 1
     solution: 'yafjo<Esc>p'
     hint: 'yaf yanks the function (and leaves you on its first line). Its text has no newline at the end, so go to the last line, open a new one (o<Esc>) and p onto it.'
     variants:
-      - goal: 'Duplicate the function below itself.'
-        start: |-
-          def ▮g():
-              return 2
-        target: |-
-          def g():
-              return 2
-          def g():
-              return 2
       - start: |-
-          def ▮test():
+          def ▮f_for_function():
               return 1
         target: |-
-          def test():
+          def f_for_function():
               return 1
-          def test():
+          def f_for_function():
               return 1
-      - start: |-
-          def ▮space():
-              return 7
-        target: |-
-          def space():
-              return 7
-          def space():
-              return 7

@@ -22,19 +22,9 @@ tasks:
     variants:
       - goal: 'Replace "old" with "new" on this line.'
         start: |-
-          ▮the old theory
+          ▮the old key: s is substitute
         target: |-
-          the new theory
-      - goal: 'Replace "old" with "new" on this line.'
-        start: |-
-          ▮the old estimate: four chunks
-        target: |-
-          the new estimate: four chunks
-      - goal: 'Replace the first "old" with "new" on this line.'
-        start: |-
-          ▮old review, old gap
-        target: |-
-          new review, old gap
+          the new key: s is substitute
   - goal: 'Use American spelling everywhere.'
     start: |-
       ▮the colour of a vowel
@@ -45,52 +35,22 @@ tasks:
     solution: ':%s/u//g<CR>'
     hint: ':%s/colour/color/g works, but look: the only u''s are in colour. :%s/u//g'
     variants:
-      - goal: 'Use American spelling everywhere.'
-        start: |-
-          ▮a labour of phonetics
-          is my endeavour
-        target: |-
-          a labor of phonetics
-          is my endeavor
-        hint: ':%s/our/or/g works, but look: the only u''s are in labour and endeavour. :%s/u//g'
       - start: |-
           ▮the behaviour
           of a neighbour
         target: |-
           the behavior
           of a neighbor
-      - start: |-
-          ▮my favourite
-          honour
-        target: |-
-          my favorite
-          honor
-  - goal: 'Rename the word case (only the whole word) to kasus.'
+  - goal: 'Rename the word word (only the whole word) to term.'
     start: |-
-      ▮case caseless case
-      the case system
+      ▮word wordless word
+      the word star key
     target: |-
-      kasus caseless kasus
-      the kasus system
-    solution: '*:%s//kasus/g<CR>'
+      term wordless term
+      the term star key
+    solution: '*:%s//term/g<CR>'
     hint: '* searches for the whole word; an empty pattern in :s reuses that search.'
     variants:
-      - goal: 'Rename the word tone (only the whole word) to pitch.'
-        start: |-
-          ▮tone toneless tone
-          the tone contour
-        target: |-
-          pitch toneless pitch
-          the pitch contour
-        solution: '*:%s//pitch/g<CR>'
-      - goal: 'Rename the word gap (only the whole word) to lag.'
-        start: |-
-          ▮gap gapless gap
-          the gap widens
-        target: |-
-          lag gapless lag
-          the lag widens
-        solution: '*:%s//lag/g<CR>'
       - goal: 'Rename the word star (only the whole word) to asterisk.'
         start: |-
           ▮star starry star
@@ -101,33 +61,21 @@ tasks:
         solution: '*:%s//asterisk/g<CR>'
   - goal: 'Turn "Last, First" into "First Last".'
     start: |-
-      ▮Ebbinghaus, Hermann
-      Miller, George
+      ▮Yank, y
+      Put, p
     target: |-
-      Hermann Ebbinghaus
-      George Miller
+      y Yank
+      p Put
     solution: ':%s/\v(\w+), (\w+)/\2 \1<CR>'
     hint: 'With \v (very magic) ( ) are groups and + needs no backslash. \2 \1 swaps them.'
     variants:
       - goal: 'Turn "Last, First" into "First Last".'
         start: |-
-          ▮Roediger, Henry
-          Karpicke, Jeffrey
+          ▮Find, f
+          Till, t
         target: |-
-          Henry Roediger
-          Jeffrey Karpicke
-      - start: |-
-          ▮Posner, Michael
-          Fitts, Paul
-        target: |-
-          Michael Posner
-          Paul Fitts
-      - start: |-
-          ▮Bjork, Robert
-          Cowan, Nelson
-        target: |-
-          Robert Bjork
-          Nelson Cowan
+          f Find
+          t Till
   - goal: 'Change x to y on the first two lines only.'
     start: |-
       ▮x = 1
@@ -140,26 +88,6 @@ tasks:
     solution: 'Vj:s/x/y<CR>'
     hint: 'Select the lines first: typing : in visual mode limits the command to them.'
     variants:
-      - goal: 'Change a to b on the first two lines only.'
-        start: |-
-          ▮a = 1
-          a = 2
-          a = 3
-        target: |-
-          b = 1
-          b = 2
-          a = 3
-        solution: 'Vj:s/a/b<CR>'
-      - goal: 'Change n to m on the first two lines only.'
-        start: |-
-          ▮n = 1
-          n = 2
-          n = 3
-        target: |-
-          m = 1
-          m = 2
-          n = 3
-        solution: 'Vj:s/n/m<CR>'
       - goal: 'Change old to new on the first two lines only.'
         start: |-
           ▮old = 1
@@ -182,23 +110,6 @@ tasks:
     solution: ':g/#/d<CR>'
     hint: ':g/#/d deletes every line that contains #.'
     variants:
-      - goal: 'Delete every comment line.'
-        start: |-
-          ▮morpheme
-          # ask Sapir
-          allomorph
-          # fix
-        target: |-
-          morpheme
-          allomorph
-      - start: |-
-          ▮spacing
-          # todo
-          testing
-          # later
-        target: |-
-          spacing
-          testing
       - start: |-
           ▮g is global
           # delete me
@@ -209,35 +120,16 @@ tasks:
           d deletes
   - goal: 'Keep only the error lines.'
     start: |-
-      ▮error: unglossed word
-      info: 12 tokens
-      error: unknown tag
-      debug: x
+      ▮error: no gloss
+      ok: 30 tokens
+      error: bad tag
+      warn: x
     target: |-
-      error: unglossed word
-      error: unknown tag
+      error: no gloss
+      error: bad tag
     solution: ':v/error/d<CR>'
     hint: ':v is the opposite of :g: it acts on the lines that don''t match.'
     variants:
-      - goal: 'Keep only the error lines.'
-        start: |-
-          ▮error: no gloss
-          ok: 30 tokens
-          error: bad tag
-          warn: x
-        target: |-
-          error: no gloss
-          error: bad tag
-      - goal: 'Keep only the keep lines.'
-        start: |-
-          ▮keep: testing
-          drop: rereading
-          keep: spacing
-          drop: cramming
-        target: |-
-          keep: testing
-          keep: spacing
-        solution: ':v/keep/d<CR>'
       - start: |-
           ▮error: no target
           info: ok
@@ -246,38 +138,18 @@ tasks:
         target: |-
           error: no target
           error: bad key
-  - goal: 'Add a semicolon to every call line, but not to the comment.'
+  - goal: 'Add a semicolon to every put line, but not to the comment.'
     start: |-
-      ▮call(a)
+      ▮put(a)
       # skip
-      call(b)
+      put(b)
     target: |-
-      call(a);
+      put(a);
       # skip
-      call(b);
-    solution: ':g/call/norm A;<CR>'
+      put(b);
+    solution: ':g/put/norm A;<CR>'
     hint: ':g/call/norm A; runs A; on each matching line.'
     variants:
-      - goal: 'Add a semicolon to every emit line, but not to the comment.'
-        start: |-
-          ▮emit(x)
-          # skip
-          emit(y)
-        target: |-
-          emit(x);
-          # skip
-          emit(y);
-        solution: ':g/emit/norm A;<CR>'
-      - goal: 'Add a semicolon to every put line, but not to the comment.'
-        start: |-
-          ▮put(a)
-          # skip
-          put(b)
-        target: |-
-          put(a);
-          # skip
-          put(b);
-        solution: ':g/put/norm A;<CR>'
       - goal: 'Add a semicolon to every yank line, but not to the comment.'
         start: |-
           ▮yank(x)

@@ -21,42 +21,15 @@ tasks:
     solution: 'obelow<Esc>'
     hint: 'o opens a new line below and starts insert mode.'
     variants:
-      - goal: 'Add the missing stage between them.'
+      - goal: 'Add the line "o goes below" between them.'
         start: |-
-          ▮encoding
-          retrieval
+          ▮o is open
+          O goes above
         target: |-
-          encoding
-          storage
-          retrieval
-        solution: 'ostorage<Esc>'
-      - goal: 'Add the missing stage of skill between them.'
-        start: |-
-          ▮cognitive
-          autonomous
-        target: |-
-          cognitive
-          associative
-          autonomous
-        solution: 'oassociative<Esc>'
-      - goal: 'Add "day 3" between them.'
-        start: |-
-          ▮day 1
-          day 7
-        target: |-
-          day 1
-          day 3
-          day 7
-        solution: 'oday 3<Esc>'
-      - goal: 'Add "2001 Cowan" between them.'
-        start: |-
-          ▮1956 Miller
-          2006 Roediger
-        target: |-
-          1956 Miller
-          2001 Cowan
-          2006 Roediger
-        solution: 'o2001 Cowan<Esc>'
+          o is open
+          o goes below
+          O goes above
+        solution: 'oo goes below<Esc>'
   - goal: 'Add the line "O opened this one above" above.'
     start: |-
       ▮this line
@@ -66,20 +39,6 @@ tasks:
     solution: 'OO opened this one above<Esc>'
     hint: 'Capital O opens a line above.'
     variants:
-      - goal: 'Add an Introduction line above.'
-        start: |-
-          ▮Method
-        target: |-
-          Introduction
-          Method
-        solution: 'OIntroduction<Esc>'
-      - goal: 'Add a Method line above.'
-        start: |-
-          ▮Results
-        target: |-
-          Method
-          Results
-        solution: 'OMethod<Esc>'
       - goal: 'Add the line "O opens above" above.'
         start: |-
           ▮below
@@ -87,15 +46,6 @@ tasks:
           O opens above
           below
         solution: 'OO opens above<Esc>'
-      - goal: 'Add "encoding" above.'
-        start: |-
-          ▮storage
-          retrieval
-        target: |-
-          encoding
-          storage
-          retrieval
-        solution: 'Oencoding<Esc>'
   - goal: 'Fix "append" to "appends".'
     start: |-
       e goes to the end, and a ▮append after it.
@@ -104,97 +54,42 @@ tasks:
     solution: 'eas<Esc>'
     hint: 'e goes to the end of the word, a appends after it.'
     variants:
-      - goal: 'Make "allophone" plural.'
-        start: |-
-          Three ▮allophone appear.
-        target: |-
-          Three allophones appear.
-      - goal: 'Make "syllable" plural.'
-        start: |-
-          Ebbinghaus learned nonsense ▮syllable by heart.
-        target: |-
-          Ebbinghaus learned nonsense syllables by heart.
       - goal: 'Fix "append" to "appends".'
         start: |-
           e moves, then a ▮append after the word.
         target: |-
           e moves, then a appends after the word.
-      - goal: 'Make "topic" plural.'
-        start: |-
-          Interleaving mixes ▮topic within a session.
-        target: |-
-          Interleaving mixes topics within a session.
   - goal: 'Underline the title with five = signs.'
     start: |-
-      Recall
+      5i= types five
       ▮
     target: |-
-      Recall
+      5i= types five
       =====
     solution: '5i=<Esc>'
     hint: 'A count before i repeats the inserted text.'
     variants:
       - goal: 'Underline the title with five = signs.'
         start: |-
-          Tones
+          A count repeats i
           ▮
         target: |-
-          Tones
+          A count repeats i
           =====
-      - goal: 'Underline the title with five - signs.'
-        start: |-
-          Sleep
-          ▮
-        target: |-
-          Sleep
-          -----
-        solution: '5i-<Esc>'
-      - start: |-
-          Chunks
-          ▮
-        target: |-
-          Chunks
-          =====
-      - goal: 'Underline the title with five ~ signs.'
-        start: |-
-          Tests
-          ▮
-        target: |-
-          Tests
-          ~~~~~
-        solution: '5i~<Esc>'
   - goal: 'Type the date 2026-10-26 over the zeros.'
     start: |-
-      Next review: ▮0000-00-00
+      R overwrites: ▮0000-00-00
     target: |-
-      Next review: 2026-10-26
+      R overwrites: 2026-10-26
     solution: 'R2026-10-26<Esc>'
     hint: 'R keeps replacing: it types over the existing characters.'
     variants:
-      - goal: 'Overwrite the date with 2026-10-24.'
-        start: |-
-          Recorded: ▮2024-03-15
-        target: |-
-          Recorded: 2026-10-24
-        solution: 'R2026-10-24<Esc>'
-      - goal: 'Type 1885 over the zeros.'
-        start: |-
-          Ebbinghaus, ▮0000
-        target: |-
-          Ebbinghaus, 1885
-        solution: 'R1885<Esc>'
       - goal: 'Type the date 2026-11-02 over the placeholder.'
         start: |-
-          Next review: ▮YYYY-MM-DD
+          R is Replace mode: ▮YYYY-MM-DD
         target: |-
-          Next review: 2026-11-02
+          R is Replace mode: 2026-11-02
         solution: 'R2026-11-02<Esc>'
-      - goal: 'Overwrite the year with 1956.'
-        start: |-
-          Miller, ▮1965
-        target: |-
-          Miller, 1956
-        solution: 'R1956<Esc>'
   - goal: 'Fix "keplaces" to "replaces".'
     start: |-
       r ▮keplaces one letter
@@ -203,27 +98,9 @@ tasks:
     solution: 'rr'
     hint: 'r replaces one character and stays in normal mode. Here that''s r, then r.'
     variants:
-      - goal: 'Fix the operator: minus should be plus.'
-        start: |-
-          x = a ▮- b
-        target: |-
-          x = a + b
-        solution: 'r+'
-      - goal: 'Fitts and Posner named three stages: fix the number.'
-        start: |-
-          Fitts and Posner named ▮2 stages
-        target: |-
-          Fitts and Posner named 3 stages
-        solution: 'r3'
       - goal: 'Fix "mot" to "dot".'
         start: |-
           The ▮mot command repeats
         target: |-
           The dot command repeats
         solution: 'rd'
-      - goal: 'Cowan said about four: fix the number.'
-        start: |-
-          Cowan: about ▮5 chunks
-        target: |-
-          Cowan: about 4 chunks
-        solution: 'r4'

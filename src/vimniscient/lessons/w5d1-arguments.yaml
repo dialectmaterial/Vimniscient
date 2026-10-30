@@ -10,124 +10,73 @@ intro: |
   argument when the cursor isn't on one yet.
 keys: [cia, daa]
 tasks:
-  - goal: 'Change the middle argument to day3.'
+  - goal: 'Change the middle argument to argument.'
     ft: python
     start: |-
-      schedule(day1, ▮day2, day7)
+      ia(commas, ▮old, stay)
     target: |-
-      schedule(day1, day3, day7)
-    solution: 'ciaday3<Esc>'
+      ia(commas, argument, stay)
+    solution: 'ciaargument<Esc>'
     hint: 'cia changes the argument under the cursor.'
     variants:
-      - goal: 'Change the middle argument to w.'
+      - goal: 'Change "wrong" to "argument".'
         start: |-
-          g(x, ▮y, z)
+          a(between, ▮wrong, commas)
         target: |-
-          g(x, w, z)
-        solution: 'ciaw<Esc>'
-      - goal: 'Change "automatic" to "associative".'
-        start: |-
-          stages(cognitive, ▮automatic, autonomous)
-        target: |-
-          stages(cognitive, associative, autonomous)
-        solution: 'ciaassociative<Esc>'
-      - goal: 'Change "now" to "delay".'
-        start: |-
-          recall(cue, ▮now, answer)
-        target: |-
-          recall(cue, delay, answer)
-        solution: 'ciadelay<Esc>'
+          a(between, argument, commas)
+        solution: 'ciaargument<Esc>'
   - goal: 'Delete the middle argument and its comma.'
     ft: python
     start: |-
-      study(test, ▮reread, space)
+      daa(keep, ▮drop, keep)
     target: |-
-      study(test, space)
+      daa(keep, keep)
     solution: 'daa'
     hint: 'daa takes the comma with it.'
     variants:
-      - goal: 'Delete the middle argument and its comma.'
-        start: |-
-          g(x, ▮y, z)
-        target: |-
-          g(x, z)
       - start: |-
-          plan(space, ▮cram, test)
+          args(first, ▮comma_too, last)
         target: |-
-          plan(space, test)
-      - start: |-
-          keys(c, ▮x, d)
-        target: |-
-          keys(c, d)
+          args(first, last)
   - goal: 'Delete the last argument.'
     ft: python
     start: |-
-      learn(space, test, ▮highlight)
+      daa(first, then, ▮last)
     target: |-
-      learn(space, test)
+      daa(first, then)
     solution: 'daa'
     hint: 'For the last argument, daa removes the comma before it.'
     variants:
-      - goal: 'Delete the last argument.'
-        start: |-
-          g(x, y, ▮z)
-        target: |-
-          g(x, y)
       - start: |-
-          habits(test, sleep, ▮reread)
+          args(one, two, ▮gone)
         target: |-
-          habits(test, sleep)
-      - start: |-
-          ops(c, d, ▮z)
-        target: |-
-          ops(c, d)
-  - goal: 'Drop the cram parameter.'
+          args(one, two)
+  - goal: 'Drop the arg parameter.'
     ft: python
     start: |-
-      def review(self, ▮cram, interval):
+      def delete(self, ▮arg, keep):
     target: |-
-      def review(self, interval):
+      def delete(self, keep):
     solution: 'daa'
     hint: 'daa works on parameters too.'
     variants:
-      - goal: 'Drop the word parameter.'
+      - goal: 'Drop the param parameter.'
         start: |-
-          def tag(self, ▮word, pos):
+          def drop(self, ▮param, other):
         target: |-
-          def tag(self, pos):
-      - goal: 'Drop the hint parameter.'
-        start: |-
-          def recall(self, ▮hint, cue):
-        target: |-
-          def recall(self, cue):
-      - start: |-
-          def schedule(self, ▮cram, gap):
-        target: |-
-          def schedule(self, gap):
+          def drop(self, other):
   - goal: 'Change the first argument to hook, starting from the beginning of the line.'
     ft: python
     start: |-
-      ▮recall(cue, delay)
+      ▮ia(next, arg)
     target: |-
-      recall(hook, delay)
+      ia(hook, arg)
     solution: 'ciahook<Esc>'
     hint: 'mini.ai jumps to the next argument when the cursor isn''t on one.'
     variants:
-      - goal: 'Change the first argument to q, starting from the beginning of the line.'
+      - goal: 'Change the first argument to "hook", from the start of the line.'
         start: |-
-          ▮bar(x, y)
+          ▮args(first, second)
         target: |-
-          bar(q, y)
-        solution: 'ciaq<Esc>'
-      - goal: 'Change the first argument to "test", from the start of the line.'
-        start: |-
-          ▮study(cram, sleep)
-        target: |-
-          study(test, sleep)
-        solution: 'ciatest<Esc>'
-      - goal: 'Change the first argument to "four", from the start of the line.'
-        start: |-
-          ▮chunks(seven, items)
-        target: |-
-          chunks(four, items)
-        solution: 'ciafour<Esc>'
+          args(hook, second)
+        solution: 'ciahook<Esc>'

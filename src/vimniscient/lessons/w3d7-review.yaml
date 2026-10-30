@@ -9,121 +9,62 @@ keys: [qa, '"0p', '<C-v>', ':%s', ':g']
 tasks:
   - goal: 'Wrap every line in square brackets.'
     start: |-
-      ▮NP
-      VP
-      Det
-      N
+      ▮q
+      a
+      at
+      dot
     target: |-
-      [NP]
-      [VP]
-      [Det]
-      [N]
+      [q]
+      [a]
+      [at]
+      [dot]
     solution: ':%norm I[<C-v><Esc>A]<CR>'
     hint: 'A macro with 3@a works. So does :%norm, where Ctrl-v Esc types an Esc into the command.'
     variants:
-      - goal: 'Wrap every line in square brackets.'
-        start: |-
-          ▮DP
-          TP
-          C
-          V
-        target: |-
-          [DP]
-          [TP]
-          [C]
-          [V]
       - start: |-
-          ▮q
-          a
-          at
-          dot
+          ▮:norm
+          I
+          A
+          Esc
         target: |-
-          [q]
-          [a]
-          [at]
-          [dot]
-      - start: |-
-          ▮encode
-          store
-          retrieve
-          forget
-        target: |-
-          [encode]
-          [store]
-          [retrieve]
-          [forget]
+          [:norm]
+          [I]
+          [A]
+          [Esc]
   - goal: 'Prefix every line with "> ".'
     start: |-
-      ▮Words mean
-      what speakers
-      use them for.
+      ▮Ctrl-v draws
+      a column,
+      I types on all.
     target: |-
-      > Words mean
-      > what speakers
-      > use them for.
+      > Ctrl-v draws
+      > a column,
+      > I types on all.
     solution: '<C-v>jjI> <Esc>'
     hint: 'Visual block I, or :%s/^/> /'
     variants:
-      - goal: 'Prefix every line with "> ".'
-        start: |-
-          ▮The limits of
-          my language mean
-          the limits of my world.
-        target: |-
-          > The limits of
-          > my language mean
-          > the limits of my world.
       - start: |-
-          ▮Test yourself,
-          space it out,
-          sleep on it.
+          ▮Block it,
+          insert once,
+          Esc copies it.
         target: |-
-          > Test yourself,
-          > space it out,
-          > sleep on it.
-      - start: |-
-          ▮Recall it
-          before you
-          check it.
-        target: |-
-          > Recall it
-          > before you
-          > check it.
+          > Block it,
+          > insert once,
+          > Esc copies it.
   - goal: 'Delete the blank lines.'
     start: |-
-      ▮encoding
+      ▮:g
 
-      storage
+      finds
 
-      retrieval
+      then d
     target: |-
-      encoding
-      storage
-      retrieval
+      :g
+      finds
+      then d
     solution: ':g/^$/d<CR>'
     hint: '^$ matches an empty line.'
     variants:
-      - goal: 'Delete the blank lines.'
-        start: |-
-          ▮onset
-
-          nucleus
-
-          coda
-        target: |-
-          onset
-          nucleus
-          coda
-      - start: |-
-          ▮cognitive
-
-          associative
-
-          autonomous
-        target: |-
-          cognitive
-          associative
-          autonomous
       - start: |-
           ▮record
 
@@ -144,13 +85,6 @@ tasks:
     solution: ':%s/\v(.*)\=(.*)/\2=\1<CR>'
     hint: 'Two groups around the =. In very magic mode = is special, so write \=.'
     variants:
-      - goal: 'Swap the two halves of every line (English=German becomes German=English).'
-        start: |-
-          ▮house=Haus
-          water=Wasser
-        target: |-
-          Haus=house
-          Wasser=water
       - goal: 'Swap the two halves of every line (key=meaning becomes meaning=key).'
         start: |-
           ▮f=find
@@ -158,42 +92,18 @@ tasks:
         target: |-
           find=f
           till=t
-      - goal: 'Swap the two halves of every line (name=number becomes number=name).'
-        start: |-
-          ▮Miller=7
-          Cowan=4
-        target: |-
-          7=Miller
-          4=Cowan
   - goal: 'Duplicate the first line to the end, then delete the second line. Keep the right line in the register.'
     start: |-
-      ▮competence
+      ▮the zero
       noise
-      performance
+      register
     target: |-
-      competence
-      performance
-      competence
+      the zero
+      register
+      the zero
     solution: 'yyjddG"0p'
     hint: 'After dd the unnamed register holds noise; "0p still has the yank.'
     variants:
-      - goal: 'Duplicate the first line to the end, then delete the second line. Keep the right line in the register.'
-        start: |-
-          ▮langue
-          noise
-          parole
-        target: |-
-          langue
-          parole
-          langue
-      - start: |-
-          ▮spacing
-          noise
-          testing
-        target: |-
-          spacing
-          testing
-          spacing
       - start: |-
           ▮the yank
           noise

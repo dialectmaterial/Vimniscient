@@ -22,17 +22,6 @@ tasks:
     solution: 'qaA;<Esc>jq3@a'
     hint: 'qa, then A;<Esc> and j, then q. Now 3@a does the other three lines.'
     variants:
-      - goal: 'Add a semicolon to every line, with a macro.'
-        start: |-
-          ▮let day1 = 1
-          let day3 = 3
-          let day7 = 7
-          let day14 = 14
-        target: |-
-          let day1 = 1;
-          let day3 = 3;
-          let day7 = 7;
-          let day14 = 14;
       - start: |-
           ▮let macro = "a"
           let q = "record"
@@ -43,16 +32,6 @@ tasks:
           let q = "record";
           let at = "play";
           let dot = "again";
-      - start: |-
-          ▮let encode = 1
-          let store = 2
-          let retrieve = 3
-          let forget = 4
-        target: |-
-          let encode = 1;
-          let store = 2;
-          let retrieve = 3;
-          let forget = 4;
   - goal: 'Put every term in double quotes.'
     start: |-
       ▮quill
@@ -67,29 +46,13 @@ tasks:
     variants:
       - goal: 'Put every term in double quotes.'
         start: |-
-          ▮stem
-          root
-          affix
+          ▮record
+          stop
+          replay
         target: |-
-          "stem"
-          "root"
-          "affix"
-      - start: |-
-          ▮spacing
-          testing
-          sleep
-        target: |-
-          "spacing"
-          "testing"
-          "sleep"
-      - start: |-
-          ▮cognitive
-          associative
-          autonomous
-        target: |-
-          "cognitive"
-          "associative"
-          "autonomous"
+          "record"
+          "stop"
+          "replay"
   - goal: 'Turn every key=value into key: value.'
     start: |-
       ▮key=q
@@ -102,23 +65,6 @@ tasks:
     solution: 'qa0f=r:a <Esc>jq2@a'
     hint: 'Start the macro with 0 so it works wherever j left the cursor: 0 f= r: a<Space><Esc> j.'
     variants:
-      - goal: 'Turn every key=value into key: value.'
-        start: |-
-          ▮name=Ebbinghaus
-          born=1850
-          field=memory
-        target: |-
-          name: Ebbinghaus
-          born: 1850
-          field: memory
-      - start: |-
-          ▮name=Miller
-          year=1956
-          number=7
-        target: |-
-          name: Miller
-          year: 1956
-          number: 7
       - start: |-
           ▮verb=d
           means=delete
@@ -142,18 +88,6 @@ tasks:
     solution: 'qajddq2@a'
     hint: 'Record j dd: it moves to the line to drop and deletes it, which leaves you on the next keeper.'
     variants:
-      - goal: 'Delete every second line: keep the phonemes, drop the allophones.'
-        start: |-
-          ▮/b/
-          [b̥]
-          /d/
-          [d̥]
-          /g/
-          [g̊]
-        target: |-
-          /b/
-          /d/
-          /g/
       - start: |-
           ▮q starts recording
           q quits Vim
@@ -165,65 +99,24 @@ tasks:
           q starts recording
           q stops it
           @a plays it back
-      - goal: 'Delete every second line: keep the high-utility ones.'
-        start: |-
-          ▮testing helps
-          highlighting helps
-          spacing helps
-          rereading helps
-          interleaving helps
-          summarizing helps
-        target: |-
-          testing helps
-          spacing helps
-          interleaving helps
   - goal: 'Turn every dash into a star. Use a big count.'
     start: |-
-      ▮- spacing
-      - testing
-      - interleaving
-      - sleep
-      - elaboration
-      - mnemonics
+      ▮- a letter
+      - a macro
+      - a register
+      - a count
+      - a replay
+      - a stop
     target: |-
-      * spacing
-      * testing
-      * interleaving
-      * sleep
-      * elaboration
-      * mnemonics
+      * a letter
+      * a macro
+      * a register
+      * a count
+      * a replay
+      * a stop
     solution: 'qar*jq99@a'
     hint: 'qa r* j q, then 99@a. It stops when j can''t go further.'
     variants:
-      - goal: 'Turn every dash into a star. Use a big count.'
-        start: |-
-          ▮- nominative
-          - accusative
-          - genitive
-          - dative
-          - ablative
-          - vocative
-        target: |-
-          * nominative
-          * accusative
-          * genitive
-          * dative
-          * ablative
-          * vocative
-      - start: |-
-          ▮- encode
-          - store
-          - retrieve
-          - forget
-          - relearn
-          - recall
-        target: |-
-          * encode
-          * store
-          * retrieve
-          * forget
-          * relearn
-          * recall
       - start: |-
           ▮- record
           - stop

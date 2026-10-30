@@ -8,63 +8,34 @@ intro: |
   days after learning, strengthens the memory more than another read would.
 keys: [".", "*", cgn, gUiw, "<C-a>", Vu, dt]
 tasks:
-  - goal: 'Uppercase every standalone "srs".'
+  - goal: 'Uppercase every standalone "up".'
     ft: python
     start: |-
-      ▮srs = schedule(srs)
+      ▮up = raise(up)
     target: |-
-      SRS = schedule(SRS)
+      UP = raise(UP)
     solution: '*gUiwn.'
-    hint: '* finds the other whole-word srs; gUiw, then n and . for the first one.'
+    hint: '* finds the other whole-word up; gUiw, then n and . for the first one.'
     variants:
-      - goal: 'Uppercase every standalone "pos".'
+      - goal: 'Uppercase every standalone "star".'
+        hint: '* finds the other whole-word star; gUiw, then n and . for the first one.'
         start: |-
-          ▮pos = tag(pos)
+          ▮star = next(star)
         target: |-
-          POS = tag(POS)
-      - goal: 'Uppercase every standalone "url".'
-        start: |-
-          ▮url = parse(url)
-        target: |-
-          URL = parse(URL)
-      - goal: 'Uppercase every standalone "pdf".'
-        start: |-
-          ▮pdf = open(pdf)
-        target: |-
-          PDF = open(PDF)
-      - goal: 'Uppercase every standalone "tla".'
-        start: |-
-          ▮tla = expand(tla)
-        target: |-
-          TLA = expand(TLA)
-  - goal: 'Add one to every review number.'
+          STAR = next(STAR)
+  - goal: 'Add one to every number.'
     start: |-
-      ▮review1 review2 review3
+      ▮add1 add2 add3
     target: |-
-      review2 review3 review4
+      add2 add3 add4
     solution: '<C-a>w.w.'
     hint: 'Ctrl-a, then w and . to repeat it on the next ones.'
     variants:
-      - goal: 'Add one to every case number.'
+      - goal: 'Add one to every number.'
         start: |-
-          ▮case1 case2 case3
+          ▮dot1 dot2 dot3
         target: |-
-          case2 case3 case4
-      - goal: 'Add one to every day number.'
-        start: |-
-          ▮day1 day2 day3
-        target: |-
-          day2 day3 day4
-      - goal: 'Add one to every step number.'
-        start: |-
-          ▮step1 step2 step3
-        target: |-
-          step2 step3 step4
-      - goal: 'Add one to every chunk number.'
-        start: |-
-          ▮chunk1 chunk2 chunk3
-        target: |-
-          chunk2 chunk3 chunk4
+          dot2 dot3 dot4
   - goal: 'Fix every "teh".'
     start: |-
       ▮teh dot repeats teh change for teh rest
@@ -73,26 +44,11 @@ tasks:
     solution: '*cgnthe<Esc>..'
     hint: '* then cgn, then . . for the others.'
     variants:
-      - goal: 'Fix every "hte".'
-        start: |-
-          ▮hte stem and hte root and hte end
-        target: |-
-          the stem and the root and the end
       - goal: 'Fix every "teh".'
         start: |-
           ▮teh star, teh match, teh change
         target: |-
           the star, the match, the change
-      - goal: 'Fix every "hte".'
-        start: |-
-          ▮hte gap, hte test, hte review
-        target: |-
-          the gap, the test, the review
-      - goal: 'Fix every "eth".'
-        start: |-
-          ▮eth cue and eth recall and eth answer
-        target: |-
-          the cue and the recall and the answer
   - goal: 'Lowercase the whole line.'
     start: |-
       ▮V THEN U LOWERS THE LINE
@@ -101,97 +57,42 @@ tasks:
     solution: 'Vu'
     hint: 'V selects the line, u lowercases the selection.'
     variants:
-      - goal: 'Lowercase the whole line.'
-        start: |-
-          ▮ALL CAPS HIDES CASE
-        target: |-
-          all caps hides case
       - start: |-
           ▮LOWER THE WHOLE LINE
         target: |-
           lower the whole line
-      - start: |-
-          ▮SLEEP HELPS MEMORIES SETTLE
-        target: |-
-          sleep helps memories settle
-      - start: |-
-          ▮TESTING BEATS REREADING
-        target: |-
-          testing beats rereading
-  - goal: 'Delete up to "Habits".'
+  - goal: 'Delete up to "Hitting".'
     start: |-
-      ▮well, the thing is: Habits form through repetition
+      ▮well, the thing is: Hitting t stops one short
     target: |-
-      Habits form through repetition
+      Hitting t stops one short
     solution: 'dtH'
-    hint: 't is case-sensitive, and the first capital H is in Habits, so dtH.'
+    hint: 't is case-sensitive, and the first capital H is in Hitting, so dtH.'
     variants:
-      - goal: 'Delete up to "Hausa".'
+      - goal: 'Delete up to "Hold".'
         start: |-
-          ▮um, so, basically: Hausa has tone
+          ▮um, so, basically: Hold on: t stops before the H
         target: |-
-          Hausa has tone
-        hint: 't is case-sensitive, and the first capital H is in Hausa, so dtH.'
-      - goal: 'Delete up to "Hermann".'
-        start: |-
-          ▮so, like, you know: Hermann Ebbinghaus tested himself
-        target: |-
-          Hermann Ebbinghaus tested himself
-      - goal: 'Delete up to "Memory".'
-        start: |-
-          ▮okay, so, in short: Memory fades fast at first
-        target: |-
-          Memory fades fast at first
-        solution: 'dtM'
-      - goal: 'Delete up to "Testing".'
-        start: |-
-          ▮right, well, see: Testing beats rereading
-        target: |-
-          Testing beats rereading
-        solution: 'dtT'
+          Hold on: t stops before the H
+        hint: 't is case-sensitive, and the first capital H is in Hold, so dtH.'
   - goal: 'Comment out all three lines with "# ".'
     ft: python
     start: |-
-      ▮cram = 1
-      reread = 2
-      highlight = 3
+      ▮insert = 1
+      change = 2
+      repeat = 3
     target: |-
-      # cram = 1
-      # reread = 2
-      # highlight = 3
+      # insert = 1
+      # change = 2
+      # repeat = 3
     solution: 'I# <Esc>j.j.'
     hint: 'I# <Esc>, then j . j .'
     variants:
-      - goal: 'Comment out all three lines with "# ".'
-        start: |-
-          ▮x = 1
-          y = 2
-          z = 3
-        target: |-
-          # x = 1
-          # y = 2
-          # z = 3
       - start: |-
-          ▮massed = 1
-          blocked = 2
-          reread = 3
+          ▮big_i = 1
+          start = 2
+          dot = 3
         target: |-
-          # massed = 1
-          # blocked = 2
-          # reread = 3
-      - start: |-
-          ▮a = 1
-          b = 2
-          c = 3
-        target: |-
-          # a = 1
-          # b = 2
-          # c = 3
-      - start: |-
-          ▮print(1)
-          print(2)
-          print(3)
-        target: |-
-          # print(1)
-          # print(2)
-          # print(3)
+          # big_i = 1
+          # start = 2
+          # dot = 3

@@ -11,41 +11,25 @@ keys: [':2,3d', ':m0', ':t$', ':1,2m$', ':g/^/m0']
 tasks:
   - goal: 'Move the last line to the top.'
     start: |-
-      storage
-      retrieval
-      ▮encoding
+      m is move
+      0 is the top
+      ▮:m0
     target: |-
-      encoding
-      storage
-      retrieval
+      :m0
+      m is move
+      0 is the top
     solution: ':m0<CR>'
     hint: ':m0 moves the line below line 0, which is the top.'
     variants:
       - goal: 'Move the last line to the top.'
         start: |-
-          morphology
-          syntax
-          ▮phonology
+          line two
+          line three
+          ▮:m0 moves me up
         target: |-
-          phonology
-          morphology
-          syntax
-      - start: |-
-          associative
-          autonomous
-          ▮cognitive
-        target: |-
-          cognitive
-          associative
-          autonomous
-      - start: |-
-          day 7
-          day 30
-          ▮day 1
-        target: |-
-          day 1
-          day 7
-          day 30
+          :m0 moves me up
+          line two
+          line three
   - goal: 'Copy the first line to the end of the file.'
     start: |-
       ▮:t transfers a copy
@@ -59,60 +43,26 @@ tasks:
     variants:
       - goal: 'Copy the heading to the end of the file.'
         start: |-
-          ▮References
-          Ebbinghaus 1885
-          Miller 1956
+          ▮Transfer
+          t copies
+          to the end
         target: |-
-          References
-          Ebbinghaus 1885
-          Miller 1956
-          References
-      - start: |-
-          ▮Spacing beats cramming,
-          says Cepeda, so again:
-        target: |-
-          Spacing beats cramming,
-          says Cepeda, so again:
-          Spacing beats cramming,
-      - start: |-
-          ▮Notes
-          Miller 1956
-          Cowan 2001
-        target: |-
-          Notes
-          Miller 1956
-          Cowan 2001
-          Notes
-  - goal: 'Delete lines 2 and 3 (the low-utility techniques) without moving.'
+          Transfer
+          t copies
+          to the end
+          Transfer
+  - goal: 'Delete lines 2 and 3 without moving.'
     start: |-
-      ▮testing
-      highlighting
-      rereading
-      spacing
+      ▮before
+      line two
+      line three
+      after
     target: |-
-      testing
-      spacing
+      before
+      after
     solution: ':2,3d<CR>'
     hint: 'A range in front of d: :2,3d.'
     variants:
-      - goal: 'Delete lines 2 and 3 (the invented languages) without moving.'
-        start: |-
-          ▮Dutch
-          Na'vi
-          Klingon
-          German
-        target: |-
-          Dutch
-          German
-      - goal: 'Delete lines 2 and 3 without moving.'
-        start: |-
-          ▮spacing
-          cramming
-          rereading
-          testing
-        target: |-
-          spacing
-          testing
       - goal: 'Delete lines 2 and 3 without moving.'
         start: |-
           ▮range
@@ -136,27 +86,6 @@ tasks:
     solution: ':1,2m$<CR>'
     hint: ':1,2m$ moves lines 1 to 2 below the last line.'
     variants:
-      - goal: 'Move the first two lines to the end.'
-        start: |-
-          ▮pragmatics
-          semantics
-          phonetics
-          morphology
-        target: |-
-          phonetics
-          morphology
-          pragmatics
-          semantics
-      - start: |-
-          ▮retrieve
-          forget
-          encode
-          store
-        target: |-
-          encode
-          store
-          retrieve
-          forget
       - start: |-
           ▮$ is the last line
           :m moves
@@ -169,46 +98,25 @@ tasks:
           :m moves
   - goal: 'Reverse the order of the lines.'
     start: |-
-      ▮sentence
-      phrase
-      word
-      morpheme
+      ▮m0
+      to the top
+      each line
+      :g
     target: |-
-      morpheme
-      word
-      phrase
-      sentence
+      :g
+      each line
+      to the top
+      m0
     solution: ':g/^/m0<CR>'
     hint: ':g/^/ matches every line, and m0 moves each to the top in turn.'
     variants:
-      - goal: 'Reverse the order of the lines.'
-        start: |-
-          ▮paragraph
-          sentence
-          clause
-          phrase
-        target: |-
-          phrase
-          clause
-          sentence
-          paragraph
       - start: |-
-          ▮chunk
-          word
-          letter
-          stroke
+          ▮reversed
+          is
+          list
+          this
         target: |-
-          stroke
-          letter
-          word
-          chunk
-      - start: |-
-          ▮day 30
-          day 7
-          day 3
-          day 1
-        target: |-
-          day 1
-          day 3
-          day 7
-          day 30
+          this
+          list
+          is
+          reversed

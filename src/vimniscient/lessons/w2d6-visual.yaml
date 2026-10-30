@@ -20,20 +20,6 @@ tasks:
     solution: 'Vjd'
     hint: 'V selects the line, j extends it, d deletes.'
     variants:
-      - goal: 'Delete the two low-utility techniques with V.'
-        start: |-
-          ▮highlighting
-          rereading
-          retrieval practice
-        target: |-
-          retrieval practice
-      - goal: 'Delete the first two lines with V.'
-        start: |-
-          ▮cram
-          all night
-          sleep on it
-        target: |-
-          sleep on it
       - goal: 'Delete the first two lines with V.'
         start: |-
           ▮V is linewise,
@@ -41,13 +27,6 @@ tasks:
           and this one stays
         target: |-
           and this one stays
-      - goal: 'Delete the two wrong estimates with V.'
-        start: |-
-          ▮seven chunks
-          ten chunks
-          about four chunks (Cowan)
-        target: |-
-          about four chunks (Cowan)
   - goal: 'Uppercase "visual mode".'
     start: |-
       v is ▮visual mode: you see it
@@ -56,27 +35,11 @@ tasks:
     solution: 'veeU'
     hint: 'v, then e e to the end of "mode", then U.'
     variants:
-      - goal: 'Uppercase "active recall".'
-        start: |-
-          try ▮active recall today
-        target: |-
-          try ACTIVE RECALL today
-        hint: 'v, then e e to the end of "recall", then U.'
-      - goal: 'Uppercase "spaced retrieval".'
-        start: |-
-          practise ▮spaced retrieval daily
-        target: |-
-          practise SPACED RETRIEVAL daily
       - goal: 'Uppercase "visual selections".'
         start: |-
           U turns ▮visual selections up
         target: |-
           U turns VISUAL SELECTIONS up
-      - goal: 'Uppercase "working memory".'
-        start: |-
-          Cowan studied ▮working memory limits
-        target: |-
-          Cowan studied WORKING MEMORY limits
   - goal: 'Join the first three lines.'
     start: |-
       ▮J
@@ -89,23 +52,6 @@ tasks:
     solution: 'VjjJ'
     hint: 'Select three lines with V j j and press J. (3J is shorter.)'
     variants:
-      - goal: 'Join the noun phrase on the first three lines.'
-        start: |-
-          ▮a
-          big
-          dog
-          barks
-        target: |-
-          a big dog
-          barks
-      - start: |-
-          ▮spaced
-          retrieval
-          practice
-          works
-        target: |-
-          spaced retrieval practice
-          works
       - start: |-
           ▮V
           then
@@ -114,14 +60,6 @@ tasks:
         target: |-
           V then J
           joins
-      - start: |-
-          ▮nonsense
-          syllable
-          lists
-          fade
-        target: |-
-          nonsense syllable lists
-          fade
   - goal: 'Indent the function body.'
     ft: python
     start: |-
@@ -139,45 +77,15 @@ tasks:
     variants:
       - goal: 'Indent the function body.'
         start: |-
-          def study():
-          ▮test()
-          space()
-          sleep()
+          def indent():
+          ▮push()
+          right()
+          once()
         target: |-
-          def study():
-              test()
-              space()
-              sleep()
-      - start: |-
-          def swap():
-          ▮cut()
-          move()
-          put()
-        target: |-
-          def swap():
-              cut()
-              move()
-              put()
-      - start: |-
-          def chunk():
-          ▮group()
-          label()
-          recall()
-        target: |-
-          def chunk():
-              group()
-              label()
-              recall()
-      - start: |-
-          def review():
-          ▮wait()
-          recall()
-          check()
-        target: |-
-          def review():
-              wait()
-              recall()
-              check()
+          def indent():
+              push()
+              right()
+              once()
   - goal: 'Replace the whole condition with "ok".'
     ft: python
     start: |-
@@ -192,15 +100,3 @@ tasks:
           while ▮(i < n and (ok)):
         target: |-
           while ok:
-      - start: |-
-          if ▮(spaced or (tested)):
-        target: |-
-          if ok:
-      - start: |-
-          while ▮(due and (not done)):
-        target: |-
-          while ok:
-      - start: |-
-          elif ▮(sleep and (review)):
-        target: |-
-          elif ok:

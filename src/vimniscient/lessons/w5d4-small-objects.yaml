@@ -11,105 +11,57 @@ intro: |
   what it adds).
 keys: [cie, cid, cau, cag, ']<Space>']
 tasks:
-  - goal: 'Change Cram to Review in the camelCase name.'
+  - goal: 'Change Old to Segment in the camelCase name.'
     start: |-
-      spaced▮CramPlan
+      element▮OldPlan
     target: |-
-      spacedReviewPlan
-    solution: 'cieReview<Esc>'
+      elementSegmentPlan
+    solution: 'cieSegment<Esc>'
     hint: 'ie is the sub-word under the cursor.'
     variants:
-      - goal: 'Change Count to Sum in the camelCase name.'
+      - goal: 'Change the sub-word "Old" to "Element".'
         start: |-
-          vowel▮CountTotal
+          word▮OldPart
         target: |-
-          vowelSumTotal
-        solution: 'cieSum<Esc>'
-      - goal: 'Change the sub-word "Reread" to "Recall".'
-        start: |-
-          test▮RereadPlan
-        target: |-
-          testRecallPlan
-        solution: 'cieRecall<Esc>'
-      - goal: 'Change the sub-word "Cram" to "Space".'
-        start: |-
-          night▮CramSchedule
-        target: |-
-          nightSpaceSchedule
-        solution: 'cieSpace<Esc>'
-  - goal: 'Change cram to lag in the snake_case name.'
+          wordElementPart
+        solution: 'cieElement<Esc>'
+  - goal: 'Change old to segment in the snake_case name.'
     start: |-
-      spacing_▮cram_effect
+      element_▮old_name
     target: |-
-      spacing_lag_effect
-    solution: 'cielag<Esc>'
+      element_segment_name
+    solution: 'ciesegment<Esc>'
     hint: 'The same ie works between underscores.'
     variants:
-      - goal: 'Change height to contour in the snake_case name.'
+      - goal: 'Change the sub-word "old" to "element".'
         start: |-
-          tone_▮height_value
+          snake_▮old_case
         target: |-
-          tone_contour_value
-        solution: 'ciecontour<Esc>'
-      - goal: 'Change the sub-word "reading" to "practice".'
-        start: |-
-          retrieval_▮reading_effect
-        target: |-
-          retrieval_practice_effect
-        solution: 'ciepractice<Esc>'
-      - goal: 'Change the sub-word "image" to "mnemonic".'
-        start: |-
-          keyword_▮image_method
-        target: |-
-          keyword_mnemonic_method
-        solution: 'ciemnemonic<Esc>'
-  - goal: 'Change the magic number to 7.'
+          snake_element_case
+        solution: 'cieelement<Esc>'
+  - goal: 'Change the digits to 16000.'
     start: |-
-      magic_number = 1▮0
+      digits = 44▮100
     target: |-
-      magic_number = 7
-    solution: 'cid7<Esc>'
+      digits = 16000
+    solution: 'cid16000<Esc>'
     hint: 'id is the number under the cursor.'
     variants:
-      - goal: 'Change the sample rate to 16000.'
-        start: |-
-          rate = 44▮100
-        target: |-
-          rate = 16000
-        solution: 'cid16000<Esc>'
       - goal: 'Change the number to 4.'
         start: |-
-          chunks = 1▮2
+          d_is_digits = 1▮2
         target: |-
-          chunks = 4
+          d_is_digits = 4
         solution: 'cid4<Esc>'
-      - goal: 'Change the number to 1885.'
-        start: |-
-          year = 18▮58
-        target: |-
-          year = 1885
-        solution: 'cid1885<Esc>'
-  - goal: 'Replace the whole call with retrieve.'
+  - goal: 'Replace the whole call with usage.'
     ft: python
     start: |-
-      strength = ▮reread(notes, twice) + 1
+      call = ▮use(a, b) + 1
     target: |-
-      strength = retrieve + 1
-    solution: 'cauretrieve<Esc>'
+      call = usage + 1
+    solution: 'cauusage<Esc>'
     hint: 'au is a function call with its name and arguments.'
     variants:
-      - goal: 'Replace the whole call with 1.'
-        start: |-
-          y = ▮score(w, t) * 2
-        target: |-
-          y = 1 * 2
-        solution: 'cau1<Esc>'
-      - goal: 'Replace the whole cram(all, night) call with space.'
-        start: |-
-          memory = ▮cram(all, night) + sleep
-        target: |-
-          memory = space + sleep
-        solution: 'causpace<Esc>'
       - goal: 'Replace the whole use(f, x) call with 0.'
         start: |-
           z = ▮use(f, x) - 1
@@ -126,14 +78,6 @@ tasks:
     solution: 'cagglobal<Esc>'
     hint: 'ag is the whole buffer.'
     variants:
-      - goal: 'Replace the entire file with the word fresh.'
-        start: |-
-          ▮old
-          text
-          here
-        target: |-
-          fresh
-        solution: 'cagfresh<Esc>'
       - goal: 'Replace the whole buffer with "the whole file".'
         start: |-
           ▮everything
@@ -142,14 +86,6 @@ tasks:
         target: |-
           the whole file
         solution: 'cagthe whole file<Esc>'
-      - goal: 'Replace the whole buffer with "final".'
-        start: |-
-          ▮draft
-          one
-          two
-        target: |-
-          final
-        solution: 'cagfinal<Esc>'
   - goal: 'Add a blank line below without entering insert mode.'
     start: |-
       ▮] goes down
@@ -163,23 +99,9 @@ tasks:
     variants:
       - goal: 'Add a blank line below without entering insert mode.'
         start: |-
-          ▮Method
-          Results
+          ▮] adds below
+          [ adds above
         target: |-
-          Method
+          ] adds below
 
-          Results
-      - start: |-
-          ▮Introduction
-          Method
-        target: |-
-          Introduction
-
-          Method
-      - start: |-
-          ▮encode
-          retrieve
-        target: |-
-          encode
-
-          retrieve
+          [ adds above

@@ -8,76 +8,40 @@ intro: |
   associative stage (you know them, but slowly) to the autonomous one.
 keys: [':m', ':sort', ':%!', ':%s', ':norm', '>i{']
 tasks:
-  - goal: 'Sort the memory researchers and remove the duplicate.'
+  - goal: 'Sort the lines and remove the duplicate.'
     start: |-
-      ▮Tulving
-      Baddeley
-      Tulving
-      Bartlett
+      ▮yank
+      change
+      yank
+      delete
     target: |-
-      Baddeley
-      Bartlett
-      Tulving
+      change
+      delete
+      yank
     solution: ':sort u<CR>'
     hint: ':sort u'
     variants:
-      - goal: 'Sort the linguists and remove the duplicate.'
-        start: |-
-          ▮Labov
-          Trudgill
-          Labov
-          Eckert
-        target: |-
-          Eckert
-          Labov
-          Trudgill
       - start: |-
-          ▮Miller
-          Cowan
-          Miller
-          Bjork
+          ▮unique
+          sort
+          unique
+          only
         target: |-
-          Bjork
-          Cowan
-          Miller
-      - start: |-
-          ▮Roediger
-          Karpicke
-          Roediger
-          Dunlosky
-        target: |-
-          Dunlosky
-          Karpicke
-          Roediger
+          only
+          sort
+          unique
   - goal: 'Move the TODO line to the top.'
     start: |-
-      phonology
-      syntax
-      ▮TODO: review the cards
+      move
+      to top
+      ▮TODO: use :m0
     target: |-
-      TODO: review the cards
-      phonology
-      syntax
+      TODO: use :m0
+      move
+      to top
     solution: ':m0<CR>'
     hint: ':m0'
     variants:
-      - goal: 'Move the TODO line to the top.'
-        start: |-
-          morphology
-          semantics
-          ▮TODO: check the tags
-        target: |-
-          TODO: check the tags
-          morphology
-          semantics
-      - start: |-
-          spacing
-          testing
-          ▮TODO: sleep on it
-        target: |-
-          TODO: sleep on it
-          spacing
-          testing
       - start: |-
           yank
           put
@@ -88,54 +52,28 @@ tasks:
           put
   - goal: 'Quote every word.'
     start: |-
-      ▮sit sat seat
+      ▮word by word
     target: |-
-      "sit" "sat" "seat"
+      "word" "by" "word"
     solution: ':s/\w\+/"&"/g<CR>'
     hint: '\w\+ is a word, & is the match.'
     variants:
-      - goal: 'Quote every word.'
-        start: |-
-          ▮ship sheep chip
-        target: |-
-          "ship" "sheep" "chip"
       - start: |-
           ▮f t F T
         target: |-
           "f" "t" "F" "T"
-      - start: |-
-          ▮encode store retrieve
-        target: |-
-          "encode" "store" "retrieve"
   - goal: 'Add "!" to the end of every line.'
     start: |-
-      ▮Hallo
-      Hola
-      Ciao
+      ▮Append
+      At
+      End
     target: |-
-      Hallo!
-      Hola!
-      Ciao!
+      Append!
+      At!
+      End!
     solution: ':%norm A!<CR>'
     hint: ':%norm A!'
     variants:
-      - goal: 'Add "!" to the end of every line.'
-        start: |-
-          ▮Bonjour
-          Guten Tag
-          Salve
-        target: |-
-          Bonjour!
-          Guten Tag!
-          Salve!
-      - start: |-
-          ▮Test
-          Space
-          Sleep
-        target: |-
-          Test!
-          Space!
-          Sleep!
       - start: |-
           ▮Yank
           Put
@@ -146,30 +84,17 @@ tasks:
           Repeat!
   - goal: 'Number the lines with a shell command.'
     start: |-
-      ▮spacing
-      testing
+      ▮filter
+      through awk
     target: |-
-      1 spacing
-      2 testing
+      1 filter
+      2 through awk
     solution: ':%!awk ''{print NR, $0}''<CR>'
     hint: 'awk ''{print NR, $0}'' prints the line number before each line. (Visual block g Ctrl-a can''t do this one.)'
     variants:
-      - goal: 'Number the lines with a shell command.'
-        start: |-
-          ▮Hopi
-          Zuni
-        target: |-
-          1 Hopi
-          2 Zuni
       - start: |-
-          ▮encode
-          store
+          ▮NR
+          is the line number
         target: |-
-          1 encode
-          2 store
-      - start: |-
-          ▮Miller
-          Cowan
-        target: |-
-          1 Miller
-          2 Cowan
+          1 NR
+          2 is the line number

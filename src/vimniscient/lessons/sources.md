@@ -1,8 +1,8 @@
 # Sources for the facts in the lesson texts
 
-The lesson texts are mnemonic: they describe the key being practised (see
-`../mnemonics.yaml`), and the rest is about the science of learning and memory.
-Every factual claim in them should trace back to one of these.
+Lesson practice texts are mnemonic: each one is about the keys it practises (see
+`../mnemonics.yaml`). Memory science belongs in lesson intros, where it explains
+why the training works. Every factual claim there should trace back to one of these.
 
 - **Atkinson & Raugh (1975).** An application of the mnemonic keyword method to
   the acquisition of a Russian vocabulary. *JEP: Human Learning and Memory*

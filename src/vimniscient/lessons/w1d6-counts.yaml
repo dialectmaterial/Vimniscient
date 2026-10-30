@@ -18,59 +18,24 @@ tasks:
     solution: '3dw'
     hint: '3dw deletes three words, with their spaces.'
     variants:
-      - goal: 'Delete the three words "over and over".'
-        start: |-
-          Rereading ▮over and over feels fluent but fades.
-        target: |-
-          Rereading feels fluent but fades.
-      - goal: 'Delete the three words "again and again".'
-        start: |-
-          Rereading ▮again and again feels like knowing.
-        target: |-
-          Rereading feels like knowing.
       - goal: 'Delete the three words "one two three".'
         start: |-
           A count before ▮one two three dw repeats it.
         target: |-
           A count before dw repeats it.
-      - goal: 'Delete the three words "at first sometimes".'
-        start: |-
-          Spaced practice ▮at first sometimes feels slower but lasts.
-        target: |-
-          Spaced practice feels slower but lasts.
-  - goal: 'Delete the three low-utility techniques (Dunlosky et al., 2013).'
+  - goal: 'Delete the three middle lines.'
     start: |-
-      practice testing
-      ▮highlighting
-      rereading
-      summarizing
-      distributed practice
+      3dd deletes
+      ▮this line,
+      this line,
+      this line,
+      and stops.
     target: |-
-      practice testing
-      distributed practice
+      3dd deletes
+      and stops.
     solution: '3dd'
     hint: '3dd deletes three lines, starting at the cursor.'
     variants:
-      - goal: 'Delete the three middle lines.'
-        start: |-
-          3dd deletes
-          ▮this line,
-          this line,
-          this line,
-          and stops.
-        target: |-
-          3dd deletes
-          and stops.
-      - goal: 'Delete the three low-utility habits.'
-        start: |-
-          keep:
-          ▮cram
-          reread
-          highlight
-          space it out
-        target: |-
-          keep:
-          space it out
       - goal: 'Delete the three middle lines.'
         start: |-
           3 is the count,
@@ -81,16 +46,6 @@ tasks:
         target: |-
           3 is the count,
           dd is the verb.
-      - goal: 'Delete the three placeholder lines.'
-        start: |-
-          Miller 1956
-          ▮x
-          y
-          z
-          Cowan 2001
-        target: |-
-          Miller 1956
-          Cowan 2001
   - goal: 'Change "three words" to "two words".'
     start: |-
       c2w changes ▮three words.
@@ -99,81 +54,33 @@ tasks:
     solution: 'c2wtwo words<Esc>'
     hint: 'c2w changes two words.'
     variants:
-      - goal: 'Change "feels easy" to "can feel hard".'
-        start: |-
-          Learning ▮feels easy when it is working.
-        target: |-
-          Learning can feel hard when it is working.
-        solution: 'c2wcan feel hard<Esc>'
-      - goal: 'Change "seven items" to "about four".'
-        start: |-
-          Cowan said ▮seven items, give or take.
-        target: |-
-          Cowan said about four, give or take.
-        solution: 'c2wabout four<Esc>'
       - goal: 'Change "three things" to "two words".'
         start: |-
           c2w: change ▮three things.
         target: |-
           c2w: change two words.
         solution: 'c2wtwo words<Esc>'
-      - goal: 'Change "feel easy" to "feel harder".'
-        start: |-
-          Spacing makes reviews ▮feel easy, yet results last.
-        target: |-
-          Spacing makes reviews feel harder, yet results last.
-        solution: 'c2wfeel harder<Esc>'
-  - goal: 'Fix the number: 7, not 700000.'
+  - goal: 'Fix the number: 5, not 500000.'
     start: |-
-      The magical number is 7▮00000, plus or minus two.
+      The count is 5▮00000, and x goes five times.
     target: |-
-      The magical number is 7, plus or minus two.
+      The count is 5, and x goes five times.
     solution: '5x'
     hint: 'x crosses out a character; 5x crosses out five.'
     variants:
-      - goal: 'Fix the number: about 4 chunks.'
-        start: |-
-          Cowan put working memory at about 4▮00000 chunks.
-        target: |-
-          Cowan put working memory at about 4 chunks.
-      - goal: 'Fix the year: 1885.'
-        start: |-
-          Ebbinghaus published in 1885▮00000.
-        target: |-
-          Ebbinghaus published in 1885.
       - goal: 'Delete the five x letters.'
         start: |-
           x crosses out ▮xxxxxone letter at a time.
         target: |-
           x crosses out one letter at a time.
-      - goal: 'Fix the number: 3 stages.'
-        start: |-
-          Fitts and Posner named 3▮00000 stages of skill.
-        target: |-
-          Fitts and Posner named 3 stages of skill.
-  - goal: 'Delete from the third comma to the end (highlighting is the odd one out).'
+  - goal: 'Delete from the third comma to the end (x isn''t a find command).'
     start: |-
-      ▮spacing, testing, interleaving, highlighting
+      ▮f finds, t tills, F looks back, x crosses out
     target: |-
-      spacing, testing, interleaving
+      f finds, t tills, F looks back
     solution: '3f,D'
     hint: '3f, finds the third comma, D deletes from there.'
     variants:
-      - goal: 'Delete from the third comma to the end (x isn''t a find command).'
-        start: |-
-          ▮f finds, t tills, F looks back, x crosses out
-        target: |-
-          f finds, t tills, F looks back
-      - goal: 'Delete from the third comma to the end (coffee is not a stage of memory).'
-        start: |-
-          ▮encoding, storage, retrieval, coffee
-        target: |-
-          encoding, storage, retrieval
-      - goal: 'Delete from the third comma to the end (Fitts and Posner name three stages).'
-        start: |-
-          ▮cognitive, associative, autonomous, hypnotic
-        target: |-
-          cognitive, associative, autonomous
       - goal: 'Delete from the third comma to the end (z is not an operator).'
         start: |-
           ▮c changes, d deletes, y yanks, z naps
@@ -189,25 +96,12 @@ tasks:
     solution: '3J'
     hint: 'J joins; 3J joins three lines.'
     variants:
-      - goal: 'Join the three lines into one.'
-        start: |-
-          ▮chunk
-          by
-          chunk
-        target: |-
-          chunk by chunk
       - start: |-
           ▮f
           finds
           forward
         target: |-
           f finds forward
-      - start: |-
-          ▮test,
-          wait,
-          retest
-        target: |-
-          test, wait, retest
       - start: |-
           ▮J
           glues
@@ -231,19 +125,6 @@ tasks:
     solution: '4jdd'
     hint: 'Relative numbers show how far a line is: 4j goes four down, dd cuts it.'
     variants:
-      - goal: 'Delete the wrong line, three below the cursor.'
-        start: |-
-          ▮Miller: seven, plus or minus two
-          Cowan: about four
-          Ebbinghaus: 1885
-          Cramming: the best method
-          Roediger: 2006
-        target: |-
-          Miller: seven, plus or minus two
-          Cowan: about four
-          Ebbinghaus: 1885
-          Roediger: 2006
-        solution: '3jdd'
       - goal: 'Delete the line five lines below the cursor.'
         start: |-
           ▮count first, then move:
@@ -261,31 +142,6 @@ tasks:
           four
           six
         solution: '5jdd'
-      - goal: 'Delete the stage that isn''t one of Fitts and Posner''s, two lines down.'
-        start: |-
-          ▮cognitive
-          associative
-          hypnotic
-          autonomous
-        target: |-
-          cognitive
-          associative
-          autonomous
-        solution: '2jdd'
-      - goal: 'Delete the low-utility technique, four lines down.'
-        start: |-
-          ▮spacing
-          testing
-          interleaving
-          sleep
-          highlighting
-          elaboration
-        target: |-
-          spacing
-          testing
-          interleaving
-          sleep
-          elaboration
 
   - goal: 'Fix "Teh" three lines up.'
     start: |-
@@ -301,42 +157,6 @@ tasks:
     solution: '3kciwThe<Esc>'
     hint: 'k goes up; a count in front says how far. Then ciw fixes the word.'
     variants:
-      - goal: 'Fix "Mlier" three lines up.'
-        start: |-
-          Mlier: seven
-          Cowan: four
-          Bjork: difficulties
-          ▮Ebbinghaus: 1885
-        target: |-
-          Miller: seven
-          Cowan: four
-          Bjork: difficulties
-          Ebbinghaus: 1885
-        solution: '3kciwMiller<Esc>'
-      - goal: 'Fix "Cogntive" two lines up.'
-        start: |-
-          Cogntive
-          associative
-          ▮autonomous
-        target: |-
-          Cognitive
-          associative
-          autonomous
-        solution: '2kciwCognitive<Esc>'
-      - goal: 'Fix "Spcaing" four lines up.'
-        start: |-
-          Spcaing beats cramming,
-          testing beats rereading,
-          sleep helps,
-          mixing helps,
-          ▮and 4k counts up.
-        target: |-
-          Spacing beats cramming,
-          testing beats rereading,
-          sleep helps,
-          mixing helps,
-          and 4k counts up.
-        solution: '4kciwSpacing<Esc>'
       - goal: 'Fix "Rleative" three lines up.'
         start: |-
           Rleative numbers

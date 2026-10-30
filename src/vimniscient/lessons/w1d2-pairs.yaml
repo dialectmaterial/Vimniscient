@@ -18,57 +18,27 @@ tasks:
     solution: 'ci"change inside<Esc>'
     hint: 'c changes, i keeps it inside, " names the pair: ci".'
     variants:
-      - goal: 'Fix the citation to "Atkinson & Raugh, 1975".'
-        start: |-
-          keyword_method = "▮Atkinson, 1957"
-        target: |-
-          keyword_method = "Atkinson & Raugh, 1975"
-        solution: 'ci"Atkinson & Raugh, 1975<Esc>'
       - goal: 'Set the string to "the quote names the pair".'
         start: |-
           quote_object = "▮brackets name it"
         target: |-
           quote_object = "the quote names the pair"
         solution: 'ci"the quote names the pair<Esc>'
-      - goal: 'Fix the citation to "Cepeda et al., 2006".'
-        start: |-
-          spacing_review = "▮Cepeda, 2016"
-        target: |-
-          spacing_review = "Cepeda et al., 2006"
-        solution: 'ci"Cepeda et al., 2006<Esc>'
       - goal: 'Set the string to "without the quotes".'
         start: |-
           inner_quote = "▮with the quotes"
         target: |-
           inner_quote = "without the quotes"
         solution: 'ci"without the quotes<Esc>'
-  - goal: 'Change the string to "spaced", starting from the beginning of the line.'
+  - goal: 'Change the string to "the quotes", starting from the beginning of the line.'
     ft: python
     start: |-
-      ▮best_schedule = "one long cram"
+      ▮ci_quote_keeps = "nothing"
     target: |-
-      best_schedule = "spaced"
-    solution: 'ci"spaced<Esc>'
+      ci_quote_keeps = "the quotes"
+    solution: 'ci"the quotes<Esc>'
     hint: 'You don''t have to move first. ci" finds the next quotes on the line.'
     variants:
-      - goal: 'Change the string to "testing yourself", starting from the beginning of the line.'
-        start: |-
-          ▮learn_by = "rereading"
-        target: |-
-          learn_by = "testing yourself"
-        solution: 'ci"testing yourself<Esc>'
-      - goal: 'Change the string to "seven, plus or minus two", starting from the beginning of the line.'
-        start: |-
-          ▮miller_1956 = "ten"
-        target: |-
-          miller_1956 = "seven, plus or minus two"
-        solution: 'ci"seven, plus or minus two<Esc>'
-      - goal: 'Change the string to "about four", starting from the beginning of the line.'
-        start: |-
-          ▮cowan_chunks = "seven"
-        target: |-
-          cowan_chunks = "about four"
-        solution: 'ci"about four<Esc>'
       - goal: 'Change the string to "the next quotes", starting from the beginning of the line.'
         start: |-
           ▮ci_quote_finds = "nothing"
@@ -84,23 +54,10 @@ tasks:
     solution: 'di('
     hint: 'di( deletes inside the innermost parentheses around the cursor.'
     variants:
-      - goal: 'Empty the inner parentheses.'
-        start: |-
-          forget(cramming(the_night_bef▮ore))
-        target: |-
-          forget(cramming())
       - start: |-
           inner_paren(keeps(▮only_the_brackets))
         target: |-
           inner_paren(keeps())
-      - start: |-
-          restudy(feels(better_at_fi▮ve_minutes))
-        target: |-
-          restudy(feels())
-      - start: |-
-          sleep(stabilises(▮new_memories))
-        target: |-
-          sleep(stabilises())
   - goal: 'Delete the argument list, parentheses included.'
     ft: python
     start: |-
@@ -110,23 +67,10 @@ tasks:
     solution: 'da('
     hint: 'a is around: da( deletes the parentheses too. (dab is the same thing.)'
     variants:
-      - goal: 'Delete the argument list, parentheses included.'
-        start: |-
-          recall = retrieval(▮practice, tests) * 2
-        target: |-
-          recall = retrieval * 2
-      - start: |-
-          ebbinghaus = curve(▮forgetting, steep) + 1885
-        target: |-
-          ebbinghaus = curve + 1885
       - start: |-
           parens_go = da(▮inside, and, out) + too
         target: |-
           parens_go = da + too
-      - start: |-
-          skill = stages(▮cognitive, associative, autonomous) * 3
-        target: |-
-          skill = stages * 3
   - goal: 'Empty the list.'
     ft: python
     start: |-
@@ -136,23 +80,10 @@ tasks:
     solution: 'di['
     hint: 'di[ works like di(: the bracket names the pair.'
     variants:
-      - goal: 'Empty the list.'
-        start: |-
-          excuses_not_to_practise = [▮"busy", "tired", "later"]
-        target: |-
-          excuses_not_to_practise = []
       - start: |-
           bracket_names_the_pair = [▮"square", "ones"]
         target: |-
           bracket_names_the_pair = []
-      - start: |-
-          high_utility = [▮"highlighting", "rereading"]
-        target: |-
-          high_utility = []
-      - start: |-
-          cram_plan = [▮"everything", "tonight"]
-        target: |-
-          cram_plan = []
   - goal: 'Change the text inside the tag to "t is for tag".'
     ft: html
     start: |-
@@ -162,27 +93,9 @@ tasks:
     solution: 'citt is for tag<Esc>'
     hint: 't is the tag object. cit changes the tag''s content and keeps the tags.'
     variants:
-      - goal: 'Change the text inside the tag to "Ebbinghaus, 1885".'
-        start: |-
-          <i>Ebbing▮haus, 1858</i>
-        target: |-
-          <i>Ebbinghaus, 1885</i>
-        solution: 'citEbbinghaus, 1885<Esc>'
-      - goal: 'Change the text inside the tag to "Miller, 1956".'
-        start: |-
-          <em>Miller, 19▮65</em>
-        target: |-
-          <em>Miller, 1956</em>
-        solution: 'citMiller, 1956<Esc>'
       - goal: 'Change the text inside the tag to "the tags stay".'
         start: |-
           <b>the tags ▮go</b>
         target: |-
           <b>the tags stay</b>
         solution: 'citthe tags stay<Esc>'
-      - goal: 'Change the text inside the tag to "Roediger & Karpicke, 2006".'
-        start: |-
-          <i>Roediger, 20▮16</i>
-        target: |-
-          <i>Roediger & Karpicke, 2006</i>
-        solution: 'citRoediger & Karpicke, 2006<Esc>'

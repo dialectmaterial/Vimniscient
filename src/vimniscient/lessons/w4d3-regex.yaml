@@ -12,33 +12,16 @@ keys: ['^', '$', '\s\+$', '\d\+', '&', '\v']
 tasks:
   - goal: 'Delete the trailing spaces.'
     start: |-
-      ▮encode␣␣␣
-      store␣␣
-      retrieve␣
+      ▮strip␣␣
+      spaces␣
+      at the end␣␣␣
     target: |-
-      encode
-      store
-      retrieve
+      strip
+      spaces
+      at the end
     solution: ':%s/\s\+$//<CR>'
     hint: '\s\+$ is one or more spaces right before the end of the line.'
     variants:
-      - goal: 'Delete the trailing spaces.'
-        start: |-
-          ▮onset␣␣
-          nucleus␣␣␣
-          coda␣
-        target: |-
-          onset
-          nucleus
-          coda
-      - start: |-
-          ▮spacing␣␣
-          testing␣
-          sleep␣␣␣
-        target: |-
-          spacing
-          testing
-          sleep
       - start: |-
           ▮f␣␣
           t␣
@@ -47,29 +30,19 @@ tasks:
           f
           t
           F
-  - goal: 'Put every day number in square brackets.'
+  - goal: 'Put every number in square brackets.'
     start: |-
-      ▮review on day 1, day 3, day 14
+      ▮digit 1, digit 3, digit 14
     target: |-
-      review on day [1], day [3], day [14]
+      digit [1], digit [3], digit [14]
     solution: ':s/\d\+/[&]/g<CR>'
     hint: '& in the replacement is whatever matched.'
     variants:
-      - goal: 'Put every tone number in square brackets.'
-        start: |-
-          ▮tone 1, tone 22, tone 214
-        target: |-
-          tone [1], tone [22], tone [214]
       - goal: 'Put every number in square brackets.'
         start: |-
-          ▮Miller 7, Cowan 4
+          ▮match 7, match 4
         target: |-
-          Miller [7], Cowan [4]
-      - goal: 'Put every year in square brackets.'
-        start: |-
-          ▮years 1885, 1956, 2006
-        target: |-
-          years [1885], [1956], [2006]
+          match [7], match [4]
   - goal: 'Rewrite the date as day/month/year.'
     start: |-
       ▮2026-10-24
@@ -78,15 +51,6 @@ tasks:
     solution: ':s#\v(\d+)-(\d+)-(\d+)#\3/\2/\1<CR>'
     hint: 'Any character can separate the parts of :s. # saves escaping the slashes.'
     variants:
-      - goal: 'Rewrite the date as day/month/year.'
-        start: |-
-          ▮1957-02-14
-        target: |-
-          14/02/1957
-      - start: |-
-          ▮2026-11-02
-        target: |-
-          02/11/2026
       - start: |-
           ▮2026-10-29
         target: |-
@@ -105,58 +69,25 @@ tasks:
     variants:
       - goal: 'Make every line a list item.'
         start: |-
-          ▮onset
-          nucleus
-          coda
+          ▮list
+          every
+          line
         target: |-
-          - onset
-          - nucleus
-          - coda
-      - start: |-
-          ▮encode
-          store
-          retrieve
-        target: |-
-          - encode
-          - store
-          - retrieve
-      - start: |-
-          ▮spacing
-          testing
-          sleep
-        target: |-
-          - spacing
-          - testing
-          - sleep
+          - list
+          - every
+          - line
   - goal: 'Join every line that ends with a comma to the next one.'
     start: |-
-      ▮noun,
-      verb
-      subject,
-      object
+      ▮global,
+      join
+      comma,
+      next
     target: |-
-      noun, verb
-      subject, object
+      global, join
+      comma, next
     solution: ':g/,$/j<CR>'
     hint: ':g/,$/ finds the lines ending in a comma; j joins each one with the next.'
     variants:
-      - goal: 'Join every line that ends with a comma to the next one.'
-        start: |-
-          ▮onset,
-          nucleus
-          topic,
-          comment
-        target: |-
-          onset, nucleus
-          topic, comment
-      - start: |-
-          ▮spacing,
-          testing
-          sleep,
-          review
-        target: |-
-          spacing, testing
-          sleep, review
       - start: |-
           ▮f,
           t

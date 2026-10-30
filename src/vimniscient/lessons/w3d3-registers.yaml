@@ -22,15 +22,6 @@ tasks:
     solution: '"ayyjdd"ap'
     hint: 'yy then dd would paste junk. Yank into a named register: "ayy, then later "ap.'
     variants:
-      - goal: 'Copy "competence" to the end and delete junk, without losing "competence".'
-        start: |-
-          ▮competence
-          junk
-          performance
-        target: |-
-          competence
-          performance
-          competence
       - goal: 'Copy the first line to the end and delete junk, without losing it.'
         start: |-
           ▮register a
@@ -40,15 +31,6 @@ tasks:
           register a
           keeps what you yank:
           register a
-      - goal: 'Copy "spacing" to the end and delete junk, without losing "spacing".'
-        start: |-
-          ▮spacing
-          junk
-          beats cramming, so:
-        target: |-
-          spacing
-          beats cramming, so:
-          spacing
   - goal: 'Delete the typo line, then paste the line you yanked at the end.'
     start: |-
       ▮0 holds the last yank
@@ -61,15 +43,6 @@ tasks:
     solution: 'yyjdd"0p'
     hint: 'Register 0 always holds the last yank, even after a delete.'
     variants:
-      - goal: 'Delete the typo line, then paste the line you yanked at the end.'
-        start: |-
-          ▮sign
-          typo
-          referent:
-        target: |-
-          sign
-          referent:
-          sign
       - start: |-
           ▮the yank register
           typo
@@ -78,14 +51,6 @@ tasks:
           the yank register
           is zero:
           the yank register
-      - start: |-
-          ▮testing
-          typo
-          beats rereading:
-        target: |-
-          testing
-          beats rereading:
-          testing
   - goal: 'Delete the misspelling "black hoel" and replace "blak hole" with "black hole". Keep black hole in the unnamed register.'
     start: |-
       ▮black hole
@@ -97,15 +62,6 @@ tasks:
     solution: 'yyj"_ddVp'
     hint: '"_dd drops the line through the floor, so the unnamed register still holds black hole. Vp pastes over the line.'
     variants:
-      - goal: 'Delete the misspelling "sintax" and replace "syntaks" with "syntax". Keep syntax in the unnamed register.'
-        start: |-
-          ▮syntax
-          sintax
-          syntaks
-        target: |-
-          syntax
-          syntax
-        hint: '"_dd deletes into the black hole, so the unnamed register still holds syntax. Vp pastes over the line.'
       - goal: 'Delete the misspelling "regsiter" and replace "registre" with "register". Keep register in the unnamed register.'
         start: |-
           ▮register
@@ -114,14 +70,6 @@ tasks:
         target: |-
           register
           register
-      - goal: 'Delete the misspelling "retreival" and replace "retrival" with "retrieval". Keep retrieval in the unnamed register.'
-        start: |-
-          ▮retrieval
-          retreival
-          retrival
-        target: |-
-          retrieval
-          retrieval
   - goal: 'Add the last word of line 1 to the end of line 2.'
     start: |-
       ▮reads in: register
@@ -132,13 +80,6 @@ tasks:
     solution: '$yiwjA <C-r>0<Esc>'
     hint: 'Yank the word, then in insert mode Ctrl-r 0 reads it in for you.'
     variants:
-      - goal: 'Add the name from line 1 to the end of line 2.'
-        start: |-
-          ▮name: Boas
-          greeting: hi
-        target: |-
-          name: Boas
-          greeting: hi Boas
       - goal: 'Add the last word of line 1 to the end of line 2.'
         start: |-
           ▮last yank: zero
@@ -146,13 +87,6 @@ tasks:
         target: |-
           last yank: zero
           the yank register is zero
-      - goal: 'Add the last word of line 1 to the end of line 2.'
-        start: |-
-          ▮number: four
-          Cowan said about
-        target: |-
-          number: four
-          Cowan said about four
   - goal: 'Fill in the product while typing.'
     start: |-
       ▮Ctrl-r = is a calculator (6 * 7):
@@ -162,24 +96,12 @@ tasks:
     hint: 'In insert mode, Ctrl-r = opens a calculator: type 6*7 and Enter.'
     variants:
       - goal: 'Fill in the difference while typing.'
+        hint: 'In insert mode, Ctrl-r = opens a calculator: type 2001-1956 and Enter.'
         start: |-
-          ▮Ebbinghaus to Roediger, in years (2006 - 1885):
+          ▮Ctrl-r = subtracts too (2001 - 1956):
         target: |-
-          Ebbinghaus to Roediger, in years (2006 - 1885): 121
-        solution: 'A <C-r>=2006-1885<CR><Esc>'
-        hint: 'In insert mode, Ctrl-r = opens a calculator: type 2006-1885 and Enter.'
-      - goal: 'Fill in the difference while typing.'
-        start: |-
-          ▮Miller to Cowan, in years (2001 - 1956):
-        target: |-
-          Miller to Cowan, in years (2001 - 1956): 45
+          Ctrl-r = subtracts too (2001 - 1956): 45
         solution: 'A <C-r>=2001-1956<CR><Esc>'
-      - goal: 'Fill in the difference while typing.'
-        start: |-
-          ▮Ebbinghaus's age when he published (1885 - 1850):
-        target: |-
-          Ebbinghaus's age when he published (1885 - 1850): 35
-        solution: 'A <C-r>=1885-1850<CR><Esc>'
   - goal: 'Collect the first and last lines in one register and paste both at the end.'
     start: |-
       ▮capital A
@@ -194,29 +116,6 @@ tasks:
     solution: '"ayyjj"Ayy"ap'
     hint: 'A capital register name appends: "ayy, then "Ayy on appends, then "ap.'
     variants:
-      - goal: 'Collect onset and coda in one register and paste both at the end.'
-        start: |-
-          ▮onset
-          skip
-          coda
-        target: |-
-          onset
-          skip
-          coda
-          onset
-          coda
-        hint: 'A capital register name appends: "ayy, then "Ayy on coda, then "ap.'
-      - goal: 'Collect encode and retrieve in one register and paste both at the end.'
-        start: |-
-          ▮encode
-          skip
-          retrieve
-        target: |-
-          encode
-          skip
-          retrieve
-          encode
-          retrieve
       - goal: 'Collect the first and last lines in one register and paste both at the end.'
         start: |-
           ▮yank into a

@@ -18,15 +18,6 @@ tasks:
     solution: 'gcc'
     hint: 'gcc toggles a comment on the line.'
     variants:
-      - goal: 'Comment out the line.'
-        start: |-
-          ▮y = 2
-        target: |-
-          # y = 2
-      - start: |-
-          ▮cram = True
-        target: |-
-          # cram = True
       - start: |-
           ▮comment = "gc"
         target: |-
@@ -34,109 +25,62 @@ tasks:
   - goal: 'Uncomment the line.'
     ft: python
     start: |-
-      # ▮test = True
+      # ▮comment = True
     target: |-
-      test = True
+      comment = True
     solution: 'gcc'
     hint: 'gcc again removes it.'
     variants:
-      - goal: 'Uncomment the line.'
-        start: |-
-          # ▮z = 3
-        target: |-
-          z = 3
       - start: |-
-          # ▮space = True
+          # ▮gcc = True
         target: |-
-          space = True
-      - start: |-
-          # ▮sleep = 8
-        target: |-
-          sleep = 8
+          gcc = True
   - goal: 'Comment out this line and the next.'
     ft: python
     start: |-
-      ▮cram = 1
-      reread = 2
-      test = 3
+      ▮gc = 1
+      plus_j = 2
+      stays = 3
     target: |-
-      # cram = 1
-      # reread = 2
-      test = 3
+      # gc = 1
+      # plus_j = 2
+      stays = 3
     solution: 'gcj'
     hint: 'gc takes a motion, so gcj covers two lines.'
     variants:
-      - goal: 'Comment out this line and the next.'
-        start: |-
-          ▮p = 1
-          q = 2
-          r = 3
-        target: |-
-          # p = 1
-          # q = 2
-          r = 3
       - start: |-
-          ▮highlight = 1
-          skim = 2
-          recall = 3
+          ▮comment = 1
+          two = 2
+          stays = 3
         target: |-
-          # highlight = 1
-          # skim = 2
-          recall = 3
-      - start: |-
-          ▮a = 1
-          b = 2
-          c = 3
-        target: |-
-          # a = 1
-          # b = 2
-          c = 3
+          # comment = 1
+          # two = 2
+          stays = 3
   - goal: 'Comment out the first block.'
     ft: python
     start: |-
-      ▮highlight = 1
-      summarize = 2
+      ▮inner = 1
+      paragraph = 2
 
-      space = 3
+      stays = 3
     target: |-
-      # highlight = 1
-      # summarize = 2
+      # inner = 1
+      # paragraph = 2
 
-      space = 3
+      stays = 3
     solution: 'gcip'
     hint: 'gcip comments the inner paragraph.'
     variants:
-      - goal: 'Comment out the first block.'
-        start: |-
-          ▮p = 1
-          q = 2
-
-          r = 3
-        target: |-
-          # p = 1
-          # q = 2
-
-          r = 3
       - start: |-
-          ▮cram = 1
-          reread = 2
+          ▮gc = 1
+          ip = 2
 
-          test = 3
+          stays = 3
         target: |-
-          # cram = 1
-          # reread = 2
+          # gc = 1
+          # ip = 2
 
-          test = 3
-      - start: |-
-          ▮a = 1
-          b = 2
-
-          c = 3
-        target: |-
-          # a = 1
-          # b = 2
-
-          c = 3
+          stays = 3
   - goal: 'Comment out the JavaScript line (a different comment style).'
     ft: javascript
     start: |-
@@ -146,16 +90,7 @@ tasks:
     solution: 'gcc'
     hint: 'gc uses whatever comment syntax the language has.'
     variants:
-      - goal: 'Comment out the JavaScript line (a different comment style).'
-        start: |-
-          ▮let y = 2;
-        target: |-
-          // let y = 2;
       - start: |-
-          ▮let cram = true;
+          ▮let gcc = true;
         target: |-
-          // let cram = true;
-      - start: |-
-          ▮const gap = 7;
-        target: |-
-          // const gap = 7;
+          // let gcc = true;

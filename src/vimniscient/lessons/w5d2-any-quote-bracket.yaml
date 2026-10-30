@@ -18,24 +18,12 @@ tasks:
     solution: 'ciqany quote<Esc>'
     hint: 'ciq works for any kind of quote.'
     variants:
-      - goal: 'Change the text in the single quotes to q.'
-        start: |-
-          y = 'h▮ello'
-        target: |-
-          y = 'q'
-        solution: 'ciqq<Esc>'
       - goal: 'Change the string to "q is quote".'
         start: |-
           hook = 'q is quo▮ta'
         target: |-
           hook = 'q is quote'
         solution: 'ciqq is quote<Esc>'
-      - goal: 'Change the string to "about four".'
-        start: |-
-          fact = 'Cowan said ▮seven'
-        target: |-
-          fact = 'about four'
-        solution: 'ciqabout four<Esc>'
   - goal: 'Change double to any.'
     ft: python
     start: |-
@@ -45,24 +33,12 @@ tasks:
     solution: 'ciqany<Esc>'
     hint: 'The same ciq, now in double quotes.'
     variants:
-      - goal: 'Change noun to verb.'
-        start: |-
-          tag("no▮un")
-        target: |-
-          tag("verb")
-        solution: 'ciqverb<Esc>'
       - goal: 'Change the string to "any".'
         start: |-
           kind("back▮tick")
         target: |-
           kind("any")
         solution: 'ciqany<Esc>'
-      - goal: 'Change the string to "day".'
-        start: |-
-          gap("we▮ek")
-        target: |-
-          gap("day")
-        solution: 'ciqday<Esc>'
   - goal: 'Replace what is inside the brackets with any.'
     ft: python
     start: |-
@@ -72,24 +48,12 @@ tasks:
     solution: 'cibany<Esc>'
     hint: 'cib is inside any bracket.'
     variants:
-      - goal: 'Replace what is inside the brackets with z.'
-        start: |-
-          g(▮x * y)
-        target: |-
-          g(z)
-        solution: 'cibz<Esc>'
       - goal: 'Change what is inside the brackets to "any".'
         start: |-
           bracket[▮square + round]
         target: |-
           bracket[any]
         solution: 'cibany<Esc>'
-      - goal: 'Change what is inside the brackets to "test".'
-        start: |-
-          recall(▮cue + delay)
-        target: |-
-          recall(test)
-        solution: 'cibtest<Esc>'
   - goal: 'Empty the argument list, starting from the beginning of the line.'
     ft: python
     start: |-
@@ -99,38 +63,20 @@ tasks:
     solution: 'dib'
     hint: 'dib finds the next brackets on the line.'
     variants:
-      - goal: 'Empty the argument list, starting from the beginning of the line.'
-        start: |-
-          ▮emit(a, b)
-        target: |-
-          emit()
       - start: |-
           ▮b(is, bracket)
         target: |-
           b()
-      - start: |-
-          ▮review[day1, day7]
-        target: |-
-          review[]
   - goal: 'Delete the first call''s brackets and argument.'
     ft: python
     start: |-
-      x = f(▮1) + g(2)
+      x = ar▮ound(1) + g(2)
     target: |-
-      x = f + g(2)
+      x = around + g(2)
     solution: 'dab'
     hint: 'dab deletes the brackets with what''s inside.'
     variants:
-      - goal: 'Delete the first call''s brackets and argument.'
-        start: |-
-          y = g(▮2) + h(3)
-        target: |-
-          y = g + h(3)
       - start: |-
-          y = r(▮1) + s(2)
+          y = a(▮1) + b(2)
         target: |-
-          y = r + s(2)
-      - start: |-
-          gap = d(▮7) - d(1)
-        target: |-
-          gap = d - d(1)
+          y = a + b(2)

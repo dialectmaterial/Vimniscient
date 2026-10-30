@@ -10,39 +10,18 @@ keys: ['/ in a macro', '@@', ':norm @a', 'yyp<C-a>']
 tasks:
   - goal: 'Uppercase the word after every TODO.'
     start: |-
-      ▮1 TODO review this
+      ▮1 TODO record this
       2 nothing here
-      3 TODO test that
-      4 TODO space it
+      3 TODO stop that
+      4 TODO replay it
     target: |-
-      1 TODO REVIEW this
+      1 TODO RECORD this
       2 nothing here
-      3 TODO TEST that
-      4 TODO SPACE it
+      3 TODO STOP that
+      4 TODO REPLAY it
     solution: 'qa/TODO<CR>wgUiwq2@a'
     hint: 'Let the macro find its own place: /TODO<Enter> w gUiw.'
     variants:
-      - goal: 'Uppercase the word after every TODO.'
-        start: |-
-          ▮a TODO check this
-          b fine
-          c TODO gloss that
-          d TODO tag it
-        target: |-
-          a TODO CHECK this
-          b fine
-          c TODO GLOSS that
-          d TODO TAG it
-      - start: |-
-          ▮1 TODO space this
-          2 done
-          3 TODO test that
-          4 TODO sleep now
-        target: |-
-          1 TODO SPACE this
-          2 done
-          3 TODO TEST that
-          4 TODO SLEEP now
       - start: |-
           ▮x TODO macro it
           y skip
@@ -65,15 +44,6 @@ tasks:
     solution: 'qa0f,xi | <Esc>jq@a@@'
     hint: '0 f, x deletes the comma, i | <Esc> inserts the separator, j moves on. Then @a, then @@.'
     variants:
-      - goal: 'Turn every comma into " | ", using @a once and then @@.'
-        start: |-
-          ▮onset,coda
-          head,dependent
-          topic,comment
-        target: |-
-          onset | coda
-          head | dependent
-          topic | comment
       - start: |-
           ▮key,hook
           f,find
@@ -82,49 +52,20 @@ tasks:
           key | hook
           f | find
           t | till
-      - start: |-
-          ▮Miller,seven
-          Cowan,four
-          Ebbinghaus,1885
-        target: |-
-          Miller | seven
-          Cowan | four
-          Ebbinghaus | 1885
   - goal: 'Put every line in parentheses: record on the first line, then use :norm for the rest.'
     start: |-
-      ▮spacing
-      testing
-      sleep
-      mnemonics
+      ▮record
+      stop
+      play
+      replay
     target: |-
-      (spacing)
-      (testing)
-      (sleep)
-      (mnemonics)
+      (record)
+      (stop)
+      (play)
+      (replay)
     solution: 'qaI(<Esc>A)<Esc>q:2,$norm @a<CR>'
     hint: 'No j in this macro. :2,$norm @a runs it once on every line from 2 to the end.'
     variants:
-      - goal: 'Put every line in parentheses: record on the first line, then use :norm for the rest.'
-        start: |-
-          ▮DP
-          TP
-          CP
-          VP
-        target: |-
-          (DP)
-          (TP)
-          (CP)
-          (VP)
-      - start: |-
-          ▮encode
-          store
-          retrieve
-          forget
-        target: |-
-          (encode)
-          (store)
-          (retrieve)
-          (forget)
       - start: |-
           ▮q
           @a
@@ -137,30 +78,15 @@ tasks:
           (norm)
   - goal: 'Make a numbered list of four items.'
     start: |-
-      ▮1. Test yourself.
+      ▮1. Copy the line, add one.
     target: |-
-      1. Test yourself.
-      2. Test yourself.
-      3. Test yourself.
-      4. Test yourself.
+      1. Copy the line, add one.
+      2. Copy the line, add one.
+      3. Copy the line, add one.
+      4. Copy the line, add one.
     solution: 'qayyp<C-a>q2@a'
     hint: 'yyp copies the line, Ctrl-a bumps its number. Record that, then 2@a.'
     variants:
-      - goal: 'Make a numbered list of four items.'
-        start: |-
-          ▮1. Review after a delay.
-        target: |-
-          1. Review after a delay.
-          2. Review after a delay.
-          3. Review after a delay.
-          4. Review after a delay.
-      - start: |-
-          ▮1. Space your reviews.
-        target: |-
-          1. Space your reviews.
-          2. Space your reviews.
-          3. Space your reviews.
-          4. Space your reviews.
       - start: |-
           ▮1. Record, then replay.
         target: |-

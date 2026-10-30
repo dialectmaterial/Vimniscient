@@ -11,33 +11,16 @@ keys: [':sort', ':sort n', ':sort u', ':%!cmd', ':r !cmd']
 tasks:
   - goal: 'Sort the fields.'
     start: |-
-      ▮testing
-      mnemonics
-      spacing
+      ▮sort
+      lines
+      order
     target: |-
-      mnemonics
-      spacing
-      testing
+      lines
+      order
+      sort
     solution: ':sort<CR>'
     hint: ':sort sorts every line by default.'
     variants:
-      - goal: 'Sort the fields.'
-        start: |-
-          ▮semantics
-          pragmatics
-          phonetics
-        target: |-
-          phonetics
-          pragmatics
-          semantics
-      - start: |-
-          ▮sleep
-          interleaving
-          retrieval
-        target: |-
-          interleaving
-          retrieval
-          sleep
       - start: |-
           ▮yank
           delete
@@ -46,86 +29,45 @@ tasks:
           change
           delete
           yank
-  - goal: 'Sort the review schedule by day, not alphabetically.'
+  - goal: 'Sort by number, not alphabetically.'
     start: |-
-      ▮Review after, days
-      30 third review
-      7 second review
-      1 first review
+      ▮Key, count
+      30 keys
+      7 keys
+      1 key
     target: |-
-      Review after, days
-      1 first review
-      7 second review
-      30 third review
+      Key, count
+      1 key
+      7 keys
+      30 keys
     solution: ':sort n<CR>'
     hint: ':sort n sorts by number; a line without one (the heading) stays first.'
     variants:
-      - goal: 'Sort by the number of native speakers (millions), not alphabetically.'
+      - goal: 'Sort by number, not alphabetically.'
         start: |-
-          ▮Native speakers, millions
-          230 Bengali
-          125 Japanese
-          86 Vietnamese
+          ▮Sort n, by number
+          10 after nine
+          2 after one
+          9 before ten
         target: |-
-          Native speakers, millions
-          86 Vietnamese
-          125 Japanese
-          230 Bengali
-      - goal: 'Sort the researchers by year, not alphabetically.'
-        start: |-
-          ▮Published, year
-          2006 Roediger
-          1885 Ebbinghaus
-          1956 Miller
-        target: |-
-          Published, year
-          1885 Ebbinghaus
-          1956 Miller
-          2006 Roediger
-      - goal: 'Sort by the number of chunks, not alphabetically.'
-        start: |-
-          ▮Chunks held
-          7 Miller
-          4 Cowan
-        target: |-
-          Chunks held
-          4 Cowan
-          7 Miller
+          Sort n, by number
+          2 after one
+          9 before ten
+          10 after nine
   - goal: 'Sort and remove the duplicates.'
     start: |-
-      ▮test
-      space
-      test
-      sleep
-      space
+      ▮unique
+      sort
+      unique
+      only
+      sort
     target: |-
-      sleep
-      space
-      test
+      only
+      sort
+      unique
     solution: ':sort u<CR>'
     hint: ':sort u keeps only one of each line.'
     variants:
-      - goal: 'Sort and remove the duplicates.'
-        start: |-
-          ▮stop
-          nasal
-          stop
-          glide
-          nasal
-        target: |-
-          glide
-          nasal
-          stop
-      - start: |-
-          ▮reread
-          cram
-          reread
-          highlight
-          cram
-        target: |-
-          cram
-          highlight
-          reread
       - start: |-
           ▮f
           t
@@ -146,19 +88,6 @@ tasks:
     solution: ':%!column -t<CR>'
     hint: ':%! sends every line through a shell command. column -t aligns columns.'
     variants:
-      - goal: 'Line the table up in columns.'
-        start: |-
-          ▮form gloss tag
-          dogs dog.PL N
-        target: |-
-          form  gloss   tag
-          dogs  dog.PL  N
-      - start: |-
-          ▮name year number
-          Miller 1956 7
-        target: |-
-          name    year  number
-          Miller  1956  7
       - start: |-
           ▮op means
           d delete
@@ -167,39 +96,18 @@ tasks:
           d   delete
   - goal: 'Sort only the first two lines.'
     start: |-
-      ▮syntax
-      phonology
-      wug
-      blick
+      ▮visual
+      sort
+      not
+      these
     target: |-
-      phonology
-      syntax
-      wug
-      blick
+      sort
+      visual
+      not
+      these
     solution: 'Vj:sort<CR>'
     hint: 'Select the lines, then :sort works on just those.'
     variants:
-      - goal: 'Sort only the first two lines.'
-        start: |-
-          ▮tone
-          stress
-          wug
-          blick
-        target: |-
-          stress
-          tone
-          wug
-          blick
-      - start: |-
-          ▮testing
-          spacing
-          zzz
-          aaa
-        target: |-
-          spacing
-          testing
-          zzz
-          aaa
       - start: |-
           ▮yank
           put
@@ -210,34 +118,20 @@ tasks:
           yank
           wug
           blick
-  - goal: 'Insert the output of a shell command (echo wug) below this line.'
+  - goal: 'Insert the output of a shell command (echo output) below this line.'
     start: |-
-      ▮Nonce word:
+      ▮:r reads the output:
     target: |-
-      Nonce word:
-      wug
-    solution: ':r !echo wug<CR>'
-    hint: ':r !echo wug reads the command''s output into the file.'
+      :r reads the output:
+      output
+    solution: ':r !echo output<CR>'
+    hint: ':r !echo output reads the command''s output into the file.'
     variants:
-      - goal: 'Insert the output of a shell command (echo blick) below this line.'
-        start: |-
-          ▮Another nonce word:
-        target: |-
-          Another nonce word:
-          blick
-        solution: ':r !echo blick<CR>'
-        hint: ':r !echo blick reads the command''s output into the file.'
       - goal: 'Insert the output of a shell command (echo recall) below this line.'
+        hint: ':r !echo recall reads the command''s output into the file.'
         start: |-
           ▮:r reads in:
         target: |-
           :r reads in:
           recall
         solution: ':r !echo recall<CR>'
-      - goal: 'Insert the output of a shell command (echo spacing) below this line.'
-        start: |-
-          ▮Best schedule:
-        target: |-
-          Best schedule:
-          spacing
-        solution: ':r !echo spacing<CR>'

@@ -6,8 +6,8 @@ practised on sentences you haven't seen. The same seed always gives the same
 task, so a run can be replayed and every kind can be checked in Neovim
 (tests/check_generate.py).
 
-The sentences stay mnemonic: they're the hooks from mnemonics.yaml (what keys
-stand for) and facts from lessons/sources.md.
+The sentences stay mnemonic: they're the hooks from mnemonics.yaml, what keys
+stand for.
 
 Kinds, all word text objects (w1d1):
   ciw-typo    two letters of a word swapped; ciw and type it right
@@ -25,31 +25,11 @@ from vimniscient.mnemonics import _tables
 
 KINDS = ("ciw-typo", "daw-double", "ciW-dotted")
 
-# Facts from lessons/sources.md, one sentence each.
-FACTS = [
-    "Ebbinghaus tested himself on nonsense syllables and published his results in 1885.",
-    "Forgetting is steepest right after learning, then the curve levels off.",
-    "Miller wrote about the magical number seven, plus or minus two.",
-    "Cowan later argued that short-term memory holds about four chunks.",
-    "Retrieval practice beat restudying on a test a week later.",
-    "Restudying looked better after five minutes, which is why it feels like it works.",
-    "Spacing reviews out is among the best replicated findings about memory.",
-    "Sleep after learning helps new memories stabilise.",
-    "Rereading makes text feel familiar, and people mistake that for knowing it.",
-    "Words read aloud are remembered better than words read silently.",
-    "Mixed practice feels harder than blocked practice but tests better later.",
-    "Practising with variation helps a skill carry over to new conditions.",
-    "Trying to recall an answer before seeing it helps you remember it later.",
-    "Fitts and Posner described three stages of skill: cognitive, associative and autonomous.",
-    "Desirable difficulties make learning feel harder but make it last.",
-]
-
-
 @cache
 def sentences() -> list[str]:
     hooks = list(dict.fromkeys(hook for table in _tables()[:2] for hook in table.values()))
     # as written: a capital would change the key ("u is down" is not "U is down")
-    return [h + ("" if h.endswith(".") else ".") for h in hooks] + FACTS
+    return [h + ("" if h.endswith(".") else ".") for h in hooks]
 
 
 _WORD = re.compile(r"(?<![\w'.-])[A-Za-z]{4,}(?![\w'-])")

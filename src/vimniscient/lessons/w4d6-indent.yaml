@@ -25,34 +25,14 @@ tasks:
     variants:
       - goal: 'Indent everything inside the braces.'
         start: |-
-          while y {
-          ▮c()
-          d()
+          for block {
+          ▮inner()
+          push()
           }
         target: |-
-          while y {
-              c()
-              d()
-          }
-      - start: |-
-          for card {
-          ▮recall()
-          check()
-          }
-        target: |-
-          for card {
-              recall()
-              check()
-          }
-      - start: |-
-          if due {
-          ▮review()
-          schedule()
-          }
-        target: |-
-          if due {
-              review()
-              schedule()
+          for block {
+              inner()
+              push()
           }
   - goal: 'Remove one level of indentation.'
     start: |2-
@@ -62,19 +42,10 @@ tasks:
     solution: '<<'
     hint: '<< outdents the line.'
     variants:
-      - goal: 'Remove one level of indentation.'
-        start: |2-
-                  ▮verb phrase
-        target: |2-
-              verb phrase
       - start: |-
           ␣       ▮< outdents
         target: |-
           ␣   < outdents
-      - start: |-
-          ␣       ▮spaced review
-        target: |-
-          ␣   spaced review
   - goal: 'Indent both lines by two levels.'
     start: |-
       ▮2> shifts
@@ -85,59 +56,29 @@ tasks:
     solution: 'Vj2>'
     hint: 'Select the lines with V j, then 2> indents twice.'
     variants:
-      - goal: 'Indent both lines by two levels.'
-        start: |-
-          ▮topic
-          comment
-        target: |2-
-                  topic
-                  comment
       - start: |-
           ▮twice
           the shift
         target: |-
           ␣       twice
                   the shift
-      - start: |-
-          ▮encode
-          store
-        target: |-
-          ␣       encode
-                  store
   - goal: 'Indent from here to the end of the file.'
     start: |-
-      S
-      ▮NP
-      VP
+      G goes
+      ▮to the
+      end
     target: |-
-      S
-          NP
-          VP
+      G goes
+          to the
+          end
     solution: '>G'
     hint: '>G indents every line from here down.'
     variants:
-      - goal: 'Indent from here to the end of the file.'
-        start: |-
-          CP
-          ▮C
-          TP
-        target: |-
-          CP
-              C
-              TP
       - start: |-
-          Stages
-          ▮cognitive
-          associative
+          G is
+          ▮the last
+          line
         target: |-
-          Stages
-              cognitive
-              associative
-      - start: |-
-          Review
-          ▮recall
-          check
-        target: |-
-          Review
-              recall
-              check
+          G is
+              the last
+              line

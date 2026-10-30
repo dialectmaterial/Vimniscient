@@ -20,15 +20,6 @@ tasks:
     solution: ':%norm A;<CR>'
     hint: ':%norm A; runs A; on every line.'
     variants:
-      - goal: 'Append a semicolon to every line.'
-        start: |-
-          ▮p = 1
-          q = 2
-          r = 3
-        target: |-
-          p = 1;
-          q = 2;
-          r = 3;
       - start: |-
           ▮a = "append"
           n = "normal"
@@ -37,51 +28,26 @@ tasks:
           a = "append";
           n = "normal";
           l = "lines";
-      - start: |-
-          ▮gap = 1
-          gap = 3
-          gap = 7
-        target: |-
-          gap = 1;
-          gap = 3;
-          gap = 7;
   - goal: 'Delete the first word of every line.'
     start: |-
-      ▮- encode
-      - store
-      - retrieve
+      ▮- dw
+      - norm
+      - delete
     target: |-
-      encode
-      store
-      retrieve
+      dw
+      norm
+      delete
     solution: ':%norm dw<CR>'
     hint: ':%norm dw deletes a word at the start of each line.'
     variants:
-      - goal: 'Delete the first word of every line.'
-        start: |-
-          ▮- stop
-          - fricative
-          - nasal
-        target: |-
-          stop
-          fricative
-          nasal
       - start: |-
-          ▮* spacing
-          * testing
-          * sleep
+          ▮* word
+          * by
+          * word
         target: |-
-          spacing
-          testing
-          sleep
-      - start: |-
-          ▮1 cognitive
-          2 associative
-          3 autonomous
-        target: |-
-          cognitive
-          associative
-          autonomous
+          word
+          by
+          word
   - goal: 'Comment out the first two lines with "// ".'
     start: |-
       ▮one();
@@ -94,60 +60,26 @@ tasks:
     solution: 'Vj:norm I// <CR>'
     hint: 'Select the lines, then :norm I// '
     variants:
-      - goal: 'Comment out the first two lines with "// ".'
-        start: |-
-          ▮a();
-          b();
-          c();
-        target: |-
-          // a();
-          // b();
-          c();
       - start: |-
-          ▮cram();
-          reread();
-          test();
+          ▮norm();
+          insert();
+          keep();
         target: |-
-          // cram();
-          // reread();
-          test();
-      - start: |-
-          ▮x();
-          y();
-          z();
-        target: |-
-          // x();
-          // y();
-          z();
+          // norm();
+          // insert();
+          keep();
   - goal: 'Remove the last character of every line.'
     start: |-
-      ▮space,
-      test,
-      sleep,
+      ▮dollar,
+      then,
+      x,
     target: |-
-      space
-      test
-      sleep
+      dollar
+      then
+      x
     solution: ':%norm $x<CR>'
     hint: '$ goes to the last character, x deletes it.'
     variants:
-      - goal: 'Remove the last character of every line.'
-        start: |-
-          ▮onset;
-          nucleus;
-          coda;
-        target: |-
-          onset
-          nucleus
-          coda
-      - start: |-
-          ▮encode.
-          store.
-          retrieve.
-        target: |-
-          encode
-          store
-          retrieve
       - start: |-
           ▮f!
           t!
