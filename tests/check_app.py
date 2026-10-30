@@ -92,9 +92,17 @@ async def main() -> None:
         summary = text(app.screen, "#results-summary")
         check("results say how it went", summary.startswith("5 of 6 recalled") and "4.0s a task" in summary, summary)
         check("results explain a missed task", bool(app.screen.query("#results-why")))
+        check("clean keys get no advice", not app.screen.query("#results-advice"))
         await pilot.press("enter")
         await pilot.pause(0.2)
         check("results close", isinstance(app.screen, MainScreen), type(app.screen).__name__)
+
+        slow = [TaskResult(tasks[6], "solved", "jjjjjdd", 7, 0, seconds=4.0, first=1.0)]
+        app.push_screen(ResultsScreen(replace(lesson, tasks=tasks), slow))
+        await pilot.pause(0.3)
+        check("results comment on your keys", "j 5 times" in text(app.screen, "#results-advice"))
+        await pilot.press("enter")
+        await pilot.pause(0.2)
 
         await pilot.press("e")
         await pilot.pause(0.3)

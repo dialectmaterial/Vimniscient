@@ -14,6 +14,7 @@ from textual.screen import Screen
 from textual.widgets import Markdown, Static
 
 from vimniscient.lessons import Lesson
+from vimniscient.diagnose import diagnose
 from vimniscient.mnemonics import hooks
 from vimniscient.session import TaskResult
 from vimniscient.ui.common import (
@@ -95,6 +96,17 @@ def why_these_keys(missed: list[TaskResult], most: int = 3) -> Content:
     return Content.from_markup("[dim]Why these keys[/]\n" + "\n".join(lines), **values)
 
 
+def your_keys(results: list[TaskResult], most: int = 3) -> Content:
+    """What your own keys said, once each: nothing when there's nothing clear to say."""
+    said = list(dict.fromkeys(diagnose(r.keys, r.count, r.task.ref) for r in results
+                              if r.status == "solved" and r.task.phase != "learn"))
+    said = [text for text in said if text][:most]
+    if not said:
+        return Content("")
+    return Content.from_markup("[dim]Your keys[/]\n" + "\n".join(f"[$accent]$s{i}[/]" for i in range(len(said))),
+                               **{f"s{i}": text for i, text in enumerate(said)})
+
+
 class ResultsScreen(Screen):
     """How a lesson went, in the same centred column as cards and the lesson itself.
     Dismisses with True to run the lesson again, False to move on."""
@@ -125,6 +137,9 @@ class ResultsScreen(Screen):
             missed = [r for r in self.results if r.status in ("failed", "skipped")]
             if missed:
                 yield Static(why_these_keys(missed), id="results-why")
+            advice = your_keys(self.results)
+            if advice:
+                yield Static(advice, id="results-advice")
         yield Static(keybar(("enter", "done"), ("r", "again")), classes="keybar")
 
     def on_mount(self) -> None:

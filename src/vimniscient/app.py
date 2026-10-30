@@ -74,7 +74,7 @@ class VimniscientApp(App):
     #results-bar { height: 1; }
     #note { padding: 0 0 1 0; color: $success; height: auto; }
     #results-list { height: auto; padding-right: 1; }
-    #results-why { height: auto; padding: 1 0 0 0; }
+    #results-why, #results-advice { height: auto; padding: 1 0 0 0; }
 
     #stats-view { height: 1fr; padding: 0 2; }
     .section-label { color: $text-muted; text-style: bold; height: 1; margin-top: 1; }
