@@ -89,10 +89,8 @@ uv tool install vimniscient    # or: pipx install vimniscient
 vimniscient
 ```
 
-On Arch or [Omarchy](https://omarchy.org), it's in the AUR: `yay -S vimniscient`.
-
-1. Press **`p`** for the placement test. It gives you two tasks from every
-   lesson and skips the ones you already know. `:Skip` whatever you don't.
+1. Press **`p`** for the placement test. It tests each skill in a few short
+   rounds and skips the lessons you already know. `:Skip` whatever you don't.
 2. From then on, press **`t`** once a day. The Today pane shows what's left
    and about how many minutes it takes.
 3. On [Omarchy](https://omarchy.org), `vimniscient reminders install` reminds
