@@ -1,0 +1,329 @@
+[
+ {
+  "case_sensitive": true,
+  "correct": true,
+  "expected": [
+   "ciw"
+  ],
+  "style": "keys",
+  "typed": "ciw"
+ },
+ {
+  "case_sensitive": true,
+  "correct": true,
+  "expected": [
+   "<leader>,"
+  ],
+  "style": "keys",
+  "typed": "leader + ,"
+ },
+ {
+  "case_sensitive": false,
+  "correct": true,
+  "expected": [
+   "PREFIX + C"
+  ],
+  "style": "combo",
+  "typed": "leader + c"
+ },
+ {
+  "case_sensitive": true,
+  "correct": false,
+  "expected": [
+   "ciw"
+  ],
+  "style": "keys",
+  "typed": "ciW"
+ },
+ {
+  "case_sensitive": true,
+  "correct": true,
+  "expected": [
+   "<C-a>"
+  ],
+  "style": "keys",
+  "typed": "ctrl-a"
+ },
+ {
+  "case_sensitive": true,
+  "correct": true,
+  "expected": [
+   "<C-r>"
+  ],
+  "style": "keys",
+  "typed": "Ctrl+R"
+ },
+ {
+  "case_sensitive": true,
+  "correct": true,
+  "expected": [
+   "<C-r>"
+  ],
+  "style": "keys",
+  "typed": "^r"
+ },
+ {
+  "case_sensitive": true,
+  "correct": true,
+  "expected": [
+   "<C-a>"
+  ],
+  "style": "keys",
+  "typed": "<c-A>"
+ },
+ {
+  "case_sensitive": true,
+  "correct": true,
+  "expected": [
+   "<leader>ff"
+  ],
+  "style": "keys",
+  "typed": "space ff"
+ },
+ {
+  "case_sensitive": true,
+  "correct": true,
+  "expected": [
+   "<leader>ff"
+  ],
+  "style": "keys",
+  "typed": "<Space>ff"
+ },
+ {
+  "case_sensitive": true,
+  "correct": true,
+  "expected": [
+   "<leader><Space>",
+   "<leader>ff"
+  ],
+  "style": "keys",
+  "typed": "<leader>ff"
+ },
+ {
+  "case_sensitive": true,
+  "correct": true,
+  "expected": [
+   "<leader><Space>"
+  ],
+  "style": "keys",
+  "typed": "leader space"
+ },
+ {
+  "case_sensitive": true,
+  "correct": false,
+  "expected": [
+   "<leader>ff"
+  ],
+  "style": "keys",
+  "typed": "<leader>fF"
+ },
+ {
+  "case_sensitive": true,
+  "correct": false,
+  "expected": [
+   "<leader><Space>"
+  ],
+  "style": "keys",
+  "typed": "<leader>"
+ },
+ {
+  "case_sensitive": true,
+  "correct": true,
+  "expected": [
+   "<leader><Space>"
+  ],
+  "style": "keys",
+  "typed": "space space"
+ },
+ {
+  "case_sensitive": true,
+  "correct": false,
+  "expected": [
+   "f<Space>"
+  ],
+  "style": "keys",
+  "typed": "f"
+ },
+ {
+  "case_sensitive": true,
+  "correct": true,
+  "expected": [
+   "f<Space>"
+  ],
+  "style": "keys",
+  "typed": "f<space>"
+ },
+ {
+  "case_sensitive": true,
+  "correct": true,
+  "expected": [
+   "f<Space>"
+  ],
+  "style": "keys",
+  "typed": "f space"
+ },
+ {
+  "case_sensitive": true,
+  "correct": true,
+  "expected": [
+   "nN"
+  ],
+  "style": "keys",
+  "typed": "n N"
+ },
+ {
+  "case_sensitive": true,
+  "correct": true,
+  "expected": [
+   ":%s/foo/bar/g<CR>"
+  ],
+  "style": "keys",
+  "typed": ":%s/foo/bar/g"
+ },
+ {
+  "case_sensitive": false,
+  "correct": true,
+  "expected": [
+   "<M-.>"
+  ],
+  "style": "keys",
+  "typed": "alt-."
+ },
+ {
+  "case_sensitive": true,
+  "correct": true,
+  "expected": [
+   "ciw<Esc>"
+  ],
+  "style": "keys",
+  "typed": "ciw<esc>"
+ },
+ {
+  "case_sensitive": false,
+  "correct": true,
+  "expected": [
+   "SUPER SHIFT + B"
+  ],
+  "style": "combo",
+  "typed": "super shift b"
+ },
+ {
+  "case_sensitive": false,
+  "correct": true,
+  "expected": [
+   "SUPER SHIFT + RETURN",
+   "SUPER SHIFT + B"
+  ],
+  "style": "combo",
+  "typed": "Super+Shift+B"
+ },
+ {
+  "case_sensitive": false,
+  "correct": true,
+  "expected": [
+   "SUPER SHIFT + B"
+  ],
+  "style": "combo",
+  "typed": "shift super b"
+ },
+ {
+  "case_sensitive": false,
+  "correct": false,
+  "expected": [
+   "SUPER SHIFT + B"
+  ],
+  "style": "combo",
+  "typed": "super b"
+ },
+ {
+  "case_sensitive": false,
+  "correct": true,
+  "expected": [
+   "SUPER + RETURN"
+  ],
+  "style": "combo",
+  "typed": "super enter"
+ },
+ {
+  "case_sensitive": false,
+  "correct": true,
+  "expected": [
+   "CTRL SHIFT + C"
+  ],
+  "style": "combo",
+  "typed": "ctrl-shift-c"
+ },
+ {
+  "case_sensitive": false,
+  "correct": true,
+  "expected": [
+   "SHIFT + PAGE_UP"
+  ],
+  "style": "combo",
+  "typed": "shift pgup"
+ },
+ {
+  "case_sensitive": false,
+  "correct": true,
+  "expected": [
+   "CTRL + PLUS"
+  ],
+  "style": "combo",
+  "typed": "ctrl +"
+ },
+ {
+  "case_sensitive": false,
+  "correct": true,
+  "expected": [
+   "CTRL + PLUS",
+   "CTRL + EQUAL"
+  ],
+  "style": "combo",
+  "typed": "ctrl ="
+ },
+ {
+  "case_sensitive": true,
+  "correct": true,
+  "expected": [
+   "PREFIX + c"
+  ],
+  "style": "combo",
+  "typed": "prefix c"
+ },
+ {
+  "case_sensitive": true,
+  "correct": false,
+  "expected": [
+   "PREFIX + c"
+  ],
+  "style": "combo",
+  "typed": "prefix C"
+ },
+ {
+  "case_sensitive": true,
+  "correct": true,
+  "expected": [
+   "PREFIX + C"
+  ],
+  "style": "combo",
+  "typed": "prefix shift c"
+ },
+ {
+  "case_sensitive": true,
+  "correct": true,
+  "expected": [
+   "ALT + SHIFT + ENTER"
+  ],
+  "style": "combo",
+  "typed": "alt shift enter"
+ },
+ {
+  "case_sensitive": true,
+  "correct": true,
+  "expected": [
+   "COPY MODE + v"
+  ],
+  "style": "combo",
+  "typed": "copy mode v"
+ }
+]

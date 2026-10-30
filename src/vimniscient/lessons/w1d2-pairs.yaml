@@ -105,3 +105,9 @@ tasks:
         target: |-
           <b>the tags stay</b>
         solution: 'citthe tags stay<Esc>'
+      - goal: 'Change the text inside the tag to "it is inside".'
+        start: |-
+          <i>only the ▮text goes</i>
+        target: |-
+          <i>it is inside</i>
+        solution: 'citit is inside<Esc>'

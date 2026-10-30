@@ -31,6 +31,17 @@ tasks:
           only
           sort
           unique
+      - goal: 'Sort the lines and remove the duplicate.'
+        start: |-
+          ▮till
+          find
+          till
+          move
+        target: |-
+          find
+          move
+          till
+        solution: ':sort u<CR>'
   - goal: 'Move the TODO line to the top.'
     start: |-
       move
@@ -51,6 +62,14 @@ tasks:
           TODO: learn :m
           yank
           put
+      - start: |-
+          first
+          second
+          ▮TODO: use :m
+        target: |-
+          TODO: use :m
+          first
+          second
   - goal: 'Quote every word.'
     start: |-
       ▮word by word
@@ -63,6 +82,10 @@ tasks:
           ▮f t F T
         target: |-
           "f" "t" "F" "T"
+      - start: |-
+          ▮q at dot u
+        target: |-
+          "q" "at" "dot" "u"
   - goal: 'Add "!" to the end of every line.'
     start: |-
       ▮Append
@@ -83,6 +106,14 @@ tasks:
           Yank!
           Put!
           Repeat!
+      - start: |-
+          ▮Norm
+          Runs
+          Keys
+        target: |-
+          Norm!
+          Runs!
+          Keys!
   - goal: 'Number the lines with a shell command.'
     start: |-
       ▮filter
@@ -99,3 +130,11 @@ tasks:
         target: |-
           1 NR
           2 is the line number
+      - goal: 'Number the lines with a shell command.'
+        start: |-
+          ▮pipe
+          into awk
+        target: |-
+          1 pipe
+          2 into awk
+        solution: ':%!awk ''{print NR, $0}''<CR>'

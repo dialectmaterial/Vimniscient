@@ -23,6 +23,11 @@ tasks:
           ▮the tilde is a wave
         target: |-
           The tilde is a wave
+      - goal: 'Capitalise the first letter.'
+        start: |-
+          ▮the wave flips case
+        target: |-
+          The wave flips case
   - goal: 'Uppercase "up".'
     start: |-
       gU raises ▮up to capitals
@@ -36,6 +41,12 @@ tasks:
           gU sends the ▮url up to capitals
         target: |-
           gU sends the URL up to capitals
+      - goal: 'Uppercase "up".'
+        start: |-
+          gU lifts ▮up to capitals
+        target: |-
+          gU lifts UP to capitals
+        solution: 'gUiw'
   - goal: 'Make the whole line lowercase.'
     start: |-
       ▮GU LOWERS THE WHOLE LINE
@@ -48,6 +59,12 @@ tasks:
           ▮LOWERCASE IS QUIETER
         target: |-
           lowercase is quieter
+      - goal: 'Make the whole line lowercase.'
+        start: |-
+          ▮QUIET DOWN WITH GUU
+        target: |-
+          quiet down with guu
+        solution: 'guu'
   - goal: 'Make the sentence true: Ctrl-a adds 1.'
     start: |-
       ▮Ctrl-a adds 0 to the number
@@ -61,6 +78,12 @@ tasks:
           ▮Ctrl-a adds, so two plus one is 2
         target: |-
           Ctrl-a adds, so two plus one is 3
+      - goal: 'Make the sentence true: Ctrl-a adds 1.'
+        start: |-
+          ▮Ctrl-a adds 0 each press
+        target: |-
+          Ctrl-a adds 1 each press
+        solution: '<C-a>'
   - goal: 'Twenty plus thirty is fifty: add 30.'
     start: |-
       ▮A count makes Ctrl-a add: twenty plus thirty is 20
@@ -74,6 +97,11 @@ tasks:
           ▮Count first, then Ctrl-a: the answer is 1
         target: |-
           Count first, then Ctrl-a: the answer is 31
+      - goal: 'The answer is 31: add 30.'
+        start: |-
+          ▮Count first, then Ctrl-a: the sum is 1
+        target: |-
+          Count first, then Ctrl-a: the sum is 31
   - goal: 'Make the sentence true: 3 take away 1 leaves 2.'
     start: |-
       ▮Ctrl-x leaves 3 when you take 1 from 3
@@ -87,6 +115,12 @@ tasks:
           ▮Ctrl-x crosses one off: three less one is 3
         target: |-
           Ctrl-x crosses one off: three less one is 2
+      - goal: 'Make the sentence true: 3 take away 1 leaves 2.'
+        start: |-
+          ▮x takes away: it leaves 3 when you take 1 from 3
+        target: |-
+          x takes away: it leaves 2 when you take 1 from 3
+        solution: '<C-x>'
   - goal: 'Flip the case of the first word.'
     start: |-
       ▮tILDE flips the case
@@ -99,3 +133,7 @@ tasks:
           ▮wAVE: the tilde flips
         target: |-
           Wave: the tilde flips
+      - start: |-
+          ▮fLIP: g~ swaps case
+        target: |-
+          Flip: g~ swaps case

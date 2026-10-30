@@ -42,6 +42,12 @@ tasks:
           U turns ▮visual selections up
         target: |-
           U turns VISUAL SELECTIONS up
+      - goal: 'Uppercase "visual mode".'
+        start: |-
+          the v in ▮visual mode: you see it
+        target: |-
+          the v in VISUAL MODE: you see it
+        solution: 'veeU'
   - goal: 'Join the first three lines.'
     generate: visual-join
     start: |-
@@ -104,3 +110,10 @@ tasks:
           while ▮(i < n and (ok)):
         target: |-
           while ok:
+      - goal: 'Replace the whole condition with "ok".'
+        ft: python
+        start: |-
+          if ▮(percent and (pair)):
+        target: |-
+          if ok:
+        solution: 'c%ok<Esc>'

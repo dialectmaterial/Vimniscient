@@ -63,16 +63,16 @@ async def main() -> None:
         await pilot.pause(0.3)
         check("c opens cards", isinstance(app.screen, CardScreen), type(app.screen).__name__)
         if isinstance(app.screen, CardScreen):
-            card = app.screen.queue[0]
-            check("a first card is introduced, answer shown", app.screen.intro and card.shown in text(app.screen, "#card-feedback"))
+            card = app.screen.session.queue[0]
+            check("a first card is introduced, answer shown", app.screen.session.intro and card.shown in text(app.screen, "#card-feedback"))
             await pilot.press("x", "enter")
             await pilot.pause(0.2)
-            check("a wrong copy asks again", app.screen.pending is None and "type it as shown" in text(app.screen, "#card-feedback"))
+            check("a wrong copy asks again", app.screen.session.pending is None and "type it as shown" in text(app.screen, "#card-feedback"))
             for key in card.answers[0]:
                 await pilot.press(key)
             await pilot.press("enter")
             await pilot.pause(0.2)
-            check("the right copy is taken", app.screen.pending is not None)
+            check("the right copy is taken", app.screen.session.pending is not None)
             await pilot.press("escape")
             await pilot.pause(0.2)
         check("cards close", isinstance(app.screen, MainScreen), type(app.screen).__name__)

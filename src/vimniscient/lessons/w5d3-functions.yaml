@@ -40,6 +40,19 @@ tasks:
 
 
           b = 2
+      - goal: 'Delete the function f_goes, and the empty line daf leaves behind.'
+        start: |-
+          a = 1
+
+          def f_goes():
+              ▮return 0
+
+          b = 2
+        target: |-
+          a = 1
+
+
+          b = 2
   - goal: 'Replace the body with pass.'
     ft: python
     start: |-
@@ -56,6 +69,12 @@ tasks:
               ▮return 0
         target: |-
           def f_is_function():
+              pass
+      - start: |-
+          def inner_f():
+              ▮return 0
+        target: |-
+          def inner_f():
               pass
   - goal: 'Delete the class, and the empty line it leaves.'
     ft: python
@@ -88,6 +107,19 @@ tasks:
 
 
           y = 2
+      - start: |-
+          x = 1
+
+          class Cut:
+              ▮def c_is_class(self):
+                  pass
+
+          y = 2
+        target: |-
+          x = 1
+
+
+          y = 2
   - goal: 'Duplicate the function below itself.'
     ft: python
     start: |-
@@ -108,4 +140,12 @@ tasks:
           def f_for_function():
               return 1
           def f_for_function():
+              return 1
+      - start: |-
+          def ▮yank_f():
+              return 1
+        target: |-
+          def yank_f():
+              return 1
+          def yank_f():
               return 1

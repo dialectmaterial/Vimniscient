@@ -23,6 +23,12 @@ tasks:
         target: |-
           dot = again + again
         solution: 'ciwagain<Esc>ww.'
+      - goal: 'Change both "change" to "repeat".'
+        start: |-
+          keys = ▮change + change
+        target: |-
+          keys = repeat + repeat
+        solution: 'ciwrepeat<Esc>ww.'
   - goal: 'Add a semicolon to every line.'
     generate: dot-append
     start: |-
@@ -60,6 +66,14 @@ tasks:
         target: |-
           ␣   repeat
               the change
+      - goal: 'Indent both lines.'
+        start: |-
+          ▮> then j
+          then dot
+        target: |2-
+              > then j
+              then dot
+        solution: '>>j.'
   - goal: 'Delete all three "again".'
     start: |-
       The dot ▮again again again repeats the last change.
@@ -73,6 +87,12 @@ tasks:
           The . key ▮dot dot dot repeats your last change.
         target: |-
           The . key repeats your last change.
+      - goal: 'Delete all three "repeat".'
+        start: |-
+          The dot ▮repeat repeat repeat repeats the last change.
+        target: |-
+          The dot repeats the last change.
+        solution: 'dw..'
   - goal: 'Turn the lines into a list with "- ".'
     generate: dot-prefix
     start: |-

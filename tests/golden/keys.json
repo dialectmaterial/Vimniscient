@@ -1,0 +1,2221 @@
+{
+ "\"ayyjdd\"ap": {
+  "count": 10,
+  "hooks": [
+   "the quote marks a name: \"a means in register a",
+   "doubling the verb means the whole line",
+   "j hooks down below the line, k reaches up",
+   "p puts the last yank or delete after the cursor; P puts it before"
+  ],
+  "norm": "\"ayyjdd\"ap"
+ },
+ "\"ayyjj\"Ayy\"ap": {
+  "count": 13,
+  "hooks": [
+   "the quote marks a name: \"a means in register a",
+   "doubling the verb means the whole line",
+   "j hooks down below the line, k reaches up",
+   "capital A appends to a"
+  ],
+  "norm": "\"ayyjj\"Ayy\"ap"
+ },
+ "$yiwjA <C-r>0<Esc>": {
+  "count": 10,
+  "hooks": [
+   "$ is the end, as in regex",
+   "y yanks: Vim's older word for copy",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores"
+  ],
+  "norm": "$yiwjA<C-r>0<Esc>"
+ },
+ "*:%s//asterisk/g<CR>": {
+  "count": 17,
+  "hooks": [
+   "the star marks this word, and looks for it everywhere",
+   "% is all, like 100 percent of the lines",
+   ":s substitutes"
+  ],
+  "norm": "*:%s//asterisk/g<CR>"
+ },
+ "*:%s//count/g<CR>": {
+  "count": 14,
+  "hooks": [
+   "the star marks this word, and looks for it everywhere",
+   "% is all, like 100 percent of the lines",
+   ":s substitutes"
+  ],
+  "norm": "*:%s//count/g<CR>"
+ },
+ "*:%s//gap/g<CR>": {
+  "count": 12,
+  "hooks": [
+   "the star marks this word, and looks for it everywhere",
+   "% is all, like 100 percent of the lines",
+   ":s substitutes"
+  ],
+  "norm": "*:%s//gap/g<CR>"
+ },
+ "*:%s//known/g<CR>": {
+  "count": 14,
+  "hooks": [
+   "the star marks this word, and looks for it everywhere",
+   "% is all, like 100 percent of the lines",
+   ":s substitutes"
+  ],
+  "norm": "*:%s//known/g<CR>"
+ },
+ "*:%s//locate/g<CR>": {
+  "count": 15,
+  "hooks": [
+   "the star marks this word, and looks for it everywhere",
+   "% is all, like 100 percent of the lines",
+   ":s substitutes"
+  ],
+  "norm": "*:%s//locate/g<CR>"
+ },
+ "*:%s//result/g<CR>": {
+  "count": 15,
+  "hooks": [
+   "the star marks this word, and looks for it everywhere",
+   "% is all, like 100 percent of the lines",
+   ":s substitutes"
+  ],
+  "norm": "*:%s//result/g<CR>"
+ },
+ "*:%s//term/g<CR>": {
+  "count": 13,
+  "hooks": [
+   "the star marks this word, and looks for it everywhere",
+   "% is all, like 100 percent of the lines",
+   ":s substitutes"
+  ],
+  "norm": "*:%s//term/g<CR>"
+ },
+ "*Ncgna<Esc>nn.": {
+  "count": 10,
+  "hooks": [
+   "the star marks this word, and looks for it everywhere",
+   "n is next; N is the other way",
+   "c changes: it deletes, then you type the new text",
+   "gn: go to the next match and grab it, so cgn changes the next one"
+  ],
+  "norm": "*Ncgna<Esc>nn."
+ },
+ "*cgnagain<Esc>...": {
+  "count": 13,
+  "hooks": [
+   "the star marks this word, and looks for it everywhere",
+   "c changes: it deletes, then you type the new text",
+   "gn: go to the next match and grab it, so cgn changes the next one",
+   "the full stop says it again"
+  ],
+  "norm": "*cgnagain<Esc>..."
+ },
+ "*cgndot<Esc>...": {
+  "count": 11,
+  "hooks": [
+   "the star marks this word, and looks for it everywhere",
+   "c changes: it deletes, then you type the new text",
+   "gn: go to the next match and grab it, so cgn changes the next one",
+   "the full stop says it again"
+  ],
+  "norm": "*cgndot<Esc>..."
+ },
+ "*cgnmatch<Esc>..": {
+  "count": 12,
+  "hooks": [
+   "the star marks this word, and looks for it everywhere",
+   "c changes: it deletes, then you type the new text",
+   "gn: go to the next match and grab it, so cgn changes the next one",
+   "the full stop says it again"
+  ],
+  "norm": "*cgnmatch<Esc>.."
+ },
+ "*cgnnext_match<Esc>..": {
+  "count": 17,
+  "hooks": [
+   "the star marks this word, and looks for it everywhere",
+   "c changes: it deletes, then you type the new text",
+   "gn: go to the next match and grab it, so cgn changes the next one",
+   "the full stop says it again"
+  ],
+  "norm": "*cgnnext_match<Esc>.."
+ },
+ "*cgnthe<Esc>..": {
+  "count": 10,
+  "hooks": [
+   "the star marks this word, and looks for it everywhere",
+   "c changes: it deletes, then you type the new text",
+   "gn: go to the next match and grab it, so cgn changes the next one",
+   "the full stop says it again"
+  ],
+  "norm": "*cgnthe<Esc>.."
+ },
+ "*ciwfound<Esc>": {
+  "count": 10,
+  "hooks": [
+   "the star marks this word, and looks for it everywhere",
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores"
+  ],
+  "norm": "*ciwfound<Esc>"
+ },
+ "*ciwmatch<Esc>": {
+  "count": 10,
+  "hooks": [
+   "the star marks this word, and looks for it everywhere",
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores"
+  ],
+  "norm": "*ciwmatch<Esc>"
+ },
+ "*gUiwn.": {
+  "count": 7,
+  "hooks": [
+   "the star marks this word, and looks for it everywhere",
+   "U is Up: gU raises letters to capitals",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores"
+  ],
+  "norm": "*gUiwn."
+ },
+ "*ndaw": {
+  "count": 5,
+  "hooks": [
+   "the star marks this word, and looks for it everywhere",
+   "n is next; N is the other way",
+   "d deletes (into a register, so really it cuts)",
+   "a reads as 'a word', 'a sentence': the thing plus what surrounds it"
+  ],
+  "norm": "*ndaw"
+ },
+ "/b<CR>cwahead<Esc>": {
+  "count": 11,
+  "hooks": [
+   "/ leans forward",
+   "c changes: it deletes, then you type the new text",
+   "w walks to the next word"
+  ],
+  "norm": "/b<CR>cwahead<Esc>"
+ },
+ "/b<CR>cwforward<Esc>": {
+  "count": 13,
+  "hooks": [
+   "/ leans forward",
+   "c changes: it deletes, then you type the new text",
+   "w walks to the next word"
+  ],
+  "norm": "/b<CR>cwforward<Esc>"
+ },
+ "/er, <CR>dgn..": {
+  "count": 11,
+  "hooks": [
+   "/ leans forward",
+   "d deletes (into a register, so really it cuts)",
+   "gn: go to the next match and grab it, so cgn changes the next one",
+   "the full stop says it again"
+  ],
+  "norm": "/er,<CR>dgn.."
+ },
+ "/g<CR>cwmatch<Esc>": {
+  "count": 11,
+  "hooks": [
+   "/ leans forward",
+   "c changes: it deletes, then you type the new text",
+   "w walks to the next word"
+  ],
+  "norm": "/g<CR>cwmatch<Esc>"
+ },
+ "/one match<CR>cgnthe next match<Esc>.": {
+  "count": 30,
+  "hooks": [
+   "/ leans forward",
+   "c changes: it deletes, then you type the new text",
+   "gn: go to the next match and grab it, so cgn changes the next one",
+   "the full stop says it again"
+  ],
+  "norm": "/onematch<CR>cgnthenextmatch<Esc>."
+ },
+ "/so, <CR>dgn..": {
+  "count": 11,
+  "hooks": [
+   "/ leans forward",
+   "d deletes (into a register, so really it cuts)",
+   "gn: go to the next match and grab it, so cgn changes the next one",
+   "the full stop says it again"
+  ],
+  "norm": "/so,<CR>dgn.."
+ },
+ "/the last<CR>cgnthe next<Esc>.": {
+  "count": 23,
+  "hooks": [
+   "/ leans forward",
+   "c changes: it deletes, then you type the new text",
+   "gn: go to the next match and grab it, so cgn changes the next one",
+   "the full stop says it again"
+  ],
+  "norm": "/thelast<CR>cgnthenext<Esc>."
+ },
+ "/um, <CR>dgn..": {
+  "count": 11,
+  "hooks": [
+   "/ leans forward",
+   "d deletes (into a register, so really it cuts)",
+   "gn: go to the next match and grab it, so cgn changes the next one",
+   "the full stop says it again"
+  ],
+  "norm": "/um,<CR>dgn.."
+ },
+ "2dd": {
+  "count": 3,
+  "hooks": [
+   "doubling the verb means the whole line"
+  ],
+  "norm": "2dd"
+ },
+ "30<C-a>": {
+  "count": 3,
+  "hooks": [
+   "Ctrl-a adds 1 to the number"
+  ],
+  "norm": "30<C-a>"
+ },
+ "3J": {
+  "count": 2,
+  "hooks": [
+   "J joins this line and the next"
+  ],
+  "norm": "3J"
+ },
+ "3dd": {
+  "count": 3,
+  "hooks": [
+   "doubling the verb means the whole line"
+  ],
+  "norm": "3dd"
+ },
+ "3dw": {
+  "count": 3,
+  "hooks": [
+   "d deletes (into a register, so really it cuts)",
+   "w walks to the next word"
+  ],
+  "norm": "3dw"
+ },
+ "3f,D": {
+  "count": 4,
+  "hooks": [
+   "f finds a letter on the line and lands on it",
+   "capital D and C go big: to the end of the line"
+  ],
+  "norm": "3f,D"
+ },
+ "3f,r;": {
+  "count": 5,
+  "hooks": [
+   "f finds a letter on the line and lands on it",
+   "r replaces one letter"
+  ],
+  "norm": "3f,r;"
+ },
+ "3kciwCount<Esc>": {
+  "count": 11,
+  "hooks": [
+   "j hooks down below the line, k reaches up",
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores"
+  ],
+  "norm": "3kciwCount<Esc>"
+ },
+ "3kciwRelative<Esc>": {
+  "count": 14,
+  "hooks": [
+   "j hooks down below the line, k reaches up",
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores"
+  ],
+  "norm": "3kciwRelative<Esc>"
+ },
+ "3kciwThe<Esc>": {
+  "count": 9,
+  "hooks": [
+   "j hooks down below the line, k reaches up",
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores"
+  ],
+  "norm": "3kciwThe<Esc>"
+ },
+ "4jdd": {
+  "count": 4,
+  "hooks": [
+   "j hooks down below the line, k reaches up",
+   "doubling the verb means the whole line"
+  ],
+  "norm": "4jdd"
+ },
+ "5i=<Esc>": {
+  "count": 4,
+  "hooks": [],
+  "norm": "5i=<Esc>"
+ },
+ "5jdd": {
+  "count": 4,
+  "hooks": [
+   "j hooks down below the line, k reaches up",
+   "doubling the verb means the whole line"
+  ],
+  "norm": "5jdd"
+ },
+ "5x": {
+  "count": 2,
+  "hooks": [
+   "x crosses a letter out"
+  ],
+  "norm": "5x"
+ },
+ ":%!awk '{print NR, $0}'<CR>": {
+  "count": 24,
+  "hooks": [
+   "% is all, like 100 percent of the lines",
+   "! hands the lines to the shell and takes back what it says"
+  ],
+  "norm": ":%!awk'{printNR,$0}'"
+ },
+ ":%!column -t<CR>": {
+  "count": 13,
+  "hooks": [
+   "% is all, like 100 percent of the lines",
+   "! hands the lines to the shell and takes back what it says"
+  ],
+  "norm": ":%!column-t"
+ },
+ ":%norm $x<CR>": {
+  "count": 10,
+  "hooks": [
+   "% is all, like 100 percent of the lines",
+   ":norm types normal-mode keys on every line"
+  ],
+  "norm": ":%norm$x"
+ },
+ ":%norm A!<CR>": {
+  "count": 10,
+  "hooks": [
+   "% is all, like 100 percent of the lines",
+   ":norm types normal-mode keys on every line"
+  ],
+  "norm": ":%normA!"
+ },
+ ":%norm A;<CR>": {
+  "count": 10,
+  "hooks": [
+   "% is all, like 100 percent of the lines",
+   ":norm types normal-mode keys on every line"
+  ],
+  "norm": ":%normA;"
+ },
+ ":%norm I[<C-v><Esc>A]<CR>": {
+  "count": 14,
+  "hooks": [
+   "% is all, like 100 percent of the lines",
+   ":norm types normal-mode keys on every line"
+  ],
+  "norm": ":%normI[<C-v><Esc>A]"
+ },
+ ":%norm dw<CR>": {
+  "count": 10,
+  "hooks": [
+   "% is all, like 100 percent of the lines",
+   ":norm types normal-mode keys on every line"
+  ],
+  "norm": ":%normdw"
+ },
+ ":%s/.*/\"&\",<CR>gg3J$xInames = [<Esc>A]<Esc>": {
+  "count": 32,
+  "hooks": [
+   "% is all, like 100 percent of the lines",
+   ":s substitutes"
+  ],
+  "norm": ":%s/.*/\"&\",<CR>gg3J$xInames=[<Esc>A]<Esc>"
+ },
+ ":%s/.*email: //<CR>": {
+  "count": 16,
+  "hooks": [
+   "% is all, like 100 percent of the lines",
+   ":s substitutes"
+  ],
+  "norm": ":%s/.*email://"
+ },
+ ":%s/\\s\\+$//<CR>": {
+  "count": 12,
+  "hooks": [
+   "% is all, like 100 percent of the lines",
+   ":s substitutes"
+  ],
+  "norm": ":%s/\\s\\+$//"
+ },
+ ":%s/\\v(.*),(.*)/\\2,\\1<CR>": {
+  "count": 22,
+  "hooks": [
+   "% is all, like 100 percent of the lines",
+   ":s substitutes"
+  ],
+  "norm": ":%s/\\v(.*),(.*)/\\2,\\1"
+ },
+ ":%s/\\v(.*)\\=(.*)/\\2=\\1<CR>": {
+  "count": 23,
+  "hooks": [
+   "% is all, like 100 percent of the lines",
+   ":s substitutes"
+  ],
+  "norm": ":%s/\\v(.*)\\=(.*)/\\2=\\1"
+ },
+ ":%s/\\v(\\w+), (\\w+)/\\2 \\1<CR>": {
+  "count": 25,
+  "hooks": [
+   "% is all, like 100 percent of the lines",
+   ":s substitutes"
+  ],
+  "norm": ":%s/\\v(\\w+),(\\w+)/\\2\\1"
+ },
+ ":%s/^#/##/<CR>": {
+  "count": 11,
+  "hooks": [
+   "% is all, like 100 percent of the lines",
+   ":s substitutes"
+  ],
+  "norm": ":%s/^#/##/"
+ },
+ ":%s/^/- /<CR>": {
+  "count": 10,
+  "hooks": [
+   "% is all, like 100 percent of the lines",
+   ":s substitutes"
+  ],
+  "norm": ":%s/^/-/"
+ },
+ ":%s/u//g<CR>": {
+  "count": 9,
+  "hooks": [
+   "% is all, like 100 percent of the lines",
+   ":s substitutes"
+  ],
+  "norm": ":%s/u//g"
+ },
+ ":1,2m$<CR>": {
+  "count": 7,
+  "hooks": [
+   ":m moves lines"
+  ],
+  "norm": ":1,2m$"
+ },
+ ":2,3d<CR>": {
+  "count": 6,
+  "hooks": [],
+  "norm": ":2,3d"
+ },
+ ":g/#/d<CR>": {
+  "count": 7,
+  "hooks": [
+   ":g/re/p, global regular expression print, is where grep got its name"
+  ],
+  "norm": ":g/#/d"
+ },
+ ":g/,$/j<CR>": {
+  "count": 8,
+  "hooks": [
+   ":g/re/p, global regular expression print, is where grep got its name"
+  ],
+  "norm": ":g/,$/j"
+ },
+ ":g/DEBUG/d<CR>:%s/^\\S\\+ //<CR>": {
+  "count": 24,
+  "hooks": [
+   ":g/re/p, global regular expression print, is where grep got its name"
+  ],
+  "norm": ":g/DEBUG/d<CR>:%s/^\\S\\+//"
+ },
+ ":g/^$/d<CR>": {
+  "count": 8,
+  "hooks": [
+   ":g/re/p, global regular expression print, is where grep got its name"
+  ],
+  "norm": ":g/^$/d"
+ },
+ ":g/^/m0<CR>": {
+  "count": 8,
+  "hooks": [
+   ":g/re/p, global regular expression print, is where grep got its name"
+  ],
+  "norm": ":g/^/m0"
+ },
+ ":g/print/norm A;<CR>": {
+  "count": 17,
+  "hooks": [
+   ":g/re/p, global regular expression print, is where grep got its name",
+   ":norm types normal-mode keys on every line"
+  ],
+  "norm": ":g/print/normA;"
+ },
+ ":g/put/norm A;<CR>": {
+  "count": 15,
+  "hooks": [
+   ":g/re/p, global regular expression print, is where grep got its name",
+   ":norm types normal-mode keys on every line"
+  ],
+  "norm": ":g/put/normA;"
+ },
+ ":g/yank/norm A;<CR>": {
+  "count": 16,
+  "hooks": [
+   ":g/re/p, global regular expression print, is where grep got its name",
+   ":norm types normal-mode keys on every line"
+  ],
+  "norm": ":g/yank/normA;"
+ },
+ ":m0<CR>": {
+  "count": 4,
+  "hooks": [
+   ":m moves lines"
+  ],
+  "norm": ":m0"
+ },
+ ":r !echo output<CR>": {
+  "count": 16,
+  "hooks": [
+   ":r reads a file or a command's output in"
+  ],
+  "norm": ":r!echooutput"
+ },
+ ":r !echo recall<CR>": {
+  "count": 16,
+  "hooks": [
+   ":r reads a file or a command's output in"
+  ],
+  "norm": ":r!echorecall"
+ },
+ ":r !echo result<CR>": {
+  "count": 16,
+  "hooks": [
+   ":r reads a file or a command's output in"
+  ],
+  "norm": ":r!echoresult"
+ },
+ ":s#\\v(\\d+)-(\\d+)-(\\d+)#\\3/\\2/\\1<CR>": {
+  "count": 32,
+  "hooks": [
+   ":s substitutes"
+  ],
+  "norm": ":s#\\v(\\d+)-(\\d+)-(\\d+)#\\3/\\2/\\1"
+ },
+ ":s/Sleep/**&**/g<CR>": {
+  "count": 17,
+  "hooks": [
+   ":s substitutes"
+  ],
+  "norm": ":s/Sleep/**&**/g"
+ },
+ ":s/Spacing/**&**/g<CR>": {
+  "count": 19,
+  "hooks": [
+   ":s substitutes"
+  ],
+  "norm": ":s/Spacing/**&**/g"
+ },
+ ":s/Stress/**&**/g<CR>": {
+  "count": 18,
+  "hooks": [
+   ":s substitutes"
+  ],
+  "norm": ":s/Stress/**&**/g"
+ },
+ ":s/Testing/**&**/g<CR>": {
+  "count": 19,
+  "hooks": [
+   ":s substitutes"
+  ],
+  "norm": ":s/Testing/**&**/g"
+ },
+ ":s/\\d\\+/[&]/g<CR>": {
+  "count": 14,
+  "hooks": [
+   ":s substitutes"
+  ],
+  "norm": ":s/\\d\\+/[&]/g"
+ },
+ ":s/\\v\"(\\w+)\": /\\1=/g<CR>f{xidict(<Esc>f}r)": {
+  "count": 35,
+  "hooks": [
+   ":s substitutes"
+  ],
+  "norm": ":s/\\v\"(\\w+)\":/\\1=/g<CR>f{xidict(<Esc>f}r)"
+ },
+ ":s/\\w\\+/\"&\"/g<CR>": {
+  "count": 14,
+  "hooks": [
+   ":s substitutes"
+  ],
+  "norm": ":s/\\w\\+/\"&\"/g"
+ },
+ ":s/old/new<CR>": {
+  "count": 11,
+  "hooks": [
+   ":s substitutes"
+  ],
+  "norm": ":s/old/new"
+ },
+ ":sort n<CR>": {
+  "count": 8,
+  "hooks": [
+   "n sorts as numbers, u keeps the unique ones"
+  ],
+  "norm": ":sortn"
+ },
+ ":sort u<CR>": {
+  "count": 8,
+  "hooks": [
+   "n sorts as numbers, u keeps the unique ones"
+  ],
+  "norm": ":sortu"
+ },
+ ":sort<CR>": {
+  "count": 6,
+  "hooks": [
+   "n sorts as numbers, u keeps the unique ones"
+  ],
+  "norm": ":sort"
+ },
+ ":t$<CR>": {
+  "count": 4,
+  "hooks": [
+   ":t transfers a copy, as ed called it"
+  ],
+  "norm": ":t$"
+ },
+ ":v/error/d<CR>": {
+  "count": 11,
+  "hooks": [
+   ":v is the inverse: every line that doesn't match"
+  ],
+  "norm": ":v/error/d"
+ },
+ "<<": {
+  "count": 2,
+  "hooks": [
+   "< pulls the text back to the left",
+   "doubling the verb means the whole line"
+  ],
+  "norm": "<<"
+ },
+ "<C-a>": {
+  "count": 1,
+  "hooks": [
+   "Ctrl-a adds 1 to the number"
+  ],
+  "norm": "<C-a>"
+ },
+ "<C-a>w.w.": {
+  "count": 5,
+  "hooks": [
+   "Ctrl-a adds 1 to the number",
+   "w walks to the next word",
+   "the full stop says it again"
+  ],
+  "norm": "<C-a>w.w."
+ },
+ "<C-v>GI0. <Esc>gvg<C-a>": {
+  "count": 11,
+  "hooks": [
+   "Ctrl-v cuts a vertical block out of the text",
+   "G goes to the end, or to line N with a count",
+   "I inserts at the start",
+   "gv: give me my last selection back"
+  ],
+  "norm": "<C-v>GI0.<Esc>gvg<C-a>"
+ },
+ "<C-v>jj$A;<Esc>": {
+  "count": 7,
+  "hooks": [
+   "Ctrl-v cuts a vertical block out of the text",
+   "j hooks down below the line, k reaches up",
+   "$ is the end, as in regex",
+   "A appends at the end"
+  ],
+  "norm": "<C-v>jj$A;<Esc>"
+ },
+ "<C-v>jj3ld": {
+  "count": 6,
+  "hooks": [
+   "Ctrl-v cuts a vertical block out of the text",
+   "j hooks down below the line, k reaches up",
+   "d deletes (into a register, so really it cuts)"
+  ],
+  "norm": "<C-v>jj3ld"
+ },
+ "<C-v>jjI# <Esc>": {
+  "count": 7,
+  "hooks": [
+   "Ctrl-v cuts a vertical block out of the text",
+   "j hooks down below the line, k reaches up",
+   "I inserts at the start"
+  ],
+  "norm": "<C-v>jjI#<Esc>"
+ },
+ "<C-v>jjI> <Esc>": {
+  "count": 7,
+  "hooks": [
+   "Ctrl-v cuts a vertical block out of the text",
+   "j hooks down below the line, k reaches up",
+   "I inserts at the start"
+  ],
+  "norm": "<C-v>jjI><Esc>"
+ },
+ "<C-v>jjecblock<Esc>": {
+  "count": 11,
+  "hooks": [
+   "Ctrl-v cuts a vertical block out of the text",
+   "j hooks down below the line, k reaches up",
+   "e is end",
+   "c changes: it deletes, then you type the new text"
+  ],
+  "norm": "<C-v>jjecblock<Esc>"
+ },
+ "<C-v>jjeccut<Esc>": {
+  "count": 9,
+  "hooks": [
+   "Ctrl-v cuts a vertical block out of the text",
+   "j hooks down below the line, k reaches up",
+   "e is end",
+   "doubling the verb means the whole line"
+  ],
+  "norm": "<C-v>jjeccut<Esc>"
+ },
+ "<C-v>jjg<C-a>": {
+  "count": 5,
+  "hooks": [
+   "Ctrl-v cuts a vertical block out of the text",
+   "j hooks down below the line, k reaches up",
+   "g makes the add grow down the block: 1, 2, 3"
+  ],
+  "norm": "<C-v>jjg<C-a>"
+ },
+ "<C-x>": {
+  "count": 1,
+  "hooks": [
+   "Ctrl-x takes 1 away, crossed out"
+  ],
+  "norm": "<C-x>"
+ },
+ ">>j.": {
+  "count": 4,
+  "hooks": [
+   "the arrow points the way the text moves: > pushes right",
+   "doubling the verb means the whole line",
+   "j hooks down below the line, k reaches up",
+   "the full stop says it again"
+  ],
+  "norm": ">>j."
+ },
+ ">G": {
+  "count": 2,
+  "hooks": [
+   "the arrow points the way the text moves: > pushes right",
+   "G goes to the end, or to line N with a count"
+  ],
+  "norm": ">G"
+ },
+ ">ip": {
+  "count": 3,
+  "hooks": [
+   "the arrow points the way the text moves: > pushes right",
+   "i is inner: only the thing itself, no space or brackets",
+   "p is a paragraph: lines up to the next blank line"
+  ],
+  "norm": ">ip"
+ },
+ ">i{": {
+  "count": 3,
+  "hooks": [
+   "the arrow points the way the text moves: > pushes right",
+   "i is inner: only the thing itself, no space or brackets",
+   "the bracket names the pair: ( or ) for round ones"
+  ],
+  "norm": ">i{"
+ },
+ ">j": {
+  "count": 2,
+  "hooks": [
+   "the arrow points the way the text moves: > pushes right",
+   "j hooks down below the line, k reaches up"
+  ],
+  "norm": ">j"
+ },
+ "?fo<CR>cwbackward<Esc>": {
+  "count": 15,
+  "hooks": [
+   "? asks backwards",
+   "c changes: it deletes, then you type the new text",
+   "w walks to the next word"
+  ],
+  "norm": "?fo<CR>cwbackward<Esc>"
+ },
+ "A <C-r>=2001-1956<CR><Esc>": {
+  "count": 15,
+  "hooks": [
+   "A appends at the end"
+  ],
+  "norm": "A<C-r>=2001-1956<CR><Esc>"
+ },
+ "A <C-r>=6*7<CR><Esc>": {
+  "count": 9,
+  "hooks": [
+   "A appends at the end"
+  ],
+  "norm": "A<C-r>=6*7<CR><Esc>"
+ },
+ "A;<Esc>": {
+  "count": 3,
+  "hooks": [
+   "A appends at the end"
+  ],
+  "norm": "A;<Esc>"
+ },
+ "A;<Esc>j.j.": {
+  "count": 7,
+  "hooks": [
+   "A appends at the end",
+   "j hooks down below the line, k reaches up",
+   "the full stop says it again"
+  ],
+  "norm": "A;<Esc>j.j."
+ },
+ "Cthe end of the line<Esc>": {
+  "count": 21,
+  "hooks": [
+   "capital D and C go big: to the end of the line"
+  ],
+  "norm": "Ctheendoftheline<Esc>"
+ },
+ "Cthe rest of the line<Esc>": {
+  "count": 22,
+  "hooks": [
+   "capital D and C go big: to the end of the line"
+  ],
+  "norm": "Ctherestoftheline<Esc>"
+ },
+ "D": {
+  "count": 1,
+  "hooks": [
+   "capital D and C go big: to the end of the line"
+  ],
+  "norm": "D"
+ },
+ "Gcwthe<Esc>``.": {
+  "count": 10,
+  "hooks": [
+   "G goes to the end, or to line N with a count",
+   "c changes: it deletes, then you type the new text",
+   "w walks to the next word",
+   "`` jumps back to where you came from"
+  ],
+  "norm": "Gcwthe<Esc>``."
+ },
+ "I# <Esc>": {
+  "count": 4,
+  "hooks": [
+   "I inserts at the start"
+  ],
+  "norm": "I#<Esc>"
+ },
+ "I# <Esc>j.j.": {
+  "count": 8,
+  "hooks": [
+   "I inserts at the start",
+   "j hooks down below the line, k reaches up",
+   "the full stop says it again"
+  ],
+  "norm": "I#<Esc>j.j."
+ },
+ "I- <Esc>j.j.": {
+  "count": 8,
+  "hooks": [
+   "I inserts at the start",
+   "j hooks down below the line, k reaches up",
+   "the full stop says it again"
+  ],
+  "norm": "I-<Esc>j.j."
+ },
+ "J": {
+  "count": 1,
+  "hooks": [
+   "J joins this line and the next"
+  ],
+  "norm": "J"
+ },
+ "OO opened this one above<Esc>": {
+  "count": 25,
+  "hooks": [
+   "o opens a line below, O above"
+  ],
+  "norm": "OOopenedthisoneabove<Esc>"
+ },
+ "OO opens above<Esc>": {
+  "count": 15,
+  "hooks": [
+   "o opens a line below, O above"
+  ],
+  "norm": "OOopensabove<Esc>"
+ },
+ "R2026-10-26<Esc>": {
+  "count": 12,
+  "hooks": [
+   "R keeps replacing: you type over the text"
+  ],
+  "norm": "R2026-10-26<Esc>"
+ },
+ "R2026-11-02<Esc>": {
+  "count": 12,
+  "hooks": [
+   "R keeps replacing: you type over the text"
+  ],
+  "norm": "R2026-11-02<Esc>"
+ },
+ "T/D": {
+  "count": 3,
+  "hooks": [
+   "capital means backwards for f and t",
+   "capital D and C go big: to the end of the line"
+  ],
+  "norm": "T/D"
+ },
+ "Vj2>": {
+  "count": 4,
+  "hooks": [
+   "capital V selects whole lines",
+   "j hooks down below the line, k reaches up",
+   "the arrow points the way the text moves: > pushes right"
+  ],
+  "norm": "Vj2>"
+ },
+ "Vj:norm I// <CR>": {
+  "count": 13,
+  "hooks": [
+   "capital V selects whole lines",
+   "j hooks down below the line, k reaches up",
+   ":norm types normal-mode keys on every line"
+  ],
+  "norm": "Vj:normI//<CR>"
+ },
+ "Vj:s/old/new<CR>": {
+  "count": 13,
+  "hooks": [
+   "capital V selects whole lines",
+   "j hooks down below the line, k reaches up",
+   ":s substitutes"
+  ],
+  "norm": "Vj:s/old/new<CR>"
+ },
+ "Vj:s/stale/new<CR>": {
+  "count": 15,
+  "hooks": [
+   "capital V selects whole lines",
+   "j hooks down below the line, k reaches up",
+   ":s substitutes"
+  ],
+  "norm": "Vj:s/stale/new<CR>"
+ },
+ "Vj:s/x/y<CR>": {
+  "count": 9,
+  "hooks": [
+   "capital V selects whole lines",
+   "j hooks down below the line, k reaches up",
+   ":s substitutes"
+  ],
+  "norm": "Vj:s/x/y<CR>"
+ },
+ "Vj:sort<CR>": {
+  "count": 8,
+  "hooks": [
+   "capital V selects whole lines",
+   "j hooks down below the line, k reaches up",
+   "n sorts as numbers, u keeps the unique ones"
+  ],
+  "norm": "Vj:sort<CR>"
+ },
+ "Vjd": {
+  "count": 3,
+  "hooks": [
+   "capital V selects whole lines",
+   "j hooks down below the line, k reaches up",
+   "d deletes (into a register, so really it cuts)"
+  ],
+  "norm": "Vjd"
+ },
+ "Vjj>": {
+  "count": 4,
+  "hooks": [
+   "capital V selects whole lines",
+   "j hooks down below the line, k reaches up",
+   "the arrow points the way the text moves: > pushes right"
+  ],
+  "norm": "Vjj>"
+ },
+ "VjjJ": {
+  "count": 4,
+  "hooks": [
+   "capital V selects whole lines",
+   "j hooks down below the line, k reaches up",
+   "J joins this line and the next"
+  ],
+  "norm": "VjjJ"
+ },
+ "Vu": {
+  "count": 2,
+  "hooks": [
+   "capital V selects whole lines",
+   "u undoes"
+  ],
+  "norm": "Vu"
+ },
+ "]<Space>": {
+  "count": 2,
+  "hooks": [
+   "] goes down, and space is what it adds"
+  ],
+  "norm": "]<Space>"
+ },
+ "c%ok<Esc>": {
+  "count": 5,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "% is two circles split by a line: one bracket and its partner"
+  ],
+  "norm": "c%ok<Esc>"
+ },
+ "c2wtwo words<Esc>": {
+  "count": 13,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "w walks to the next word"
+  ],
+  "norm": "c2wtwowords<Esc>"
+ },
+ "cagglobal<Esc>": {
+  "count": 10,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "a reads as 'a word', 'a sentence': the thing plus what surrounds it",
+   "g is global: the whole file"
+  ],
+  "norm": "cagglobal<Esc>"
+ },
+ "cagthe whole file<Esc>": {
+  "count": 18,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "a reads as 'a word', 'a sentence': the thing plus what surrounds it",
+   "g is global: the whole file"
+  ],
+  "norm": "cagthewholefile<Esc>"
+ },
+ "cau0<Esc>": {
+  "count": 5,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "a reads as 'a word', 'a sentence': the thing plus what surrounds it",
+   "u is use: a call like f(x)"
+  ],
+  "norm": "cau0<Esc>"
+ },
+ "cauusage<Esc>": {
+  "count": 9,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "a reads as 'a word', 'a sentence': the thing plus what surrounds it",
+   "u is use: a call like f(x)"
+  ],
+  "norm": "cauusage<Esc>"
+ },
+ "cccc changes a line<Esc>": {
+  "count": 20,
+  "hooks": [
+   "doubling the verb means the whole line"
+  ],
+  "norm": "ccccchangesaline<Esc>"
+ },
+ "ci\"change inside<Esc>": {
+  "count": 17,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "the quote mark names the pair you mean"
+  ],
+  "norm": "ci\"changeinside<Esc>"
+ },
+ "ci\"the next quotes<Esc>": {
+  "count": 19,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "the quote mark names the pair you mean"
+  ],
+  "norm": "ci\"thenextquotes<Esc>"
+ },
+ "ci\"the quote names the pair<Esc>": {
+  "count": 28,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "the quote mark names the pair you mean"
+  ],
+  "norm": "ci\"thequotenamesthepair<Esc>"
+ },
+ "ci\"the quotes<Esc>": {
+  "count": 14,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "the quote mark names the pair you mean"
+  ],
+  "norm": "ci\"thequotes<Esc>"
+ },
+ "ci\"without the quotes<Esc>": {
+  "count": 22,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "the quote mark names the pair you mean"
+  ],
+  "norm": "ci\"withoutthequotes<Esc>"
+ },
+ "ci(inside<Esc>": {
+  "count": 10,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "the bracket names the pair: ( or ) for round ones"
+  ],
+  "norm": "ci(inside<Esc>"
+ },
+ "ci(new<Esc>": {
+  "count": 7,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "the bracket names the pair: ( or ) for round ones"
+  ],
+  "norm": "ci(new<Esc>"
+ },
+ "ciWa URL<Esc>": {
+  "count": 9,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "big W, big WORD: everything between two spaces, dots and all"
+  ],
+  "norm": "ciWaURL<Esc>"
+ },
+ "ciWa path<Esc>": {
+  "count": 10,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "big W, big WORD: everything between two spaces, dots and all"
+  ],
+  "norm": "ciWapath<Esc>"
+ },
+ "ciWeverything<Esc>": {
+  "count": 14,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "big W, big WORD: everything between two spaces, dots and all"
+  ],
+  "norm": "ciWeverything<Esc>"
+ },
+ "ciWfor example<Esc>": {
+  "count": 15,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "big W, big WORD: everything between two spaces, dots and all"
+  ],
+  "norm": "ciWforexample<Esc>"
+ },
+ "ciaargument<Esc>": {
+  "count": 12,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "ia/aa: an argument, between commas"
+  ],
+  "norm": "ciaargument<Esc>"
+ },
+ "ciahook<Esc>": {
+  "count": 8,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "ia/aa: an argument, between commas"
+  ],
+  "norm": "ciahook<Esc>"
+ },
+ "cianew<Esc>": {
+  "count": 7,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "ia/aa: an argument, between commas"
+  ],
+  "norm": "cianew<Esc>"
+ },
+ "cibany<Esc>": {
+  "count": 7,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "b is bracket: (), [] or {}, the nearest one"
+  ],
+  "norm": "cibany<Esc>"
+ },
+ "cid16000<Esc>": {
+  "count": 9,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "d is digits"
+  ],
+  "norm": "cid16000<Esc>"
+ },
+ "cid4<Esc>": {
+  "count": 5,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "d is digits"
+  ],
+  "norm": "cid4<Esc>"
+ },
+ "cieElement<Esc>": {
+  "count": 11,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "e is an element of a camelCase or snake_case name"
+  ],
+  "norm": "cieElement<Esc>"
+ },
+ "cieHump<Esc>": {
+  "count": 8,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "e is an element of a camelCase or snake_case name"
+  ],
+  "norm": "cieHump<Esc>"
+ },
+ "cieSegment<Esc>": {
+  "count": 11,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "e is an element of a camelCase or snake_case name"
+  ],
+  "norm": "cieSegment<Esc>"
+ },
+ "cieaccount<Esc>": {
+  "count": 11,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "e is an element of a camelCase or snake_case name"
+  ],
+  "norm": "cieaccount<Esc>"
+ },
+ "cieelement<Esc>": {
+  "count": 11,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "e is an element of a camelCase or snake_case name"
+  ],
+  "norm": "cieelement<Esc>"
+ },
+ "ciescore<Esc>": {
+  "count": 9,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "e is an element of a camelCase or snake_case name"
+  ],
+  "norm": "ciescore<Esc>"
+ },
+ "ciesegment<Esc>": {
+  "count": 11,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "e is an element of a camelCase or snake_case name"
+  ],
+  "norm": "ciesegment<Esc>"
+ },
+ "cietoken<Esc>": {
+  "count": 9,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "e is an element of a camelCase or snake_case name"
+  ],
+  "norm": "cietoken<Esc>"
+ },
+ "cifpass<Esc>": {
+  "count": 8,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "f is function: the whole def"
+  ],
+  "norm": "cifpass<Esc>"
+ },
+ "ciq/srv<Esc>": {
+  "count": 8,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "q is quote: whichever quote is nearest"
+  ],
+  "norm": "ciq/srv<Esc>"
+ },
+ "ciq/tmp<Esc>": {
+  "count": 8,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "q is quote: whichever quote is nearest"
+  ],
+  "norm": "ciq/tmp<Esc>"
+ },
+ "ciqany quote<Esc>": {
+  "count": 13,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "q is quote: whichever quote is nearest"
+  ],
+  "norm": "ciqanyquote<Esc>"
+ },
+ "ciqany<Esc>": {
+  "count": 7,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "q is quote: whichever quote is nearest"
+  ],
+  "norm": "ciqany<Esc>"
+ },
+ "ciqq is quote<Esc>": {
+  "count": 14,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "q is quote: whichever quote is nearest"
+  ],
+  "norm": "ciqqisquote<Esc>"
+ },
+ "cisA sentence ends at a full stop.<Esc>": {
+  "count": 35,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "s is a sentence: up to . ! or ? and a space"
+  ],
+  "norm": "cisAsentenceendsatafullstop.<Esc>"
+ },
+ "cisThe i means inner.<Esc>": {
+  "count": 22,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "s is a sentence: up to . ! or ? and a space"
+  ],
+  "norm": "cisTheimeansinner.<Esc>"
+ },
+ "citit is inside<Esc>": {
+  "count": 16,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "t is a tag: the text between <b> and </b>"
+  ],
+  "norm": "cititisinside<Esc>"
+ },
+ "citt is for tag<Esc>": {
+  "count": 16,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "t is a tag: the text between <b> and </b>"
+  ],
+  "norm": "cittisfortag<Esc>"
+ },
+ "citthe tags stay<Esc>": {
+  "count": 17,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "t is a tag: the text between <b> and </b>"
+  ],
+  "norm": "citthetagsstay<Esc>"
+ },
+ "ciwagain<Esc>ww.": {
+  "count": 12,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores",
+   "w walks to the next word"
+  ],
+  "norm": "ciwagain<Esc>ww."
+ },
+ "ciwanywhere<Esc>": {
+  "count": 12,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores"
+  ],
+  "norm": "ciwanywhere<Esc>"
+ },
+ "ciwchange<Esc>": {
+  "count": 10,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores"
+  ],
+  "norm": "ciwchange<Esc>"
+ },
+ "ciwchange_inner_WORD<Esc>": {
+  "count": 21,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores"
+  ],
+  "norm": "ciwchange_inner_WORD<Esc>"
+ },
+ "ciwchange_inner_word<Esc>": {
+  "count": 21,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores"
+  ],
+  "norm": "ciwchange_inner_word<Esc>"
+ },
+ "ciwdelete<Esc>": {
+  "count": 10,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores"
+  ],
+  "norm": "ciwdelete<Esc>"
+ },
+ "ciwdelete_a_word<Esc>": {
+  "count": 17,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores"
+  ],
+  "norm": "ciwdelete_a_word<Esc>"
+ },
+ "ciwdot<Esc>ww.": {
+  "count": 10,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores",
+   "w walks to the next word"
+  ],
+  "norm": "ciwdot<Esc>ww."
+ },
+ "ciwput<Esc>": {
+  "count": 7,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores"
+  ],
+  "norm": "ciwput<Esc>"
+ },
+ "ciwrepeat<Esc>ww.": {
+  "count": 13,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores",
+   "w walks to the next word"
+  ],
+  "norm": "ciwrepeat<Esc>ww."
+ },
+ "ciwsnake_case_name<Esc>": {
+  "count": 19,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores"
+  ],
+  "norm": "ciwsnake_case_name<Esc>"
+ },
+ "ciwspace<Esc>": {
+  "count": 9,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores"
+  ],
+  "norm": "ciwspace<Esc>"
+ },
+ "ciwtill<Esc>": {
+  "count": 8,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores"
+  ],
+  "norm": "ciwtill<Esc>"
+ },
+ "ciwunderscores<Esc>": {
+  "count": 15,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores"
+  ],
+  "norm": "ciwunderscores<Esc>"
+ },
+ "ciwwhole<Esc>": {
+  "count": 9,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores"
+  ],
+  "norm": "ciwwhole<Esc>"
+ },
+ "ciwwww<Esc>": {
+  "count": 7,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores"
+  ],
+  "norm": "ciwwww<Esc>"
+ },
+ "ciwyank<Esc>": {
+  "count": 8,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores"
+  ],
+  "norm": "ciwyank<Esc>"
+ },
+ "ciwyank_inner_word<Esc>": {
+  "count": 19,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores"
+  ],
+  "norm": "ciwyank_inner_word<Esc>"
+ },
+ "ct on_it<Esc>": {
+  "count": 9,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "t goes till the letter: it stops one short"
+  ],
+  "norm": "cton_it<Esc>"
+ },
+ "ct till<Esc>": {
+  "count": 8,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "t goes till the letter: it stops one short"
+  ],
+  "norm": "cttill<Esc>"
+ },
+ "ct till_it<Esc>": {
+  "count": 11,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "t goes till the letter: it stops one short"
+  ],
+  "norm": "cttill_it<Esc>"
+ },
+ "ct;\"find\"<Esc>": {
+  "count": 10,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "t goes till the letter: it stops one short"
+  ],
+  "norm": "ct;\"find\"<Esc>"
+ },
+ "ct;\"till\"<Esc>": {
+  "count": 10,
+  "hooks": [
+   "c changes: it deletes, then you type the new text",
+   "t goes till the letter: it stops one short"
+  ],
+  "norm": "ct;\"till\"<Esc>"
+ },
+ "d/S<CR>": {
+  "count": 4,
+  "hooks": [
+   "d deletes (into a register, so really it cuts)",
+   "/ leans forward"
+  ],
+  "norm": "d/S<CR>"
+ },
+ "d0": {
+  "count": 2,
+  "hooks": [
+   "d deletes (into a register, so really it cuts)",
+   "0 is column zero, the very start"
+  ],
+  "norm": "d0"
+ },
+ "dG": {
+  "count": 2,
+  "hooks": [
+   "d deletes (into a register, so really it cuts)",
+   "G goes to the end, or to line N with a count"
+  ],
+  "norm": "dG"
+ },
+ "da(": {
+  "count": 3,
+  "hooks": [
+   "d deletes (into a register, so really it cuts)",
+   "a reads as 'a word', 'a sentence': the thing plus what surrounds it",
+   "the bracket names the pair: ( or ) for round ones"
+  ],
+  "norm": "da("
+ },
+ "daa": {
+  "count": 3,
+  "hooks": [
+   "d deletes (into a register, so really it cuts)",
+   "a reads as 'a word', 'a sentence': the thing plus what surrounds it",
+   "ia/aa: an argument, between commas"
+  ],
+  "norm": "daa"
+ },
+ "dab": {
+  "count": 3,
+  "hooks": [
+   "d deletes (into a register, so really it cuts)",
+   "a reads as 'a word', 'a sentence': the thing plus what surrounds it",
+   "b is bracket: (), [] or {}, the nearest one"
+  ],
+  "norm": "dab"
+ },
+ "dacdd": {
+  "count": 5,
+  "hooks": [
+   "d deletes (into a register, so really it cuts)",
+   "a reads as 'a word', 'a sentence': the thing plus what surrounds it",
+   "c is class",
+   "doubling the verb means the whole line"
+  ],
+  "norm": "dacdd"
+ },
+ "dafdd": {
+  "count": 5,
+  "hooks": [
+   "d deletes (into a register, so really it cuts)",
+   "a reads as 'a word', 'a sentence': the thing plus what surrounds it",
+   "f is function: the whole def",
+   "doubling the verb means the whole line"
+  ],
+  "norm": "dafdd"
+ },
+ "dap": {
+  "count": 3,
+  "hooks": [
+   "d deletes (into a register, so really it cuts)",
+   "a reads as 'a word', 'a sentence': the thing plus what surrounds it",
+   "p is a paragraph: lines up to the next blank line"
+  ],
+  "norm": "dap"
+ },
+ "das": {
+  "count": 3,
+  "hooks": [
+   "d deletes (into a register, so really it cuts)",
+   "a reads as 'a word', 'a sentence': the thing plus what surrounds it",
+   "s is a sentence: up to . ! or ? and a space"
+  ],
+  "norm": "das"
+ },
+ "daw": {
+  "count": 3,
+  "hooks": [
+   "d deletes (into a register, so really it cuts)",
+   "a reads as 'a word', 'a sentence': the thing plus what surrounds it",
+   "w is a word of letters, digits and underscores"
+  ],
+  "norm": "daw"
+ },
+ "ddp": {
+  "count": 3,
+  "hooks": [
+   "cut, then put back one further: a swap"
+  ],
+  "norm": "ddp"
+ },
+ "df)": {
+  "count": 3,
+  "hooks": [
+   "d deletes (into a register, so really it cuts)",
+   "f finds a letter on the line and lands on it"
+  ],
+  "norm": "df)"
+ },
+ "di(": {
+  "count": 3,
+  "hooks": [
+   "d deletes (into a register, so really it cuts)",
+   "i is inner: only the thing itself, no space or brackets",
+   "the bracket names the pair: ( or ) for round ones"
+  ],
+  "norm": "di("
+ },
+ "di[": {
+  "count": 3,
+  "hooks": [
+   "d deletes (into a register, so really it cuts)",
+   "i is inner: only the thing itself, no space or brackets",
+   "[ names the square brackets"
+  ],
+  "norm": "di["
+ },
+ "dib": {
+  "count": 3,
+  "hooks": [
+   "d deletes (into a register, so really it cuts)",
+   "i is inner: only the thing itself, no space or brackets",
+   "b is bracket: (), [] or {}, the nearest one"
+  ],
+  "norm": "dib"
+ },
+ "dtH": {
+  "count": 3,
+  "hooks": [
+   "d deletes (into a register, so really it cuts)",
+   "t goes till the letter: it stops one short"
+  ],
+  "norm": "dtH"
+ },
+ "dtj": {
+  "count": 3,
+  "hooks": [
+   "d deletes (into a register, so really it cuts)",
+   "t goes till the letter: it stops one short"
+  ],
+  "norm": "dtj"
+ },
+ "dw..": {
+  "count": 4,
+  "hooks": [
+   "d deletes (into a register, so really it cuts)",
+   "w walks to the next word",
+   "the full stop says it again"
+  ],
+  "norm": "dw.."
+ },
+ "d}": {
+  "count": 2,
+  "hooks": [
+   "d deletes (into a register, so really it cuts)",
+   "the braces hug a block: { is its top, } its bottom"
+  ],
+  "norm": "d}"
+ },
+ "eas<Esc>": {
+  "count": 4,
+  "hooks": [
+   "e is end",
+   "a appends after the cursor; ea appends at the end of the word"
+  ],
+  "norm": "eas<Esc>"
+ },
+ "f)iself<Esc>j:s/\\v(cue|delay)/self.&/g<CR>": {
+  "count": 35,
+  "hooks": [
+   "f finds a letter on the line and lands on it",
+   "j hooks down below the line, k reaches up",
+   ":s substitutes"
+  ],
+  "norm": "f)iself<Esc>j:s/\\v(cue|delay)/self.&/g<CR>"
+ },
+ "f)iself<Esc>j:s/\\v(gap|due)/self.&/g<CR>": {
+  "count": 33,
+  "hooks": [
+   "f finds a letter on the line and lands on it",
+   "j hooks down below the line, k reaches up",
+   ":s substitutes"
+  ],
+  "norm": "f)iself<Esc>j:s/\\v(gap|due)/self.&/g<CR>"
+ },
+ "f)iself<Esc>j:s/\\v(name|age)/self.&/g<CR>": {
+  "count": 34,
+  "hooks": [
+   "f finds a letter on the line and lands on it",
+   "j hooks down below the line, k reaches up",
+   ":s substitutes"
+  ],
+  "norm": "f)iself<Esc>j:s/\\v(name|age)/self.&/g<CR>"
+ },
+ "f)iself<Esc>j:s/\\v(word|pos)/self.&/g<CR>": {
+  "count": 34,
+  "hooks": [
+   "f finds a letter on the line and lands on it",
+   "j hooks down below the line, k reaches up",
+   ":s substitutes"
+  ],
+  "norm": "f)iself<Esc>j:s/\\v(word|pos)/self.&/g<CR>"
+ },
+ "gJ": {
+  "count": 2,
+  "hooks": [
+   "gJ joins like German compounds: no space"
+  ],
+  "norm": "gJ"
+ },
+ "gUiw": {
+  "count": 4,
+  "hooks": [
+   "U is Up: gU raises letters to capitals",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores"
+  ],
+  "norm": "gUiw"
+ },
+ "gcc": {
+  "count": 3,
+  "hooks": [
+   "gc goes comment: it comments or uncomments",
+   "doubling the verb means the whole line"
+  ],
+  "norm": "gcc"
+ },
+ "gcip": {
+  "count": 4,
+  "hooks": [
+   "gc goes comment: it comments or uncomments",
+   "i is inner: only the thing itself, no space or brackets",
+   "p is a paragraph: lines up to the next blank line"
+  ],
+  "norm": "gcip"
+ },
+ "gcj": {
+  "count": 3,
+  "hooks": [
+   "gc goes comment: it comments or uncomments",
+   "j hooks down below the line, k reaches up"
+  ],
+  "norm": "gcj"
+ },
+ "guu": {
+  "count": 3,
+  "hooks": [
+   "u is down: gu lowers letters",
+   "doubling the verb means the whole line"
+  ],
+  "norm": "guu"
+ },
+ "g~iw": {
+  "count": 4,
+  "hooks": [
+   "the tilde is a wave: it flips each letter's case",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores"
+  ],
+  "norm": "g~iw"
+ },
+ "i[<Esc>ea]<Esc>lr(A)<Esc>": {
+  "count": 13,
+  "hooks": [
+   "e is end",
+   "a appends after the cursor; ea appends at the end of the word",
+   "j hooks down below the line, k reaches up",
+   "r replaces one letter"
+  ],
+  "norm": "i[<Esc>ea]<Esc>lr(A)<Esc>"
+ },
+ "jma/END<CR>kd'a": {
+  "count": 12,
+  "hooks": [
+   "j hooks down below the line, k reaches up",
+   "m marks a spot",
+   "/ leans forward",
+   "d deletes (into a register, so really it cuts)"
+  ],
+  "norm": "jma/END<CR>kd'a"
+ },
+ "jmajy'aGp": {
+  "count": 9,
+  "hooks": [
+   "j hooks down below the line, k reaches up",
+   "m marks a spot",
+   "y yanks: Vim's older word for copy",
+   "the plain quote goes to the line"
+  ],
+  "norm": "jmajy'aGp"
+ },
+ "mafbc`ahumble <Esc>": {
+  "count": 15,
+  "hooks": [
+   "m marks a spot",
+   "f finds a letter on the line and lands on it",
+   "c changes: it deletes, then you type the new text",
+   "the backtick goes to the exact letter"
+  ],
+  "norm": "mafbc`ahumble<Esc>"
+ },
+ "mafjc`aprecise <Esc>": {
+  "count": 16,
+  "hooks": [
+   "m marks a spot",
+   "f finds a letter on the line and lands on it",
+   "c changes: it deletes, then you type the new text",
+   "the backtick goes to the exact letter"
+  ],
+  "norm": "mafjc`aprecise<Esc>"
+ },
+ "obelow<Esc>": {
+  "count": 7,
+  "hooks": [
+   "o opens a line below, O above"
+  ],
+  "norm": "obelow<Esc>"
+ },
+ "oo goes below<Esc>": {
+  "count": 14,
+  "hooks": [
+   "o opens a line below, O above"
+  ],
+  "norm": "oogoesbelow<Esc>"
+ },
+ "qa/TODO<CR>wgUiwq2@a": {
+  "count": 17,
+  "hooks": [
+   "q is a quill: it writes down what you do",
+   "/ leans forward",
+   "w walks to the next word",
+   "U is Up: gU raises letters to capitals"
+  ],
+  "norm": "qa/TODO<CR>wgUiwq2@a"
+ },
+ "qa0f,xi | <Esc>jq@a@@": {
+  "count": 17,
+  "hooks": [
+   "q is a quill: it writes down what you do",
+   "0 is column zero, the very start",
+   "f finds a letter on the line and lands on it",
+   "x crosses a letter out"
+  ],
+  "norm": "qa0f,xi|<Esc>jq@a@@"
+ },
+ "qa0f=r:a <Esc>jq2@a": {
+  "count": 15,
+  "hooks": [
+   "q is a quill: it writes down what you do",
+   "0 is column zero, the very start",
+   "f finds a letter on the line and lands on it",
+   "r replaces one letter"
+  ],
+  "norm": "qa0f=r:a<Esc>jq2@a"
+ },
+ "qaA;<Esc>jq3@a": {
+  "count": 10,
+  "hooks": [
+   "q is a quill: it writes down what you do",
+   "A appends at the end",
+   "j hooks down below the line, k reaches up",
+   "@a plays back what is stored at a"
+  ],
+  "norm": "qaA;<Esc>jq3@a"
+ },
+ "qaI\"<Esc>A\"<Esc>jq2@a": {
+  "count": 13,
+  "hooks": [
+   "q is a quill: it writes down what you do",
+   "I inserts at the start",
+   "A appends at the end",
+   "j hooks down below the line, k reaches up"
+  ],
+  "norm": "qaI\"<Esc>A\"<Esc>jq2@a"
+ },
+ "qaI(<Esc>A)<Esc>q:2,$norm @a<CR>": {
+  "count": 21,
+  "hooks": [
+   "q is a quill: it writes down what you do",
+   "I inserts at the start",
+   "A appends at the end",
+   "a comma steps back: the same find, the other way"
+  ],
+  "norm": "qaI(<Esc>A)<Esc>q:2,$norm@a<CR>"
+ },
+ "qajddq2@a": {
+  "count": 9,
+  "hooks": [
+   "q is a quill: it writes down what you do",
+   "j hooks down below the line, k reaches up",
+   "doubling the verb means the whole line",
+   "@a plays back what is stored at a"
+  ],
+  "norm": "qajddq2@a"
+ },
+ "qar*jq99@a": {
+  "count": 10,
+  "hooks": [
+   "q is a quill: it writes down what you do",
+   "r replaces one letter",
+   "j hooks down below the line, k reaches up",
+   "@a plays back what is stored at a"
+  ],
+  "norm": "qar*jq99@a"
+ },
+ "qayyp<C-a>q2@a": {
+  "count": 10,
+  "hooks": [
+   "q is a quill: it writes down what you do",
+   "doubling the verb means the whole line",
+   "p puts the last yank or delete after the cursor; P puts it before",
+   "Ctrl-a adds 1 to the number"
+  ],
+  "norm": "qayyp<C-a>q2@a"
+ },
+ "rd": {
+  "count": 2,
+  "hooks": [
+   "r replaces one letter"
+  ],
+  "norm": "rd"
+ },
+ "rr": {
+  "count": 2,
+  "hooks": [
+   "r replaces one letter"
+  ],
+  "norm": "rr"
+ },
+ "veeU": {
+  "count": 4,
+  "hooks": [
+   "v is visual: you see what you'll act on",
+   "e is end"
+  ],
+  "norm": "veeU"
+ },
+ "vipJ": {
+  "count": 4,
+  "hooks": [
+   "v is visual: you see what you'll act on"
+  ],
+  "norm": "vipJ"
+ },
+ "xp": {
+  "count": 2,
+  "hooks": [
+   "cut, then put back one further: a swap"
+  ],
+  "norm": "xp"
+ },
+ "yafjo<Esc>p": {
+  "count": 7,
+  "hooks": [
+   "y yanks: Vim's older word for copy",
+   "a reads as 'a word', 'a sentence': the thing plus what surrounds it",
+   "f is function: the whole def",
+   "j hooks down below the line, k reaches up"
+  ],
+  "norm": "yafjo<Esc>p"
+ },
+ "yapP": {
+  "count": 4,
+  "hooks": [
+   "y yanks: Vim's older word for copy",
+   "a reads as 'a word', 'a sentence': the thing plus what surrounds it",
+   "p is a paragraph: lines up to the next blank line"
+  ],
+  "norm": "yapP"
+ },
+ "yiw$bviwp": {
+  "count": 9,
+  "hooks": [
+   "y yanks: Vim's older word for copy",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores",
+   "$ is the end, as in regex"
+  ],
+  "norm": "yiw$bviwp"
+ },
+ "yiw$viwp": {
+  "count": 8,
+  "hooks": [
+   "y yanks: Vim's older word for copy",
+   "i is inner: only the thing itself, no space or brackets",
+   "w is a word of letters, digits and underscores",
+   "$ is the end, as in regex"
+  ],
+  "norm": "yiw$viwp"
+ },
+ "yyj\"_ddVp": {
+  "count": 9,
+  "hooks": [
+   "doubling the verb means the whole line",
+   "j hooks down below the line, k reaches up",
+   "the underscore is the floor: text falls through and is gone",
+   "capital V selects whole lines"
+  ],
+  "norm": "yyj\"_ddVp"
+ },
+ "yyjdd\"0p": {
+  "count": 8,
+  "hooks": [
+   "doubling the verb means the whole line",
+   "j hooks down below the line, k reaches up",
+   "0 holds the last yank, untouched by deletes",
+   "p puts the last yank or delete after the cursor; P puts it before"
+  ],
+  "norm": "yyjdd\"0p"
+ },
+ "yyjddG\"0p": {
+  "count": 9,
+  "hooks": [
+   "doubling the verb means the whole line",
+   "j hooks down below the line, k reaches up",
+   "G goes to the end, or to line N with a count",
+   "0 holds the last yank, untouched by deletes"
+  ],
+  "norm": "yyjddG\"0p"
+ },
+ "~": {
+  "count": 1,
+  "hooks": [
+   "the tilde wave flips the letter"
+  ],
+  "norm": "~"
+ }
+}

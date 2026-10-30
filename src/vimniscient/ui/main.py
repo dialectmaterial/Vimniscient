@@ -109,10 +109,7 @@ class MainScreen(Screen):
             options.append(Option(Content.from_markup(f"{mark} [b]$label[/] [dim]$detail[/]",
                                                       label=f"{step.label:<8}", detail=step.detail), id=step.id))
         self.fill("plan", options)
-        left = sum(step.minutes for step in today.left(steps))
-        budget = settings.minutes()
-        self.query_one("#plan").border_subtitle = (
-            "all done" if not left else f"about {left} of {budget} min left" if left <= budget else f"about {left} min left")
+        self.query_one("#plan").border_subtitle = today.left_text(steps, settings.minutes())
 
     def refresh_lessons(self) -> None:
         app: VimniscientApp = self.app  # type: ignore[assignment]

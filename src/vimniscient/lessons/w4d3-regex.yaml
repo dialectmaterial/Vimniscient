@@ -45,6 +45,11 @@ tasks:
           ▮match 7, match 4
         target: |-
           match [7], match [4]
+      - goal: 'Put every number in square brackets.'
+        start: |-
+          ▮digits 7, digits 4
+        target: |-
+          digits [7], digits [4]
   - goal: 'Rewrite the date as day/month/year.'
     start: |-
       ▮2026-10-24

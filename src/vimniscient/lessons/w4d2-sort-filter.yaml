@@ -56,6 +56,18 @@ tasks:
           2 after one
           9 before ten
           10 after nine
+      - goal: 'Sort by number, not alphabetically.'
+        start: |-
+          ▮Count, presses
+          30 presses
+          7 presses
+          1 press
+        target: |-
+          Count, presses
+          1 press
+          7 presses
+          30 presses
+        solution: ':sort n<CR>'
   - goal: 'Sort and remove the duplicates.'
     generate: sort-u
     start: |-
@@ -97,6 +109,12 @@ tasks:
         target: |-
           op  means
           d   delete
+      - start: |-
+          ▮key means
+          u undo
+        target: |-
+          key  means
+          u    undo
   - goal: 'Sort only the first two lines.'
     start: |-
       ▮visual
@@ -121,6 +139,16 @@ tasks:
           yank
           wug
           blick
+      - start: |-
+          ▮order
+          lines
+          stay
+          put
+        target: |-
+          lines
+          order
+          stay
+          put
   - goal: 'Insert the output of a shell command (echo output) below this line.'
     start: |-
       ▮:r reads the output:
@@ -138,3 +166,11 @@ tasks:
           :r reads in:
           recall
         solution: ':r !echo recall<CR>'
+      - goal: 'Insert the output of a shell command (echo result) below this line.'
+        hint: ':r !echo result reads the command''s output into the file.'
+        start: |-
+          ▮:r pulls in:
+        target: |-
+          :r pulls in:
+          result
+        solution: ':r !echo result<CR>'

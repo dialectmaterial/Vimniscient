@@ -36,6 +36,17 @@ tasks:
         target: |-
           BEGIN
           END
+      - start: |-
+          ▮BEGIN
+          mark
+          jump
+          quote
+          backtick
+          back
+          END
+        target: |-
+          BEGIN
+          END
   - goal: 'Copy the two mark lines under "Cheat sheet".'
     start: |-
       ▮== Marks ==
@@ -65,6 +76,20 @@ tasks:
           == Notes ==
           'a goes to the line
           `a goes to the letter
+      - goal: 'Copy the two mark lines under "Cheat sheet".'
+        start: |-
+          ▮== Marks ==
+          ma sets a mark
+          'a goes back
+          == Cheat sheet ==
+        target: |-
+          == Marks ==
+          ma sets a mark
+          'a goes back
+          == Cheat sheet ==
+          ma sets a mark
+          'a goes back
+        solution: 'jmajy''aGp'
   - goal: 'Change "rough, line-wise " to "humble ", using a mark.'
     start: |-
       The ▮rough, line-wise backtick lands on the exact letter
@@ -103,3 +128,13 @@ tasks:
           jump
           back
           the spot
+      - start: |-
+          ▮teh double
+          jump
+          back
+          teh tick
+        target: |-
+          the double
+          jump
+          back
+          the tick

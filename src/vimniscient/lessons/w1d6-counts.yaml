@@ -63,6 +63,12 @@ tasks:
         target: |-
           c2w: change two words.
         solution: 'c2wtwo words<Esc>'
+      - goal: 'Change "three words" to "two words".'
+        start: |-
+          2 on cw changes ▮three words.
+        target: |-
+          2 on cw changes two words.
+        solution: 'c2wtwo words<Esc>'
   - goal: 'Fix the number: 5, not 500000.'
     generate: count-x
     start: |-
@@ -90,6 +96,11 @@ tasks:
           ▮c changes, d deletes, y yanks, z naps
         target: |-
           c changes, d deletes, y yanks
+      - goal: 'Delete from the third comma to the end (z is not an operator).'
+        start: |-
+          ▮p puts, x cuts, u undoes, z naps
+        target: |-
+          p puts, x cuts, u undoes
   - goal: 'Join the three lines into one.'
     start: |-
       ▮3J
@@ -146,6 +157,23 @@ tasks:
           four
           six
         solution: '5jdd'
+      - goal: 'Delete the line five lines below the cursor.'
+        start: |-
+          ▮the count is relative:
+          one
+          two
+          three
+          four
+          this line goes
+          six
+        target: |-
+          the count is relative:
+          one
+          two
+          three
+          four
+          six
+        solution: '5jdd'
 
   - goal: 'Fix "Teh" three lines up.'
     start: |-
@@ -173,3 +201,15 @@ tasks:
           so 3k goes
           three lines up.
         solution: '3kciwRelative<Esc>'
+      - goal: 'Fix "Cuont" three lines up.'
+        start: |-
+          Cuont first
+          then k,
+          so 3k goes
+          ▮three lines up.
+        target: |-
+          Count first
+          then k,
+          so 3k goes
+          three lines up.
+        solution: '3kciwCount<Esc>'

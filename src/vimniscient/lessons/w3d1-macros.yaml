@@ -76,6 +76,16 @@ tasks:
           verb: d
           means: delete
           hook: cut
+      - goal: 'Turn every key=value into key: value.'
+        start: |-
+          ▮key=q
+          means=macro
+          hook=letter
+        target: |-
+          key: q
+          means: macro
+          hook: letter
+        solution: 'qa0f=r:a <Esc>jq2@a'
   - goal: 'Delete every second line: keep the true ones.'
     start: |-
       ▮q records
@@ -102,6 +112,19 @@ tasks:
           q starts recording
           q stops it
           @a plays it back
+      - goal: 'Delete every second line: keep the true ones.'
+        start: |-
+          ▮q records
+          q exits
+          @ plays
+          @ posts
+          . repeats
+          . stops
+        target: |-
+          q records
+          @ plays
+          . repeats
+        solution: 'qajddq2@a'
   - goal: 'Turn every dash into a star. Use a big count.'
     start: |-
       ▮- a letter
@@ -132,5 +155,19 @@ tasks:
           * stop
           * play
           * repeat
+          * count
+          * stop at the end
+      - start: |-
+          ▮- write
+          - stop
+          - run
+          - again
+          - count
+          - stop at the end
+        target: |-
+          * write
+          * stop
+          * run
+          * again
           * count
           * stop at the end

@@ -21,7 +21,7 @@ from vimniscient.progress import Progress
 from vimniscient.session import COLORS, TaskResult, mouse_wheel, run_endless, run_lesson, run_mission
 from vimniscient.ui.builtin_lessons import endless_lesson, mission_lesson, placement_lesson, quick_lesson, review_lesson, transfer_lesson, vimgolf_lesson
 from vimniscient.ui.cards import CardScreen
-from vimniscient.ui.common import CATPPUCCIN, DEFAULT_THEME, omarchy_theme, plural
+from vimniscient.ui.common import CATPPUCCIN, DEFAULT_THEME, omarchy_theme
 from vimniscient.ui.drills import DrillScreen
 from vimniscient.ui.lesson import LessonScreen, ResultsScreen
 from vimniscient.ui.main import MainScreen
@@ -260,12 +260,10 @@ class VimniscientApp(App):
             search.update(results)
             search.seen |= {r.task.item_id for r in results}
             if not search.finished:
-                return "That round is done. The next one follows from how it went."
+                return placement.NEXT_ROUND
             known = search.known()
             self.progress.mark_known(known, search.seen)
-            if not known:
-                return "No lessons skipped. Start from Week 1 · Day 1."
-            return "Known already: " + ", ".join(f"{p.label} ({p.title})" for p in known)
+            return placement.note(known)
 
         def after() -> None:
             self.placement_round(search, done) if not search.finished else done()
@@ -291,9 +289,8 @@ class VimniscientApp(App):
             if skill == "mission":
                 self.start_mission(mission, done)
                 return
-            count, seed = quick.how_many(minutes, self.progress.typical_task_seconds()), datetime.now().isoformat()
-            tasks = (quick.navigation(count, self.lessons[0].tasks[0], seed) if skill == quick.NAVIGATION
-                     else quick.tasks(pools[skill], count, seed))
+            count = quick.how_many(minutes, self.progress.typical_task_seconds())
+            tasks = quick.build(skill, count, pools, self.lessons[0].tasks[0], datetime.now().isoformat())
 
             def on_results(results: list[TaskResult]) -> str:
                 self.progress.record_ungraded(results, "quick")
@@ -308,8 +305,7 @@ class VimniscientApp(App):
             result = run_mission(mission)
         mouse_wheel(False)
         self.progress.record_ungraded([result], "mission")
-        ways = "\n".join(mission.ways)
-        note = Content(f"{'Another way' if result.status == 'solved' else 'Ways to do it'}\n{ways}")
+        note = Content(mission.note(result.status == "solved"))
 
         def after(again: bool) -> None:
             self.start_mission(mission, done) if again else done()
@@ -322,10 +318,7 @@ class VimniscientApp(App):
     def start_transfer(self, picks: list[transfer.Challenge], done: Callable[[], None]) -> None:
         def on_results(results: list[TaskResult]) -> Content:
             self.progress.record_ungraded(results, "transfer")
-            by_goal = {c.task.goal: c for c in picks}
-            lines = [f"{r.task.goal}  {'  or  '.join(ways)}" for r in results
-                     if (ways := transfer.another_way(by_goal[r.task.goal], r.keys, r.status == "solved"))]
-            return Content("Another way\n" + "\n".join(lines)) if lines else Content("")
+            return Content(transfer.note(picks, results))
 
         self.start_lesson(transfer_lesson([c.task for c in picks]), on_results, done)
 
@@ -339,10 +332,7 @@ class VimniscientApp(App):
         mouse_wheel(False)
         run = endless.summary(results, start)
         self.progress.record_endless(results, run)
-        note = (f"Level {run['start']} → {run['level']} · {plural(run['missed'], 'miss', 'misses')}, "
-                f"{run['fixed']} recalled afterwards")
-        if run["level"] > best and run["climbed"]:
-            note += " · a new best!"
+        note = endless.note(run, best)
 
         def after(again: bool) -> None:
             if again:

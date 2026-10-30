@@ -26,6 +26,11 @@ tasks:
           ▮the old key: s is substitute
         target: |-
           the new key: s is substitute
+      - goal: 'Replace "old" with "new" on this line.'
+        start: |-
+          ▮the old word goes: s swaps it
+        target: |-
+          the new word goes: s swaps it
   - goal: 'Use American spelling everywhere.'
     start: |-
       ▮the colour of a vowel
@@ -60,6 +65,14 @@ tasks:
           asterisk starry asterisk
           the asterisk key
         solution: '*:%s//asterisk/g<CR>'
+      - goal: 'Rename the word find (only the whole word) to locate.'
+        start: |-
+          ▮find finder find
+          the find key
+        target: |-
+          locate finder locate
+          the locate key
+        solution: '*:%s//locate/g<CR>'
   - goal: 'Turn "Last, First" into "First Last".'
     start: |-
       ▮Yank, y
@@ -77,6 +90,13 @@ tasks:
         target: |-
           f Find
           t Till
+      - goal: 'Turn "Last, First" into "First Last".'
+        start: |-
+          ▮Delete, d
+          Change, c
+        target: |-
+          d Delete
+          c Change
   - goal: 'Change x to y on the first two lines only.'
     start: |-
       ▮x = 1
@@ -99,6 +119,16 @@ tasks:
           new = 2
           old = 3
         solution: 'Vj:s/old/new<CR>'
+      - goal: 'Change stale to new on the first two lines only.'
+        start: |-
+          ▮stale = 1
+          stale = 2
+          stale = 3
+        target: |-
+          new = 1
+          new = 2
+          stale = 3
+        solution: 'Vj:s/stale/new<CR>'
   - goal: 'Delete every comment line.'
     generate: comments
     start: |-
@@ -140,6 +170,14 @@ tasks:
         target: |-
           error: no target
           error: bad key
+      - start: |-
+          ▮error: no hook
+          info: ok
+          error: bad mark
+          note: fine
+        target: |-
+          error: no hook
+          error: bad mark
   - goal: 'Add a semicolon to every put line, but not to the comment.'
     start: |-
       ▮put(a)
@@ -162,3 +200,13 @@ tasks:
           # skip
           yank(y);
         solution: ':g/yank/norm A;<CR>'
+      - goal: 'Add a semicolon to every print line, but not to the comment.'
+        start: |-
+          ▮print(x)
+          # skip
+          print(y)
+        target: |-
+          print(x);
+          # skip
+          print(y);
+        solution: ':g/print/norm A;<CR>'

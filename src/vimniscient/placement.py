@@ -11,6 +11,15 @@ from vimniscient.cards import has_lazyvim
 from vimniscient.lessons import Lesson, Task
 
 
+NEXT_ROUND = "That round is done. The next one follows from how it went."
+
+
+def note(known: list[Lesson]) -> str:
+    if not known:
+        return "No lessons skipped. Start from Week 1 · Day 1."
+    return "Known already: " + ", ".join(f"{lesson.label} ({lesson.title})" for lesson in known)
+
+
 class Search:
     def __init__(self, lessons: list[Lesson], lazyvim: bool | None = None) -> None:
         self.lessons = lessons

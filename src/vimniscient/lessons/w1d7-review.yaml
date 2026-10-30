@@ -58,6 +58,13 @@ tasks:
         target: |-
           ci_paren(inside)
         solution: 'ci(inside<Esc>'
+      - goal: 'Replace all three arguments with new.'
+        ft: python
+        start: |-
+          args(▮old, old, old)
+        target: |-
+          args(new)
+        solution: 'ci(new<Esc>'
   - goal: 'Delete the wrong sentence.'
     start: |-
       d deletes. ▮y means yell. c changes.
@@ -96,6 +103,17 @@ tasks:
         target: |-
           import yank
           import put
+      - goal: 'Delete the cut_one and cut_two imports.'
+        ft: python
+        start: |-
+          import two
+          ▮import cut_one
+          import cut_two
+          import dd
+        target: |-
+          import two
+          import dd
+        solution: '2dd'
   - goal: 'Change the subdomain to www.'
     start: |-
       url = 'https://▮old.vimhelp.org'
@@ -133,3 +151,14 @@ tasks:
           def put():
               text = yanked
               return text
+      - goal: 'Indent the body of the function.'
+        ft: python
+        start: |-
+          def indent():
+          ▮push = ">"
+          return push
+        target: |-
+          def indent():
+              push = ">"
+              return push
+        solution: '>j'

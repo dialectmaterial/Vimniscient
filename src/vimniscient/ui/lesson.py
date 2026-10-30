@@ -14,7 +14,7 @@ from textual.screen import Screen
 from textual.widgets import Markdown, Static
 
 from vimniscient.lessons import Lesson
-from vimniscient.diagnose import diagnose
+from vimniscient.diagnose import diagnose, results_summary
 from vimniscient.mnemonics import hooks
 from vimniscient.session import TaskResult
 from vimniscient.ui.common import (
@@ -147,16 +147,11 @@ class ResultsScreen(Screen):
         recall = [r for r in results if r.task.phase != "learn"]
         two_rounds = len(recall) < len(results)
         solved = sum(r.status == "solved" for r in recall)
-        beat = sum(r.status == "solved" and r.count < r.task.ref for r in recall)
         panel = self.query_one("#results-panel")
         panel.border_title = f"{self.lesson.label} · {self.lesson.title}" if self.lesson.week else self.lesson.title
         panel.border_subtitle = self.subtitle or (f"{solved}/{len(recall)} recalled" if two_rounds else f"{solved}/{len(recall)} solved")
         self.query_one("#results-bar", Static).update(progress_bar(solved, len(recall)))
-        verb = "recalled" if two_rounds else "solved"
-        times = sorted(r.seconds for r in recall if r.status == "solved" and r.seconds is not None)
-        typical = f" · {times[len(times) // 2]:.1f}s a task" if times else ""  # the median
-        self.query_one("#results-summary", Static).update(
-            f"{solved} of {len(recall)} {verb}" + (f" · {beat} beat the reference" if beat else "") + typical)
+        self.query_one("#results-summary", Static).update(results_summary(results))
 
         budgets = any(r.budget for r in results)
         table = Table(box=None, show_header=True, header_style="dim", expand=True, padding=(0, 1, 0, 0), pad_edge=False)

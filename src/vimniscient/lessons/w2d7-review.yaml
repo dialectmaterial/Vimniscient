@@ -24,6 +24,12 @@ tasks:
           ▮star = next(star)
         target: |-
           STAR = next(STAR)
+      - goal: 'Uppercase every standalone "word".'
+        hint: '* finds the other whole-word word; gUiw, then n and . for the first one.'
+        start: |-
+          ▮word = find(word)
+        target: |-
+          WORD = find(WORD)
   - goal: 'Add one to every number.'
     start: |-
       ▮add1 add2 add3
@@ -37,6 +43,11 @@ tasks:
           ▮dot1 dot2 dot3
         target: |-
           dot2 dot3 dot4
+      - goal: 'Add one to every number.'
+        start: |-
+          ▮bump1 bump2 bump3
+        target: |-
+          bump2 bump3 bump4
   - goal: 'Fix every "teh".'
     start: |-
       ▮teh dot repeats teh change for teh rest
@@ -50,6 +61,11 @@ tasks:
           ▮teh star, teh match, teh change
         target: |-
           the star, the match, the change
+      - goal: 'Fix every "teh".'
+        start: |-
+          ▮teh word, teh fix, teh change
+        target: |-
+          the word, the fix, the change
   - goal: 'Lowercase the whole line.'
     start: |-
       ▮V THEN U LOWERS THE LINE
@@ -62,6 +78,10 @@ tasks:
           ▮LOWER THE WHOLE LINE
         target: |-
           lower the whole line
+      - start: |-
+          ▮SELECT THE LINE THEN LOWER IT
+        target: |-
+          select the line then lower it
   - goal: 'Delete up to "Hitting".'
     start: |-
       ▮well, the thing is: Hitting t stops one short
@@ -76,6 +96,12 @@ tasks:
         target: |-
           Hold on: t stops before the H
         hint: 't is case-sensitive, and the first capital H is in Hold, so dtH.'
+      - goal: 'Delete up to "Hop".'
+        start: |-
+          ▮um, so, basically: Hop: dt stops just before
+        target: |-
+          Hop: dt stops just before
+        hint: 't is case-sensitive, and the first capital H is in Hop, so dtH.'
   - goal: 'Comment out all three lines with "# ".'
     ft: python
     start: |-
@@ -97,3 +123,14 @@ tasks:
           # big_i = 1
           # start = 2
           # dot = 3
+      - goal: 'Comment out all three lines with "# ".'
+        ft: python
+        start: |-
+          ▮dot = 1
+          then = 2
+          again = 3
+        target: |-
+          # dot = 1
+          # then = 2
+          # again = 3
+        solution: 'I# <Esc>j.j.'

@@ -26,6 +26,12 @@ tasks:
         target: |-
           a(between, argument, commas)
         solution: 'ciaargument<Esc>'
+      - goal: 'Change "old" to "new".'
+        start: |-
+          args(first, ▮old, last)
+        target: |-
+          args(first, new, last)
+        solution: 'cianew<Esc>'
   - goal: 'Delete the middle argument and its comma.'
     ft: python
     start: |-
@@ -39,6 +45,10 @@ tasks:
           args(first, ▮comma_too, last)
         target: |-
           args(first, last)
+      - start: |-
+          ia(first, ▮gone, last)
+        target: |-
+          ia(first, last)
   - goal: 'Delete the last argument.'
     ft: python
     start: |-
@@ -52,6 +62,10 @@ tasks:
           args(one, two, ▮gone)
         target: |-
           args(one, two)
+      - start: |-
+          aa(one, two, ▮tail)
+        target: |-
+          aa(one, two)
   - goal: 'Drop the arg parameter.'
     ft: python
     start: |-
@@ -66,6 +80,13 @@ tasks:
           def drop(self, ▮param, other):
         target: |-
           def drop(self, other):
+      - goal: 'Drop the param parameter.'
+        ft: python
+        start: |-
+          def remove(self, ▮param, stays):
+        target: |-
+          def remove(self, stays):
+        solution: 'daa'
   - goal: 'Change the first argument to hook, starting from the beginning of the line.'
     ft: python
     start: |-
@@ -80,4 +101,10 @@ tasks:
           ▮args(first, second)
         target: |-
           args(hook, second)
+        solution: 'ciahook<Esc>'
+      - goal: 'Change the old argument to "hook", from the start of the line.'
+        start: |-
+          ▮aa(old, stay)
+        target: |-
+          aa(hook, stay)
         solution: 'ciahook<Esc>'

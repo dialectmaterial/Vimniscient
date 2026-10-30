@@ -1,0 +1,108 @@
+[
+ {
+  "keys": "jjjjdd",
+  "normal": [
+   [
+    "j",
+    "j",
+    "j",
+    "j"
+   ]
+  ],
+  "says": "j 4 times in a row: a count gets there in one go."
+ },
+ {
+  "keys": "llllldw",
+  "normal": [
+   [
+    "l",
+    "l",
+    "l",
+    "l",
+    "l"
+   ]
+  ],
+  "says": "l 5 times in a row: f, t, / or a count gets there in one go."
+ },
+ {
+  "keys": "xxxx",
+  "normal": [
+   [
+    "x",
+    "x",
+    "x",
+    "x"
+   ]
+  ],
+  "says": "x over and over: a count, dw or diw takes it all at once."
+ },
+ {
+  "keys": "A;<Esc>jA;<Esc>jA;<Esc>j",
+  "normal": [
+   [
+    "j"
+   ],
+   [
+    "j"
+   ],
+   [
+    "j"
+   ]
+  ],
+  "says": "You typed A;<Esc>j three times: . repeats the last change."
+ },
+ {
+  "keys": "ciwhellllllo<Esc>",
+  "normal": [],
+  "says": ""
+ },
+ {
+  "keys": "llrxllrxll",
+  "normal": [
+   [
+    "l",
+    "l"
+   ],
+   [
+    "l",
+    "l"
+   ],
+   [
+    "l",
+    "l"
+   ]
+  ],
+  "says": ""
+ },
+ {
+  "keys": "/jjjjjj<CR>dd",
+  "normal": [],
+  "says": ""
+ },
+ {
+  "keys": "qaxqjjj",
+  "normal": [
+   [
+    "x"
+   ],
+   [
+    "j",
+    "j",
+    "j"
+   ]
+  ],
+  "says": ""
+ },
+ {
+  "keys": "vjjjcjjjjjj<Esc>",
+  "normal": [
+   [
+    "v",
+    "j",
+    "j",
+    "j"
+   ]
+  ],
+  "says": ""
+ }
+]

@@ -32,6 +32,14 @@ tasks:
         target: |-
 
           below a block.
+      - start: |-
+          ▮d} cuts
+          up to the gap
+
+          this stays.
+        target: |-
+
+          this stays.
   - goal: 'Join the two halves of the compound with no space.'
     start: |-
       ▮no
@@ -46,6 +54,13 @@ tasks:
           join
         target: |-
           gjoin
+      - goal: 'Join the two halves of the compound without a J.'
+        start: |-
+          ▮g
+          J
+        target: |-
+          gJ
+        solution: 'gJ'
   - goal: 'Delete from here to the end of the file.'
     generate: delete-to-end
     start: |-
@@ -76,6 +91,10 @@ tasks:
           x cuts, p p▮tus it back
         target: |-
           x cuts, p puts it back
+      - start: |-
+          x cuts, p p▮tus it after
+        target: |-
+          x cuts, p puts it after
   - goal: 'Delete everything before the cursor.'
     start: |-
       well, um, ▮0 is column zero
@@ -88,3 +107,9 @@ tasks:
           um, ▮d0 deletes back to column zero
         target: |-
           d0 deletes back to column zero
+      - goal: 'Delete everything before the cursor.'
+        start: |-
+          so, er, ▮d0 goes to zero
+        target: |-
+          d0 goes to zero
+        solution: 'd0'

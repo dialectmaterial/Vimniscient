@@ -72,6 +72,14 @@ tasks:
           Ctrl-v
           cuts a
           block
+      - start: |-
+          ▮1 | block
+          2 | mode
+          3 | cuts
+        target: |-
+          block
+          mode
+          cuts
   - goal: 'Number the lines 1, 2, 3.'
     start: |-
       ▮0. Ctrl-v
@@ -92,6 +100,14 @@ tasks:
           1. record
           2. stop
           3. replay
+      - start: |-
+          ▮0. first
+          0. second
+          0. third
+        target: |-
+          1. first
+          2. second
+          3. third
   - goal: 'Change every "block" to "cut" at once.'
     start: |-
       ▮block: line 1
@@ -113,4 +129,14 @@ tasks:
           block: line 1
           block: line 2
           block: line 3
+        solution: '<C-v>jjecblock<Esc>'
+      - goal: 'Change every "draft" to "block" at once.'
+        start: |-
+          ▮draft: row 1
+          draft: row 2
+          draft: row 3
+        target: |-
+          block: row 1
+          block: row 2
+          block: row 3
         solution: '<C-v>jjecblock<Esc>'

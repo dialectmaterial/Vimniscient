@@ -33,6 +33,16 @@ tasks:
           c(match)
           dot(match)
         solution: '*cgnmatch<Esc>..'
+      - goal: 'Rename every x to match.'
+        start: |-
+          ▮x = star()
+          next(x)
+          dot(x)
+        target: |-
+          match = star()
+          next(match)
+          dot(match)
+        solution: '*cgnmatch<Esc>..'
   - goal: 'Change the first and the last "the" to "a", keep the middle one.'
     start: |-
       ▮the change, the skip and the repeat
@@ -45,6 +55,12 @@ tasks:
           ▮the star, the next and the dot
         target: |-
           a star, the next and a dot
+      - goal: 'Change the first and the last "the" to "a", keep the middle one.'
+        start: |-
+          ▮the find, the pass and the dot
+        target: |-
+          a find, the pass and a dot
+        solution: '*Ncgna<Esc>nn.'
   - goal: 'Replace "the last" with "the next" on both lines.'
     start: |-
       ▮gn goes to the last match.
@@ -63,6 +79,14 @@ tasks:
           cgn changes the next match.
           The dot changes the next match.
         solution: '/one match<CR>cgnthe next match<Esc>.'
+      - goal: 'Replace "one match" with "the next match" on both lines.'
+        start: |-
+          ▮gn finds one match.
+          Dot repeats on one match.
+        target: |-
+          gn finds the next match.
+          Dot repeats on the next match.
+        solution: '/one match<CR>cgnthe next match<Esc>.'
   - goal: 'Change all four match to dot.'
     start: |-
       cgn ▮match; cgn match; cgn match; cgn match
@@ -76,6 +100,12 @@ tasks:
           say ▮it; say it; say it; say it
         target: |-
           say again; say again; say again; say again
+        solution: '*cgnagain<Esc>...'
+      - goal: 'Change all four it to again.'
+        start: |-
+          do i▮t; do it; do it; do it
+        target: |-
+          do again; do again; do again; do again
         solution: '*cgnagain<Esc>...'
   - goal: 'Delete every "um, ".'
     start: |-
@@ -91,3 +121,9 @@ tasks:
         target: |-
           dgn deletes every match in turn.
         solution: '/so, <CR>dgn..'
+      - goal: 'Delete every "er, ".'
+        start: |-
+          dgn ▮er, cuts er, the next match er, each time.
+        target: |-
+          dgn cuts the next match each time.
+        solution: '/er, <CR>dgn..'

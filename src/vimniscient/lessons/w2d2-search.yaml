@@ -51,6 +51,12 @@ tasks:
         target: |-
           Slash leans forward
         solution: 'd/S<CR>'
+      - goal: 'Delete the hedging before "So".'
+        start: |-
+          ▮um, well, so, So d/ goes till it
+        target: |-
+          So d/ goes till it
+        solution: 'd/S<CR>'
   - goal: 'Rename the second "starred" to found.'
     ft: python
     start: |-
@@ -70,6 +76,15 @@ tasks:
           star = "*"
           found = match
         solution: '*ciwmatch<Esc>'
+      - goal: 'Rename the second "marked" to found.'
+        ft: python
+        start: |-
+          ▮marked = "this word"
+          then = marked
+        target: |-
+          marked = "this word"
+          then = found
+        solution: '*ciwfound<Esc>'
   - goal: 'Delete the third "next".'
     start: |-
       n means ▮next, and N means the next next one back.
@@ -101,4 +116,10 @@ tasks:
           ? asks backward; / leans forward; ? looks forward from the en▮d.
         target: |-
           ? asks backward; / leans forward; ? looks backward from the end.
+        solution: '?fo<CR>cwbackward<Esc>'
+      - goal: 'Change the last "forward" to "backward", searching backwards.'
+        start: |-
+          the slash goes forward; ? asks forward, from the en▮d.
+        target: |-
+          the slash goes forward; ? asks backward, from the end.
         solution: '?fo<CR>cwbackward<Esc>'

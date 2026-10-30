@@ -100,6 +100,18 @@ tasks:
           so these come first
           $ is the last line
           :m moves
+      - goal: 'Move the first two lines to the end.'
+        start: |-
+          ▮:m is move
+          lines 1 and 2
+          to the bottom:
+          $ is the last line
+        target: |-
+          to the bottom:
+          $ is the last line
+          :m is move
+          lines 1 and 2
+        solution: ':1,2m$<CR>'
   - goal: 'Reverse the order of the lines.'
     generate: reverse
     start: |-

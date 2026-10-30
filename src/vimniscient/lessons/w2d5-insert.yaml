@@ -31,6 +31,15 @@ tasks:
           o goes below
           O goes above
         solution: 'oo goes below<Esc>'
+      - goal: 'Add the line "below" between them.'
+        start: |-
+          ▮o makes room
+          O makes room above
+        target: |-
+          o makes room
+          below
+          O makes room above
+        solution: 'obelow<Esc>'
   - goal: 'Add the line "O opened this one above" above.'
     start: |-
       ▮this line
@@ -47,6 +56,13 @@ tasks:
           O opens above
           below
         solution: 'OO opens above<Esc>'
+      - goal: 'Add the line "O opens above" above.'
+        start: |-
+          ▮this stays
+        target: |-
+          O opens above
+          this stays
+        solution: 'OO opens above<Esc>'
   - goal: 'Fix "append" to "appends".'
     start: |-
       e goes to the end, and a ▮append after it.
@@ -60,6 +76,12 @@ tasks:
           e moves, then a ▮append after the word.
         target: |-
           e moves, then a appends after the word.
+      - goal: 'Fix "append" to "appends".'
+        start: |-
+          e lands on the last letter, and a ▮append after it.
+        target: |-
+          e lands on the last letter, and a appends after it.
+        solution: 'eas<Esc>'
   - goal: 'Underline the title with five = signs.'
     start: |-
       5i= types five
@@ -77,6 +99,14 @@ tasks:
         target: |-
           A count repeats i
           =====
+      - goal: 'Underline the title with five = signs.'
+        start: |-
+          Five = signs from 5i=
+          ▮
+        target: |-
+          Five = signs from 5i=
+          =====
+        solution: '5i=<Esc>'
   - goal: 'Type the date 2026-10-26 over the zeros.'
     start: |-
       R overwrites: ▮0000-00-00
@@ -91,6 +121,12 @@ tasks:
         target: |-
           R is Replace mode: 2026-11-02
         solution: 'R2026-11-02<Esc>'
+      - goal: 'Type the date 2026-10-26 over the zeros.'
+        start: |-
+          Replace mode types over: ▮0000-00-00
+        target: |-
+          Replace mode types over: 2026-10-26
+        solution: 'R2026-10-26<Esc>'
   - goal: 'Fix "keplaces" to "replaces".'
     start: |-
       r ▮keplaces one letter
@@ -105,3 +141,9 @@ tasks:
         target: |-
           The dot command repeats
         solution: 'rd'
+      - goal: 'Fix "keplaces" to "replaces".'
+        start: |-
+          r ▮keplaces a single letter
+        target: |-
+          r replaces a single letter
+        solution: 'rr'

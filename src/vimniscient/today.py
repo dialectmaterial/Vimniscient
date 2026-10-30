@@ -146,6 +146,12 @@ def todays_work(progress: Progress, lessons: list[Lesson], decks: dict[str, Deck
     )
 
 
+def left_text(steps: list[Step], budget: int) -> str:
+    """The Today pane's footer."""
+    left_over = sum(step.minutes for step in left(steps))
+    return "all done" if not left_over else f"about {left_over} of {budget} min left" if left_over <= budget else f"about {left_over} min left"
+
+
 def plan(progress: Progress, lessons: list[Lesson], decks: dict[str, Deck], drill_list: list[drills.Drill],
          work: Work | None = None) -> list[Step]:
     """Today's steps in order, then Endless."""

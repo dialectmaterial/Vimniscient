@@ -25,6 +25,9 @@ class Mission:
     targets: dict[str, str]
     ways: list[str]
 
+    def note(self, solved: bool) -> str:
+        return ("Another way\n" if solved else "Ways to do it\n") + "\n".join(self.ways)
+
     @property
     def task(self) -> Task:
         return Task(goal=self.goal, start=[""], cursor=(1, 0), target=[""], solution="—", hint=self.hint, ft="",

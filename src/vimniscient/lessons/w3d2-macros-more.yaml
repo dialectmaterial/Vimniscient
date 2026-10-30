@@ -33,6 +33,16 @@ tasks:
           y skip
           z TODO RECORD this
           w TODO PLAY that
+      - start: |-
+          ▮x TODO run it
+          y skip
+          z TODO find this
+          w TODO fix that
+        target: |-
+          x TODO RUN it
+          y skip
+          z TODO FIND this
+          w TODO FIX that
   - goal: 'Turn every comma into " | ", using @a once and then @@.'
     start: |-
       ▮q,record
@@ -53,6 +63,14 @@ tasks:
           key | hook
           f | find
           t | till
+      - start: |-
+          ▮verb,hook
+          d,delete
+          c,change
+        target: |-
+          verb | hook
+          d | delete
+          c | change
   - goal: 'Put every line in parentheses: record on the first line, then use :norm for the rest.'
     start: |-
       ▮record
@@ -77,6 +95,16 @@ tasks:
           (@a)
           (@@)
           (norm)
+      - start: |-
+          ▮q
+          @a
+          again
+          dot
+        target: |-
+          (q)
+          (@a)
+          (again)
+          (dot)
   - goal: 'Make a numbered list of four items.'
     start: |-
       ▮1. Copy the line, add one.
@@ -95,3 +123,10 @@ tasks:
           2. Record, then replay.
           3. Record, then replay.
           4. Record, then replay.
+      - start: |-
+          ▮1. Yank, put, add one.
+        target: |-
+          1. Yank, put, add one.
+          2. Yank, put, add one.
+          3. Yank, put, add one.
+          4. Yank, put, add one.

@@ -23,6 +23,10 @@ tasks:
           ▮comment = "gc"
         target: |-
           # comment = "gc"
+      - start: |-
+          ▮note = "gc"
+        target: |-
+          # note = "gc"
   - goal: 'Uncomment the line.'
     ft: python
     start: |-
@@ -36,6 +40,10 @@ tasks:
           # ▮gcc = True
         target: |-
           gcc = True
+      - start: |-
+          # ▮toggle = True
+        target: |-
+          toggle = True
   - goal: 'Comment out this line and the next.'
     ft: python
     start: |-
@@ -56,6 +64,14 @@ tasks:
         target: |-
           # comment = 1
           # two = 2
+          stays = 3
+      - start: |-
+          ▮c = 1
+          j = 2
+          stays = 3
+        target: |-
+          # c = 1
+          # j = 2
           stays = 3
   - goal: 'Comment out the first block.'
     ft: python
@@ -82,6 +98,16 @@ tasks:
           # ip = 2
 
           stays = 3
+      - start: |-
+          ▮go = 1
+          comment = 2
+
+          stays = 3
+        target: |-
+          # go = 1
+          # comment = 2
+
+          stays = 3
   - goal: 'Comment out the JavaScript line (a different comment style).'
     ft: javascript
     start: |-
@@ -95,3 +121,7 @@ tasks:
           ▮let gcc = true;
         target: |-
           // let gcc = true;
+      - start: |-
+          ▮let comment = true;
+        target: |-
+          // let comment = true;

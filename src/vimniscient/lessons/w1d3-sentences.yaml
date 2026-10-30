@@ -35,6 +35,19 @@ tasks:
           a is around: the paragraph and the blank line after it.
 
           One gap stays.
+      - goal: 'Delete the middle paragraph.'
+        start: |-
+          a paragraph runs to the blank line.
+
+          This block goes▮.
+          All of it.
+
+          It leaves no double gap behind.
+        target: |-
+          a paragraph runs to the blank line.
+
+          It leaves no double gap behind.
+        solution: 'dap'
   - goal: 'Duplicate the first paragraph.'
     start: |-
       ▮yap yanks a paragraph; P puts it above.
@@ -59,6 +72,18 @@ tasks:
           P puts above, p puts below.
 
           Done.
+      - goal: 'Duplicate the first paragraph.'
+        start: |-
+          ▮y yanks, a is around, p is paragraph.
+
+          Done.
+        target: |-
+          y yanks, a is around, p is paragraph.
+
+          y yanks, a is around, p is paragraph.
+
+          Done.
+        solution: 'yapP'
   - goal: 'Fix the wrong sentence: it should say "A sentence ends at a full stop."'
     start: |-
       s is for sentence. A sentence ends at a ▮comma. cis changes just one.
@@ -73,6 +98,12 @@ tasks:
         target: |-
           cis keeps the spaces. The i means inner. das takes one along.
         solution: 'cisThe i means inner.<Esc>'
+      - goal: 'Fix the wrong sentence: it should say "A sentence ends at a full stop."'
+        start: |-
+          c changes. A sentence ends at a ▮comma. The next one stays.
+        target: |-
+          c changes. A sentence ends at a full stop. The next one stays.
+        solution: 'cisA sentence ends at a full stop.<Esc>'
   - goal: 'Delete the middle sentence.'
     start: |-
       das deletes a sentence. This one ▮is wrong. Its space goes too.
@@ -85,6 +116,12 @@ tasks:
           a is around: a sentence and its space. This sentence ▮is spare. The next one moves up.
         target: |-
           a is around: a sentence and its space. The next one moves up.
+      - goal: 'Delete the middle sentence.'
+        start: |-
+          d deletes. This sent▮ence goes. a takes the space.
+        target: |-
+          d deletes. a takes the space.
+        solution: 'das'
   - goal: 'Indent the three lines.'
     start: |-
       What ip covers:
@@ -114,3 +151,17 @@ tasks:
               one
               two
               three
+      - goal: 'Indent the three lines.'
+        start: |-
+          i is inner, p is paragraph:
+
+          ▮the block
+          the block
+          then > indents
+        target: |-
+          i is inner, p is paragraph:
+
+              the block
+              the block
+              then > indents
+        solution: '>ip'

@@ -39,6 +39,12 @@ tasks:
         target: |-
           let f = "find"; let t = "till";
         solution: 'ct;"find"<Esc>'
+      - goal: 'Change the value to "till" (keep the semicolon).'
+        start: |-
+          let dt = ▮"lands"; let df = "find";
+        target: |-
+          let dt = "till"; let df = "find";
+        solution: 'ct;"till"<Esc>'
   - goal: 'Keep only the folder path: delete the file name.'
     start: |-
       lessons/week-1/till/backwards.ya▮ml
@@ -51,6 +57,12 @@ tasks:
           vim/motions/capital-T/goes-back.tx▮t
         target: |-
           vim/motions/capital-T/
+      - goal: 'Keep only the folder path: delete the file name.'
+        start: |-
+          keys/capital/T/looks-back.m▮d
+        target: |-
+          keys/capital/T/
+        solution: 'T/D'
   - goal: 'Turn the third comma into a semicolon.'
     start: |-
       ▮count, then f, then the comma, done
@@ -63,6 +75,12 @@ tasks:
           ▮f, t, F, T
         target: |-
           f, t, F; T
+      - goal: 'Turn the third comma into a semicolon.'
+        start: |-
+          ▮one, two, three, then r
+        target: |-
+          one, two, three; then r
+        solution: '3f,r;'
   - goal: 'Replace the whole before(char) call with on_it.'
     ft: python
     start: |-
@@ -78,6 +96,13 @@ tasks:
         target: |-
           t_stops = till  # one short of it
         solution: 'ct till<Esc>'
+      - goal: 'Replace the whole past(char) call with till_it.'
+        ft: python
+        start: |-
+          ct_stops = ▮past(char)  # ct stops at the space
+        target: |-
+          ct_stops = till_it  # ct stops at the space
+        solution: 'ct till_it<Esc>'
   - goal: 'Delete the part in brackets: from the cursor up to and including the ")".'
     start: |-
       f lands on▮ (not before) the letter.
@@ -90,3 +115,9 @@ tasks:
           F finds backwards▮ (to the left) on the line.
         target: |-
           F finds backwards on the line.
+      - goal: 'Delete the part in brackets: from the cursor up to and including the ")".'
+        start: |-
+          df deletes▮ (through) the letter.
+        target: |-
+          df deletes the letter.
+        solution: 'df)'

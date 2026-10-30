@@ -48,10 +48,11 @@ CASES = [
 ]
 
 failed = 0
-for typed, expected, style, case, want in CASES:
-    got = is_correct(typed, expected, style, case)
-    if got != want:
-        failed += 1
-        print(f"FAIL {typed!r} vs {expected} ({style}): got {got}, want {want}")
-print(f"{len(CASES)} cases, {failed} failed")
-sys.exit(1 if failed else 0)
+if __name__ == "__main__":
+    for typed, expected, style, case, want in CASES:
+        got = is_correct(typed, expected, style, case)
+        if got != want:
+            failed += 1
+            print(f"FAIL {typed!r} vs {expected} ({style}): got {got}, want {want}")
+    print(f"{len(CASES)} cases, {failed} failed")
+    sys.exit(1 if failed else 0)

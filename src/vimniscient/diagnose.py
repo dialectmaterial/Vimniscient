@@ -84,6 +84,17 @@ def normal_keys(keys: str) -> list[list[str]]:
     return [*runs, run] if run else runs
 
 
+def results_summary(results: list) -> str:
+    """One line on how a run went: solved, beat the reference, the median time."""
+    recall = [r for r in results if r.task.phase != "learn"]
+    solved = [r for r in recall if r.status == "solved"]
+    beat = sum(r.count < r.task.ref for r in solved)
+    times = sorted(r.seconds for r in solved if r.seconds is not None)
+    verb = "recalled" if len(recall) < len(results) else "solved"
+    return (f"{len(solved)} of {len(recall)} {verb}" + (f" · {beat} beat the reference" if beat else "")
+            + (f" · {times[len(times) // 2]:.1f}s a task" if times else ""))
+
+
 def _longest_run(runs: list[list[str]], wanted: set[str]) -> tuple[str, int]:
     best, length = "", 0
     for tokens in runs:

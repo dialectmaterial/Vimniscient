@@ -35,6 +35,10 @@ def how_many(minutes: int, typical: float | None) -> int:
     return max(2, round(minutes * 60 / (typical or TASK_SECONDS)))
 
 
+def build(skill: str, count: int, found: dict[str, list[Task]], parent: Task, seed: object) -> list[Task]:
+    return navigation(count, parent, seed) if skill == NAVIGATION else tasks(found[skill], count, seed)
+
+
 def navigation(count: int, parent: Task, seed: object) -> list[Task]:
     rng = random.Random(f"nav:{seed}")
     return [parent.generate_kind(rng.choice(NAV_KINDS), f"{seed}:{n}") for n in range(count)]

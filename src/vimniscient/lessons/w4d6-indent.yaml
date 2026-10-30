@@ -35,6 +35,17 @@ tasks:
               inner()
               push()
           }
+      - goal: 'Indent everything inside the braces.'
+        start: |-
+          for braces {
+          ▮left()
+          right()
+          }
+        target: |-
+          for braces {
+              left()
+              right()
+          }
   - goal: 'Remove one level of indentation.'
     start: |2-
               ▮< pulls it back
@@ -47,6 +58,10 @@ tasks:
           ␣       ▮< outdents
         target: |-
           ␣   < outdents
+      - start: |-
+          ␣       ▮< steps left
+        target: |-
+          ␣   < steps left
   - goal: 'Indent both lines by two levels.'
     start: |-
       ▮2> shifts
@@ -63,6 +78,12 @@ tasks:
         target: |-
           ␣       twice
                   the shift
+      - start: |-
+          ▮two
+          levels
+        target: |-
+          ␣       two
+                  levels
   - goal: 'Indent from here to the end of the file.'
     start: |-
       G goes
@@ -82,4 +103,12 @@ tasks:
         target: |-
           G is
               the last
+              line
+      - start: |-
+          G means
+          ▮last
+          line
+        target: |-
+          G means
+              last
               line

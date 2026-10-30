@@ -41,6 +41,12 @@ tasks:
         target: |-
           C is a big c: it changes the rest of the line
         solution: 'Cthe rest of the line<Esc>'
+      - goal: 'Change the rest of the line to "the end of the line".'
+        start: |-
+          C goes big: ▮a little
+        target: |-
+          C goes big: the end of the line
+        solution: 'Cthe end of the line<Esc>'
   - goal: 'Replace the middle line with "cc changes a line".'
     start: |-
       c changes
@@ -62,6 +68,16 @@ tasks:
           dd deletes a line
           cc changes a line
           yy yanks a line
+        solution: 'cccc changes a line<Esc>'
+      - goal: 'Replace the middle line with "cc changes a line".'
+        start: |-
+          p puts a line
+          ▮ww changes a line
+          o opens a line
+        target: |-
+          p puts a line
+          cc changes a line
+          o opens a line
         solution: 'cccc changes a line<Esc>'
   - goal: 'Join the two lines.'
     generate: J-split
@@ -134,3 +150,10 @@ tasks:
           start = ▮"I goes to the first letter"
         target: |-
           # start = "I goes to the first letter"
+      - goal: 'Comment the line out with "# ".'
+        ft: python
+        start: |-
+          big_i = ▮"capital I starts the line"
+        target: |-
+          # big_i = "capital I starts the line"
+        solution: 'I# <Esc>'

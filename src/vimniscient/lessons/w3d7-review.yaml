@@ -32,6 +32,18 @@ tasks:
           [I]
           [A]
           [Esc]
+      - goal: 'Wrap every line in square brackets.'
+        start: |-
+          ▮q
+          a
+          play
+          again
+        target: |-
+          [q]
+          [a]
+          [play]
+          [again]
+        solution: ':%norm I[<C-v><Esc>A]<CR>'
   - goal: 'Prefix every line with "> ".'
     start: |-
       ▮Ctrl-v draws
@@ -52,6 +64,14 @@ tasks:
           > Block it,
           > insert once,
           > Esc copies it.
+      - start: |-
+          ▮Ctrl-v first,
+          then I,
+          Esc fills.
+        target: |-
+          > Ctrl-v first,
+          > then I,
+          > Esc fills.
   - goal: 'Delete the blank lines.'
     start: |-
       ▮:g
@@ -76,6 +96,16 @@ tasks:
           record
           stop
           play
+      - start: |-
+          ▮global
+
+          empty
+
+          delete
+        target: |-
+          global
+          empty
+          delete
   - goal: 'Swap the two halves of every line (key=meaning becomes meaning=key).'
     start: |-
       ▮q=record
@@ -93,6 +123,13 @@ tasks:
         target: |-
           find=f
           till=t
+      - goal: 'Swap the two halves of every line (key=meaning becomes meaning=key).'
+        start: |-
+          ▮c=change
+          d=delete
+        target: |-
+          change=c
+          delete=d
   - goal: 'Duplicate the first line to the end, then delete the second line. Keep the right line in the register.'
     start: |-
       ▮the zero
@@ -113,3 +150,11 @@ tasks:
           the yank
           the delete
           the yank
+      - start: |-
+          ▮zero
+          noise
+          stays
+        target: |-
+          zero
+          stays
+          zero

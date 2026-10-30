@@ -49,6 +49,14 @@ def pick(lessons: list[Lesson], progress, most: int = PER_RUN) -> list[Challenge
     return sorted(open_, key=lambda c: last.get(c.task.index, ""))[:most]
 
 
+def note(picks: list[Challenge], results: list) -> str:
+    """What the results say after a run: another way for each task."""
+    by_goal = {c.task.goal: c for c in picks}
+    lines = [f"{r.task.goal}  {'  or  '.join(ways)}" for r in results
+             if (ways := another_way(by_goal[r.task.goal], r.keys, r.status == "solved"))]
+    return "Another way\n" + "\n".join(lines) if lines else ""
+
+
 def another_way(challenge: Challenge, keys: str, solved: bool) -> list[str]:
     """The ways worth showing after a try: another one, or all of them after a skip."""
     if not solved:

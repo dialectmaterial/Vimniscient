@@ -25,6 +25,12 @@ tasks:
         target: |-
           hook = 'q is quote'
         solution: 'ciqq is quote<Esc>'
+      - goal: 'Change the string to "q is quote".'
+        start: |-
+          note = 'q is qui▮et'
+        target: |-
+          note = 'q is quote'
+        solution: 'ciqq is quote<Esc>'
   - goal: 'Change double to any.'
     ft: python
     start: |-
@@ -37,6 +43,12 @@ tasks:
       - goal: 'Change the string to "any".'
         start: |-
           kind("back▮tick")
+        target: |-
+          kind("any")
+        solution: 'ciqany<Esc>'
+      - goal: 'Change the string to "any".'
+        start: |-
+          kind("sing▮le")
         target: |-
           kind("any")
         solution: 'ciqany<Esc>'
@@ -55,6 +67,12 @@ tasks:
         target: |-
           bracket[any]
         solution: 'cibany<Esc>'
+      - goal: 'Change what is inside the brackets to "any".'
+        start: |-
+          bracket[▮curly + square]
+        target: |-
+          bracket[any]
+        solution: 'cibany<Esc>'
   - goal: 'Empty the argument list, starting from the beginning of the line.'
     ft: python
     start: |-
@@ -66,6 +84,10 @@ tasks:
     variants:
       - start: |-
           ▮b(is, bracket)
+        target: |-
+          b()
+      - start: |-
+          ▮b(any, pair)
         target: |-
           b()
   - goal: 'Delete the first call''s brackets and argument.'
@@ -81,3 +103,7 @@ tasks:
           y = a(▮1) + b(2)
         target: |-
           y = a + b(2)
+      - start: |-
+          z = in▮ner(1) + b(2)
+        target: |-
+          z = inner + b(2)

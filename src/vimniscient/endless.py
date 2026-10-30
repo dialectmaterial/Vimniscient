@@ -49,6 +49,12 @@ def ladder(lessons: list[Lesson], start: int, length: int = RUNGS, seed: object 
     return rungs
 
 
+def note(run: dict[str, int], best: int) -> str:
+    misses = f"{run['missed']} miss" if run["missed"] == 1 else f"{run['missed']} misses"
+    text = f"Level {run['start']} → {run['level']} · {misses}, {run['fixed']} recalled afterwards"
+    return text + " · a new best!" if run["level"] > best and run["climbed"] else text
+
+
 def summary(results: list, start: int) -> dict[str, int]:
     climbed = sum(r.task.phase == "climb" and r.status == "solved" for r in results)
     return {

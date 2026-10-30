@@ -26,6 +26,12 @@ tasks:
         target: |-
           wordElementPart
         solution: 'cieElement<Esc>'
+      - goal: 'Change the sub-camel "Bad" to "Hump".'
+        start: |-
+          camel▮BadCase
+        target: |-
+          camelHumpCase
+        solution: 'cieHump<Esc>'
   - goal: 'Change old to segment in the snake_case name.'
     start: |-
       element_▮old_name
@@ -40,6 +46,12 @@ tasks:
         target: |-
           snake_element_case
         solution: 'cieelement<Esc>'
+      - goal: 'Change the sub-word "bad" to "score".'
+        start: |-
+          under_▮bad_line
+        target: |-
+          under_score_line
+        solution: 'ciescore<Esc>'
   - goal: 'Change the digits to 16000.'
     start: |-
       digits = 44▮100
@@ -53,6 +65,12 @@ tasks:
           d_is_digits = 1▮2
         target: |-
           d_is_digits = 4
+        solution: 'cid4<Esc>'
+      - goal: 'Change the number to 4.'
+        start: |-
+          id_digits = 1▮2
+        target: |-
+          id_digits = 4
         solution: 'cid4<Esc>'
   - goal: 'Replace the whole call with usage.'
     ft: python
@@ -69,6 +87,12 @@ tasks:
         target: |-
           z = 0 - 1
         solution: 'cau0<Esc>'
+      - goal: 'Replace the whole call(f, x) call with 0.'
+        start: |-
+          u = ▮call(f, x) - 1
+        target: |-
+          u = 0 - 1
+        solution: 'cau0<Esc>'
   - goal: 'Replace the entire file with the word global.'
     start: |-
       ▮g is
@@ -84,6 +108,14 @@ tasks:
           ▮everything
           goes
           globally
+        target: |-
+          the whole file
+        solution: 'cagthe whole file<Esc>'
+      - goal: 'Replace the whole buffer with "the whole file".'
+        start: |-
+          ▮a
+          g
+          all
         target: |-
           the whole file
         solution: 'cagthe whole file<Esc>'
@@ -106,3 +138,12 @@ tasks:
           ] adds below
 
           [ adds above
+      - goal: 'Add a blank line below without entering insert mode.'
+        start: |-
+          ▮] is below
+          [ is above
+        target: |-
+          ] is below
+
+          [ is above
+        solution: ']<Space>'

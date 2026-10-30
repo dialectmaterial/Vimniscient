@@ -50,6 +50,14 @@ tasks:
           word
           by
           word
+      - start: |-
+          ▮* each
+          * line
+          * each
+        target: |-
+          each
+          line
+          each
   - goal: 'Comment out the first two lines with "// ".'
     start: |-
       ▮one();
@@ -69,6 +77,14 @@ tasks:
         target: |-
           // norm();
           // insert();
+          keep();
+      - start: |-
+          ▮visual();
+          range();
+          keep();
+        target: |-
+          // visual();
+          // range();
           keep();
   - goal: 'Remove the last character of every line.'
     start: |-

@@ -294,6 +294,7 @@ uv run python tests/check_transfer.py           # Choose: every way solves it in
 uv run python tests/check_quick.py              # quick practice: the right tasks for the time, nothing graded
 uv run python tests/check_missions.py           # missions: every way does the whole job on real files
 uv run python tests/check_placement.py          # placement, the evaluation and doctor
+uv run python tests/make_golden.py --check      # the reference files for the Rust port are up to date
 uv run python tests/live_mission.py             # a mission in your real Neovim, in a hidden tmux session
 uv run python tests/check_today.py              # the daily budget, SRS scheduling, card introductions, hardtime
 uv run python tests/check_app.py                # every screen, driven headless
