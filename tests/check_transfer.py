@@ -50,7 +50,7 @@ first = transfer.pick(lessons, p)
 if len(first) != transfer.PER_RUN:
     problems.append(f"picked {len(first)}")
 items = p.db.execute("SELECT COUNT(*) FROM items").fetchone()
-p.record_transfer([TaskResult(c.task, "solved", c.ways[0], c.task.ref, 0, seconds=3.0, first=1.0) for c in first])
+p.record_ungraded([TaskResult(c.task, "solved", c.ways[0], c.task.ref, 0, seconds=3.0, first=1.0) for c in first], "transfer")
 if {c.task.index for c in transfer.pick(lessons, p)} & {c.task.index for c in first}:
     problems.append("the next run repeats tasks while untried ones wait")
 if p.db.execute("SELECT COUNT(*) FROM items").fetchone() != items:

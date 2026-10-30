@@ -47,6 +47,7 @@ tasks:
         target: |-
           gjoin
   - goal: 'Delete from here to the end of the file.'
+    generate: delete-to-end
     start: |-
       G goes to the end
       ▮so dG

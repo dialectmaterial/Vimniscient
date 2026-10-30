@@ -12,6 +12,7 @@ intro: |
 keys: [v, V, "V>", vU, VJ, "%", c%]
 tasks:
   - goal: 'Delete the first two lines with V.'
+    generate: visual-delete
     start: |-
       ▮delete me
       and me
@@ -42,6 +43,7 @@ tasks:
         target: |-
           U turns VISUAL SELECTIONS up
   - goal: 'Join the first three lines.'
+    generate: visual-join
     start: |-
       ▮J
       joins
@@ -62,6 +64,7 @@ tasks:
           V then J
           joins
   - goal: 'Indent the function body.'
+    generate: visual-indent
     ft: python
     start: |-
       def visual():

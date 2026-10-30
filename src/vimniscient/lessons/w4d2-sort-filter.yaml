@@ -11,6 +11,7 @@ intro: |
 keys: [':sort', ':sort n', ':sort u', ':%!cmd', ':r !cmd']
 tasks:
   - goal: 'Sort the fields.'
+    generate: sort
     start: |-
       ▮sort
       lines
@@ -56,6 +57,7 @@ tasks:
           9 before ten
           10 after nine
   - goal: 'Sort and remove the duplicates.'
+    generate: sort-u
     start: |-
       ▮unique
       sort

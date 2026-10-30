@@ -78,6 +78,11 @@ class Task:
         n %= self.choices
         return self.generate(seed) if n == self.versions else self.version(n)
 
+    def generate_kind(self, kind: str, seed: str) -> "Task":
+        from vimniscient.generate import generate
+
+        return generate(kind, seed, self)
+
     def generate(self, seed: str) -> "Task":
         from vimniscient.generate import generate
 

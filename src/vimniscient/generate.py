@@ -24,6 +24,10 @@ Kinds:
   count-dw    a few filler words; a count on dw
   count-dd    a few filler lines; a count on dd
   count-x     stray x letters; a count on x
+  nav-down, nav-up, nav-find    a # to find and delete: count, then f#, then x
+
+Whole-line kinds, on a few sentences (LINE_KINDS, one line each): the dot,
+visual mode, macros, visual block, and the Ex commands of weeks 3 and 4.
 """
 
 import random
@@ -161,7 +165,93 @@ def _count_x(rng: random.Random) -> dict:
                 target=[sentence], solution=f"{n}x", hint=f"x crosses out a character; {n}x crosses out {n}.")
 
 
+def _lines(rng: random.Random, n: int = 3) -> list[str]:
+    return rng.sample(sentences(), n)
+
+
+def _marked(rng: random.Random, sentence: str) -> str:
+    gap = rng.choice(_gaps(sentence))
+    return sentence[:gap] + "#" + sentence[gap:]
+
+
+def _nav(rng: random.Random, up: bool) -> dict:
+    n = rng.randint(4, 11)
+    lines = rng.choices([s for s in sentences() if _gaps(s)], k=n + 1)
+    far, near = (0, n) if up else (n, 0)
+    start = [*lines]
+    start[far] = _marked(rng, lines[far])
+    keys = f"{n}{'k' if up else 'j'}f#x"
+    return dict(goal="Delete the #.", start=start, cursor=(near + 1, 0), target=lines, solution=keys,
+                hint=f"The line numbers say how far: {n}{'k' if up else 'j'}, then f# and x.")
+
+
+def _nav_find(rng: random.Random) -> dict:
+    sentence = rng.choice([s for s in sentences() if _gaps(s)])
+    return dict(goal="Delete the #.", start=[_marked(rng, sentence)], cursor=(1, 0), target=[sentence], solution="f#x",
+                hint="f# lands on it, x crosses it out.")
+
+
+def _each(rng: random.Random, change, keys: str, goal: str, hint: str, cursor: tuple[int, int] = (1, 0), n: int = 3) -> dict:
+    lines = _lines(rng, n)
+    return dict(goal=goal, start=lines, cursor=cursor, target=[change(line) for line in lines], solution=keys, hint=hint)
+
+
+def _some(rng: random.Random, keys: str, goal: str, hint: str, target, cursor: tuple[int, int] = (1, 0), n: int = 3) -> dict:
+    lines = _lines(rng, n)
+    return dict(goal=goal, start=lines, cursor=cursor, target=target(lines), solution=keys, hint=hint)
+
+
+def _comments(rng: random.Random) -> dict:
+    first, second, third = _lines(rng)
+    return dict(goal="Delete the comment lines.", start=[first, "# cut", second, "# cut", third], cursor=(1, 0),
+                target=[first, second, third], solution=":g/#/d<CR>", hint=":g runs d on every line that matches #.")
+
+
+def _sort(rng: random.Random) -> dict:
+    lines = sorted(_lines(rng))
+    return dict(goal="Sort the lines.", start=lines[::-1], cursor=(1, 0), target=lines, solution=":sort<CR>", hint=":sort sorts every line.")
+
+
+def _sort_u(rng: random.Random) -> dict:
+    first, second = _lines(rng, 2)
+    return dict(goal="Sort the lines and drop the duplicate.", start=[first, second, first], cursor=(1, 0),
+                target=sorted({first, second}), solution=":sort u<CR>", hint="u is unique: :sort u keeps one of each.")
+
+
+def _trailing(rng: random.Random) -> dict:
+    lines = _lines(rng)
+    return dict(goal="Delete the trailing spaces.", start=[line + " " * rng.randint(1, 4) for line in lines], cursor=(1, 0),
+                target=lines, solution=r":%s/\s\+$//<CR>", hint=r"\s\+$ is one or more spaces right before the end of the line.")
+
+
+LINE_KINDS = {
+    "dot-append": lambda r: _each(r, lambda s: s + ";", "A;<Esc>j.j.", "End every line with a semicolon.", "Do one, then j and . for the rest."),
+    "dot-prefix": lambda r: _each(r, lambda s: "- " + s, "I- <Esc>j.j.", 'Start every line with "- ".', "Do one, then j and . for the rest."),
+    "visual-delete": lambda r: _some(r, "Vjd", "Delete the first two lines.", "V selects whole lines, j grows it, d deletes.", lambda ls: ls[2:]),
+    "visual-indent": lambda r: _each(r, lambda s: "    " + s, "Vjj>", "Indent all three lines.", "V, j j, then > pushes them right."),
+    "visual-join": lambda r: _some(r, "VjjJ", "Join all three lines.", "V, j j, then J joins them.", lambda ls: [" ".join(ls)]),
+    "macro-append": lambda r: _each(r, lambda s: s + ";", "qaA;<Esc>jq2@a", "End every line with a semicolon, with a macro.", "qa, the edit and j, q, then 2@a."),
+    "macro-quote": lambda r: _each(r, lambda s: f'"{s}"', 'qaI"<Esc>A"<Esc>jq2@a', "Put every line in double quotes, with a macro.", "qa, the edit and j, q, then 2@a."),
+    "block-prefix": lambda r: _each(r, lambda s: "# " + s, "<C-v>jjI# <Esc>", 'Start every line with "# ".', "Ctrl-v j j, then I types on every line."),
+    "block-append": lambda r: _each(r, lambda s: s + ";", "<C-v>jj$A;<Esc>", "End every line with a semicolon.", "$ stretches the block to every line's end; A appends."),
+    "move-top": lambda r: _some(r, ":m0<CR>", "Move the last line to the top.", ":m0 moves this line below line 0.", lambda ls: [ls[2], ls[0], ls[1]], (3, 0)),
+    "copy-end": lambda r: _some(r, ":t$<CR>", "Copy the first line to the end.", ":t$ copies this line below the last one.", lambda ls: [*ls, ls[0]]),
+    "range-delete": lambda r: _some(r, ":2,3d<CR>", "Delete lines 2 and 3 without moving.", "A range in front of d: :2,3d.", lambda ls: [ls[0], ls[3]], n=4),
+    "reverse": lambda r: _some(r, ":g/^/m0<CR>", "Reverse the lines.", ":g/^/ visits every line; m0 moves each to the top.", lambda ls: ls[::-1]),
+    "sort": lambda r: _sort(r),
+    "norm-append": lambda r: _each(r, lambda s: s + ";", ":%norm A;<CR>", "End every line with a semicolon.", ":%norm runs A; on every line."),
+    "sub-prefix": lambda r: _each(r, lambda s: "- " + s, ":%s/^/- /<CR>", "Make every line a list item.", "^ matches the start of each line."),
+    "comments": _comments,
+    "sort-u": _sort_u,
+    "trailing": _trailing,
+    "delete-to-end": lambda r: _some(r, "dG", "Delete everything but the first line.", "G goes to the last line, so dG takes it all from here.", lambda ls: ls[:1], (2, 0)),
+}
+
 MAKERS = {
+    **LINE_KINDS,
+    "nav-down": lambda rng: _nav(rng, up=False),
+    "nav-up": lambda rng: _nav(rng, up=True),
+    "nav-find": _nav_find,
     "ci-quote": _ci_quote,
     "di-paren": lambda rng: _paren(rng, around=False),
     "da-paren": lambda rng: _paren(rng, around=True),

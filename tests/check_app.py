@@ -114,6 +114,13 @@ async def main() -> None:
         await pilot.press("enter")
         await pilot.pause(0.2)
 
+        await pilot.press("z")
+        await pilot.pause(0.3)
+        check("z opens quick practice", type(app.screen).__name__ == "QuickScreen", type(app.screen).__name__)
+        await pilot.press("escape")
+        await pilot.pause(0.2)
+        check("and esc goes back", isinstance(app.screen, MainScreen), type(app.screen).__name__)
+
         await pilot.press("e")
         await pilot.pause(0.3)
         check("e opens endless's intro", isinstance(app.screen, LessonScreen) and app.screen.lesson.id == "endless")

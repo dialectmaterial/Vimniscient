@@ -100,6 +100,7 @@ tasks:
           old = 3
         solution: 'Vj:s/old/new<CR>'
   - goal: 'Delete every comment line.'
+    generate: comments
     start: |-
       ▮:g is global
       # note to self

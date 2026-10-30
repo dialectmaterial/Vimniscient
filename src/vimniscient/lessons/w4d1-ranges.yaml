@@ -11,6 +11,7 @@ intro: |
 keys: [':2,3d', ':m0', ':t$', ':1,2m$', ':g/^/m0']
 tasks:
   - goal: 'Move the last line to the top.'
+    generate: move-top
     start: |-
       m is move
       0 is the top
@@ -32,6 +33,7 @@ tasks:
           line two
           line three
   - goal: 'Copy the first line to the end of the file.'
+    generate: copy-end
     start: |-
       ▮:t transfers a copy
       to the end:
@@ -53,6 +55,7 @@ tasks:
           to the end
           Transfer
   - goal: 'Delete lines 2 and 3 without moving.'
+    generate: range-delete
     start: |-
       ▮before
       line two
@@ -98,6 +101,7 @@ tasks:
           $ is the last line
           :m moves
   - goal: 'Reverse the order of the lines.'
+    generate: reverse
     start: |-
       ▮m0
       to the top

@@ -12,6 +12,7 @@ intro: |
 keys: ['^', '$', '\s\+$', '\d\+', '&', '\v']
 tasks:
   - goal: 'Delete the trailing spaces.'
+    generate: trailing
     start: |-
       ▮strip␣␣
       spaces␣
@@ -57,6 +58,7 @@ tasks:
         target: |-
           29/10/2026
   - goal: 'Make every line a list item.'
+    generate: sub-prefix
     start: |-
       ▮^ is the start
       $ is the end

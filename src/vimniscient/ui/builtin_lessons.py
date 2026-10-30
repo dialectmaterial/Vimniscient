@@ -36,6 +36,10 @@ def endless_lesson(start: int, best: int) -> Lesson:
     )
 
 
+def quick_lesson(skill: str, tasks: list[Task]) -> Lesson:
+    return Lesson(id="quick", week=0, day=0, title=f"Quick: {skill}", intro="", keys=[], tasks=tasks)
+
+
 def transfer_lesson(tasks: list[Task]) -> Lesson:
     return Lesson(
         id=transfer.LESSON_ID,

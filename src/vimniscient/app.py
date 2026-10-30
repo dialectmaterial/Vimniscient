@@ -8,22 +8,24 @@ Omarchy theme in use (Catppuccin Mocha's own palette by default).
 
 from collections.abc import Callable
 from dataclasses import replace
+from datetime import datetime
 
 from textual.app import App
 from textual.color import Color
 from textual.content import Content
 
-from vimniscient import drills, endless, reminders, today, transfer, vimgolf
+from vimniscient import drills, endless, quick, reminders, today, transfer, vimgolf
 from vimniscient.cards import has_lazyvim, load_decks
 from vimniscient.lessons import Lesson, load_lessons, two_rounds
 from vimniscient.progress import Progress
 from vimniscient.session import COLORS, TaskResult, mouse_wheel, run_endless, run_lesson
-from vimniscient.ui.builtin_lessons import endless_lesson, placement_lesson, review_lesson, transfer_lesson, vimgolf_lesson
+from vimniscient.ui.builtin_lessons import endless_lesson, placement_lesson, quick_lesson, review_lesson, transfer_lesson, vimgolf_lesson
 from vimniscient.ui.cards import CardScreen
 from vimniscient.ui.common import CATPPUCCIN, DEFAULT_THEME, omarchy_theme, plural
 from vimniscient.ui.drills import DrillScreen
 from vimniscient.ui.lesson import LessonScreen, ResultsScreen
 from vimniscient.ui.main import MainScreen
+from vimniscient.ui.quick import QuickScreen
 from vimniscient.ui.stats import StatsScreen
 
 
@@ -45,7 +47,7 @@ class VimniscientApp(App):
 
     #main { height: 1fr; }
     #left { width: 46; max-width: 45%; }
-    #plan { height: 9; }
+    #plan { height: 10; }
     #lesson-list { height: 1fr; }
     #right { width: 1fr; }
     #detail-pane { height: 1fr; }
@@ -189,6 +191,8 @@ class VimniscientApp(App):
         elif step_id == "vimgolf":
             if not progress.vimgolf_done_today():
                 return self.start_vimgolf
+        elif step_id == "quick":
+            return self.start_quick
         elif step_id == "transfer":
             picks = transfer.pick(self.lessons, progress)
             if picks:
@@ -257,12 +261,36 @@ class VimniscientApp(App):
     def action_endless(self) -> None:
         self.run_step("endless", lambda: None)
 
+    def action_quick(self) -> None:
+        self.run_step("quick", lambda: None)
+
+    def start_quick(self, done: Callable[[], None]) -> None:
+        finished = {lesson.id for lesson in self.lessons if self.progress.is_done(lesson)}
+        pools = quick.pools(self.lessons, finished)
+
+        def chosen(choice: tuple[str, int] | None) -> None:
+            if choice is None:
+                done()
+                return
+            skill, minutes = choice
+            count, seed = quick.how_many(minutes, self.progress.typical_task_seconds()), datetime.now().isoformat()
+            tasks = (quick.navigation(count, self.lessons[0].tasks[0], seed) if skill == quick.NAVIGATION
+                     else quick.tasks(pools[skill], count, seed))
+
+            def on_results(results: list[TaskResult]) -> str:
+                self.progress.record_ungraded(results, "quick")
+                return ""
+
+            self.start_lesson(quick_lesson(quick.title(skill), tasks), on_results, done)
+
+        self.push_screen(QuickScreen({skill: len(tasks) for skill, tasks in pools.items()}), chosen)
+
     def action_transfer(self) -> None:
         self.run_step("transfer", lambda: None)
 
     def start_transfer(self, picks: list[transfer.Challenge], done: Callable[[], None]) -> None:
         def on_results(results: list[TaskResult]) -> Content:
-            self.progress.record_transfer(results)
+            self.progress.record_ungraded(results, "transfer")
             by_goal = {c.task.goal: c for c in picks}
             lines = [f"{r.task.goal}  {'  or  '.join(ways)}" for r in results
                      if (ways := transfer.another_way(by_goal[r.task.goal], r.keys, r.status == "solved"))]

@@ -10,6 +10,7 @@ intro: |
 keys: [':%norm A;', ':%norm dw', ":'<,'>norm I", ':%norm $x']
 tasks:
   - goal: 'Append a semicolon to every line.'
+    generate: norm-append
     start: |-
       ▮norm = "normal mode"
       keys = "typed for you"

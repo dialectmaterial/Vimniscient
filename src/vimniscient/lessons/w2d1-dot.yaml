@@ -24,6 +24,7 @@ tasks:
           dot = again + again
         solution: 'ciwagain<Esc>ww.'
   - goal: 'Add a semicolon to every line.'
+    generate: dot-append
     start: |-
       ▮let full_stop = "."
       let again = "."
@@ -73,6 +74,7 @@ tasks:
         target: |-
           The . key repeats your last change.
   - goal: 'Turn the lines into a list with "- ".'
+    generate: dot-prefix
     start: |-
       ▮make one change
       move

@@ -10,6 +10,7 @@ intro: |
 keys: ['<C-v>', '<C-v>I', '<C-v>$A', '<C-v>c', '<C-v>d', 'g<C-a>']
 tasks:
   - goal: 'Comment out the three lines with "# ".'
+    generate: block-prefix
     ft: python
     start: |-
       ▮block = "Ctrl-v"
@@ -31,6 +32,7 @@ tasks:
           # at = "play"
           # dot = "again"
   - goal: 'Add a semicolon to lines of different lengths.'
+    generate: block-append
     start: |-
       ▮d = 1
       dd = 2

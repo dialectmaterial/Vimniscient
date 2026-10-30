@@ -10,6 +10,7 @@ intro: |
 keys: [qa, q, '@a', '3@a', '99@a']
 tasks:
   - goal: 'Add a semicolon to every line, with a macro.'
+    generate: macro-append
     start: |-
       ▮let q = "quill"
       let record = "q"
@@ -34,6 +35,7 @@ tasks:
           let at = "play";
           let dot = "again";
   - goal: 'Put every term in double quotes.'
+    generate: macro-quote
     start: |-
       ▮quill
       record
