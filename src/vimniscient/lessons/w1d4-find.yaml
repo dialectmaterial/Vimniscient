@@ -10,6 +10,7 @@ intro: |
 keys: [f, t, F, T, ";", ",", dt, ct]
 tasks:
   - goal: 'Delete everything up to "just".'
+    generate: dt-letter
     start: |-
       t means till: it stops ▮way way just before the letter.
     target: |-

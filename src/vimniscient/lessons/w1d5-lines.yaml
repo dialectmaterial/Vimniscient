@@ -10,6 +10,7 @@ intro: |
 keys: [D, C, cc, dd, J, ddp, A, I]
 tasks:
   - goal: 'Delete the rest of the line.'
+    generate: D-rest
     start: |-
       D is a big d: it deletes to the end.▮ Everything after the cursor goes.
     target: |-
@@ -62,6 +63,7 @@ tasks:
           yy yanks a line
         solution: 'cccc changes a line<Esc>'
   - goal: 'Join the two lines.'
+    generate: J-split
     start: |-
       ▮J joins this line
       and the next one.
@@ -76,6 +78,7 @@ tasks:
         target: |-
           gJ joins with no space; J adds one.
   - goal: 'Put the steps in order: delete first.'
+    generate: ddp-swap
     start: |-
       ▮then p puts
       dd deletes

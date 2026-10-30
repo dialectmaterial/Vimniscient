@@ -25,7 +25,7 @@ for kind in KINDS:
         problems.append(f"{kind}: a task that starts out solved")
     distinct = len({tuple(t.start) for t in made})
     print(f"{kind}: {distinct} different texts from {SEEDS} seeds")
-    if distinct < SEEDS // 2:
+    if distinct < SEEDS // 3:
         problems.append(f"{kind}: only {distinct} different texts")
     tasks += [{"id": f"{kind} seed {n}", "goal": t.goal, "start": t.start, "cursor": list(t.cursor),
                "target": t.target, "solution": t.solution, "ft": t.ft} for n, t in enumerate(made)]

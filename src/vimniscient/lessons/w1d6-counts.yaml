@@ -11,6 +11,7 @@ intro: |
 keys: [3dw, 3dd, c2w, 5x, "3f,", 3J, 4j, 3k]
 tasks:
   - goal: 'Delete the three words "one two three".'
+    generate: count-dw
     start: |-
       A count repeats: 3dw ▮one two three deletes three words.
     target: |-
@@ -24,6 +25,7 @@ tasks:
         target: |-
           A count before dw repeats it.
   - goal: 'Delete the three middle lines.'
+    generate: count-dd
     start: |-
       3dd deletes
       ▮this line,
@@ -61,6 +63,7 @@ tasks:
           c2w: change two words.
         solution: 'c2wtwo words<Esc>'
   - goal: 'Fix the number: 5, not 500000.'
+    generate: count-x
     start: |-
       The count is 5▮00000, and x goes five times.
     target: |-

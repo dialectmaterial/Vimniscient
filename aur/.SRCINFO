@@ -1,6 +1,6 @@
 pkgbase = vimniscient
 	pkgdesc = Get fluent in Vim in fifteen minutes a day, in your own Neovim
-	pkgver = 0.2.0
+	pkgver = 0.2.1
 	pkgrel = 1
 	url = https://vimniscient.com
 	arch = any
@@ -15,7 +15,7 @@ pkgbase = vimniscient
 	depends = neovim
 	optdepends = hyprland: live drills for Omarchy and Hyprland keybindings
 	optdepends = tmux: cards for your tmux keys
-	source = https://files.pythonhosted.org/packages/source/v/vimniscient/vimniscient-0.2.0.tar.gz
-	sha256sums = acc230c0d9b1ac0e95755a7298073ba39b7dda0bad68c84b00dab3092045939e
+	source = https://files.pythonhosted.org/packages/source/v/vimniscient/vimniscient-0.2.1.tar.gz
+	sha256sums = 04ef2863edb9557a013dabb4cd8866e1b263ca10cc50978bdf0f99f91b287a28
 
 pkgname = vimniscient

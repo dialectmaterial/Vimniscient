@@ -45,7 +45,7 @@ def ladder(lessons: list[Lesson], start: int, length: int = RUNGS, seed: object 
         lesson = mix[-1] if rng.random() < 0.5 else rng.choice(mix)
         task = rng.choice([t for t in lesson.tasks if t.item_id not in recent] or lesson.tasks)
         recent.append(task.item_id)
-        rungs.append((task, rng.randrange(task.versions)))
+        rungs.append((task, rng.randrange(task.choices)))
     return rungs
 
 

@@ -10,6 +10,7 @@ intro: |
 keys: ['ci"', 'da"', 'di(', 'da(', 'di[', 'cit']
 tasks:
   - goal: 'Set the string to "change inside".'
+    generate: ci-quote
     ft: python
     start: |-
       ci_quote = "▮delete outside"
@@ -31,6 +32,7 @@ tasks:
           inner_quote = "without the quotes"
         solution: 'ci"without the quotes<Esc>'
   - goal: 'Change the string to "the quotes", starting from the beginning of the line.'
+    generate: ci-quote
     ft: python
     start: |-
       ▮ci_quote_keeps = "nothing"
@@ -46,6 +48,7 @@ tasks:
           ci_quote_finds = "the next quotes"
         solution: 'ci"the next quotes<Esc>'
   - goal: 'Empty the inner parentheses.'
+    generate: di-paren
     ft: python
     start: |-
       di_paren(empties(▮this_part))
@@ -59,6 +62,7 @@ tasks:
         target: |-
           inner_paren(keeps())
   - goal: 'Delete the argument list, parentheses included.'
+    generate: da-paren
     ft: python
     start: |-
       da = deletes(▮around, it) + parens
@@ -72,6 +76,7 @@ tasks:
         target: |-
           parens_go = da + too
   - goal: 'Empty the list.'
+    generate: di-bracket
     ft: python
     start: |-
       di_bracket_leaves = [▮"just", "the", "brackets"]

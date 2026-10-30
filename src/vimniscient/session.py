@@ -6,6 +6,7 @@ import subprocess
 import sys
 import tempfile
 from dataclasses import dataclass
+from datetime import date
 from importlib import resources
 from pathlib import Path
 
@@ -122,11 +123,13 @@ def run_lesson(lesson: Lesson, retry: bool = False) -> list[TaskResult]:
 def run_endless(pool: dict[str, Task], rungs: list[tuple[str, int]], level: int, ramp: int, gap: int) -> list[TaskResult]:
     """Endless mode: the runner climbs `rungs` (task id, version) from `level` on,
     and slots in a Learn and a Recall for every task missed (see endless.py)."""
+    today = date.today().isoformat()  # a task's generated text is new each day, and the same all run
     session = {
         "title": "Endless",
         "tasks": [],
         "endless": {
-            "pool": {item_id: [task_json(task.version(v)) for v in range(task.versions)] for item_id, task in pool.items()},
+            "pool": {item_id: [task_json(task.choice(v, f"{item_id}:{today}")) for v in range(task.choices)]
+                     for item_id, task in pool.items()},
             "rungs": [{"id": item_id, "v": v} for item_id, v in rungs],
             "level": level,
             "ramp": ramp,
@@ -134,10 +137,10 @@ def run_endless(pool: dict[str, Task], rungs: list[tuple[str, int]], level: int,
         },
     }
     item_id, v = rungs[0]
-    raw = run_nvim(session, pool[item_id].version(v).start)
+    raw = run_nvim(session, pool[item_id].choice(v, f"{item_id}:{today}").start)
     return [
         TaskResult(
-            task=pool[r["id"]].version(r["v"]).as_phase(r["phase"]),
+            task=pool[r["id"]].choice(r["v"], f"{r['id']}:{today}").as_phase(r["phase"]),
             status=r["status"],
             keys=r["keys"],
             count=r["count"],
