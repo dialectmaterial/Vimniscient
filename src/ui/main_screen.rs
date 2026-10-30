@@ -226,7 +226,7 @@ impl MainScreen {
     fn draw_plan(&self, frame: &mut Frame, area: Rect, t: &Theme) {
         let focused = !self.lessons_focused;
         let block = widgets::caption(widgets::pane("1 Today", focused, t), &self.footer, focused, t);
-        let lines: Vec<Line> = self.plan.iter().enumerate().map(|(i, step)| {
+        let lines: Vec<Line> = self.plan.iter().map(|step| {
             let (mark, color) = match (step.id.as_str(), step.todo) {
                 ("endless", None) => ("∞", t.secondary),
                 (_, None) => ("·", t.secondary),
