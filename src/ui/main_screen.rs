@@ -17,6 +17,20 @@ use ratatui::text::{Line, Span};
 use ratatui::widgets::{Paragraph, Sparkline, Wrap};
 use std::cell::Cell;
 
+/// The selected row of a pane, from border to border.
+fn highlight(frame: &mut Frame, area: Rect, row: usize, focused: bool, t: &Theme) {
+    let rect = Rect::new(area.x + 1, area.y + 1 + row as u16, area.width.saturating_sub(2), 1);
+    frame.buffer_mut().set_style(rect.intersection(area), Style::new().bg(if focused { t.selected } else { t.surface }));
+}
+
+/// `data` stretched over `width` columns.
+fn stretched(data: &[u64], width: u16) -> Vec<u64> {
+    if data.is_empty() {
+        return Vec::new();
+    }
+    (0..width as usize).map(|i| data[i * data.len() / width as usize]).collect()
+}
+
 struct Row {
     id: Option<String>, // None for a week heading
     line: Line<'static>,
@@ -219,15 +233,15 @@ impl MainScreen {
                 (_, Some(true)) => ("›", t.primary),
                 _ => ("✓", t.success),
             };
-            let line = Line::from(vec![
+            Line::from(vec![
                 Span::raw(" "),
                 Span::styled(mark, Style::new().fg(color)),
                 Span::styled(format!(" {:<8} ", step.label), Style::new().add_modifier(Modifier::BOLD)),
                 Span::styled(step.detail.clone(), Style::new().fg(t.muted)),
-            ]);
-            if i == self.plan_at { line.style(Style::new().bg(if focused { t.selected } else { t.surface })) } else { line }
+            ])
         }).collect();
         frame.render_widget(Paragraph::new(lines).block(block), area);
+        highlight(frame, area, self.plan_at, focused, t);
     }
 
     fn draw_lessons(&self, frame: &mut Frame, area: Rect, t: &Theme) {
@@ -240,11 +254,9 @@ impl MainScreen {
             offset = self.row_at + 1 - height.max(1);
         }
         self.offset.set(offset);
-        let lines: Vec<Line> = self.rows.iter().enumerate().skip(offset).take(height).map(|(i, row)| {
-            let line = row.line.clone();
-            if i == self.row_at { line.style(Style::new().bg(if focused { t.selected } else { t.surface })) } else { line }
-        }).collect();
+        let lines: Vec<Line> = self.rows.iter().skip(offset).take(height).map(|row| row.line.clone()).collect();
         frame.render_widget(Paragraph::new(lines).block(widgets::pane("2 Lessons", focused, t)), area);
+        highlight(frame, area, self.row_at - offset, focused, t);
     }
 
     pub fn draw(&self, frame: &mut Frame, app: &App) {
@@ -267,7 +279,7 @@ impl MainScreen {
         frame.render_widget(block, progress);
         let [words, _, spark] = Layout::vertical([Constraint::Min(0), Constraint::Length(u16::from(spark_rows > 0)), Constraint::Length(spark_rows.min(2))]).areas(inside);
         frame.render_widget(Paragraph::new(self.progress.clone()).wrap(Wrap { trim: false }), words);
-        frame.render_widget(Sparkline::default().data(&self.spark).bar_set(bar::NINE_LEVELS).style(Style::new().fg(t.primary)), spark);
+        frame.render_widget(Sparkline::default().data(&stretched(&self.spark, spark.width)).bar_set(bar::NINE_LEVELS).style(Style::new().fg(t.primary)), spark);
         let keys = [("t", "today"), ("⏎", "open"), ("⇥", "pane"), ("z", "quick"), ("x", "choose"), ("e", "endless"), ("c", "cards"), ("d", "drills"), ("g", "golf"), ("p", "place"), ("s", "stats"), ("q", "quit")];
         frame.render_widget(Paragraph::new(widgets::keybar(&keys, t)), bar_area);
     }

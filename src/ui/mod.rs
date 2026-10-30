@@ -21,6 +21,13 @@ use app::App;
 use crossterm::event::{self, Event, KeyEventKind};
 use std::time::Duration;
 
+/// Lessons draw in the Omarchy theme's colours, from the menu or the command line.
+pub fn use_theme() {
+    if let Ok(mut colors) = crate::system::nvim::COLORS.lock() {
+        *colors = Some(theme::lesson_colors(&theme::omarchy_theme()));
+    }
+}
+
 /// What arrives from other threads.
 pub enum Message {
     Hyprland(String),
@@ -29,6 +36,7 @@ pub enum Message {
 
 pub fn run() {
     let mut app = App::new();
+    use_theme();
     let mut terminal = ratatui::init();
     mouse_wheel(false); // keyboard only: nothing here reacts to clicks or the wheel
     while !app.quit {

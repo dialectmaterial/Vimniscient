@@ -73,6 +73,7 @@ fn progress() -> Progress {
 fn main() {
     let args = Args::parse();
     let lessons = &*LESSONS;
+    vimniscient::ui::use_theme();
     match args.command {
         None => vimniscient::ui::run(),
         Some(Action::List) => {

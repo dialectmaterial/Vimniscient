@@ -89,9 +89,6 @@ impl App {
             std::process::exit(1);
         });
         let theme = theme::omarchy_theme();
-        if let Ok(mut colors) = nvim::COLORS.lock() {
-            *colors = Some(theme::lesson_colors(&theme));
-        }
         let mut app = App {
             theme, lessons, progress, decks, drills: load_drills(), screens: Vec::new(), pending: None, quit: false, messages: channel(),
             toast: None, queue: VecDeque::new(), routine: false, placement: None,

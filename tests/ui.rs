@@ -50,6 +50,12 @@ fn every_screen() {
         assert!(shown.contains(text), "{text} not on the main screen:\n{shown}");
     }
 
+    // the highlight runs the whole width of its pane
+    let mut terminal = Terminal::new(TestBackend::new(120, 40)).unwrap();
+    terminal.draw(|frame| app.draw(frame)).unwrap();
+    let buffer = terminal.backend().buffer().clone();
+    assert_eq!(buffer[(2, 1)].bg, buffer[(40, 1)].bg, "the Today highlight stops short");
+
     // holding j keeps moving; the detail follows at once
     press(&mut app, "2");
     let before = screen(&app);

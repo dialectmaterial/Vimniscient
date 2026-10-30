@@ -63,8 +63,12 @@ impl QuickScreen {
         let t = &app.theme;
         let [space, bar] = Layout::vertical([Constraint::Min(0), Constraint::Length(1)]).areas(frame.area());
         let lines: Vec<Line> = self.rows.iter().enumerate().map(|(i, (_, title, what))| {
-            let line = Line::from(vec![Span::raw(format!(" {} ", widgets::fit(title, 14))), Span::styled(what.clone(), Style::new().fg(t.muted))]);
-            if i == self.at { line.style(Style::new().bg(t.selected)) } else { line }
+            let line = format!(" {} {what}", widgets::fit(title, 14));
+            let filled = widgets::fit(&line, 70); // the highlight runs across the column
+            let first = filled.chars().take(16).collect::<String>();
+            let rest = filled.chars().skip(16).collect::<String>();
+            let row = Line::from(vec![Span::raw(first), Span::styled(rest, Style::new().fg(t.muted))]);
+            if i == self.at { row.style(Style::new().bg(t.selected)) } else { row }
         }).collect();
         let area = widgets::centred(space, 76, lines.len() as u16 + 4);
         frame.render_widget(Paragraph::new(lines).block(widgets::column("Quick practice", t)), area);

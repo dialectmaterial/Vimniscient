@@ -1,6 +1,6 @@
 [package]
 name = "vimniscient"
-version = "1.0.0"
+version = "1.0.1"
 edition = "2024"
 rust-version = "1.88"
 description = "Get fluent in Vim in fifteen minutes a day, in your own Neovim."
