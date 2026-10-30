@@ -1,6 +1,6 @@
-# Pushing a tag like v0.1.0 builds Vimniscient and publishes it to PyPI.
-# PyPI trusts this workflow directly ("trusted publishing"), so no token is
-# stored anywhere. The tag has to match the version in pyproject.toml.
+# Pushing a tag like v1.0.0 builds Vimniscient and publishes it to PyPI and GitHub.
+# PyPI trusts this workflow directly ("trusted publishing"), so no token is stored
+# anywhere. The tag has to match the version in Cargo.toml.
 name: Release
 
 on:
@@ -16,16 +16,22 @@ jobs:
       contents: write  # for the GitHub release
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10.3.3  # this action has no v10 tag, only exact versions
       - name: Check the tag matches the version
         run: |
-          version=$(uv version --short)
+          version=$(grep -m1 '^version' Cargo.toml | cut -d'"' -f2)
           test "v$version" = "$GITHUB_REF_NAME" || { echo "tag $GITHUB_REF_NAME, version $version"; exit 1; }
-      - run: uv build
+      - uses: PyO3/maturin-action@v1
+        with:
+          command: build
+          args: --release --sdist --out dist
+          manylinux: auto
+      - uses: astral-sh/setup-uv@v10.3.3  # this action has no v10 tag, only exact versions
       - run: uv publish
+      - name: The binary on its own
+        run: |
+          mkdir bin && cd bin && unzip -j ../dist/*.whl '*/scripts/vimniscient'
+          tar czf ../dist/vimniscient-$GITHUB_REF_NAME-x86_64-linux.tar.gz vimniscient
       - uses: softprops/action-gh-release@v3
         with:
-          files: |
-            dist/*.whl
-            dist/*.tar.gz
+          files: dist/*
           generate_release_notes: true

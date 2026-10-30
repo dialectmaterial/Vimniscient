@@ -1,563 +1,310 @@
 {
- "card_run": [
-  {
-   "card": "lazyvim:Quit everything",
-   "intro": true,
-   "taken": true,
-   "typed": "<leader>qq"
-  },
-  {
-   "card": "lazyvim:neo-tree: open the file with the system app",
-   "intro": true,
-   "taken": true,
-   "typed": "O"
-  },
-  {
-   "card": "vim:Change the whole word under the cursor, wherever in it the cursor is",
-   "intro": false,
-   "taken": true,
-   "typed": "wrong"
-  },
-  {
-   "card": "vim:Change the whole word under the cursor, wherever in it the cursor is",
-   "intro": false,
-   "taken": true,
-   "typed": "ciw"
-  }
- ],
- "card_score": [
-  0,
-  1
- ],
- "items": [
-  {
-   "due_days": -1,
-   "id": "vim:Change the whole word under the cursor, wherever in it the cursor is",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -2,
-   "id": "vim:Delete a word and the space after it",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -3,
-   "id": "vim:Change a WORD (space to space, punctuation included)",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -1,
-   "id": "vim:Yank the word under the cursor",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -2,
-   "id": "vim:Change everything inside the double quotes",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -3,
-   "id": "vim:Delete the quotes and what is inside them",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -1,
-   "id": "vim:Delete inside the parentheses",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -2,
-   "id": "vim:Delete the parentheses and their content",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -3,
-   "id": "vim:Change inside curly braces",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -1,
-   "id": "vim:Change the text inside an HTML tag",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -2,
-   "id": "vim:Delete the paragraph (and the blank line after it)",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -3,
-   "id": "vim:Yank the paragraph",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -1,
-   "id": "vim:Change the sentence",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -2,
-   "id": "vim:Indent the paragraph",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -3,
-   "id": "lazyvim:Find files (root dir)",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -1,
-   "id": "lazyvim:Grep the project (root dir)",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -2,
-   "id": "lazyvim:Switch buffer",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -3,
-   "id": "lazyvim:Recent files",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -1,
-   "id": "lazyvim:File explorer (neo-tree)",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -2,
-   "id": "lazyvim:Next buffer",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -3,
-   "id": "lazyvim:Previous buffer",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -1,
-   "id": "lazyvim:Delete the buffer",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -2,
-   "id": "lazyvim:Split the window below",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -3,
-   "id": "lazyvim:Split the window to the right",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -1,
-   "id": "lazyvim:Move to the window on the left",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -2,
-   "id": "lazyvim:Search keymaps",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -3,
-   "id": "lazyvim:Search help pages",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -1,
-   "id": "lazyvim:Lazygit",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -2,
-   "id": "lazyvim:Comment the line",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -3,
-   "id": "lazyvim:Flash jump (type a few characters",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -1,
-   "id": "lazyvim:Go to definition",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -2,
-   "id": "lazyvim:Show references",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -3,
-   "id": "lazyvim:Hover documentation",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -1,
-   "id": "lazyvim:Code action",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -2,
-   "id": "lazyvim:Rename the symbol",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -3,
-   "id": "lazyvim:Next diagnostic",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -1,
-   "id": "lazyvim:Previous diagnostic",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -2,
-   "id": "lazyvim:Format the file",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -3,
-   "id": "lazyvim:Diagnostics list (Trouble)",
-   "interval": 1,
-   "reps": 1
-  },
-  {
-   "due_days": -1,
-   "id": "lazyvim:Toggle a terminal",
-   "interval": 1,
-   "reps": 1
-  }
- ],
- "placed": [
-  "w1d1-words",
-  "w1d2-pairs",
-  "w1d3-sentences"
- ],
- "plans": {
-  "1": {
-   "budget": 60,
-   "cards": [
-    "vim:Change a WORD (space to space, punctuation included)",
-    "vim:Delete the quotes and what is inside them",
-    "vim:Change inside curly braces",
-    "vim:Yank the paragraph",
-    "lazyvim:Find files (root dir)"
-   ],
-   "lesson": "w1d4-find",
-   "new_cards": 0,
-   "review": [],
-   "seconds": {
-    "cards": 60,
-    "drills": 0,
-    "lesson": 480,
-    "review": 0
-   },
-   "steps": [
+  "card_run": [
     {
-     "detail": "5 of 40 due · 0 new",
-     "id": "cards",
-     "minutes": 1,
-     "todo": true
+      "card": "lazyvim:Quit everything",
+      "intro": true,
+      "taken": true,
+      "typed": "<leader>qq"
     },
     {
-     "detail": "done",
-     "id": "drills",
-     "minutes": 0,
-     "todo": false
+      "card": "lazyvim:neo-tree: open the file with the system app",
+      "intro": true,
+      "taken": true,
+      "typed": "O"
     },
     {
-     "detail": "nothing due",
-     "id": "review",
-     "minutes": 0,
-     "todo": false
+      "card": "vim:Change the whole word under the cursor, wherever in it the cursor is",
+      "intro": false,
+      "taken": true,
+      "typed": "wrong"
     },
     {
-     "detail": "W1 D4 · Find and till on a line",
-     "id": "lesson",
-     "minutes": 8,
-     "todo": true
-    },
-    {
-     "detail": "optional · today's challenge",
-     "id": "vimgolf",
-     "minutes": 0,
-     "todo": null
-    },
-    {
-     "detail": "optional · 1, 2 or 5 minutes",
-     "id": "quick",
-     "minutes": 0,
-     "todo": null
-    },
-    {
-     "detail": "optional · 1 tasks, your keys",
-     "id": "transfer",
-     "minutes": 0,
-     "todo": null
-    },
-    {
-     "detail": "as long as you like",
-     "id": "endless",
-     "minutes": 0,
-     "todo": null
+      "card": "vim:Change the whole word under the cursor, wherever in it the cursor is",
+      "intro": false,
+      "taken": true,
+      "typed": "ciw"
     }
-   ]
-  },
-  "15": {
-   "budget": 900,
-   "cards": [
-    "vim:Change a WORD (space to space, punctuation included)",
-    "vim:Delete the quotes and what is inside them",
-    "vim:Change inside curly braces",
-    "vim:Yank the paragraph",
-    "lazyvim:Find files (root dir)",
-    "lazyvim:Recent files",
-    "lazyvim:Previous buffer",
-    "lazyvim:Split the window to the right",
-    "lazyvim:Search help pages",
-    "lazyvim:Flash jump (type a few characters",
-    "lazyvim:Hover documentation",
-    "lazyvim:Next diagnostic",
-    "lazyvim:Diagnostics list (Trouble)",
-    "vim:Delete a word and the space after it",
-    "vim:Change everything inside the double quotes",
-    "vim:Delete the parentheses and their content",
-    "vim:Delete the paragraph (and the blank line after it)",
-    "vim:Indent the paragraph",
-    "lazyvim:Switch buffer",
-    "lazyvim:Next buffer",
-    "lazyvim:Split the window below",
-    "lazyvim:Search keymaps",
-    "lazyvim:Comment the line",
-    "lazyvim:Show references",
-    "lazyvim:Rename the symbol",
-    "lazyvim:Format the file",
-    "vim:Change the whole word under the cursor, wherever in it the cursor is",
-    "vim:Yank the word under the cursor",
-    "vim:Delete inside the parentheses",
-    "vim:Change the text inside an HTML tag",
-    "vim:Change the sentence",
-    "lazyvim:Grep the project (root dir)",
-    "lazyvim:File explorer (neo-tree)",
-    "lazyvim:Delete the buffer",
-    "lazyvim:Move to the window on the left"
-   ],
-   "lesson": "w1d4-find",
-   "new_cards": 0,
-   "review": [],
-   "seconds": {
-    "cards": 420,
-    "drills": 0,
-    "lesson": 480,
-    "review": 0
-   },
-   "steps": [
-    {
-     "detail": "35 of 40 due · 0 new",
-     "id": "cards",
-     "minutes": 7,
-     "todo": true
+  ],
+  "card_score": [
+    0,
+    1
+  ],
+  "plans": {
+    "1": {
+      "budget": 60.0,
+      "cards": [
+        "vim:Change a WORD (space to space, punctuation included)",
+        "vim:Delete the quotes and what is inside them",
+        "vim:Change inside curly braces",
+        "vim:Yank the paragraph",
+        "lazyvim:Find files (root dir)"
+      ],
+      "lesson": "w1d4-find",
+      "new_cards": 0,
+      "review": [],
+      "seconds": {
+        "cards": 60.0,
+        "lesson": 480.0
+      },
+      "steps": [
+        {
+          "detail": "5 of 40 due · 0 new",
+          "id": "cards",
+          "minutes": 1,
+          "todo": true
+        },
+        {
+          "detail": "done",
+          "id": "drills",
+          "minutes": 0,
+          "todo": false
+        },
+        {
+          "detail": "nothing due",
+          "id": "review",
+          "minutes": 0,
+          "todo": false
+        },
+        {
+          "detail": "W1 D4 · Find and till on a line",
+          "id": "lesson",
+          "minutes": 8,
+          "todo": true
+        },
+        {
+          "detail": "optional · today's challenge",
+          "id": "vimgolf",
+          "minutes": 0,
+          "todo": null
+        },
+        {
+          "detail": "optional · 1, 2 or 5 minutes",
+          "id": "quick",
+          "minutes": 0,
+          "todo": null
+        },
+        {
+          "detail": "optional · 1 tasks, your keys",
+          "id": "transfer",
+          "minutes": 0,
+          "todo": null
+        },
+        {
+          "detail": "as long as you like",
+          "id": "endless",
+          "minutes": 0,
+          "todo": null
+        }
+      ]
     },
-    {
-     "detail": "done",
-     "id": "drills",
-     "minutes": 0,
-     "todo": false
+    "120": {
+      "budget": 7200.0,
+      "cards": [
+        "vim:Change a WORD (space to space, punctuation included)",
+        "vim:Delete the quotes and what is inside them",
+        "vim:Change inside curly braces",
+        "vim:Yank the paragraph",
+        "lazyvim:Find files (root dir)",
+        "lazyvim:Recent files",
+        "lazyvim:Previous buffer",
+        "lazyvim:Split the window to the right",
+        "lazyvim:Search help pages",
+        "lazyvim:Flash jump (type a few characters",
+        "lazyvim:Hover documentation",
+        "lazyvim:Next diagnostic",
+        "lazyvim:Diagnostics list (Trouble)",
+        "vim:Delete a word and the space after it",
+        "vim:Change everything inside the double quotes",
+        "vim:Delete the parentheses and their content",
+        "vim:Delete the paragraph (and the blank line after it)",
+        "vim:Indent the paragraph",
+        "lazyvim:Switch buffer",
+        "lazyvim:Next buffer",
+        "lazyvim:Split the window below",
+        "lazyvim:Search keymaps",
+        "lazyvim:Comment the line",
+        "lazyvim:Show references",
+        "lazyvim:Rename the symbol",
+        "lazyvim:Format the file",
+        "vim:Change the whole word under the cursor, wherever in it the cursor is",
+        "vim:Yank the word under the cursor",
+        "vim:Delete inside the parentheses",
+        "vim:Change the text inside an HTML tag",
+        "vim:Change the sentence",
+        "lazyvim:Grep the project (root dir)",
+        "lazyvim:File explorer (neo-tree)",
+        "lazyvim:Delete the buffer",
+        "lazyvim:Move to the window on the left",
+        "lazyvim:Lazygit",
+        "lazyvim:Go to definition",
+        "lazyvim:Code action",
+        "lazyvim:Previous diagnostic",
+        "lazyvim:Toggle a terminal",
+        "lazyvim:Quit everything",
+        "shell:Search back through your command history",
+        "foot:Copy the selection",
+        "zathura:Next page",
+        "lazyvim:neo-tree: open the file with the system app",
+        "shell:Jump to the start of the line",
+        "foot:Paste from the clipboard",
+        "zathura:Previous page",
+        "lazyvim:neo-tree: add a file or folder",
+        "shell:Jump to the end of the line"
+      ],
+      "lesson": "w1d4-find",
+      "new_cards": 10,
+      "review": [],
+      "seconds": {
+        "cards": 600.0,
+        "lesson": 480.0
+      },
+      "steps": [
+        {
+          "detail": "40 due · 10 new",
+          "id": "cards",
+          "minutes": 10,
+          "todo": true
+        },
+        {
+          "detail": "done",
+          "id": "drills",
+          "minutes": 0,
+          "todo": false
+        },
+        {
+          "detail": "nothing due",
+          "id": "review",
+          "minutes": 0,
+          "todo": false
+        },
+        {
+          "detail": "W1 D4 · Find and till on a line",
+          "id": "lesson",
+          "minutes": 8,
+          "todo": true
+        },
+        {
+          "detail": "optional · today's challenge",
+          "id": "vimgolf",
+          "minutes": 0,
+          "todo": null
+        },
+        {
+          "detail": "optional · 1, 2 or 5 minutes",
+          "id": "quick",
+          "minutes": 0,
+          "todo": null
+        },
+        {
+          "detail": "optional · 1 tasks, your keys",
+          "id": "transfer",
+          "minutes": 0,
+          "todo": null
+        },
+        {
+          "detail": "as long as you like",
+          "id": "endless",
+          "minutes": 0,
+          "todo": null
+        }
+      ]
     },
-    {
-     "detail": "nothing due",
-     "id": "review",
-     "minutes": 0,
-     "todo": false
-    },
-    {
-     "detail": "W1 D4 · Find and till on a line",
-     "id": "lesson",
-     "minutes": 8,
-     "todo": true
-    },
-    {
-     "detail": "optional · today's challenge",
-     "id": "vimgolf",
-     "minutes": 0,
-     "todo": null
-    },
-    {
-     "detail": "optional · 1, 2 or 5 minutes",
-     "id": "quick",
-     "minutes": 0,
-     "todo": null
-    },
-    {
-     "detail": "optional · 1 tasks, your keys",
-     "id": "transfer",
-     "minutes": 0,
-     "todo": null
-    },
-    {
-     "detail": "as long as you like",
-     "id": "endless",
-     "minutes": 0,
-     "todo": null
+    "15": {
+      "budget": 900.0,
+      "cards": [
+        "vim:Change a WORD (space to space, punctuation included)",
+        "vim:Delete the quotes and what is inside them",
+        "vim:Change inside curly braces",
+        "vim:Yank the paragraph",
+        "lazyvim:Find files (root dir)",
+        "lazyvim:Recent files",
+        "lazyvim:Previous buffer",
+        "lazyvim:Split the window to the right",
+        "lazyvim:Search help pages",
+        "lazyvim:Flash jump (type a few characters",
+        "lazyvim:Hover documentation",
+        "lazyvim:Next diagnostic",
+        "lazyvim:Diagnostics list (Trouble)",
+        "vim:Delete a word and the space after it",
+        "vim:Change everything inside the double quotes",
+        "vim:Delete the parentheses and their content",
+        "vim:Delete the paragraph (and the blank line after it)",
+        "vim:Indent the paragraph",
+        "lazyvim:Switch buffer",
+        "lazyvim:Next buffer",
+        "lazyvim:Split the window below",
+        "lazyvim:Search keymaps",
+        "lazyvim:Comment the line",
+        "lazyvim:Show references",
+        "lazyvim:Rename the symbol",
+        "lazyvim:Format the file",
+        "vim:Change the whole word under the cursor, wherever in it the cursor is",
+        "vim:Yank the word under the cursor",
+        "vim:Delete inside the parentheses",
+        "vim:Change the text inside an HTML tag",
+        "vim:Change the sentence",
+        "lazyvim:Grep the project (root dir)",
+        "lazyvim:File explorer (neo-tree)",
+        "lazyvim:Delete the buffer",
+        "lazyvim:Move to the window on the left"
+      ],
+      "lesson": "w1d4-find",
+      "new_cards": 0,
+      "review": [],
+      "seconds": {
+        "cards": 420.0,
+        "lesson": 480.0
+      },
+      "steps": [
+        {
+          "detail": "35 of 40 due · 0 new",
+          "id": "cards",
+          "minutes": 7,
+          "todo": true
+        },
+        {
+          "detail": "done",
+          "id": "drills",
+          "minutes": 0,
+          "todo": false
+        },
+        {
+          "detail": "nothing due",
+          "id": "review",
+          "minutes": 0,
+          "todo": false
+        },
+        {
+          "detail": "W1 D4 · Find and till on a line",
+          "id": "lesson",
+          "minutes": 8,
+          "todo": true
+        },
+        {
+          "detail": "optional · today's challenge",
+          "id": "vimgolf",
+          "minutes": 0,
+          "todo": null
+        },
+        {
+          "detail": "optional · 1, 2 or 5 minutes",
+          "id": "quick",
+          "minutes": 0,
+          "todo": null
+        },
+        {
+          "detail": "optional · 1 tasks, your keys",
+          "id": "transfer",
+          "minutes": 0,
+          "todo": null
+        },
+        {
+          "detail": "as long as you like",
+          "id": "endless",
+          "minutes": 0,
+          "todo": null
+        }
+      ]
     }
-   ]
-  },
-  "120": {
-   "budget": 7200,
-   "cards": [
-    "vim:Change a WORD (space to space, punctuation included)",
-    "vim:Delete the quotes and what is inside them",
-    "vim:Change inside curly braces",
-    "vim:Yank the paragraph",
-    "lazyvim:Find files (root dir)",
-    "lazyvim:Recent files",
-    "lazyvim:Previous buffer",
-    "lazyvim:Split the window to the right",
-    "lazyvim:Search help pages",
-    "lazyvim:Flash jump (type a few characters",
-    "lazyvim:Hover documentation",
-    "lazyvim:Next diagnostic",
-    "lazyvim:Diagnostics list (Trouble)",
-    "vim:Delete a word and the space after it",
-    "vim:Change everything inside the double quotes",
-    "vim:Delete the parentheses and their content",
-    "vim:Delete the paragraph (and the blank line after it)",
-    "vim:Indent the paragraph",
-    "lazyvim:Switch buffer",
-    "lazyvim:Next buffer",
-    "lazyvim:Split the window below",
-    "lazyvim:Search keymaps",
-    "lazyvim:Comment the line",
-    "lazyvim:Show references",
-    "lazyvim:Rename the symbol",
-    "lazyvim:Format the file",
-    "vim:Change the whole word under the cursor, wherever in it the cursor is",
-    "vim:Yank the word under the cursor",
-    "vim:Delete inside the parentheses",
-    "vim:Change the text inside an HTML tag",
-    "vim:Change the sentence",
-    "lazyvim:Grep the project (root dir)",
-    "lazyvim:File explorer (neo-tree)",
-    "lazyvim:Delete the buffer",
-    "lazyvim:Move to the window on the left",
-    "lazyvim:Lazygit",
-    "lazyvim:Go to definition",
-    "lazyvim:Code action",
-    "lazyvim:Previous diagnostic",
-    "lazyvim:Toggle a terminal",
-    "lazyvim:Quit everything",
-    "shell:Search back through your command history",
-    "foot:Copy the selection",
-    "zathura:Next page",
-    "lazyvim:neo-tree: open the file with the system app",
-    "shell:Jump to the start of the line",
-    "foot:Paste from the clipboard",
-    "zathura:Previous page",
-    "lazyvim:neo-tree: add a file or folder",
-    "shell:Jump to the end of the line"
-   ],
-   "lesson": "w1d4-find",
-   "new_cards": 10,
-   "review": [],
-   "seconds": {
-    "cards": 600,
-    "drills": 0,
-    "lesson": 480,
-    "review": 0
-   },
-   "steps": [
-    {
-     "detail": "40 due · 10 new",
-     "id": "cards",
-     "minutes": 10,
-     "todo": true
-    },
-    {
-     "detail": "done",
-     "id": "drills",
-     "minutes": 0,
-     "todo": false
-    },
-    {
-     "detail": "nothing due",
-     "id": "review",
-     "minutes": 0,
-     "todo": false
-    },
-    {
-     "detail": "W1 D4 · Find and till on a line",
-     "id": "lesson",
-     "minutes": 8,
-     "todo": true
-    },
-    {
-     "detail": "optional · today's challenge",
-     "id": "vimgolf",
-     "minutes": 0,
-     "todo": null
-    },
-    {
-     "detail": "optional · 1, 2 or 5 minutes",
-     "id": "quick",
-     "minutes": 0,
-     "todo": null
-    },
-    {
-     "detail": "optional · 1 tasks, your keys",
-     "id": "transfer",
-     "minutes": 0,
-     "todo": null
-    },
-    {
-     "detail": "as long as you like",
-     "id": "endless",
-     "minutes": 0,
-     "todo": null
-    }
-   ]
   }
- }
 }

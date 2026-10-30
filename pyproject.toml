@@ -1,24 +1,22 @@
+# Packaging only: PyPI carries the Rust binary as a wheel, so `uv tool install
+# vimniscient` keeps working. The app itself is the crate in Cargo.toml.
 [project]
 name = "vimniscient"
-version = "0.3.1"
+dynamic = ["version"]
 description = "Get fluent in Vim in fifteen minutes a day, in your own Neovim."
 readme = "README.md"
 license = "AGPL-3.0-or-later"
-requires-python = ">=3.11"
+requires-python = ">=3.8"
 authors = [{ name = "Dimitri F. Crooijmans" }]
 keywords = ["vim", "neovim", "lazyvim", "omarchy", "trainer", "spaced-repetition", "tui"]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Environment :: Console",
     "Intended Audience :: Developers",
     "Operating System :: POSIX :: Linux",
-    "Programming Language :: Python :: 3",
+    "Programming Language :: Rust",
     "Topic :: Education",
     "Topic :: Text Editors",
-]
-dependencies = [
-    "textual>=8",
-    "pyyaml>=6",
 ]
 
 [project.urls]
@@ -26,13 +24,9 @@ Homepage = "https://vimniscient.com"
 Source = "https://github.com/dialectmaterial/Vimniscient"
 Issues = "https://github.com/dialectmaterial/Vimniscient/issues"
 
-[project.scripts]
-vimniscient = "vimniscient.cli:main"
-
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["maturin>=1.16,<2"]
+build-backend = "maturin"
 
-[tool.hatch.build.targets.sdist]
-# the app and what it needs to build and test; not the screenshots
-include = ["/src", "/tests", "/extras", "/LICENSE", "/README.md", "/pyproject.toml"]
+[tool.maturin]
+bindings = "bin"

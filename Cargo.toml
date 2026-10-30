@@ -1,0 +1,31 @@
+[package]
+name = "vimniscient"
+version = "1.0.0"
+edition = "2024"
+rust-version = "1.88"
+description = "Get fluent in Vim in fifteen minutes a day, in your own Neovim."
+readme = "README.md"
+homepage = "https://vimniscient.com"
+license = "AGPL-3.0-or-later"
+repository = "https://github.com/dialectmaterial/Vimniscient"
+
+[dependencies]
+chrono = "0.4"
+clap = { version = "4", features = ["derive"] }
+crossterm = "0.29"
+fancy-regex = "0.16"
+indexmap = { version = "2", features = ["serde"] }
+ratatui = "0.30"
+rusqlite = { version = "0.41", features = ["bundled", "fallible_uint"] }
+rust-embed = { version = "8", features = ["include-exclude"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+serde_norway = "0.9"
+ureq = "3"
+
+[dev-dependencies]
+serde_json = "1"
+
+[profile.release]
+lto = true
+strip = true

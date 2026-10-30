@@ -81,8 +81,9 @@ reading it up front.
 
 ## Quick start
 
-You need Linux (macOS should work but is untested), [Neovim](https://neovim.io) 0.10 or newer
-and Python 3.11+.
+You need Linux and [Neovim](https://neovim.io) 0.10 or newer. It's one binary with no other
+dependencies; `uv` or `pipx` only fetch it, and the
+[releases](https://github.com/dialectmaterial/Vimniscient/releases) have it on its own too.
 
 ```bash
 uv tool install vimniscient    # or: pipx install vimniscient
@@ -235,7 +236,7 @@ fails, press `o` ("I was right").
 
 ## Writing lessons
 
-Lessons are YAML files in [`src/vimniscient/lessons/`](https://github.com/dialectmaterial/Vimniscient/blob/main/src/vimniscient/lessons).
+Lessons are YAML files in [`content/lessons/`](https://github.com/dialectmaterial/Vimniscient/blob/main/content/lessons).
 `▮` marks where the cursor starts:
 
 ```yaml
@@ -273,40 +274,27 @@ The texts are mnemonic. Where you can, write a sentence that says what the
 key stands for, so that the edit leaves it true: `ciw is change inner word:
 it swaps the wh▮ile word` (fix it with `ciw`). What each key officially means,
 and the hook to use where it means nothing, is in
-[`mnemonics.yaml`](https://github.com/dialectmaterial/Vimniscient/blob/main/src/vimniscient/mnemonics.yaml). The app reads the same
+[`mnemonics.yaml`](https://github.com/dialectmaterial/Vimniscient/blob/main/content/mnemonics.yaml). The app reads the same
 file to say what a key stands for after you answer. Every task needs at least
 two texts. Memory science belongs in lesson intros, with a source in
-[`lessons/sources.md`](https://github.com/dialectmaterial/Vimniscient/blob/main/src/vimniscient/lessons/sources.md). Code tasks stay
+[`lessons/sources.md`](https://github.com/dialectmaterial/Vimniscient/blob/main/content/lessons/sources.md). Code tasks stay
 code, with the meaning in names and strings.
 
 Before sending a lesson, check that every solution (variants included) really produces its target:
 
 ```bash
-uv run python tests/check_lessons.py            # plain-Vim lessons, in nvim --clean
-uv run python tests/check_lessons.py --lazyvim  # LazyVim lessons, in your own config
-uv run python tests/check_answers.py            # card answers written different ways
-uv run python tests/check_timing.py             # task times: old progress databases upgrade safely
-uv run python tests/check_generate.py           # generated texts: reproducible, and they solve in Neovim
-uv run python tests/check_diagnose.py           # strategy feedback: no reference solution sets it off
-uv run python tests/check_transfer.py           # Choose: every way solves it in Neovim, nothing graded
-uv run python tests/check_quick.py              # quick practice: the right tasks for the time, nothing graded
-uv run python tests/check_missions.py           # missions: every way does the whole job on real files
-uv run python tests/check_placement.py          # placement, the evaluation and doctor
-uv run python tests/make_golden.py --check      # the reference files for the Rust port are up to date
-uv run python tests/live_mission.py             # a mission in your real Neovim, in a hidden tmux session
-uv run python tests/check_today.py              # the daily budget, SRS scheduling, card introductions, hardtime
-uv run python tests/check_app.py                # every screen, driven headless
-uv run python tests/live_lessons.py --all       # types every solution into the real runner (needs tmux)
-uv run python tests/live_retry.py               # a skipped task comes back (Learn, then Recall)
-uv run python tests/live_review.py              # a review session, as review, placement and VimGolf run
-uv run python tests/live_endless.py             # endless mode: a miss, its Learn copy and its Recall
+cargo test                     # answers, scheduling, today's plan, placement, every screen
+cargo build --examples
+python3 tests/check_neovim.py  # every solution and generated task, typed into real Neovim
+python3 tests/live.py          # lessons, a retry, Endless and a mission, played in tmux
+UPDATE_GOLDEN=1 cargo test     # after changing lessons or cards: record the new plans
 ```
 
 ## How it works
 
-`vimniscient` is a [Textual](https://textual.textualize.io) app. A lesson
+`vimniscient` is a single binary written in Rust with [ratatui](https://ratatui.rs); lessons and cards are built into it. A lesson
 starts `nvim` on a scratch file with
-[`runner.lua`](https://github.com/dialectmaterial/Vimniscient/blob/main/src/vimniscient/nvim/runner.lua). It shows the goal in a
+[`runner.lua`](https://github.com/dialectmaterial/Vimniscient/blob/main/content/nvim/runner.lua). It shows the goal in a
 diffed split, checks your text after every change, and counts the `typed`
 part of `vim.on_key`: what you pressed, before any mapping applied.
 
