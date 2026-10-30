@@ -13,6 +13,7 @@ clap = { version = "4", features = ["derive"] }
 crossterm = "0.29"
 fancy-regex = "0.16"
 indexmap = "2"
+ratatui = "0.30"
 rusqlite = { version = "0.41", features = ["bundled", "fallible_uint"] }
 rust-embed = { version = "8", features = ["include-exclude"] }
 serde = { version = "1", features = ["derive"] }

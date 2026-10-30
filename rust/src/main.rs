@@ -74,7 +74,7 @@ fn main() {
     let args = Args::parse();
     let lessons = &*LESSONS;
     match args.command {
-        None => println!("The interface isn't ported yet: use the commands (see --help)."),
+        None => vimniscient::ui::run(),
         Some(Action::List) => {
             for lesson in lessons {
                 println!("{:28} {}: {} ({} tasks)", lesson.id, lesson.label(), lesson.title, lesson.tasks.len());
