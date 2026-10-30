@@ -18,6 +18,7 @@ from pathlib import Path
 
 os.environ["VIMNISCIENT_DATA"] = tempfile.mkdtemp()
 os.environ["XDG_CONFIG_HOME"] = tempfile.mkdtemp()
+os.environ["XDG_STATE_HOME"] = tempfile.mkdtemp()  # no hardtime log: it would change from day to day
 
 from check_answers import CASES  # noqa: E402
 

@@ -123,3 +123,21 @@ pub fn diagnose(keys: &str, count: usize, reference: usize) -> String {
     }
     String::new()
 }
+
+/// One line on how a run went: solved, beat the reference, the median time.
+pub fn results_summary(results: &[super::results::TaskResult]) -> String {
+    let recall: Vec<_> = results.iter().filter(|r| r.task.phase != "learn").collect();
+    let solved: Vec<_> = recall.iter().filter(|r| r.status == "solved").collect();
+    let beat = solved.iter().filter(|r| r.count < r.task.reference()).count();
+    let mut times: Vec<f64> = solved.iter().filter_map(|r| r.seconds).collect();
+    times.sort_by(f64::total_cmp);
+    let verb = if recall.len() < results.len() { "recalled" } else { "solved" };
+    let mut line = format!("{} of {} {verb}", solved.len(), recall.len());
+    if beat > 0 {
+        line += &format!(" · {beat} beat the reference");
+    }
+    if !times.is_empty() {
+        line += &format!(" · {:.1}s a task", times[times.len() / 2]);
+    }
+    line
+}

@@ -32,3 +32,12 @@ pub fn scalar(value: &serde_norway::Value) -> String {
         _ => String::new(),
     }
 }
+
+/// A built-in file written out for Neovim to read, in a folder that outlives this call.
+pub fn to_temp(path: &str) -> std::io::Result<std::path::PathBuf> {
+    let folder = std::env::temp_dir().join(format!("vimniscient-{}", std::process::id()));
+    std::fs::create_dir_all(&folder)?;
+    let file = folder.join(path.rsplit('/').next().unwrap_or(path));
+    std::fs::write(&file, text(path))?;
+    Ok(file)
+}

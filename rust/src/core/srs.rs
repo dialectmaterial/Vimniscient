@@ -26,7 +26,7 @@ impl Item {
 }
 
 /// Python's `round`: halves go to the even neighbour.
-fn round_half_even(value: f64) -> i64 {
+pub fn round_half_even(value: f64) -> i64 {
     let floor = value.floor();
     let rest = value - floor;
     let down = floor as i64;

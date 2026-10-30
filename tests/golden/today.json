@@ -288,15 +288,12 @@
    ],
    "lesson": "w1d4-find",
    "new_cards": 0,
-   "review": [
-    "task:w1d3-sentences#0",
-    "task:w1d1-words#0"
-   ],
+   "review": [],
    "seconds": {
     "cards": 60,
     "drills": 0,
     "lesson": 480,
-    "review": 90
+    "review": 0
    },
    "steps": [
     {
@@ -312,10 +309,10 @@
      "todo": false
     },
     {
-     "detail": "2 tasks",
+     "detail": "nothing due",
      "id": "review",
-     "minutes": 2,
-     "todo": true
+     "minutes": 0,
+     "todo": false
     },
     {
      "detail": "W1 D4 · Find and till on a line",
@@ -378,25 +375,30 @@
     "lazyvim:Show references",
     "lazyvim:Rename the symbol",
     "lazyvim:Format the file",
-    "vim:Change the whole word under the cursor, wherever in it the cursor is"
+    "vim:Change the whole word under the cursor, wherever in it the cursor is",
+    "vim:Yank the word under the cursor",
+    "vim:Delete inside the parentheses",
+    "vim:Change the text inside an HTML tag",
+    "vim:Change the sentence",
+    "lazyvim:Grep the project (root dir)",
+    "lazyvim:File explorer (neo-tree)",
+    "lazyvim:Delete the buffer",
+    "lazyvim:Move to the window on the left"
    ],
    "lesson": "w1d4-find",
    "new_cards": 0,
-   "review": [
-    "task:w1d3-sentences#0",
-    "task:w1d1-words#0"
-   ],
+   "review": [],
    "seconds": {
-    "cards": 324,
+    "cards": 420,
     "drills": 0,
     "lesson": 480,
-    "review": 90
+    "review": 0
    },
    "steps": [
     {
-     "detail": "27 of 40 due · 0 new",
+     "detail": "35 of 40 due · 0 new",
      "id": "cards",
-     "minutes": 6,
+     "minutes": 7,
      "todo": true
     },
     {
@@ -406,10 +408,10 @@
      "todo": false
     },
     {
-     "detail": "2 tasks",
+     "detail": "nothing due",
      "id": "review",
-     "minutes": 2,
-     "todo": true
+     "minutes": 0,
+     "todo": false
     },
     {
      "detail": "W1 D4 · Find and till on a line",
@@ -499,15 +501,12 @@
    ],
    "lesson": "w1d4-find",
    "new_cards": 10,
-   "review": [
-    "task:w1d3-sentences#0",
-    "task:w1d1-words#0"
-   ],
+   "review": [],
    "seconds": {
     "cards": 600,
     "drills": 0,
     "lesson": 480,
-    "review": 90
+    "review": 0
    },
    "steps": [
     {
@@ -523,10 +522,10 @@
      "todo": false
     },
     {
-     "detail": "2 tasks",
+     "detail": "nothing due",
      "id": "review",
-     "minutes": 2,
-     "todo": true
+     "minutes": 0,
+     "todo": false
     },
     {
      "detail": "W1 D4 · Find and till on a line",
