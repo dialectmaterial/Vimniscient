@@ -15,6 +15,7 @@ from pathlib import Path
 
 from vimniscient.cards import Card, Deck
 from vimniscient.keys import split_keys
+from vimniscient.mnemonics import OPERATORS
 
 LOG = Path(os.environ.get("XDG_STATE_HOME", Path.home() / ".local/state")) / "nvim" / "hardtime.nvim.log"
 
@@ -91,7 +92,7 @@ def habit_deck() -> Deck:
                 answers=[better],
                 style="keys",
                 case_sensitive=True,
-                note=f"hardtime caught this {habit.total}×.",
+                note=f"{'Verb first, then the motion. ' if better[0] in OPERATORS else ''}hardtime caught this {habit.total}×.",
                 order=i,
             )
         )

@@ -7,8 +7,8 @@ case_sensitive: true
 cards:
   # week 1: text objects, find/till, lines, counts
   - {week: 1, day: 1, prompt: 'Change the whole word under the cursor, wherever in it the cursor is', answer: [ciw], note: 'cw only changes from the cursor to the end of the word.'}
-  - {week: 1, day: 1, prompt: Delete a word and the space after it, answer: [daw]}
-  - {week: 1, day: 1, prompt: 'Change a WORD (space to space, punctuation included)', answer: [ciW]}
+  - {week: 1, day: 1, id: 'vim:Delete a word and the space after it', prompt: 'Delete the whole word under the cursor, wherever in it the cursor is, and the space after it', answer: [daw], note: 'dw only deletes from the cursor on.'}
+  - {week: 1, day: 1, id: 'vim:Change a WORD (space to space, punctuation included)', prompt: 'Change the whole WORD under the cursor (space to space, punctuation included), keeping the space after it', answer: [ciW]}
   - {week: 1, day: 1, prompt: Yank the word under the cursor, answer: [yiw]}
   - {week: 1, day: 2, prompt: Change everything inside the double quotes, answer: ['ci"']}
   - {week: 1, day: 2, prompt: Delete the quotes and what is inside them, answer: ['da"']}

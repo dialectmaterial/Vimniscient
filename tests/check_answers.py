@@ -10,6 +10,8 @@ from vimniscient.answer import is_correct
 CASES = [
     # (typed, expected, style, case_sensitive, should match)
     ("ciw", ["ciw"], "keys", True, True),
+    ("leader + ,", ["<leader>,"], "keys", True, True),
+    ("leader + c", ["PREFIX + C"], "combo", False, True),
     ("ciW", ["ciw"], "keys", True, False),
     ("ctrl-a", ["<C-a>"], "keys", True, True),
     ("Ctrl+R", ["<C-r>"], "keys", True, True),

@@ -40,7 +40,7 @@ def _norm_token(match: re.Match) -> str:
 
 def norm_keys(text: str, case_sensitive: bool = True) -> str:
     s = text.strip()
-    s = re.sub(r"(?i)^(leader|space|spc)(\s+|$)", "<leader>", s)
+    s = re.sub(r"(?i)^(leader|space|spc)(\s*\+\s*|\s+|$)", "<leader>", s)
     s = re.sub(r"(?i)(?<![<\w])space(?![>\w])", "<Space>", s)
     s = re.sub(r"(?i)\b(?:ctrl|control)[-+ ]+(\S)", lambda m: f"<C-{m.group(1)}>", s)
     s = re.sub(r"(?i)\b(?:alt|meta)[-+ ]+(\S)", lambda m: f"<M-{m.group(1)}>", s)
@@ -55,7 +55,7 @@ _MOD_ALIASES = {
     "SUPER": "SUPER", "WIN": "SUPER", "CMD": "SUPER", "MOD": "SUPER", "LOGO": "SUPER",
     "CTRL": "CTRL", "CONTROL": "CTRL", "CTL": "CTRL",
     "ALT": "ALT", "OPT": "ALT", "OPTION": "ALT", "MOD1": "ALT", "META": "ALT",
-    "SHIFT": "SHIFT", "PREFIX": "PREFIX", "COPYMODE": "COPYMODE",
+    "SHIFT": "SHIFT", "PREFIX": "PREFIX", "LEADER": "PREFIX", "COPYMODE": "COPYMODE",
 }
 _KEY_ALIASES = {
     "ENTER": "RETURN", "CR": "RETURN", "ESC": "ESCAPE", "DEL": "DELETE", "INS": "INSERT",

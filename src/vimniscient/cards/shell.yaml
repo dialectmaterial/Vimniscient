@@ -5,9 +5,9 @@ case_sensitive: false
 note: Readline keys work in bash and in most terminal prompts.
 cards:
   - {prompt: Search back through your command history, answer: [<C-r>]}
-  - {prompt: Jump to the start of the line, answer: [<C-a>, <Home>]}
-  - {prompt: Jump to the end of the line, answer: [<C-e>, <End>]}
-  - {prompt: Delete the word before the cursor, answer: [<C-w>]}
+  - {prompt: Jump to the start of the line, answer: [<C-a>, <Home>], note: 'a is the start of the alphabet. The shell isn’t Vim: 0 and $ just type themselves.'}
+  - {prompt: Jump to the end of the line, answer: [<C-e>, <End>], note: 'e is end. The shell isn’t Vim: $ just types itself.'}
+  - {prompt: Delete the word before the cursor, answer: [<C-w>], note: 'w is word.'}
   - {prompt: Delete from the cursor to the start of the line, answer: [<C-u>]}
   - {prompt: Delete from the cursor to the end of the line, answer: [<C-k>]}
   - {prompt: Paste what you just deleted with Ctrl-w/u/k, answer: [<C-y>]}

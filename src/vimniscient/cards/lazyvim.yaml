@@ -12,7 +12,7 @@ cards:
   - {prompt: Grep the project (root dir), answer: [<leader>/, <leader>sg]}
   - {prompt: Switch buffer, answer: ['<leader>,', '<leader>fb']}
   - {prompt: Recent files, answer: [<leader>fr]}
-  - {prompt: File explorer (neo-tree), answer: [<leader>e]}
+  - {prompt: File explorer (neo-tree), answer: [<leader>e], note: 'e is explorer.'}
   - {prompt: Next buffer, answer: [<S-l>, ']b']}
   - {prompt: Previous buffer, answer: [<S-h>, '[b']}
   - {prompt: Delete the buffer, answer: [<leader>bd]}

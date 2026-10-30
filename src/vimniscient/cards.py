@@ -77,7 +77,7 @@ def _static_decks() -> dict[str, Deck]:
             deck.cards.append(
                 Card(
                     deck=deck.id,
-                    id=f"{deck.id}:{c['prompt']}",
+                    id=c.get("id", f"{deck.id}:{c['prompt']}"),  # `id` keeps a reworded card's history
                     prompt=c["prompt"],
                     answers=[str(a) for a in c["answer"]],
                     style=data.get("style", "keys"),
