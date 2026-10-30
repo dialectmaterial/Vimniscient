@@ -86,7 +86,7 @@ dependencies; `uv` or `pipx` only fetch it, and the
 [releases](https://github.com/dialectmaterial/Vimniscient/releases) have it on its own too.
 
 ```bash
-uv tool install vimniscient    # or: pipx install vimniscient
+uv tool install vimniscient    # or: pipx install vimniscient, or: cargo install vimniscient
 vimniscient
 ```
 

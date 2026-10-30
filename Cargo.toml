@@ -6,6 +6,7 @@ rust-version = "1.88"
 description = "Get fluent in Vim in fifteen minutes a day, in your own Neovim."
 readme = "README.md"
 homepage = "https://vimniscient.com"
+exclude = ["VIMNISCIENT_RESEARCH_AND_ROADMAP.md", "docs/", ".github/", "pyproject.toml"]
 license = "AGPL-3.0-or-later"
 repository = "https://github.com/dialectmaterial/Vimniscient"
 
