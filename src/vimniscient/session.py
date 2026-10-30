@@ -11,6 +11,7 @@ from importlib import resources
 from pathlib import Path
 
 from vimniscient.lessons import Lesson, Task
+from vimniscient.missions import Mission
 from vimniscient.mnemonics import hooks
 
 # The app's theme colours (hex), so lessons look like the rest of it; set by the app.
@@ -76,6 +77,32 @@ def run_nvim(session: dict, first: list[str]) -> list[dict]:
         finally:
             mouse_wheel(True)
         return json.loads(result_path.read_text()) if result_path.exists() else []
+
+
+def run_mission(mission: Mission) -> TaskResult:
+    """A mission in your own Neovim, on throwaway files in a folder of their own."""
+    script = resources.files("vimniscient") / "nvim" / "mission.lua"
+    with tempfile.TemporaryDirectory(prefix="vimniscient-") as tmp, resources.as_file(script) as script_path:
+        root = Path(tmp)
+        work = root / "project"  # the session file stays out of the project your plugins see
+        work.mkdir()
+        for name, text in mission.files.items():
+            (work / name).write_text(text, encoding="utf-8")
+        result_path = root / "result.json"
+        session_path = root / "session.json"
+        session_path.write_text(json.dumps({
+            "goal": mission.goal, "hint": mission.hint, "result_path": str(result_path),
+            "targets": {name: text.splitlines() for name, text in mission.targets.items()},
+        }), encoding="utf-8")
+        mouse_wheel(False)
+        try:
+            subprocess.run(["nvim", "-i", "NONE", next(iter(mission.files)), "-S", str(script_path)], cwd=work,
+                           env=os.environ | {"VIMNISCIENT_MISSION": str(session_path)})
+        finally:
+            mouse_wheel(True)
+        raw = json.loads(result_path.read_text()) if result_path.exists() else {"status": "quit", "keys": "", "count": 0}
+    return TaskResult(mission.task, raw["status"], raw["keys"], raw["count"], raw.get("hints", 0),
+                      seconds=raw.get("seconds"), first=raw.get("first"))
 
 
 def run_lesson(lesson: Lesson, retry: bool = False) -> list[TaskResult]:

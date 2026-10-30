@@ -1,0 +1,121 @@
+# Multi-file missions: real files in a throwaway folder, your own Neovim, and
+# the check runs when you save. `ways` are keys that do the whole job
+# (tests/check_missions.py plays each one). Realistic on purpose, and ungraded.
+missions:
+  - after: w2d3-cgn
+    title: Rename across files
+    goal: 'Rename load_config to read_config in all three files, and save them.'
+    hint: ':e cli.py opens a file, :w saves it. Or :args *.py, then :argdo runs one command in each.'
+    files:
+      config.py: |
+        def load_config(path):
+            return open(path).read()
+      app.py: |
+        from config import load_config
+
+        settings = load_config("app.toml")
+      cli.py: |
+        from config import load_config
+
+        def main():
+            print(load_config("cli.toml"))
+    targets:
+      config.py: |
+        def read_config(path):
+            return open(path).read()
+      app.py: |
+        from config import read_config
+
+        settings = read_config("app.toml")
+      cli.py: |
+        from config import read_config
+
+        def main():
+            print(read_config("cli.toml"))
+    ways:
+      - ':args *.py<CR>:argdo %s/load_config/read_config/g | update<CR>'
+      - ':vimgrep /load_config/ *.py<CR>:cfdo %s/load_config/read_config/g | update<CR>'
+  - after: w3d6-substitute
+    title: Bump the version
+    goal: 'Change the version from 1.2.3 to 1.3.0 everywhere, and save.'
+    hint: ':args * takes every file; :argdo %s/.../.../ge | update changes them. The e keeps a file with no match from stopping it.'
+    files:
+      pyproject.toml: |
+        [project]
+        name = "demo"
+        version = "1.2.3"
+      README.md: |
+        # Demo
+
+        Install demo 1.2.3 with pip.
+      version.py: |
+        __version__ = "1.2.3"
+      notes.txt: |
+        Nothing about versions here.
+    targets:
+      pyproject.toml: |
+        [project]
+        name = "demo"
+        version = "1.3.0"
+      README.md: |
+        # Demo
+
+        Install demo 1.3.0 with pip.
+      version.py: |
+        __version__ = "1.3.0"
+      notes.txt: |
+        Nothing about versions here.
+    ways:
+      - ':args *<CR>:argdo %s/1\.2\.3/1.3.0/ge | update<CR>'
+      - ':vimgrep /1\.2\.3/ *<CR>:cfdo %s/1\.2\.3/1.3.0/g | update<CR>'
+  - after: w3d6-substitute
+    title: Clear the TODOs
+    goal: 'Delete every TODO line from the notes, and save.'
+    hint: ':args *.md, then :argdo g/TODO/d | update.'
+    files:
+      monday.md: |
+        Met the team.
+        TODO call back
+        Sent the report.
+      tuesday.md: |
+        TODO book a room
+        Wrote the plan.
+      wednesday.md: |
+        Reviewed the plan.
+        TODO order lunch
+        TODO send minutes
+    targets:
+      monday.md: |
+        Met the team.
+        Sent the report.
+      tuesday.md: |
+        Wrote the plan.
+      wednesday.md: |
+        Reviewed the plan.
+    ways:
+      - ':args *.md<CR>:argdo g/TODO/d | update<CR>'
+      - ':vimgrep /TODO/ *.md<CR>:cfdo g/TODO/d | update<CR>'
+  - after: w4d4-norm
+    title: Add a header
+    goal: 'Add the line "# draft" at the top of every Markdown file, and save.'
+    hint: ':args *.md, then :argdo norm ggO# draft, then :wa saves them all.'
+    files:
+      intro.md: |
+        Welcome.
+      method.md: |
+        We tested it.
+      results.md: |
+        It worked.
+    targets:
+      intro.md: |
+        # draft
+        Welcome.
+      method.md: |
+        # draft
+        We tested it.
+      results.md: |
+        # draft
+        It worked.
+    ways:
+      - ':set hidden<CR>:args *.md<CR>:argdo norm ggO# draft<CR>:wa<CR>'
+      - ':set hidden<CR>:args *.md<CR>:argdo 0put =''# draft''<CR>:wa<CR>'

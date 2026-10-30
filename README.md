@@ -62,10 +62,8 @@ circles split by a line; `q` records a macro, a quill writing down what you
 do. Some come with a bit of history: `:t` copies lines because the old `ed`
 editor called a copy a *transfer*, and `grep` is named after `ed`'s `g/re/p`.
 
-The other texts are short facts about how memory and skill learning work
-(spacing, testing yourself, why mixed practice feels harder), the ideas
-Vimniscient itself is built on. Every one has a source in
-[`lessons/sources.md`](https://github.com/dialectmaterial/Vimniscient/blob/main/src/vimniscient/lessons/sources.md).
+Week 6 and a few code tasks are the exception: they're realistic on purpose,
+so that you practise on the kind of text you'll really edit.
 
 After you answer a card, and at the end of a lesson for the tasks you missed,
 Vimniscient shows what each part of the keys stands for:
@@ -164,8 +162,21 @@ lesson, and your progress with a keystroke-efficiency graph.
 | `Tab`, `j`/`k` | Move between panes and through lists |
 | `e` | Endless mode |
 | `c` / `g` / `p` | Cards / VimGolf / placement test |
+| `z` | Quick practice: 1, 2 or 5 minutes on one skill, navigation drills, or a multi-file mission |
+| `x` | Choose: edits with no hints, where you pick the strategy |
 | `s` | Stats |
 | `q` | Quit |
+
+## Is it working?
+
+`vimniscient eval pre` is a short test on texts from no lesson. Take it before
+you've trained much, then `vimniscient eval post` after some weeks and
+`vimniscient eval delayed` a few weeks after that. `vimniscient eval` compares
+them: solved, median time, and keys against the reference. Results stay on your
+machine.
+
+`vimniscient doctor` checks that Neovim and your config work with the trainer.
+`vimniscient placement reset` undoes a placement test.
 
 ## It adapts to your setup
 
@@ -265,8 +276,8 @@ key stands for, so that the edit leaves it true: `ciw is change inner word:
 it swaps the wh▮ile word` (fix it with `ciw`). What each key officially means,
 and the hook to use where it means nothing, is in
 [`mnemonics.yaml`](https://github.com/dialectmaterial/Vimniscient/blob/main/src/vimniscient/mnemonics.yaml). The app reads the same
-file to say what a key stands for after you answer. Other sentences are about
-how memory and skill learning work; every such fact needs a source in
+file to say what a key stands for after you answer. Every task needs at least
+two texts. Memory science belongs in lesson intros, with a source in
 [`lessons/sources.md`](https://github.com/dialectmaterial/Vimniscient/blob/main/src/vimniscient/lessons/sources.md). Code tasks stay
 code, with the meaning in names and strings.
 
@@ -281,6 +292,9 @@ uv run python tests/check_generate.py           # generated texts: reproducible,
 uv run python tests/check_diagnose.py           # strategy feedback: no reference solution sets it off
 uv run python tests/check_transfer.py           # Choose: every way solves it in Neovim, nothing graded
 uv run python tests/check_quick.py              # quick practice: the right tasks for the time, nothing graded
+uv run python tests/check_missions.py           # missions: every way does the whole job on real files
+uv run python tests/check_placement.py          # placement, the evaluation and doctor
+uv run python tests/live_mission.py             # a mission in your real Neovim, in a hidden tmux session
 uv run python tests/check_today.py              # the daily budget, SRS scheduling, card introductions, hardtime
 uv run python tests/check_app.py                # every screen, driven headless
 uv run python tests/live_lessons.py --all       # types every solution into the real runner (needs tmux)

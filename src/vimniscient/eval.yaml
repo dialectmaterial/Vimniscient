@@ -1,0 +1,136 @@
+# The evaluation: forms a and b are the same eight skills on different texts,
+# none of them from a lesson. `pre` uses a, `post` b, `delayed` a again, so a
+# change can't just be remembering the test. Realistic on purpose. Never graded.
+forms:
+  a:
+    - goal: 'Change the port to 9000.'
+      start: |-
+        ▮server = connect("db.local", 5432)
+      target: |-
+        server = connect("db.local", 9000)
+      ways: ['f5ciw9000<Esc>']
+    - goal: 'Delete the line with the password.'
+      start: |-
+        ▮user = "ana"
+        password = "hunter2"
+        host = "web1"
+      target: |-
+        user = "ana"
+        host = "web1"
+      ways: ['jdd']
+    - goal: 'Change "draft" to "final" in both places.'
+      start: |-
+        ▮status: draft
+        note: this is a draft
+      target: |-
+        status: final
+        note: this is a final
+      ways: [':%s/draft/final<CR>']
+    - goal: 'Put each name in quotes.'
+      start: |-
+        ▮anna
+        bert
+        carl
+      target: |-
+        "anna"
+        "bert"
+        "carl"
+      ways: [':%s/.*/"&"/<CR>']
+    - goal: 'Delete the arguments of the call.'
+      start: |-
+        ▮result = process(data, retries, timeout)
+      target: |-
+        result = process()
+      ways: ['f(di(']
+    - goal: 'Move the last line to the top.'
+      start: |-
+        one
+        two
+        ▮zero
+      target: |-
+        zero
+        one
+        two
+      ways: [':m0<CR>']
+    - goal: 'Sort the lines.'
+      start: |-
+        ▮pear
+        apple
+        mango
+      target: |-
+        apple
+        mango
+        pear
+      ways: [':sort<CR>']
+    - goal: 'Delete from here to the end of the line.'
+      start: |-
+        keep this▮, drop all of this
+      target: |-
+        keep this
+      ways: ['D']
+  b:
+    - goal: 'Change the timeout to 60.'
+      start: |-
+        ▮client = open("api.host", 30)
+      target: |-
+        client = open("api.host", 60)
+      ways: ['f3ciw60<Esc>']
+    - goal: 'Delete the line with the token.'
+      start: |-
+        ▮name = "bo"
+        token = "abc123"
+        path = "/srv"
+      target: |-
+        name = "bo"
+        path = "/srv"
+      ways: ['jdd']
+    - goal: 'Change "todo" to "done" in both places.'
+      start: |-
+        ▮state: todo
+        again: still todo
+      target: |-
+        state: done
+        again: still done
+      ways: [':%s/todo/done<CR>']
+    - goal: 'Put each word in quotes.'
+      start: |-
+        ▮red
+        green
+        blue
+      target: |-
+        "red"
+        "green"
+        "blue"
+      ways: [':%s/.*/"&"/<CR>']
+    - goal: 'Delete the arguments of the call.'
+      start: |-
+        ▮value = compute(left, right, scale)
+      target: |-
+        value = compute()
+      ways: ['f(di(']
+    - goal: 'Move the last line to the top.'
+      start: |-
+        beta
+        gamma
+        ▮alpha
+      target: |-
+        alpha
+        beta
+        gamma
+      ways: [':m0<CR>']
+    - goal: 'Sort the lines.'
+      start: |-
+        ▮walnut
+        almond
+        hazelnut
+      target: |-
+        almond
+        hazelnut
+        walnut
+      ways: [':sort<CR>']
+    - goal: 'Delete from here to the end of the line.'
+      start: |-
+        the good part▮, and the rest goes
+      target: |-
+        the good part
+      ways: ['D']

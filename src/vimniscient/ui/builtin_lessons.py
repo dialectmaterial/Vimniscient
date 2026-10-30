@@ -4,7 +4,7 @@
 
 from typing import TYPE_CHECKING
 
-from vimniscient import endless, transfer, vimgolf
+from vimniscient import endless, missions, transfer, vimgolf
 from vimniscient.lessons import Lesson, Task
 
 if TYPE_CHECKING:
@@ -34,6 +34,10 @@ def endless_lesson(start: int, best: int) -> Lesson:
         keys=[],
         tasks=[],
     )
+
+
+def mission_lesson(mission: missions.Mission) -> Lesson:
+    return Lesson(id=missions.LESSON_ID, week=0, day=0, title=f"Mission: {mission.title}", intro="", keys=[], tasks=[mission.task])
 
 
 def quick_lesson(skill: str, tasks: list[Task]) -> Lesson:
@@ -100,18 +104,17 @@ def vimgolf_lesson(challenge: vimgolf.Challenge) -> Lesson:
     )
 
 
-def placement_lesson(lessons: list[Lesson]) -> Lesson:
-    """The first and last task of every lesson except the weekly reviews."""
-    tasks = [t for lesson in lessons if not lesson.review for t in (lesson.tasks[0], lesson.tasks[-1])]
+def placement_lesson(tasks: list[Task]) -> Lesson:
     return Lesson(
         id="placement",
         week=0,
         day=0,
         title="Placement test",
-        intro="Two tasks from every lesson, so you can skip what you already know. A lesson counts "
-        "as known when you solve both of its tasks without `:Hint` and in at most about 1.5× the "
-        "reference keystrokes. Don't guess: `:Skip` whatever you don't know. That's what the "
-        "test is for.",
+        intro="A short test of each skill, in a few rounds: pass and it moves further along that skill, "
+        "miss and it looks earlier. A lesson counts as known when you solve its tasks without `:Hint` and "
+        "in at most about 1.5× the reference keystrokes. Don't guess: `:Skip` whatever you don't know, "
+        "that's what the test is for. Passing one skill says nothing about another, and "
+        "`vimniscient placement reset` undoes it all.",
         keys=[],
         tasks=tasks,
     )

@@ -232,16 +232,24 @@ class Progress:
             tested = [lesson for lesson in days if lesson.id in passed]
             if tested and all(lesson in placed for lesson in tested):
                 placed += [lesson for lesson in days if lesson.id not in passed and lesson not in placed]
-        tested_ids = {r.task.item_id for r in results}
-        for lesson in placed:
+        self.mark_known(placed, {r.task.item_id for r in results})
+        return placed
+
+    def mark_known(self, known: list[Lesson], tested: set[str]) -> None:
+        for lesson in known:
             self.db.execute("INSERT OR IGNORE INTO placed (lesson, ts) VALUES (?, ?)", (lesson.id, _now()))
             # The tasks that weren't tested come up in review within a week.
             for t in lesson.tasks:
-                if t.item_id not in tested_ids and not self.item(t.item_id):
+                if t.item_id not in tested and not self.item(t.item_id):
                     self._save(srs.Item(t.item_id, "task", interval=7, due=date.today() + timedelta(days=7),
                                         created=date.today()))
         self.db.commit()
-        return placed
+
+    def reset_placement(self) -> int:
+        """Forget what the placement test skipped; returns how many lessons."""
+        cursor = self.db.execute("DELETE FROM placed")
+        self.db.commit()
+        return cursor.rowcount
 
     # cards
 
@@ -312,9 +320,9 @@ class Progress:
                 )
         self.db.commit()
 
-    def transfer_last(self) -> dict[int, str]:
-        """When each Choose task was last tried."""
-        return dict(self.db.execute("SELECT task, MAX(ts) FROM attempts WHERE phase = 'transfer' GROUP BY task"))
+    def last_tried(self, phase: str) -> dict[int, str]:
+        """When each Choose task or mission was last tried."""
+        return dict(self.db.execute("SELECT task, MAX(ts) FROM attempts WHERE phase = ? GROUP BY task", (phase,)))
 
     def record_endless(self, results: list[TaskResult], run: dict[str, int]) -> None:
         """Attempts go in as phase 'endless': they count for the streak, not for lessons or reviews."""

@@ -18,6 +18,11 @@ def main() -> None:
     remind.add_argument("--check", action="store_true", help="a follow-up reminder firing")
     budget = sub.add_parser("minutes", help="how long today's routine is meant to take (15 by default)")
     budget.add_argument("minutes", type=int, nargs="?", help="set it; leave it out to see it")
+    place = sub.add_parser("placement", help="undo the placement test")
+    place.add_argument("action", choices=["reset"])
+    sub.add_parser("doctor", help="check that Neovim and your setup work with the trainer")
+    evaluation = sub.add_parser("eval", help="measure your progress: a test now, one later, compared")
+    evaluation.add_argument("stage", choices=["pre", "post", "delayed", "report"], nargs="?", default="report")
     setup = sub.add_parser("reminders", help="daily practice reminders through Omarchy")
     setup.add_argument("action", choices=["install", "uninstall", "status"], nargs="?", default="status")
     args = parser.parse_args()
@@ -46,6 +51,14 @@ def main() -> None:
             settings.set_minutes(args.minutes)
         print(f"Today's routine takes about {settings.minutes()} minutes. ({settings.CONFIG})")
         return
+    if args.command == "doctor":
+        from vimniscient import doctor
+
+        ok = True
+        for check in doctor.checks():
+            print(f"{check.mark} {check.name}: {check.detail}")
+            ok = ok and (check.passed or not check.required)
+        raise SystemExit(0 if ok else 1)
     if args.command == "reminders":
         from vimniscient import reminders
 
@@ -69,6 +82,17 @@ def main() -> None:
     from vimniscient.progress import Progress
     from vimniscient.session import run_endless, run_lesson
 
+    if args.command == "placement":
+        print(f"Placement undone: {Progress().reset_placement()} lessons are back on the list.")
+        return
+    if args.command == "eval":
+        from vimniscient import evaluation as evaluate
+
+        progress = Progress()
+        if args.stage != "report":
+            progress.record_ungraded(run_lesson(evaluate.lesson(args.stage)), f"eval-{args.stage}")
+        print(evaluate.report(progress))
+        return
     if args.command == "endless":
         from vimniscient import endless
         from vimniscient.cards import has_lazyvim

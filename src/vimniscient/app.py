@@ -14,12 +14,12 @@ from textual.app import App
 from textual.color import Color
 from textual.content import Content
 
-from vimniscient import drills, endless, quick, reminders, today, transfer, vimgolf
+from vimniscient import drills, endless, missions, placement, quick, reminders, today, transfer, vimgolf
 from vimniscient.cards import has_lazyvim, load_decks
 from vimniscient.lessons import Lesson, load_lessons, two_rounds
 from vimniscient.progress import Progress
-from vimniscient.session import COLORS, TaskResult, mouse_wheel, run_endless, run_lesson
-from vimniscient.ui.builtin_lessons import endless_lesson, placement_lesson, quick_lesson, review_lesson, transfer_lesson, vimgolf_lesson
+from vimniscient.session import COLORS, TaskResult, mouse_wheel, run_endless, run_lesson, run_mission
+from vimniscient.ui.builtin_lessons import endless_lesson, mission_lesson, placement_lesson, quick_lesson, review_lesson, transfer_lesson, vimgolf_lesson
 from vimniscient.ui.cards import CardScreen
 from vimniscient.ui.common import CATPPUCCIN, DEFAULT_THEME, omarchy_theme, plural
 from vimniscient.ui.drills import DrillScreen
@@ -249,14 +249,28 @@ class VimniscientApp(App):
             self.notify("No cards due. Come back tomorrow.")
 
     def action_placement(self) -> None:
+        search = placement.Search(self.lessons)
+        self.push_screen(LessonScreen(placement_lesson(search.round()), start=lambda done: self.placement_round(search, done)))
+
+    def placement_round(self, search: placement.Search, done: Callable[[], None]) -> None:
+        tasks = search.round()
+
         def on_results(results: list[TaskResult]) -> str:
             self.progress.record(results)
-            placed = self.progress.place(self.lessons, results)
-            if not placed:
+            search.update(results)
+            search.seen |= {r.task.item_id for r in results}
+            if not search.finished:
+                return "That round is done. The next one follows from how it went."
+            known = search.known()
+            self.progress.mark_known(known, search.seen)
+            if not known:
                 return "No lessons skipped. Start from Week 1 · Day 1."
-            return "Known already: " + ", ".join(f"{p.label} ({p.title})" for p in placed)
+            return "Known already: " + ", ".join(f"{p.label} ({p.title})" for p in known)
 
-        self.push_screen(LessonScreen(placement_lesson(self.lessons), on_results))
+        def after() -> None:
+            self.placement_round(search, done) if not search.finished else done()
+
+        self.start_lesson(placement_lesson(tasks), on_results, after)
 
     def action_endless(self) -> None:
         self.run_step("endless", lambda: None)
@@ -267,12 +281,16 @@ class VimniscientApp(App):
     def start_quick(self, done: Callable[[], None]) -> None:
         finished = {lesson.id for lesson in self.lessons if self.progress.is_done(lesson)}
         pools = quick.pools(self.lessons, finished)
+        mission = missions.pick(self.lessons, self.progress)
 
         def chosen(choice: tuple[str, int] | None) -> None:
             if choice is None:
                 done()
                 return
             skill, minutes = choice
+            if skill == "mission":
+                self.start_mission(mission, done)
+                return
             count, seed = quick.how_many(minutes, self.progress.typical_task_seconds()), datetime.now().isoformat()
             tasks = (quick.navigation(count, self.lessons[0].tasks[0], seed) if skill == quick.NAVIGATION
                      else quick.tasks(pools[skill], count, seed))
@@ -283,7 +301,20 @@ class VimniscientApp(App):
 
             self.start_lesson(quick_lesson(quick.title(skill), tasks), on_results, done)
 
-        self.push_screen(QuickScreen({skill: len(tasks) for skill, tasks in pools.items()}), chosen)
+        self.push_screen(QuickScreen({skill: len(tasks) for skill, tasks in pools.items()}, mission.title if mission else ""), chosen)
+
+    def start_mission(self, mission: missions.Mission, done: Callable[[], None]) -> None:
+        with self.suspend():
+            result = run_mission(mission)
+        mouse_wheel(False)
+        self.progress.record_ungraded([result], "mission")
+        ways = "\n".join(mission.ways)
+        note = Content(f"{'Another way' if result.status == 'solved' else 'Ways to do it'}\n{ways}")
+
+        def after(again: bool) -> None:
+            self.start_mission(mission, done) if again else done()
+
+        self.push_screen(ResultsScreen(mission_lesson(mission), [result], note), after)
 
     def action_transfer(self) -> None:
         self.run_step("transfer", lambda: None)

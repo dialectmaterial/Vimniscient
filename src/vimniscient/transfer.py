@@ -45,7 +45,7 @@ def unlocked(done: set[str]) -> list[Challenge]:
 def pick(lessons: list[Lesson], progress, most: int = PER_RUN) -> list[Challenge]:
     """The unlocked tasks you've gone longest without, never-tried ones first."""
     open_ = unlocked({lesson.id for lesson in lessons if progress.is_done(lesson)})
-    last = progress.transfer_last()
+    last = progress.last_tried("transfer")
     return sorted(open_, key=lambda c: last.get(c.task.index, ""))[:most]
 
 

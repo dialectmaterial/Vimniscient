@@ -24,14 +24,17 @@ class QuickScreen(Screen):
         Binding("q", "back", "Back", show=False),
     ]
 
-    def __init__(self, counts: dict[str, int]) -> None:
-        """`counts`: tasks each skill can draw on."""
+    def __init__(self, counts: dict[str, int], mission: str = "") -> None:
+        """`counts`: tasks each skill can draw on. `mission`: the one to offer, if any."""
         super().__init__()
         self.counts = counts
+        self.mission = mission
 
     def compose(self) -> ComposeResult:
         options = [Option(f"{quick.title(quick.NAVIGATION):<14} [dim]count, find, delete the #[/]", id=quick.NAVIGATION)]
         options += [Option(f"{quick.title(skill):<14} [dim]{plural(n, 'task')}[/]", id=skill) for skill, n in self.counts.items()]
+        if self.mission:
+            options.append(Option(f"{'Mission':<14} [dim]{self.mission}, across real files[/]", id="mission"))
         yield OptionList(*options, id="quick-list", classes="pane column")
         yield Static(keybar(("1", "minute"), ("2", "minutes"), ("5", "minutes"), ("⏎", "2 minutes"), ("esc", "back")), classes="keybar")
 
