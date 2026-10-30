@@ -40,6 +40,7 @@ async def main() -> None:
         check("opens on the main screen", isinstance(app.screen, MainScreen), type(app.screen).__name__)
         steps = [s.id for s in app.plan()]
         check("Today lists the routine", steps[:4] == ["cards", "drills", "review", "lesson"], steps)
+        check("Choose is on the list", "transfer" in steps, steps)
 
         await pilot.press("2")
         await pilot.pause(0.3)
@@ -101,6 +102,15 @@ async def main() -> None:
         app.push_screen(ResultsScreen(replace(lesson, tasks=tasks), slow))
         await pilot.pause(0.3)
         check("results comment on your keys", "j 5 times" in text(app.screen, "#results-advice"))
+        await pilot.press("enter")
+        await pilot.pause(0.2)
+
+        from textual.content import Content
+
+        from vimniscient.ui.builtin_lessons import transfer_lesson
+        app.push_screen(ResultsScreen(transfer_lesson(tasks[:1]), results[:1], Content("Another way\nGoal  [ci(x<Esc>")))
+        await pilot.pause(0.3)
+        check("a Content note shows, brackets and all", "[ci(x" in text(app.screen, "#note"), text(app.screen, "#note"))
         await pilot.press("enter")
         await pilot.pause(0.2)
 

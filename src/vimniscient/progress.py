@@ -299,6 +299,23 @@ class Progress:
 
     # endless mode
 
+    def record_transfer(self, results: list[TaskResult]) -> None:
+        """Attempts go in as phase 'transfer': like Endless, for the streak and not for grades."""
+        ts = _now()
+        for r in results:
+            if r.status != "unseen" and not (r.status == "quit" and not r.keys):
+                self.db.execute(
+                    "INSERT INTO attempts (ts, lesson, task, status, count, ref, keys, hints, phase, seconds, first) "
+                    "VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                    (ts, r.task.lesson_id, r.task.index, r.status, r.count, r.task.ref, r.keys, r.hints, "transfer",
+                     r.seconds, r.first),
+                )
+        self.db.commit()
+
+    def transfer_last(self) -> dict[int, str]:
+        """When each Choose task was last tried."""
+        return dict(self.db.execute("SELECT task, MAX(ts) FROM attempts WHERE phase = 'transfer' GROUP BY task"))
+
     def record_endless(self, results: list[TaskResult], run: dict[str, int]) -> None:
         """Attempts go in as phase 'endless': they count for the streak, not for lessons or reviews."""
         ts = _now()

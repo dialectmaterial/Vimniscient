@@ -1,0 +1,184 @@
+# Choose: realistic edits with no hint, where several strategies work. `after`
+# is the lesson that unlocks a task; `ways` are solutions that all reach the
+# target (tests/check_transfer.py plays each one). Like week 6, the texts are
+# realistic on purpose. Graded like Endless: not at all.
+tasks:
+  - after: w1d2-pairs
+    goal: 'Fix the message to "hello world".'
+    start: |-
+      print("▮helo wrold")
+    target: |-
+      print("hello world")
+    ways: ['ci"hello world<Esc>', 'ci("hello world"<Esc>']
+  - after: w1d4-find
+    goal: 'Remove the comment and the spaces before it.'
+    start: |-
+      ▮timeout = 30  # seconds
+    target: |-
+      timeout = 30
+    ways: ['f#hhD', '$F#hhD']
+  - after: w1d5-lines
+    goal: 'Add the line "port = 8080" below this one.'
+    start: |-
+      ▮host = "localhost"
+    target: |-
+      host = "localhost"
+      port = 8080
+    ways: ['oport = 8080<Esc>', 'A<CR>port = 8080<Esc>']
+  - after: w1d6-counts
+    goal: 'Delete the three middle items.'
+    start: |-
+      milk
+      ▮eggs
+      flour
+      sugar
+      salt
+    target: |-
+      milk
+      salt
+    ways: ['3dd', 'd2j']
+  - after: w1d6-counts
+    goal: 'Remove sys and re from the imports.'
+    start: |-
+      ▮import os, sys, re, json
+    target: |-
+      import os, json
+    ways: ['f,w2dW', 'f,wdtj']
+  - after: w1d6-counts
+    goal: 'Replace "quick brown" with "slow".'
+    start: |-
+      ▮The quick brown fox
+    target: |-
+      The slow fox
+    ways: ['wc2wslow<Esc>', 'wctfslow <Esc>']
+  - after: w2d1-dot
+    goal: 'End all three lines with a semicolon.'
+    start: |-
+      ▮let a = 1
+      let b = 2
+      let c = 3
+    target: |-
+      let a = 1;
+      let b = 2;
+      let c = 3;
+    ways: ['A;<Esc>j.j.', '<C-v>jj$A;<Esc>']
+  - after: w2d2-search
+    goal: 'Delete everything before the line "END".'
+    start: |-
+      ▮draft one
+      draft two
+      draft three
+      END
+    target: |-
+      END
+    ways: ['d/END<CR>', '3dd']
+  - after: w2d3-cgn
+    goal: 'Rename every tmp to total.'
+    start: |-
+      ▮tmp = 0
+      tmp += 1
+      print(tmp)
+    target: |-
+      total = 0
+      total += 1
+      print(total)
+    ways: ['*cgntotal<Esc>..', ':%s/tmp/total/g<CR>']
+  - after: w2d4-case-numbers
+    goal: 'Make it a constant with the value 5: MAX_RETRIES = 5.'
+    start: |-
+      ▮max_retries = 2
+    target: |-
+      MAX_RETRIES = 5
+    ways: ['gUiwf2r5', 'gUiw3<C-a>']
+  - after: w2d5-insert
+    goal: 'Rename value to old_value.'
+    start: |-
+      ▮value = 1
+    target: |-
+      old_value = 1
+    ways: ['iold_<Esc>', 'ciwold_value<Esc>']
+  - after: w2d6-visual
+    goal: 'Capitalise "quick brown" in full.'
+    start: |-
+      ▮the quick brown
+    target: |-
+      the QUICK BROWN
+    ways: ['wgU$', 'wveeU']
+  - after: w3d1-macros
+    goal: 'Turn every line into a quoted item with a comma: "alpha",'
+    start: |-
+      ▮alpha
+      beta
+      gamma
+    target: |-
+      "alpha",
+      "beta",
+      "gamma",
+    ways: ['qaI"<Esc>A",<Esc>jq2@a', ':%s/.*/"&",/<CR>']
+  - after: w3d3-registers
+    goal: 'Make dst the same file as src.'
+    start: |-
+      src = "▮a.txt"
+      dst = "b.txt"
+    target: |-
+      src = "a.txt"
+      dst = "a.txt"
+    ways: ['yi"jvi"p', 'yi"jci"<C-r>0<Esc>']
+  - after: w3d5-visual-block
+    goal: 'Remove the numbers and their dots.'
+    start: |-
+      ▮1. alpha
+      2. beta
+      3. gamma
+    target: |-
+      alpha
+      beta
+      gamma
+    ways: ['<C-v>jj2ld', ':%s/^\d\+\. //<CR>']
+  - after: w3d6-substitute
+    goal: 'Delete the DEBUG lines.'
+    start: |-
+      ▮start
+      DEBUG one
+      middle
+      DEBUG two
+      end
+    target: |-
+      start
+      middle
+      end
+    ways: [':g/DEBUG/d<CR>', 'jddjdd']
+  - after: w4d1-ranges
+    goal: 'Move the first line to the end.'
+    start: |-
+      ▮intro
+      body
+      outro
+    target: |-
+      body
+      outro
+      intro
+    ways: [':m$<CR>', 'ddGp']
+  - after: w4d2-sort-filter
+    goal: 'Sort the lines and drop the duplicate.'
+    start: |-
+      ▮pear
+      apple
+      pear
+      fig
+    target: |-
+      apple
+      fig
+      pear
+    ways: [':sort u<CR>', ':sort<CR>:%!uniq<CR>']
+  - after: w4d4-norm
+    goal: 'End every line with a comma.'
+    start: |-
+      ▮one
+      two
+      three
+    target: |-
+      one,
+      two,
+      three,
+    ways: [':%norm A,<CR>', ':%s/$/,/<CR>']

@@ -34,6 +34,7 @@ class MainScreen(Screen):
         Binding("d", "app.drills", "Drills", show=False),
         Binding("e", "app.endless", "Endless", show=False),
         Binding("g", "app.vimgolf", "VimGolf", show=False),
+        Binding("x", "app.transfer", "Choose", show=False),
         Binding("p", "app.placement", "Placement", show=False),
         Binding("s", "app.stats", "Stats", show=False),
         Binding("1", "pane('plan')", "Today", show=False),
@@ -57,7 +58,7 @@ class MainScreen(Screen):
                     yield Sparkline([], id="spark")
         yield Static(
             keybar(("t", "today"), ("⏎", "open"), ("⇥", "pane"), ("e", "endless"), ("c", "cards"),
-                   ("d", "drills"), ("g", "golf"), ("p", "place"), ("s", "stats"), ("q", "quit")),
+                   ("d", "drills"), ("g", "golf"), ("x", "choose"), ("p", "place"), ("s", "stats"), ("q", "quit")),
             classes="keybar",
         )
 
@@ -89,6 +90,8 @@ class MainScreen(Screen):
                    "habits hardtime keeps catching."),
         "vimgolf": ("VimGolf", "One challenge from vimgolf.com, the most played ones first, scored against "
                     "the leaderboard.\n\nNot part of `t`: an extra, whenever you feel like it (or `g`)."),
+        "transfer": ("Choose", "Ordinary edits with no hints, where several ways work: pick yours, then compare it "
+                     "with another way on the results.\n\nNot part of `t`, and nothing is graded (or `x`)."),
         "endless": ("Endless", ENDLESS_INTRO.format(ramp=endless.RAMP, below=endless.RESTART_BELOW)
                     + "\n\nNot part of `t`: play it whenever you have time left."),
     }

@@ -46,7 +46,7 @@ class LessonScreen(Screen):
     def __init__(
         self,
         lesson: Lesson,
-        on_results: Callable[[list[TaskResult]], str] | None = None,
+        on_results: Callable[[list[TaskResult]], str | Content] | None = None,
         start: Callable[[Callable[[], None]], None] | None = None,
     ) -> None:
         """`on_results` stores the results and returns a note for the results screen;
@@ -120,7 +120,7 @@ class ResultsScreen(Screen):
         Binding("k", "scroll(-2)", "Up", show=False),
     ]
 
-    def __init__(self, lesson: Lesson, results: list[TaskResult], note: str = "", subtitle: str = "") -> None:
+    def __init__(self, lesson: Lesson, results: list[TaskResult], note: str | Content = "", subtitle: str = "") -> None:
         super().__init__()
         self.lesson = lesson
         self.results = results

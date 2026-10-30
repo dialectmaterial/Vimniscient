@@ -4,7 +4,7 @@
 
 from typing import TYPE_CHECKING
 
-from vimniscient import endless, vimgolf
+from vimniscient import endless, transfer, vimgolf
 from vimniscient.lessons import Lesson, Task
 
 if TYPE_CHECKING:
@@ -33,6 +33,20 @@ def endless_lesson(start: int, best: int) -> Lesson:
         + ENDLESS_INTRO.format(ramp=endless.RAMP, below=endless.RESTART_BELOW),
         keys=[],
         tasks=[],
+    )
+
+
+def transfer_lesson(tasks: list[Task]) -> Lesson:
+    return Lesson(
+        id=transfer.LESSON_ID,
+        week=0,
+        day=0,
+        title="Choose",
+        intro="Ordinary edits with no hints and no keys shown. There's more than one good way to do "
+        "each: pick yours. The results show another way to do it, for comparing, not as a correction. "
+        "Nothing here is graded.",
+        keys=[],
+        tasks=tasks,
     )
 
 

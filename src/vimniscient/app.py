@@ -11,13 +11,14 @@ from dataclasses import replace
 
 from textual.app import App
 from textual.color import Color
+from textual.content import Content
 
-from vimniscient import drills, endless, reminders, today, vimgolf
+from vimniscient import drills, endless, reminders, today, transfer, vimgolf
 from vimniscient.cards import has_lazyvim, load_decks
 from vimniscient.lessons import Lesson, load_lessons, two_rounds
 from vimniscient.progress import Progress
 from vimniscient.session import COLORS, TaskResult, mouse_wheel, run_endless, run_lesson
-from vimniscient.ui.builtin_lessons import endless_lesson, placement_lesson, review_lesson, vimgolf_lesson
+from vimniscient.ui.builtin_lessons import endless_lesson, placement_lesson, review_lesson, transfer_lesson, vimgolf_lesson
 from vimniscient.ui.cards import CardScreen
 from vimniscient.ui.common import CATPPUCCIN, DEFAULT_THEME, omarchy_theme, plural
 from vimniscient.ui.drills import DrillScreen
@@ -44,7 +45,7 @@ class VimniscientApp(App):
 
     #main { height: 1fr; }
     #left { width: 46; max-width: 45%; }
-    #plan { height: 8; }
+    #plan { height: 9; }
     #lesson-list { height: 1fr; }
     #right { width: 1fr; }
     #detail-pane { height: 1fr; }
@@ -121,7 +122,7 @@ class VimniscientApp(App):
     def start_lesson(
         self,
         lesson: Lesson,
-        on_results: Callable[[list[TaskResult]], str] | None = None,
+        on_results: Callable[[list[TaskResult]], str | Content] | None = None,
         done: Callable[[], None] = lambda: None,
     ) -> None:
         """Run a lesson in Neovim, then show the results; `done` runs when the user moves on.
@@ -188,6 +189,10 @@ class VimniscientApp(App):
         elif step_id == "vimgolf":
             if not progress.vimgolf_done_today():
                 return self.start_vimgolf
+        elif step_id == "transfer":
+            picks = transfer.pick(self.lessons, progress)
+            if picks:
+                return lambda done: self.start_transfer(picks, done)
         elif step_id == "endless":
             start = progress.endless_start(endless.RESTART_BELOW)
             if direct:
@@ -251,6 +256,19 @@ class VimniscientApp(App):
 
     def action_endless(self) -> None:
         self.run_step("endless", lambda: None)
+
+    def action_transfer(self) -> None:
+        self.run_step("transfer", lambda: None)
+
+    def start_transfer(self, picks: list[transfer.Challenge], done: Callable[[], None]) -> None:
+        def on_results(results: list[TaskResult]) -> Content:
+            self.progress.record_transfer(results)
+            by_goal = {c.task.goal: c for c in picks}
+            lines = [f"{r.task.goal}  {'  or  '.join(ways)}" for r in results
+                     if (ways := transfer.another_way(by_goal[r.task.goal], r.keys, r.status == "solved"))]
+            return Content("Another way\n" + "\n".join(lines)) if lines else Content("")
+
+        self.start_lesson(transfer_lesson([c.task for c in picks]), on_results, done)
 
     def start_endless(self, start: int, done: Callable[[], None]) -> None:
         """Climb from `start` until the user quits, then show how it went."""

@@ -1,6 +1,6 @@
 [project]
 name = "vimniscient"
-version = "0.2.1"
+version = "0.2.2"
 description = "Get fluent in Vim in fifteen minutes a day, in your own Neovim."
 readme = "README.md"
 license = "AGPL-3.0-or-later"

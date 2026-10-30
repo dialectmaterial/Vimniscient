@@ -10,7 +10,7 @@ backlog doesn't grow while lessons fill the budget."""
 import math
 from dataclasses import dataclass
 
-from vimniscient import drills, habits, settings
+from vimniscient import drills, habits, settings, transfer
 from vimniscient.cards import Card, Deck
 from vimniscient.lessons import Lesson, Task
 from vimniscient.progress import Progress
@@ -154,6 +154,7 @@ def plan(progress: Progress, lessons: list[Lesson], decks: dict[str, Deck], dril
     lesson_done = progress.lesson_today()
     golf_done = progress.vimgolf_done_today()
     best = progress.endless_best()
+    picks = transfer.pick(lessons, progress)
     if nxt is None:
         lesson_detail = "all done"
     elif lesson_done:
@@ -180,6 +181,7 @@ def plan(progress: Progress, lessons: list[Lesson], decks: dict[str, Deck], dril
         Step("lesson", "Lesson", lesson_detail, work.lesson is not None, minutes(work.seconds["lesson"])),
         Step("vimgolf", "VimGolf", "done" if golf_done else "optional · today's challenge",
              False if golf_done else None),
+        Step("transfer", "Choose", f"optional · {len(picks)} tasks, your keys" if picks else "opens after Week 1 · Day 2", None),
         Step("endless", "Endless", f"best level {best}" if best else "as long as you like", None),
     ]
 

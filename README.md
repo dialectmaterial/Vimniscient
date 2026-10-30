@@ -279,6 +279,7 @@ uv run python tests/check_answers.py            # card answers written different
 uv run python tests/check_timing.py             # task times: old progress databases upgrade safely
 uv run python tests/check_generate.py           # generated texts: reproducible, and they solve in Neovim
 uv run python tests/check_diagnose.py           # strategy feedback: no reference solution sets it off
+uv run python tests/check_transfer.py           # Choose: every way solves it in Neovim, nothing graded
 uv run python tests/check_today.py              # the daily budget, SRS scheduling, card introductions, hardtime
 uv run python tests/check_app.py                # every screen, driven headless
 uv run python tests/live_lessons.py --all       # types every solution into the real runner (needs tmux)
