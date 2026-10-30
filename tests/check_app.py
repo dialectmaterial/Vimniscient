@@ -41,6 +41,16 @@ async def main() -> None:
         steps = [s.id for s in app.plan()]
         check("Today lists the routine", steps[:4] == ["cards", "drills", "review", "lesson"], steps)
 
+        await pilot.press("2")
+        await pilot.pause(0.3)
+        title = app.screen.query_one("#detail-pane").border_title
+        await pilot.press("j", "j")
+        check("holding j leaves the detail until it stops", app.screen.query_one("#detail-pane").border_title == title)
+        await pilot.pause(0.3)
+        check("then the detail follows", app.screen.query_one("#detail-pane").border_title != title)
+        await pilot.press("1")
+        await pilot.pause(0.2)
+
         await pilot.press("s")
         await pilot.pause(0.3)
         check("s opens stats", isinstance(app.screen, StatsScreen), type(app.screen).__name__)

@@ -8,6 +8,7 @@ from textual.binding import Binding
 from textual.containers import Horizontal, Vertical, VerticalScroll
 from textual.content import Content
 from textual.screen import Screen
+from textual.timer import Timer
 from textual.widgets import Markdown, OptionList, Sparkline, Static
 from textual.widgets.option_list import Option
 
@@ -23,6 +24,9 @@ if TYPE_CHECKING:
 class MainScreen(Screen):
     """Everything at once, lazygit-style: Today and Lessons on the left, the
     highlighted entry on the right, progress below it. Tab moves between panes."""
+
+    DETAIL_DELAY = 0.08  # rendering Markdown costs far more than moving the highlight
+    detail_timer: Timer | None = None
 
     BINDINGS = [
         Binding("t", "app.today", "Start today"),
@@ -189,11 +193,17 @@ class MainScreen(Screen):
         pane.border_title = title
         self.query_one("#detail", Markdown).update(text)
 
+    def detail_soon(self) -> None:
+        """Show the detail once the highlight stops moving, so holding j stays quick."""
+        if self.detail_timer:
+            self.detail_timer.stop()
+        self.detail_timer = self.set_timer(self.DETAIL_DELAY, self.show_detail)
+
     # events
 
     def on_option_list_option_highlighted(self, event: OptionList.OptionHighlighted) -> None:
         if event.option_list is self.focused:
-            self.show_detail()
+            self.detail_soon()
 
     def on_descendant_focus(self) -> None:
         self.show_detail()
