@@ -84,7 +84,8 @@ impl Progress {
         let dir = data_dir();
         std::fs::create_dir_all(&dir).map_err(|e| rusqlite::Error::ToSqlConversionFailure(Box::new(e)))?;
         let started = dir.join("started");
-        if !started.exists() {
+        let readable = std::fs::read_to_string(&started).ok().is_some_and(|text| NaiveDate::parse_from_str(text.trim(), "%Y-%m-%d").is_ok());
+        if !readable {
             let _ = std::fs::write(started, format!("{}\n", today()));
         }
         let db = Connection::open(dir.join("progress.db"))?;
@@ -107,8 +108,7 @@ impl Progress {
 
     fn columns(&self, table: &str) -> rusqlite::Result<HashSet<String>> {
         let mut statement = self.db.prepare(&format!("PRAGMA table_info({table})"))?;
-        let names = statement.query_map([], |row| row.get::<_, String>(1))?.collect();
-        names
+        statement.query_map([], |row| row.get::<_, String>(1))?.collect()
     }
 
     // spaced repetition items
@@ -164,11 +164,12 @@ impl Progress {
         }
     }
 
-    /// Fewest keys per solved task index.
+    /// Fewest keys per solved task index. Only tasks the lesson still has: one dropped in an
+    /// update mustn't leave the lesson unfinishable.
     pub fn best(&self, lesson: &Lesson) -> HashMap<usize, usize> {
-        let sql = "SELECT task, MIN(count) FROM attempts WHERE lesson = ? AND status = 'solved' AND phase = 'recall' GROUP BY task";
+        let sql = "SELECT task, MIN(count) FROM attempts WHERE lesson = ? AND status = 'solved' AND phase = 'recall' AND task < ? GROUP BY task";
         let Ok(mut statement) = self.db.prepare(sql) else { return HashMap::new() };
-        statement.query_map([&lesson.id], |row| Ok((row.get(0)?, row.get(1)?))).map(|rows| rows.flatten().collect()).unwrap_or_default()
+        statement.query_map(params![&lesson.id, lesson.tasks.len()], |row| Ok((row.get(0)?, row.get(1)?))).map(|rows| rows.flatten().collect()).unwrap_or_default()
     }
 
     pub fn is_placed(&self, lesson: &Lesson) -> bool {
@@ -500,8 +501,10 @@ impl Progress {
 
     /// The first day hardtime may block, lessons allowing.
     pub fn hardtime_earliest(&self) -> NaiveDate {
-        let started = std::fs::read_to_string(data_dir().join("started")).unwrap_or_default();
-        day(started.trim()) + Days::new(HARDTIME_MIN_DAYS)
+        // no readable start date: count from today, not from 1970
+        let started = std::fs::read_to_string(data_dir().join("started")).ok()
+            .and_then(|text| NaiveDate::parse_from_str(text.trim(), "%Y-%m-%d").ok()).unwrap_or_else(today);
+        started + Days::new(HARDTIME_MIN_DAYS)
     }
 
     pub fn hardtime_blocks(&self, lessons: &[Lesson]) -> bool {

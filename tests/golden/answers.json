@@ -325,5 +325,23 @@
   ],
   "style": "combo",
   "typed": "copy mode v"
+ },
+ {
+  "case_sensitive": true,
+  "correct": false,
+  "expected": [
+   "^i"
+  ],
+  "style": "keys",
+  "typed": "<C-i>"
+ },
+ {
+  "case_sensitive": true,
+  "correct": true,
+  "expected": [
+   "^i"
+  ],
+  "style": "keys",
+  "typed": "^i"
  }
 ]

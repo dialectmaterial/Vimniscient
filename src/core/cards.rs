@@ -7,9 +7,12 @@ use indexmap::IndexMap;
 use serde_norway::Value;
 use std::collections::HashSet;
 use std::path::PathBuf;
-use std::process::{Command, Stdio};
+use std::io::Read;
+use std::process::{Command, Output, Stdio};
 use std::sync::LazyLock;
 use std::time::{Duration, Instant};
+
+const KEYMAPS_SECONDS: u64 = 30;
 
 // New cards are introduced round-robin in this order.
 pub const DECK_ORDER: [&str; 8] = ["habits", "vim", "lazyvim", "omarchy", "tmux", "shell", "foot", "zathura"];
@@ -100,24 +103,41 @@ pub fn load_static_decks() -> IndexMap<String, Deck> {
     order(static_decks())
 }
 
-/// What a command prints, or nothing when it fails or takes more than `seconds`.
-pub fn run(program: &str, args: &[&str], seconds: u64) -> String {
-    let Ok(mut child) = Command::new(program).args(args).stdin(Stdio::null()).stdout(Stdio::piped()).stderr(Stdio::null()).spawn() else {
-        return String::new();
-    };
+/// Run `command` to the end, at most `seconds`; None when it won't start or is too slow.
+/// Its output is read while it runs, so a long one can't fill the pipe and stall.
+pub fn output_within(command: &mut Command, seconds: u64) -> Option<Output> {
+    fn drain(pipe: Option<impl Read + Send + 'static>) -> std::thread::JoinHandle<Vec<u8>> {
+        std::thread::spawn(move || {
+            let mut bytes = Vec::new();
+            if let Some(mut pipe) = pipe {
+                let _ = pipe.read_to_end(&mut bytes);
+            }
+            bytes
+        })
+    }
+    let mut child = command.stdin(Stdio::null()).spawn().ok()?;
+    let (stdout, stderr) = (drain(child.stdout.take()), drain(child.stderr.take()));
     let started = Instant::now();
-    loop {
+    let status = loop {
         match child.try_wait() {
-            Ok(Some(_)) => break,
+            Ok(Some(status)) => break Some(status),
             Ok(None) if started.elapsed() < Duration::from_secs(seconds) => std::thread::sleep(Duration::from_millis(20)),
             _ => {
                 let _ = child.kill();
                 let _ = child.wait();
-                return String::new();
+                break None;
             }
         }
-    }
-    child.wait_with_output().map(|o| String::from_utf8_lossy(&o.stdout).into_owned()).unwrap_or_default()
+    };
+    let (stdout, stderr) = (stdout.join().unwrap_or_default(), stderr.join().unwrap_or_default());
+    status.map(|status| Output { status, stdout, stderr })
+}
+
+/// What a command prints, or nothing when it fails or takes more than `seconds`.
+pub fn run(program: &str, args: &[&str], seconds: u64) -> String {
+    output_within(Command::new(program).args(args).stdout(Stdio::piped()).stderr(Stdio::null()), seconds)
+        .map(|o| String::from_utf8_lossy(&o.stdout).into_owned())
+        .unwrap_or_default()
 }
 
 /// Cards from `KEYS → description` lines (the Omarchy keybinding menus).
@@ -196,10 +216,13 @@ fn nvim_keymaps() -> Vec<serde_json::Value> {
         return data["maps"].as_array().cloned().unwrap_or_default();
     }
     let out = cache_dir.join("nvim-keymaps.tmp.json");
-    let Ok(script) = content::to_temp("nvim/keymaps.lua") else { return Vec::new() };
-    let status = Command::new("nvim").args(["--headless", "-i", "NONE", "-n", "-S"]).arg(script)
-        .env("VIMNISCIENT_KEYMAPS", &out).current_dir(&cache_dir).stdout(Stdio::null()).stderr(Stdio::null()).status();
-    if status.is_err() {
+    let Ok(scratch) = content::Scratch::new() else { return Vec::new() };
+    let Ok(script) = scratch.write("nvim/keymaps.lua") else { return Vec::new() };
+    // your whole config starts headless; one that hangs mustn't hold up the app or a reminder
+    let mut nvim = Command::new("nvim");
+    nvim.args(["--headless", "-i", "NONE", "-n", "-S"]).arg(script)
+        .env("VIMNISCIENT_KEYMAPS", &out).current_dir(&cache_dir).stdout(Stdio::null()).stderr(Stdio::null());
+    if output_within(&mut nvim, KEYMAPS_SECONDS).is_none() {
         return Vec::new();
     }
     let Some(maps) = std::fs::read_to_string(&out).ok().and_then(|text| serde_json::from_str::<Vec<serde_json::Value>>(&text).ok()) else {

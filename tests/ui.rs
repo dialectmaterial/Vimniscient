@@ -42,6 +42,11 @@ fn every_screen() {
     let lessons: &'static [_] = Box::leak(LESSONS.clone().into_boxed_slice());
     let mut app = App::with(lessons, cards::load_static_decks());
     assert!(on_main(&app));
+
+    // desktop events keep coming after the drills close; they mustn't touch other screens
+    app.messages.0.send(vimniscient::ui::Message::Hyprland("activewindowv2>>abc".into())).unwrap();
+    app.tick();
+    assert!(on_main(&app), "a Hyprland event took the main screen away");
     let ids: Vec<String> = app.plan().iter().map(|s| s.id.clone()).collect();
     assert_eq!(ids[..4], ["cards", "drills", "review", "lesson"]);
     assert!(ids.contains(&"transfer".to_string()));

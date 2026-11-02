@@ -36,7 +36,7 @@ def send(token: str) -> None:
     if token in SPECIAL:
         tmux("send-keys", "-t", SESSION, SPECIAL[token])
     else:
-        tmux("send-keys", "-t", SESSION, "-l", "\;" if token == ";" else token)
+        tmux("send-keys", "-t", SESSION, "-l", "\\;" if token == ";" else token)
 
 
 def play(keys: str) -> None:

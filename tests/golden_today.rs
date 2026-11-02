@@ -68,7 +68,8 @@ fn the_day_stays_the_same() {
     check("today.json", json!({"plans": plans, "card_run": trail, "card_score": [session.correct, session.answered]}));
 
     let by_id = |id: &str| lessons.iter().find(|l| l.id == id).unwrap();
-    let profiles: [(&str, fn(&str, u32) -> bool); 4] = [
+    type Unlocks = fn(&str, u32) -> bool; // which lessons a profile has done
+    let profiles: [(&str, Unlocks); 4] = [
         ("expert", |_, _| true),
         ("beginner", |_, _| false),
         ("macros", |skill, _| skill == "macros"),

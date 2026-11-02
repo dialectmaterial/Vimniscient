@@ -89,7 +89,8 @@ fn main() {
                     std::process::exit(2);
                 }
                 if let Err(error) = settings::set_minutes(minutes) {
-                    eprintln!("vimniscient: {error}");
+                    eprintln!("vimniscient: couldn't save it in {}: {error}", settings::config().display());
+                    std::process::exit(1);
                 }
             }
             println!("Today's routine takes about {} minutes. ({})", settings::minutes(), settings::config().display());
@@ -106,7 +107,10 @@ fn main() {
             if action == "install" {
                 match reminders::install() {
                     Ok(paths) => paths.iter().for_each(|path| println!("wrote {path}")),
-                    Err(error) => eprintln!("vimniscient: {error}"),
+                    Err(error) => {
+                        eprintln!("vimniscient: couldn't set up the reminders: {error}");
+                        std::process::exit(1);
+                    }
                 }
                 println!("Reminders on: at {} or when you start using the computer, then every {} hours until {} while practice is left.",
                          reminders::MORNING, reminders::every() / 60, reminders::day_end().format("%H:%M"));

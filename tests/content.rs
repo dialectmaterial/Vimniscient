@@ -57,3 +57,29 @@ fn quick_practice_fits_the_time() {
     assert_eq!(picked.len(), 12);
     assert_eq!(picked.iter().map(|t| t.index).collect::<HashSet<_>>().len(), pools["repeats"].len());
 }
+
+/// Your review history is kept per `task:<lesson>#<position>`. Moving a task within its
+/// lesson would hand its history to whichever task lands on that position, so every id
+/// stays tied to the goal it was recorded with. New tasks go at the end; `UPDATE_GOLDEN=1`
+/// records them, but never rewrites an id already there: rewording a goal on purpose is a
+/// hand edit of tests/golden/task_ids.json.
+#[test]
+fn task_ids_keep_their_tasks() {
+    let path = format!("{}/tests/golden/task_ids.json", env!("CARGO_MANIFEST_DIR"));
+    let mut recorded: serde_json::Map<String, serde_json::Value> =
+        std::fs::read_to_string(&path).ok().and_then(|text| serde_json::from_str(&text).ok()).unwrap_or_default();
+    let mut added = false;
+    for task in LESSONS.iter().flat_map(|l| &l.tasks) {
+        match recorded.get(&task.item_id()) {
+            Some(goal) => assert_eq!(goal, task.goal.as_str(), "{} is a different task now: did tasks move?", task.item_id()),
+            None => {
+                assert!(std::env::var_os("UPDATE_GOLDEN").is_some(), "{} is new: UPDATE_GOLDEN=1 cargo test records it", task.item_id());
+                recorded.insert(task.item_id(), task.goal.clone().into());
+                added = true;
+            }
+        }
+    }
+    if added {
+        std::fs::write(&path, format!("{}\n", serde_json::to_string_pretty(&recorded).unwrap())).unwrap();
+    }
+}

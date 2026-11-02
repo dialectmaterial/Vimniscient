@@ -4,14 +4,13 @@ use crate::core::lessons::{Lesson, Task};
 use crate::core::missions::Mission;
 use crate::core::mnemonics::hooks;
 use crate::core::progress::today;
-use crate::core::{content, results::TaskResult};
+use crate::core::content::{self, Scratch};
+use crate::core::results::TaskResult;
 use serde_json::{Value, json};
 use std::collections::HashMap;
 use std::io::{IsTerminal, Write};
-use std::path::PathBuf;
 use std::process::Command;
 use std::sync::Mutex;
-use std::sync::atomic::{AtomicUsize, Ordering};
 
 /// The theme's colours as hex, for lessons in Neovim to draw with. The interface fills it.
 pub static COLORS: Mutex<Option<Value>> = Mutex::new(None);
@@ -24,25 +23,6 @@ pub fn mouse_wheel(on: bool) {
     if out.is_terminal() {
         let _ = out.write_all(if on { b"\x1b[?1007h" } else { b"\x1b[?1007l" });
         let _ = out.flush();
-    }
-}
-
-/// A folder of our own for one run, gone when it's dropped.
-struct Scratch(PathBuf);
-
-impl Scratch {
-    fn new() -> std::io::Result<Scratch> {
-        static COUNT: AtomicUsize = AtomicUsize::new(0);
-        let name = format!("vimniscient-{}-{}", std::process::id(), COUNT.fetch_add(1, Ordering::Relaxed));
-        let path = std::env::temp_dir().join(name);
-        std::fs::create_dir_all(&path)?;
-        Ok(Scratch(path))
-    }
-}
-
-impl Drop for Scratch {
-    fn drop(&mut self) {
-        let _ = std::fs::remove_dir_all(&self.0);
     }
 }
 

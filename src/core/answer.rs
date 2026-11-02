@@ -76,11 +76,16 @@ fn norm_token(caps: &Captures) -> String {
 }
 
 pub fn norm_keys(text: &str, case_sensitive: bool) -> String {
+    norm_keys_with(text, case_sensitive, true)
+}
+
+/// `caret`: read `^r` as Ctrl-r. Only for what you type: in an answer key `^` is the motion.
+fn norm_keys_with(text: &str, case_sensitive: bool, caret: bool) -> String {
     let s = LEADING.replace_all(text.trim(), "<leader>").into_owned();
     let s = SPACE.replace_all(&s, "<Space>").into_owned();
     let s = CTRL.replace_all(&s, "<C-$1>").into_owned();
     let s = ALT.replace_all(&s, "<M-$1>").into_owned();
-    let s = CARET.replace_all(&s, "<C-$1>").into_owned();
+    let s = if caret { CARET.replace_all(&s, "<C-$1>").into_owned() } else { s };
     let s = TOKEN.replace_all(&s, |caps: &Captures| norm_token(caps)).into_owned();
     let s = GAPS.replace_all(&s, "").into_owned();
     let s = if s.starts_with(':') { s.strip_suffix("<CR>").unwrap_or(&s).to_string() } else { s };
@@ -161,8 +166,9 @@ pub fn is_correct(answer: &str, expected: &[String], style: &str, case_sensitive
         let got = norm_combo(answer, case_sensitive);
         return expected.iter().any(|e| norm_combo(e, case_sensitive) == got);
     }
-    let got = norm_keys(answer, case_sensitive);
-    expected.iter().any(|e| norm_keys(e, case_sensitive) == got)
+    // `^r` typed may be Ctrl-r or the motion and r; either reading can match
+    let got = [norm_keys_with(answer, case_sensitive, true), norm_keys_with(answer, case_sensitive, false)];
+    expected.iter().any(|e| got.contains(&norm_keys_with(e, case_sensitive, false)))
 }
 
 /// `<Space>ff` reads better as `<leader>ff`.

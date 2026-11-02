@@ -155,12 +155,55 @@ fn next_time(now: NaiveDateTime) -> Option<NaiveDateTime> {
 /// `login` is a desktop start or the morning timer; otherwise a follow-up firing.
 /// Returns what it did, for the command line.
 pub fn remind(login: bool) -> String {
+    // At boot the post-boot hook and the catch-up morning timer can both be waiting for
+    // the unlock; only one of them reminds.
+    let Some(_lock) = Lock::take() else { return "another reminder is already on its way".into() };
+    wait_for_unlock();
+    // the time after the wait: it can be hours later than when this started
     remind_at(login, Local::now().naive_local())
+}
+
+/// Held while a reminder runs; the file names the process, so a crashed one doesn't block.
+struct Lock(PathBuf);
+
+impl Lock {
+    fn take() -> Option<Lock> {
+        let path = folder("XDG_STATE_HOME", ".local/state").join("vimniscient/remind.lock");
+        if let Some(parent) = path.parent() {
+            let _ = std::fs::create_dir_all(parent);
+        }
+        for _ in 0..2 {
+            match std::fs::OpenOptions::new().write(true).create_new(true).open(&path) {
+                Ok(mut file) => {
+                    use std::io::Write;
+                    let _ = write!(file, "{}", std::process::id());
+                    return Some(Lock(path));
+                }
+                Err(error) if error.kind() == std::io::ErrorKind::AlreadyExists => {
+                    let holder = std::fs::read_to_string(&path).unwrap_or_default();
+                    let alive = holder.trim().parse::<u32>().is_ok_and(|pid| PathBuf::from(format!("/proc/{pid}")).exists());
+                    if alive {
+                        return None;
+                    }
+                    let _ = std::fs::remove_file(&path); // left by a reminder that died
+                }
+                Err(_) => return Some(Lock(PathBuf::new())), // can't lock: remind anyway
+            }
+        }
+        None
+    }
+}
+
+impl Drop for Lock {
+    fn drop(&mut self) {
+        if !self.0.as_os_str().is_empty() {
+            let _ = std::fs::remove_file(&self.0);
+        }
+    }
 }
 
 /// The same at a given moment, so it can be tested at any time of day.
 pub fn remind_at(login: bool, now: NaiveDateTime) -> String {
-    wait_for_unlock();
     if now.time() < day_start() || now.time() > day_end() {
         return "outside the reminder hours".into();
     }

@@ -9,7 +9,13 @@ use super::{results::TaskResult, srs};
 use indexmap::IndexMap;
 use std::collections::{BTreeSet, HashMap, HashSet};
 
-pub const NEXT_ROUND: &str = "That round is done. The next one follows from how it went.";
+pub const NEXT_ROUND: &str = "That round is done. The next one follows from how it went: Enter for it, Esc to stop the test here.";
+pub const NOTHING_TRIED: &str = "Nothing tried in that round. Enter gives it again; Esc stops the test here.";
+
+/// Whether a round tried anything at all (a quit before the first key doesn't).
+pub fn tried(results: &[TaskResult]) -> bool {
+    results.iter().any(|r| srs::task_grade(&r.status, r.count, r.task.reference(), r.hints).is_some())
+}
 
 pub fn note(known: &[Lesson]) -> String {
     if known.is_empty() {
@@ -63,10 +69,12 @@ impl<'a> Search<'a> {
     }
 
     pub fn update(&mut self, results: &[TaskResult]) {
+        // A task you never reached, or quit on, says nothing: it is neither a pass nor a miss.
         let mut passed: HashMap<&str, Vec<bool>> = HashMap::new();
         for r in results {
-            let grade = srs::task_grade(&r.status, r.count, r.task.reference(), r.hints);
-            passed.entry(&r.task.lesson_id).or_default().push(matches!(grade, Some(srs::GOOD | srs::EASY)));
+            if let Some(grade) = srs::task_grade(&r.status, r.count, r.task.reference(), r.hints) {
+                passed.entry(&r.task.lesson_id).or_default().push(matches!(grade, srs::GOOD | srs::EASY));
+            }
         }
         let skills: Vec<String> = self.skills.keys().cloned().collect();
         for skill in skills {

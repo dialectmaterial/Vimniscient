@@ -45,7 +45,7 @@ pub fn keybar(pairs: &[(&str, &str)], t: &Theme) -> Line<'static> {
 
 pub fn progress_bar(done: usize, total: usize, t: &Theme) -> Line<'static> {
     const WIDTH: usize = 40;
-    let filled = if total > 0 { (WIDTH * done + total / 2) / total } else { 0 };
+    let filled = (WIDTH * done + total / 2).checked_div(total).unwrap_or(0);
     Line::from(vec![Span::styled("━".repeat(filled), Style::new().fg(t.primary)), Span::styled("━".repeat(WIDTH - filled), Style::new().fg(t.panel))])
 }
 

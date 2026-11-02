@@ -74,6 +74,13 @@ pub struct App {
     queue: VecDeque<String>, // the routine steps still to start, after `t`
     routine: bool,
     placement: Option<Search<'static>>,
+    golf: Option<Challenge>, // fetched, waiting for the main screen
+}
+
+impl Default for App {
+    fn default() -> App {
+        App::new()
+    }
 }
 
 impl App {
@@ -91,7 +98,7 @@ impl App {
         let theme = theme::omarchy_theme();
         let mut app = App {
             theme, lessons, progress, decks, drills: load_drills(), screens: Vec::new(), pending: None, quit: false, messages: channel(),
-            toast: None, queue: VecDeque::new(), routine: false, placement: None,
+            toast: None, queue: VecDeque::new(), routine: false, placement: None, golf: None,
         };
         let main = MainScreen::new(&app);
         app.screens.push(Screen::Main(main));
@@ -157,7 +164,11 @@ impl App {
             && self.pending.is_none()
             && self.placement.as_ref().is_some_and(|search| !search.finished())
         {
-            self.pending = Some(Job::Placement);
+            if results.stopped {
+                self.stop_placement();
+            } else {
+                self.pending = Some(Job::Placement);
+            }
         } else if let Screen::Drills(drills) = &mut held {
             drills.close();
         }
@@ -176,6 +187,7 @@ impl App {
             main.refresh(self);
             self.screens.push(Screen::Main(main));
         }
+        self.show_golf();
         self.advance();
     }
 
@@ -326,9 +338,27 @@ impl App {
         self.push(Screen::Intro(Intro::new(lesson, Job::Placement, self)));
     }
 
+    /// Esc between rounds: what the rounds so far passed counts as known, the rest stays.
+    fn stop_placement(&mut self) {
+        let Some(search) = self.placement.take() else { return };
+        let known = search.known();
+        self.progress.mark_known(&known, &search.seen);
+        self.notify(if known.is_empty() { "Placement stopped. No lessons skipped.".to_string() } else { format!("Placement stopped. {} lessons skipped.", known.len()) });
+    }
+
     pub fn open_stats(&mut self) {
         let stats = StatsScreen::new(self);
         self.push(Screen::Stats(stats));
+    }
+
+    /// Today's VimGolf intro, once it has arrived and nothing else is open.
+    fn show_golf(&mut self) {
+        if self.screens.len() == 1 && self.pending.is_none()
+            && let Some(challenge) = self.golf.take()
+        {
+            let lesson = text::vimgolf_lesson(&challenge);
+            self.push(Screen::Intro(Intro::new(lesson, Job::Golf(challenge), self)));
+        }
     }
 
     pub fn start_vimgolf(&mut self) {
@@ -346,14 +376,16 @@ impl App {
         while let Ok(message) = self.messages.1.try_recv() {
             match message {
                 Message::Hyprland(line) => {
-                    if let Some(Screen::Drills(mut drills)) = self.screens.pop() {
+                    // only the drill screen listens; any other screen on top stays put
+                    if let Some(Screen::Drills(mut drills)) = self.screens.pop_if(|s| matches!(s, Screen::Drills(_))) {
                         drills.event(self, &line);
                         self.screens.push(Screen::Drills(drills));
                     }
                 }
                 Message::Golf(Ok(Some(challenge))) => {
-                    let lesson = text::vimgolf_lesson(&challenge);
-                    self.push(Screen::Intro(Intro::new(lesson, Job::Golf(challenge), self)));
+                    // not over cards or a lesson: it waits until you're back on the main screen
+                    self.golf = Some(challenge);
+                    self.show_golf();
                 }
                 Message::Golf(Ok(None)) => {
                     self.notify("No VimGolf challenges left to try.");
@@ -400,13 +432,17 @@ impl App {
                 let results = nvim::run_lesson(&lesson, false);
                 self.progress.record(&results);
                 search.update(&results);
-                search.seen.extend(results.iter().map(|r| r.task.item_id()));
+                // only what was tried counts as tested; the rest comes up in review
+                search.seen.extend(results.iter().filter(|r| placement::tried(std::slice::from_ref(r))).map(|r| r.task.item_id()));
                 let note = if search.finished() {
                     let known = search.known();
                     self.progress.mark_known(&known, &search.seen);
+                    self.placement = None;
                     placement::note(&known)
-                } else {
+                } else if placement::tried(&results) {
                     placement::NEXT_ROUND.to_string()
+                } else {
+                    placement::NOTHING_TRIED.to_string()
                 };
                 (lesson, results, note, String::new(), job)
             }
@@ -454,7 +490,8 @@ impl App {
     }
 
     pub fn show_results(&mut self, lesson: Lesson, results: Vec<TaskResult>, note: String, subtitle: String, job: Option<Job>) {
-        let screen = Results::new(&lesson, results, note, subtitle, job, self);
+        let mut screen = Results::new(&lesson, results, note, subtitle, job, self);
+        screen.more = matches!(screen.job, Some(Job::Placement)) && self.placement.as_ref().is_some_and(|search| !search.finished());
         self.push(Screen::Results(screen));
     }
 

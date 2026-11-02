@@ -1,11 +1,10 @@
 //! `vimniscient doctor`: does this machine work with the trainer? Required checks stop
 //! it working; the rest say what you'd be missing.
 
-use crate::core::cards::{has_lazyvim, has_plugin, on_path};
+use crate::core::cards::{has_lazyvim, has_plugin, on_path, output_within};
 use crate::core::progress::data_dir;
 use fancy_regex::Regex;
 use std::process::{Command, Stdio};
-use std::time::{Duration, Instant};
 
 const MIN_NVIM: (u32, u32) = (0, 10);
 const MIN_SIZE: (u16, u16) = (80, 24);
@@ -41,17 +40,11 @@ fn nvim() -> Vec<Check> {
 }
 
 fn config() -> Check {
-    let child = Command::new("nvim").args(["--headless", "-i", "NONE", "+qa"]).stdout(Stdio::null()).stderr(Stdio::piped()).spawn();
-    let Ok(mut child) = child else { return check("Your config", false, "Neovim wouldn't start", true) };
-    let started = Instant::now();
-    while child.try_wait().ok().flatten().is_none() {
-        if started.elapsed() > Duration::from_secs(30) {
-            let _ = child.kill();
-            return check("Your config", false, "Neovim didn't start within 30 seconds", true);
-        }
-        std::thread::sleep(Duration::from_millis(50));
-    }
-    let Ok(run) = child.wait_with_output() else { return check("Your config", false, "Neovim wouldn't start", true) };
+    let mut nvim = Command::new("nvim");
+    nvim.args(["--headless", "-i", "NONE", "+qa"]).stdout(Stdio::null()).stderr(Stdio::piped());
+    let Some(run) = output_within(&mut nvim, 30) else {
+        return check("Your config", false, "Neovim didn't start, or not within 30 seconds", true);
+    };
     let errors = String::from_utf8_lossy(&run.stderr).into_owned();
     let problem = errors.lines().find(|line| line.to_lowercase().contains("error")).unwrap_or("");
     let shown: String = problem.chars().take(90).collect();

@@ -16,6 +16,7 @@ const MAX_LINES: usize = 40;
 const MAX_WIDTH: usize = 100;
 // VimGolf scores include saving and quitting (ZZ); lessons finish by themselves.
 pub const SAVE_KEYS: usize = 2;
+const REQUEST_TIMEOUT: Duration = Duration::from_secs(20);
 
 #[derive(Clone, Debug)]
 pub struct Challenge {
@@ -45,7 +46,9 @@ fn cache() -> Result<PathBuf, String> {
 }
 
 fn get(url: &str, accept: &str) -> Result<String, String> {
-    let mut response = ureq::get(url).header("Accept", accept).header("User-Agent", "vimniscient").call().map_err(|e| e.to_string())?;
+    // a stalled connection gives up instead of leaving "Fetching…" up for good
+    static AGENT: LazyLock<ureq::Agent> = LazyLock::new(|| ureq::Agent::config_builder().timeout_global(Some(REQUEST_TIMEOUT)).build().into());
+    let mut response = AGENT.get(url).header("Accept", accept).header("User-Agent", "vimniscient").call().map_err(|e| e.to_string())?;
     response.body_mut().read_to_string().map_err(|e| e.to_string())
 }
 

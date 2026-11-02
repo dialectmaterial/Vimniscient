@@ -5,6 +5,7 @@ use serde_json::Value;
 use std::io::{BufRead, BufReader};
 use std::os::unix::net::UnixStream;
 use std::process::{Child, Command, Stdio};
+use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc::Sender;
 use std::time::Duration;
 
@@ -58,15 +59,23 @@ pub fn close_drill_window(window: &mut Option<Child>) {
     *window = None;
 }
 
-/// Send `event>>data` lines to `out` until the socket or the receiver goes away.
+/// Send `event>>data` lines to `out` until the socket or the receiver goes away. One
+/// listener at a time: opening the drills again doesn't start a second one, which would
+/// deliver every event twice.
 pub fn listen(out: Sender<super::super::ui::Message>) {
+    static LISTENING: AtomicBool = AtomicBool::new(false);
     let Some(path) = socket() else { return };
+    if LISTENING.swap(true, Ordering::SeqCst) {
+        return;
+    }
     std::thread::spawn(move || {
-        let Ok(stream) = UnixStream::connect(path) else { return };
-        for line in BufReader::new(stream).lines().map_while(Result::ok) {
-            if out.send(super::super::ui::Message::Hyprland(line)).is_err() {
-                return;
+        if let Ok(stream) = UnixStream::connect(path) {
+            for line in BufReader::new(stream).lines().map_while(Result::ok) {
+                if out.send(super::super::ui::Message::Hyprland(line)).is_err() {
+                    break;
+                }
             }
         }
+        LISTENING.store(false, Ordering::SeqCst);
     });
 }

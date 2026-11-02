@@ -33,10 +33,12 @@ fn median(mut values: Vec<f64>) -> f64 {
 pub fn report(progress: &Progress) -> String {
     let mut lines = vec![format!("{:8}{:12}{:8}{:9}keys/ref", "", "date", "solved", "median")];
     for stage in STAGES {
-        let sql = "SELECT status, seconds, count, ref, ts FROM attempts WHERE phase = ? ORDER BY id DESC LIMIT ?";
+        // the latest sitting only: its tasks share one timestamp, and one cut short
+        // mustn't borrow rows from the sitting before
+        let sql = "SELECT status, seconds, count, ref, ts FROM attempts WHERE phase = ?1 AND ts = (SELECT MAX(ts) FROM attempts WHERE phase = ?1)";
         let size = tasks(stage).len();
         let rows: Vec<(String, Option<f64>, f64, f64, String)> = progress.db.prepare(sql).ok().and_then(|mut statement| {
-            statement.query_map(rusqlite::params![format!("eval-{stage}"), size], |r| Ok((r.get(0)?, r.get(1)?, r.get(2)?, r.get(3)?, r.get(4)?)))
+            statement.query_map(rusqlite::params![format!("eval-{stage}")], |r| Ok((r.get(0)?, r.get(1)?, r.get(2)?, r.get(3)?, r.get(4)?)))
                 .ok().map(|found| found.flatten().collect())
         }).unwrap_or_default();
         let Some(first) = rows.first() else {
@@ -47,8 +49,8 @@ pub fn report(progress: &Progress) -> String {
         let seconds: Vec<f64> = solved.iter().filter_map(|r| r.1).collect();
         let time = if seconds.is_empty() { "-".to_string() } else { format!("{:.1}s", median(seconds)) };
         let reference: f64 = solved.iter().map(|r| r.3).sum();
-        let ratio = if solved.is_empty() { "-".to_string() } else { format!("{:.2}", solved.iter().map(|r| r.2).sum::<f64>() / reference) };
-        lines.push(format!("{stage:8}{:12}{:8}{time:9}{ratio}", &first.4[..10], format!("{}/{}", solved.len(), rows.len())));
+        let ratio = if solved.is_empty() || reference == 0.0 { "-".to_string() } else { format!("{:.2}", solved.iter().map(|r| r.2).sum::<f64>() / reference) };
+        lines.push(format!("{stage:8}{:12}{:8}{time:9}{ratio}", &first.4[..10], format!("{}/{size}", solved.len())));
     }
     lines.join("\n")
 }

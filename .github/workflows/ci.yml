@@ -1,0 +1,17 @@
+# Every push and pull request: the tests and clippy. The release workflow runs the same
+# tests before it publishes anything.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_call:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: cargo test --locked
+      - run: cargo clippy --locked --all-targets -- -D warnings

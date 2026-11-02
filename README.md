@@ -97,7 +97,8 @@ cargo install vimniscient
 ```
 
 1. Press **`p`** for the placement test. It tests each skill in a few short
-   rounds and skips the lessons you already know. `:Skip` whatever you don't.
+   rounds and skips the lessons you already know. `:Skip` whatever you don't;
+   Esc between rounds stops it and keeps what it found so far.
 2. From then on, press **`t`** once a day. The Today pane shows what's left
    and about how many minutes it takes.
 3. On [Omarchy](https://omarchy.org), `vimniscient reminders install` reminds

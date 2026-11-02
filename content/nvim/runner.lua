@@ -17,7 +17,7 @@
 -- any mapping applied (as VimGolf counts them).
 --
 -- Endless mode (session.endless = { pool, rungs, level, ramp, gap }, see
--- endless.py) starts with no tasks and adds them as it goes: the next rung of
+-- endless.rs) starts with no tasks and adds them as it goes: the next rung of
 -- the climb, or a Learn copy and later a Recall of a task that was missed. A
 -- climb or recall task has a key budget; going over it is a miss.
 
@@ -27,7 +27,7 @@ local session = vim.json.decode(io.open(os.getenv("VIMNISCIENT_SESSION")):read("
 local tasks = session.tasks
 
 -- Looks: one centred column, like the app's card screen (see the CSS in
--- app.py): a rounded frame titled with the lesson, a progress bar, the goal in
+-- ui/cards.rs): a rounded frame titled with the lesson, a progress bar, the goal in
 -- bold, the goal text and your text in two boxes, feedback under them, and the
 -- commands along the bottom. The boxes are floats over the frame; the window
 -- the practice file opened in stays behind them, blank.

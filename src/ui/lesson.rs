@@ -65,11 +65,13 @@ impl Intro {
     }
 
     pub fn draw(&self, frame: &mut Frame, app: &App) {
-        draw_column(frame, app, COLUMN, &self.title, "", &self.lines, self.scroll, &[("enter", "start"), ("esc", "back")]);
+        draw_column(frame, app, COLUMN, (&self.title, ""), &self.lines, self.scroll, &[("enter", "start"), ("esc", "back")]);
     }
 }
 
-fn draw_column(frame: &mut Frame, app: &App, width: u16, title: &str, subtitle: &str, lines: &[Line<'static>], scroll: u16, keys: &[(&str, &str)]) {
+/// `heading`: the title, and the subtitle at the top right (empty for none).
+fn draw_column(frame: &mut Frame, app: &App, width: u16, heading: (&str, &str), lines: &[Line<'static>], scroll: u16, keys: &[(&str, &str)]) {
+    let (title, subtitle) = heading;
     let t = &app.theme;
     let [space, bar] = Layout::vertical([Constraint::Min(0), Constraint::Length(1)]).areas(frame.area());
     let inner_width = width.min(space.width).saturating_sub(6);
@@ -171,6 +173,8 @@ pub struct Results {
     lines: Vec<Line<'static>>,
     pub job: Option<Job>,
     scroll: u16,
+    pub more: bool, // a placement round with another to come: Enter goes on, Esc stops
+    pub stopped: bool, // left with Esc or q
 }
 
 impl Results {
@@ -217,7 +221,7 @@ impl Results {
                 lines.extend(block);
             }
         }
-        Results { title: title(lesson), subtitle, lines, job, scroll: 0 }
+        Results { title: title(lesson), subtitle, lines, job, scroll: 0, more: false, stopped: false }
     }
 
     pub fn key(&mut self, app: &mut App, key: KeyEvent) -> Flow {
@@ -226,7 +230,11 @@ impl Results {
                 app.pending = self.job.clone();
                 Flow::Close
             }
-            KeyCode::Esc | KeyCode::Enter | KeyCode::Char('q') => Flow::Close,
+            KeyCode::Enter => Flow::Close,
+            KeyCode::Esc | KeyCode::Char('q') => {
+                self.stopped = true;
+                Flow::Close
+            }
             KeyCode::Char('j') | KeyCode::Down => {
                 self.scroll += 2;
                 Flow::Stay
@@ -240,6 +248,7 @@ impl Results {
     }
 
     pub fn draw(&self, frame: &mut Frame, app: &App) {
-        draw_column(frame, app, RESULTS, &self.title, &self.subtitle, &self.lines, self.scroll, &[("enter", "done"), ("r", "again")]);
+        let keys: &[(&str, &str)] = if self.more { &[("enter", "next round"), ("esc", "stop the test")] } else { &[("enter", "done"), ("r", "again")] };
+        draw_column(frame, app, RESULTS, (&self.title, &self.subtitle), &self.lines, self.scroll, keys);
     }
 }

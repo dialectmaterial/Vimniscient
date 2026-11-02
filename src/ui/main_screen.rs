@@ -279,7 +279,7 @@ impl MainScreen {
         frame.render_widget(block, progress);
         let [words, _, spark] = Layout::vertical([Constraint::Min(0), Constraint::Length(u16::from(spark_rows > 0)), Constraint::Length(spark_rows.min(2))]).areas(inside);
         frame.render_widget(Paragraph::new(self.progress.clone()).wrap(Wrap { trim: false }), words);
-        frame.render_widget(Sparkline::default().data(&stretched(&self.spark, spark.width)).bar_set(bar::NINE_LEVELS).style(Style::new().fg(t.primary)), spark);
+        frame.render_widget(Sparkline::default().data(stretched(&self.spark, spark.width)).bar_set(bar::NINE_LEVELS).style(Style::new().fg(t.primary)), spark);
         let keys = [("t", "today"), ("⏎", "open"), ("⇥", "pane"), ("z", "quick"), ("x", "choose"), ("e", "endless"), ("c", "cards"), ("d", "drills"), ("g", "golf"), ("p", "place"), ("s", "stats"), ("q", "quit")];
         frame.render_widget(Paragraph::new(widgets::keybar(&keys, t)), bar_area);
     }
