@@ -1,6 +1,8 @@
 //! Reminders at fixed times of day, with the desktop's commands replaced by stand-ins
 //! that only write down how they were called.
 
+mod common;
+
 use chrono::{Local, NaiveTime};
 use std::os::unix::fs::PermissionsExt;
 use vimniscient::system::reminders;
@@ -28,6 +30,7 @@ fn reminds_when_practice_is_left() {
         std::env::set_var("XDG_RUNTIME_DIR", dir.join("run"));
         std::env::set_var("XDG_CACHE_HOME", dir.join("cache"));
     }
+    common::fake_machine(&dir);
     let at = |h, m| Local::now().date_naive().and_time(NaiveTime::from_hms_opt(h, m, 0).unwrap());
 
     assert_eq!(reminders::remind_at(false, at(23, 0)), "outside the reminder hours");

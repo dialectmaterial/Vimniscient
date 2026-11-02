@@ -1,6 +1,8 @@
 //! Every screen, driven without a terminal: it opens, shows what it should, and the
 //! keys that move between screens work. A port of tests/check_app.py.
 
+mod common;
+
 use crossterm::event::{KeyCode, KeyEvent, KeyModifiers};
 use ratatui::{Terminal, backend::TestBackend};
 use vimniscient::core::cards;
@@ -39,6 +41,7 @@ fn every_screen() {
         std::env::set_var("XDG_CONFIG_HOME", dir.join("config"));
         std::env::set_var("XDG_STATE_HOME", dir.join("state"));
     }
+    common::fake_machine(&dir);
     let lessons: &'static [_] = Box::leak(LESSONS.clone().into_boxed_slice());
     let mut app = App::with(lessons, cards::load_static_decks());
     assert!(on_main(&app));

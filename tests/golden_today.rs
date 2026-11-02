@@ -2,6 +2,8 @@
 //! every generator kind producing tasks. In one test: they share a throwaway data folder.
 //! Changing lessons or cards changes these on purpose: `UPDATE_GOLDEN=1 cargo test` rewrites them.
 
+mod common;
+
 use chrono::Days;
 use serde_json::{Value, json};
 use vimniscient::core::card_session::CardSession;
@@ -28,6 +30,7 @@ fn the_day_stays_the_same() {
         std::env::set_var("XDG_CONFIG_HOME", dir.join("config"));
         std::env::set_var("XDG_STATE_HOME", dir.join("state"));
     }
+    common::fake_machine(&dir);
     let progress = Progress::open().unwrap();
     let decks = cards::load_static_decks();
     let lessons = &*LESSONS;
