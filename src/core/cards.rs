@@ -1,7 +1,7 @@
 //! Flashcard decks. The static ones come from `cards/*.yaml`; a deck about a
 //! program only shows up when that program is installed.
 
-use super::{answer::pretty_keys, content, habits};
+use super::{answer::{display_keys, pretty_keys}, content, habits};
 use fancy_regex::Regex;
 use indexmap::IndexMap;
 use serde_norway::Value;
@@ -33,7 +33,7 @@ pub struct Card {
 
 impl Card {
     pub fn shown(&self) -> String {
-        pretty_keys(&self.answers[0])
+        display_keys(&self.answers[0])
     }
 }
 

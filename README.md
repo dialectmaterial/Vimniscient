@@ -238,8 +238,10 @@ plus [which-key](https://github.com/folke/which-key.nvim), which replays your
 keys and would make them count twice.
 
 **My answer to a card was right but got marked wrong.** Common notations are
-accepted (`<C-a>`, `ctrl-a`, `^a`; `<leader>ff`, `space ff`). If yours still
-fails, press `o` ("I was right").
+accepted (`<C-a>`, `ctrl-a`, `^a`; `<leader>ff`, `space ff`). Cards show the
+leader as `Space` and the tmux prefix as `CTRL + SPACE`: press Space, or
+Ctrl-Space / Ctrl-B, in the answer box and it types that for you. If yours
+still fails, press `o` ("I was right").
 
 ## Writing lessons
 

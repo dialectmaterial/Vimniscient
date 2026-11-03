@@ -28,6 +28,7 @@ regex!(PAGE, r"(?i)page\s+(up|down)");
 regex!(PLUS_KEY, r"[\s+]\+\s*$");
 regex!(PLUS_END, r"\+\s*$");
 regex!(SPLIT, r"[\s+]+");
+regex!(TMUX_PREFIX, r"(?i)^\s*(?:ctrl|control)\s*\+?\s*(?:space|b)\s*,");
 
 fn token_name(low: &str) -> Option<&'static str> {
     Some(match low {
@@ -122,7 +123,9 @@ fn key_alias(part: &str) -> Option<&'static str> {
 }
 
 pub fn norm_combo(text: &str, case_sensitive: bool) -> (BTreeSet<&'static str>, Vec<String>) {
-    let s = COPY_MODE.replace_all(text.trim(), "COPYMODE").into_owned();
+    // "CTRL + SPACE, c": the prefix as pressed, then the key
+    let s = TMUX_PREFIX.replace(text.trim(), "PREFIX ").into_owned();
+    let s = COPY_MODE.replace_all(&s, "COPYMODE").into_owned();
     let mut s = PAGE.replace_all(&s, "PAGE_$1").into_owned();
     let plus_key = PLUS_KEY.is_match(&s).unwrap_or(false); // "CTRL + +" or "CTRL +"
     if plus_key {
@@ -176,5 +179,54 @@ pub fn pretty_keys(keys: &str) -> String {
     match keys.strip_prefix("<Space>") {
         Some(rest) => format!("<leader>{rest}"),
         None => keys.to_string(),
+    }
+}
+
+/// Keys as you press them: the leader is Space, the tmux prefix is its chord.
+pub fn display_keys(keys: &str) -> String {
+    let mut rest = keys;
+    let mut spaces = 0;
+    while let Some(after) = rest.strip_prefix("<leader>").or_else(|| rest.strip_prefix("<Space>")) {
+        spaces += 1;
+        rest = after;
+    }
+    if spaces > 0 {
+        return format!("{}{rest}", "Space ".repeat(spaces)).trim_end().to_string();
+    }
+    match keys.strip_prefix("PREFIX + ") {
+        Some(rest) => format!("{TMUX_PREFIX_KEYS}, {rest}"),
+        None => keys.to_string(),
+    }
+}
+
+/// How the tmux prefix is shown and typed.
+pub const TMUX_PREFIX_KEYS: &str = "CTRL + SPACE";
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn keys_display_as_pressed() {
+        assert_eq!(display_keys("<leader>ff"), "Space ff");
+        assert_eq!(display_keys("<leader><Space>"), "Space Space");
+        assert_eq!(display_keys("<Space>e"), "Space e");
+        assert_eq!(display_keys("PREFIX + c"), "CTRL + SPACE, c");
+        assert_eq!(display_keys("ciw"), "ciw");
+        assert_eq!(display_keys("CTRL + SPACE"), "CTRL + SPACE");
+    }
+
+    #[test]
+    fn pressed_keys_are_accepted() {
+        let leader = |typed: &str, want: &str| is_correct(typed, &[want.to_string()], "keys", true);
+        assert!(leader("Space ff", "<leader>ff"));
+        assert!(leader("Space Space ", "<leader><Space>"));
+        let tmux = |typed: &str, want: &str| is_correct(typed, &[want.to_string()], "combo", true);
+        assert!(tmux("CTRL + SPACE, c", "PREFIX + c"));
+        assert!(tmux("CTRL + B, C", "PREFIX + C"));
+        assert!(!tmux("CTRL + B, c", "PREFIX + C"));
+        assert!(tmux("CTRL + SPACE, CTRL + SPACE", "PREFIX + CTRL + SPACE"));
+        assert!(tmux("CTRL + SPACE", "CTRL + SPACE"));
+        assert!(tmux("PREFIX + c", "PREFIX + c"));
     }
 }

@@ -7,7 +7,7 @@ use super::widgets;
 use crate::core::card_session::CardSession;
 use crate::core::cards::Card;
 use crate::core::mnemonics::hooks;
-use crossterm::event::{KeyCode, KeyEvent};
+use crossterm::event::{KeyCode, KeyEvent, KeyModifiers};
 use ratatui::Frame;
 use ratatui::layout::{Constraint, Layout};
 use ratatui::style::{Modifier, Style};
@@ -70,7 +70,7 @@ impl CardScreen {
         ];
         let dim = Style::new().fg(t.muted);
         if card.answers.len() > 1 {
-            let also: Vec<String> = card.answers[1..].iter().map(|a| crate::core::answer::pretty_keys(a)).collect();
+            let also: Vec<String> = card.answers[1..].iter().map(|a| crate::core::answer::display_keys(a)).collect();
             first.push(Span::styled(format!("   also {}", also.join(", ")), dim));
         }
         let mut lines = vec![Line::from(first)];
@@ -110,6 +110,8 @@ impl CardScreen {
                 self.input.clear(); // copying it out: try again
                 self.copy_again = true;
             }
+        } else if let Some(text) = session.card().and_then(|card| pressed(card, &self.input, key)) {
+            self.input.insert(&text);
         } else {
             self.input.key(key);
         }
@@ -152,7 +154,13 @@ impl CardScreen {
         frame.render_widget(Paragraph::new(prompt).wrap(Wrap { trim: false }), words);
         let typing = pending.is_none();
         let shown = if self.input.chars.is_empty() && typing {
-            let hint = if card.style == "combo" { "modifiers + key, like CTRL SHIFT + X" } else { "the keys as typed: <C-x> for Ctrl-x, <leader> for Space" };
+            let hint = if card.deck == "tmux" {
+                "modifiers + key, like CTRL SHIFT + X; press Ctrl-Space for the prefix"
+            } else if card.style == "combo" {
+                "modifiers + key, like CTRL SHIFT + X"
+            } else {
+                "the keys as typed: press Space for the leader, <C-x> for Ctrl-x"
+            };
             Line::styled(hint, Style::new().fg(t.muted))
         } else {
             Line::from(self.input.value())
@@ -168,5 +176,90 @@ impl CardScreen {
             None => &[("enter", "check"), ("esc", "stop")],
         };
         frame.render_widget(Paragraph::new(widgets::keybar(keys, t)), bar);
+    }
+}
+
+/// Keys that stand for more than a character: Space at the start is the leader,
+/// Ctrl-Space or Ctrl-B in a tmux card the prefix. Typed out the way they're shown.
+fn pressed(card: &Card, input: &Input, key: KeyEvent) -> Option<String> {
+    let control = key.modifiers.contains(KeyModifiers::CONTROL);
+    let at_end = input.cursor == input.chars.len();
+    if card.style == "keys" && key.code == KeyCode::Char(' ') && !control && at_end {
+        // only leaders so far: "Space Space " for <leader><Space>
+        let value = input.value();
+        let leaders = value.split_whitespace().all(|word| word == "Space") && (value.is_empty() || value.ends_with(' '));
+        return leaders.then(|| "Space ".to_string());
+    }
+    if card.deck == "tmux" && card.style == "combo" {
+        let chord = match key.code {
+            // terminals send Ctrl-Space as NUL
+            KeyCode::Null => crate::core::answer::TMUX_PREFIX_KEYS,
+            KeyCode::Char(' ') if control => crate::core::answer::TMUX_PREFIX_KEYS,
+            KeyCode::Char('b') if control => "CTRL + B",
+            _ => return None,
+        };
+        // the prefix comes first and a key follows it; the prefix card itself wants just the chord
+        let then = input.chars.is_empty() && card.answers.iter().any(|a| a.starts_with("PREFIX"));
+        return Some(if then { format!("{chord}, ") } else { chord.to_string() });
+    }
+    None
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn card(deck: &str, style: &str, answers: &[&str]) -> Card {
+        Card { deck: deck.into(), style: style.into(), answers: answers.iter().map(|a| a.to_string()).collect(), ..Card::default() }
+    }
+
+    /// Types `keys` into a fresh box the way the card screen does.
+    fn typed(card: &Card, keys: &[KeyEvent]) -> String {
+        let mut input = Input::default();
+        for &key in keys {
+            match pressed(card, &input, key) {
+                Some(text) => input.insert(&text),
+                None => input.key(key),
+            }
+        }
+        input.value()
+    }
+
+    fn plain(c: char) -> KeyEvent {
+        KeyEvent::new(KeyCode::Char(c), KeyModifiers::NONE)
+    }
+
+    fn ctrl(c: char) -> KeyEvent {
+        KeyEvent::new(KeyCode::Char(c), KeyModifiers::CONTROL)
+    }
+
+    #[test]
+    fn space_types_the_leader() {
+        let lazy = card("lazyvim", "keys", &["<leader>ff"]);
+        let got = typed(&lazy, &[plain(' '), plain('f'), plain('f')]);
+        assert_eq!(got, "Space ff");
+        assert!(crate::core::answer::is_correct(&got, &lazy.answers, "keys", true));
+        let twice = card("lazyvim", "keys", &["<leader><Space>"]);
+        let got = typed(&twice, &[plain(' '), plain(' ')]);
+        assert!(crate::core::answer::is_correct(&got, &twice.answers, "keys", true), "{got:?}");
+        // later spaces are just spaces
+        assert_eq!(typed(&lazy, &[plain(':'), plain('w'), plain(' '), plain('x')]), ":w x");
+    }
+
+    #[test]
+    fn ctrl_space_or_b_types_the_tmux_prefix() {
+        let window = card("tmux", "combo", &["PREFIX + c"]);
+        for prefix in [ctrl(' '), ctrl('b'), KeyEvent::new(KeyCode::Null, KeyModifiers::NONE)] {
+            let got = typed(&window, &[prefix, plain('c')]);
+            assert!(crate::core::answer::is_correct(&got, &window.answers, "combo", true), "{got:?}");
+        }
+        let send = card("tmux", "combo", &["PREFIX + CTRL + SPACE"]);
+        let got = typed(&send, &[ctrl(' '), ctrl(' ')]);
+        assert!(crate::core::answer::is_correct(&got, &send.answers, "combo", true), "{got:?}");
+        let prefix = card("tmux", "combo", &["CTRL + SPACE", "CTRL + B"]);
+        assert_eq!(typed(&prefix, &[ctrl('b')]), "CTRL + B");
+        assert!(crate::core::answer::is_correct(&typed(&prefix, &[ctrl(' ')]), &prefix.answers, "combo", true));
+        // other decks keep Ctrl-B to themselves
+        assert_eq!(typed(&card("omarchy", "combo", &["SUPER + B"]), &[ctrl('b')]), "");
     }
 }

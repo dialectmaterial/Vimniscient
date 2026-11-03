@@ -13,6 +13,13 @@ impl Input {
         self.chars.iter().collect()
     }
 
+    pub fn insert(&mut self, text: &str) {
+        for c in text.chars() {
+            self.chars.insert(self.cursor, c);
+            self.cursor += 1;
+        }
+    }
+
     pub fn clear(&mut self) {
         self.chars.clear();
         self.cursor = 0;
