@@ -664,6 +664,23 @@ if endless then
     callback = function() vim.schedule(over_budget) end,
   })
 end
+-- `q:` (and `q/`, `q?`) opens Vim's command-line window, which takes over
+-- the screen; easy to hit with `q` before `:q`. Close it straight away and say why.
+vim.api.nvim_create_autocmd("CmdwinEnter", {
+  group = group,
+  callback = function(args)
+    local kind = args.file ~= "" and args.file or ":"
+    vim.schedule(function()
+      pcall(vim.cmd.quit)
+      tell({
+        { "q" .. kind, STRONG },
+        { " opens Vim's command-line window (a list of past " .. kind .. " commands); closed it. To stop, type " },
+        { ":q", STRONG },
+        { " on its own." },
+      })
+    end)
+  end,
+})
 -- Closing either window ends the lesson.
 vim.api.nvim_create_autocmd("WinClosed", {
   group = group,
