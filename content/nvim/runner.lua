@@ -467,9 +467,18 @@ local function load_task(i)
 
   vim.fn.setreg("/", "")
   vim.cmd("nohlsearch")
+  -- Search as the validator does (and LazyVim): generated search tasks pick the
+  -- shortest pattern that finds the word under these settings.
+  vim.o.ignorecase = true
+  vim.o.smartcase = true
 
   for _, win in ipairs({ goal_win, practice_win }) do
     vim.api.nvim_win_call(win, function() vim.cmd("diffthis") end)
+    -- diffthis binds scrolling and cursors too: syncing to where the goal's first line
+    -- lines up in the diff would pull your cursor away from the task's start (any goal
+    -- that deletes the first lines). Both boxes show the whole text, so neither is needed.
+    vim.wo[win].scrollbind = false
+    vim.wo[win].cursorbind = false
     vim.wo[win].foldenable = false
     vim.wo[win].foldcolumn = "1"
   end
