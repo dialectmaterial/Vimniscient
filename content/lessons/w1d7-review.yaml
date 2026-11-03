@@ -18,6 +18,7 @@ tasks:
       keys = {"c": "change"}
     solution: 'ciwchange<Esc>'
     hint: 'ciw or ci" both work.'
+    generate: ciw-ident
     variants:
       - goal: 'Fix what y stands for: yank.'
         start: |-
@@ -51,6 +52,7 @@ tasks:
       parens(inside)
     solution: 'ci(inside<Esc>'
     hint: 'ci( changes everything inside the parentheses.'
+    generate: ci-paren
     variants:
       - goal: 'Replace all three arguments with inside.'
         start: |-
@@ -72,6 +74,7 @@ tasks:
       d deletes. c changes.
     solution: 'das'
     hint: 'das deletes a sentence and its trailing space.'
+    generate: das-middle
     variants:
       - start: |-
           y yanks. ▮p means paste. P puts above.
@@ -93,6 +96,7 @@ tasks:
       import verb
     solution: '2dd'
     hint: 'A count works on dd too.'
+    generate: count-dd
     variants:
       - goal: 'Delete the copy and paste imports (Vim says yank and put).'
         start: |-
@@ -121,6 +125,7 @@ tasks:
       url = 'https://www.vimhelp.org'
     solution: 'ciwwww<Esc>'
     hint: 'A dot ends a word, so ciw only takes "old". ct. works too.'
+    generate: ciw-url
     variants:
       - start: |-
           url = 'https://▮old.neovim.io'
@@ -142,6 +147,7 @@ tasks:
           return arrow
     solution: '>j'
     hint: '> with a motion indents lines: >j indents this line and the next.'
+    generate: indent-body
     variants:
       - start: |-
           def put():

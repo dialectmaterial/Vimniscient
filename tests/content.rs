@@ -83,3 +83,49 @@ fn task_ids_keep_their_tasks() {
         std::fs::write(&path, format!("{}\n", serde_json::to_string_pretty(&recorded).unwrap())).unwrap();
     }
 }
+
+#[test]
+fn recall_in_weeks_one_and_two_is_always_a_new_text() {
+    use vimniscient::core::lessons::two_rounds;
+    for lesson in LESSONS.iter().filter(|l| l.week <= 2) {
+        for task in &lesson.tasks {
+            assert!(!task.generator.is_empty(), "{} has no generator", task.item_id());
+            let written: Vec<&Vec<String>> = task.siblings.iter().map(|t| &t.start).collect();
+            let texts: Vec<Vec<String>> = (0..task.choices() * 2).map(|n| task.choice(n, &format!("day{n}")).start).collect();
+            assert!(texts.iter().all(|t| !written.contains(&t)), "{} recalls a written text", task.item_id());
+            assert_eq!(texts.iter().collect::<HashSet<_>>().len(), texts.len(), "{} repeats a text", task.item_id());
+        }
+        for day in ["2026-11-03", "2026-11-04"] {
+            for t in two_rounds(lesson, day) {
+                let written = t.siblings.iter().any(|v| v.start == t.start);
+                assert_eq!(written, t.phase == "learn", "{} {} on {day}", t.item_id(), t.phase);
+            }
+        }
+    }
+}
+
+#[test]
+fn the_corpus_is_plain_words_that_fit() {
+    use vimniscient::core::corpus::PROSE;
+    assert!(PROSE.len() > 5000);
+    for line in PROSE.iter() {
+        let words: Vec<&str> = line.trim_end_matches('.').split([' ', ',']).filter(|w| !w.is_empty()).collect();
+        assert!((14..=70).contains(&line.len()) && line.ends_with('.'), "{line}");
+        assert!(line.starts_with(|c: char| c.is_ascii_uppercase()), "{line}");
+        assert!(words.iter().all(|w| w.chars().all(|c| c.is_ascii_alphabetic())), "{line}");
+        assert!(!line.contains("  ") && !line.contains(" ,"), "{line}");
+    }
+}
+
+#[test]
+fn generated_texts_fit_the_box_and_need_work() {
+    let parent = &LESSONS[0].tasks[0];
+    for kind in generate::KINDS {
+        for n in 0..100 {
+            let t = generate::generate(kind, &n.to_string(), parent);
+            assert!(t.start.iter().chain(&t.target).all(|l| l.len() <= 70), "{kind} seed {n} is too wide");
+            assert_ne!(t.start, t.target, "{kind} seed {n} starts solved");
+            assert!(t.cursor.0 >= 1 && t.cursor.0 <= t.start.len() && t.cursor.1 <= t.start[t.cursor.0 - 1].len(), "{kind} seed {n}: cursor off the text");
+        }
+    }
+}

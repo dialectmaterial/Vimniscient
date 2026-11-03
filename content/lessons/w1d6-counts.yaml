@@ -56,6 +56,7 @@ tasks:
       c2w changes two words.
     solution: 'c2wtwo words<Esc>'
     hint: 'c2w changes two words.'
+    generate: count-cw
     variants:
       - goal: 'Change "three things" to "two words".'
         start: |-
@@ -90,6 +91,7 @@ tasks:
       f finds, t tills, F looks back
     solution: '3f,D'
     hint: '3f, finds the third comma, D deletes from there.'
+    generate: nf-D
     variants:
       - goal: 'Delete from the third comma to the end (z is not an operator).'
         start: |-
@@ -110,6 +112,7 @@ tasks:
       3J joins three
     solution: '3J'
     hint: 'J joins; 3J joins three lines.'
+    generate: count-J
     variants:
       - start: |-
           ▮f
@@ -139,6 +142,7 @@ tasks:
       and this one stays.
     solution: '4jdd'
     hint: 'Relative numbers show how far a line is: 4j goes four down, dd cuts it.'
+    generate: count-jdd
     variants:
       - goal: 'Delete the line five lines below the cursor.'
         start: |-
@@ -188,6 +192,7 @@ tasks:
       k counts up.
     solution: '3kciwThe<Esc>'
     hint: 'k goes up; a count in front says how far. Then ciw fixes the word.'
+    generate: count-kciw
     variants:
       - goal: 'Fix "Rleative" three lines up.'
         start: |-

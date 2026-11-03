@@ -16,6 +16,7 @@ tasks:
       repeat = dot + dot
     solution: 'ciwdot<Esc>ww.'
     hint: 'Change the first one with ciw, jump to the second with w w, then press .'
+    generate: dot-ciw
     variants:
       - goal: 'Change both "once" to "again".'
         start: |-
@@ -59,6 +60,7 @@ tasks:
           it again
     solution: '>>j.'
     hint: '>> indents one line; . repeats it on the next.'
+    generate: dot-indent
     variants:
       - start: |-
           ▮repeat
@@ -81,6 +83,7 @@ tasks:
       The dot repeats the last change.
     solution: 'dw..'
     hint: 'dw once, then . twice. (3dw is just as short.)'
+    generate: dot-dw
     variants:
       - goal: 'Delete all three "dot".'
         start: |-

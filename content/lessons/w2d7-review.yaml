@@ -17,6 +17,7 @@ tasks:
       UP = raise(UP)
     solution: '*gUiwn.'
     hint: '* finds the other whole-word up; gUiw, then n and . for the first one.'
+    generate: star-gU
     variants:
       - goal: 'Uppercase every standalone "star".'
         hint: '* finds the other whole-word star; gUiw, then n and . for the first one.'
@@ -37,6 +38,7 @@ tasks:
       add2 add3 add4
     solution: '<C-a>w.w.'
     hint: 'Ctrl-a, then w and . to repeat it on the next ones.'
+    generate: ctrl-a-dot
     variants:
       - goal: 'Add one to every number.'
         start: |-
@@ -55,6 +57,7 @@ tasks:
       the dot repeats the change for the rest
     solution: '*cgnthe<Esc>..'
     hint: '* then cgn, then . . for the others.'
+    generate: cgn-typo
     variants:
       - goal: 'Fix every "teh".'
         start: |-
@@ -73,6 +76,7 @@ tasks:
       v then u lowers the line
     solution: 'Vu'
     hint: 'V selects the line, u lowercases the selection.'
+    generate: visual-lower
     variants:
       - start: |-
           ▮LOWER THE WHOLE LINE
@@ -89,6 +93,7 @@ tasks:
       Hitting t stops one short
     solution: 'dtH'
     hint: 't is case-sensitive, and the first capital H is in Hitting, so dtH.'
+    generate: dt-letter
     variants:
       - goal: 'Delete up to "Hold".'
         start: |-
@@ -114,6 +119,7 @@ tasks:
       # repeat = 3
     solution: 'I# <Esc>j.j.'
     hint: 'I# <Esc>, then j . j .'
+    generate: dot-comment
     variants:
       - start: |-
           ▮big_i = 1

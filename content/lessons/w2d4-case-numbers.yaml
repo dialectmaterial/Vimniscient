@@ -17,6 +17,7 @@ tasks:
       Tilde flips one letter
     solution: '~'
     hint: '~ flips the case of the character under the cursor.'
+    generate: tilde-cap
     variants:
       - goal: 'Capitalise the first letter.'
         start: |-
@@ -35,6 +36,7 @@ tasks:
       gU raises UP to capitals
     solution: 'gUiw'
     hint: 'gU is the uppercase operator; iw is the word.'
+    generate: gUiw
     variants:
       - goal: 'Uppercase "url".'
         start: |-
@@ -54,6 +56,7 @@ tasks:
       gu lowers the whole line
     solution: 'guu'
     hint: 'guu lowercases the line (gu + u, like dd).'
+    generate: guu
     variants:
       - start: |-
           ▮LOWERCASE IS QUIETER
@@ -72,6 +75,7 @@ tasks:
       Ctrl-a adds 1 to the number
     solution: '<C-a>'
     hint: 'Ctrl-a adds one to the next number on the line.'
+    generate: ctrl-a
     variants:
       - goal: 'Make the sentence true: two plus one is three.'
         start: |-
@@ -91,6 +95,7 @@ tasks:
       A count makes Ctrl-a add: twenty plus thirty is 50
     solution: '30<C-a>'
     hint: 'With a count, Ctrl-a adds that many.'
+    generate: count-ctrl-a
     variants:
       - goal: 'The answer is 31: add 30.'
         start: |-
@@ -109,6 +114,7 @@ tasks:
       Ctrl-x leaves 2 when you take 1 from 3
     solution: '<C-x>'
     hint: 'Ctrl-x takes one away from the next number.'
+    generate: ctrl-x
     variants:
       - goal: 'Make the sentence true: three less one is two.'
         start: |-
@@ -128,6 +134,7 @@ tasks:
       Tilde flips the case
     solution: 'g~iw'
     hint: 'g~ flips case over a motion or text object.'
+    generate: g~iw
     variants:
       - start: |-
           ▮wAVE: the tilde flips

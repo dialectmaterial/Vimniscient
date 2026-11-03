@@ -22,6 +22,7 @@ tasks:
       change(next_match)
     solution: '*cgnnext_match<Esc>..'
     hint: '* sets the search; cgn changes one match; . does the rest (it wraps around).'
+    generate: cgn-star3
     variants:
       - goal: 'Rename every x to match.'
         start: |-
@@ -50,6 +51,7 @@ tasks:
       a change, the skip and a repeat
     solution: '*Ncgna<Esc>nn.'
     hint: '* then N to go back to the first; cgna<Esc> changes; n n skips one; . repeats on the last.'
+    generate: cgn-skip
     variants:
       - start: |-
           ▮the star, the next and the dot
@@ -70,6 +72,7 @@ tasks:
       cgn changes the next match.
     solution: '/the last<CR>cgnthe next<Esc>.'
     hint: 'Search for the phrase, cgn changes the whole match, . the next one.'
+    generate: cgn-phrase
     variants:
       - goal: 'Replace "one match" with "the next match" on both lines.'
         start: |-
@@ -94,6 +97,7 @@ tasks:
       cgn dot; cgn dot; cgn dot; cgn dot
     solution: '*cgndot<Esc>...'
     hint: 'Same trick: * then cgn, then . for each remaining match.'
+    generate: cgn-star4
     variants:
       - goal: 'Change all four it to again.'
         start: |-
@@ -114,6 +118,7 @@ tasks:
       dgn deletes the next match each time.
     solution: '/um, <CR>dgn..'
     hint: 'dgn deletes the next match. Search for "um, " with the space.'
+    generate: dgn-filler
     variants:
       - goal: 'Delete every "so, ".'
         start: |-

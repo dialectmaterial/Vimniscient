@@ -58,15 +58,18 @@ impl Task {
         self.version(i + 1)
     }
 
-    /// The texts a recall can pick from: the versions, plus a generated one if it has a generator.
+    /// How many texts a recall picks between: the versions, plus one with a generator
+    /// (where every pick is generated, so this only spreads the seeds).
     pub fn choices(&self) -> usize {
         self.versions() + usize::from(!self.generator.is_empty())
     }
 
-    /// Text n of the choices; the last is generated from `seed` when there's a generator.
+    /// Text n of the choices. With a generator every choice is a new text from `seed`
+    /// and n: the written versions teach the keys in Learn, and a recall from memory
+    /// shouldn't be a sentence you've learnt by heart.
     pub fn choice(&self, n: usize, seed: &str) -> Task {
         let n = n % self.choices();
-        if n == self.versions() { self.generate(seed) } else { self.version(n) }
+        if self.generator.is_empty() { self.version(n) } else { self.generate(&format!("{seed}/{n}")) }
     }
 
     pub fn generate(&self, seed: &str) -> Task {

@@ -98,6 +98,7 @@ tasks:
       <b>t is for tag</b>
     solution: 'citt is for tag<Esc>'
     hint: 't is the tag object. cit changes the tag''s content and keeps the tags.'
+    generate: cit-tag
     variants:
       - goal: 'Change the text inside the tag to "the tags stay".'
         start: |-

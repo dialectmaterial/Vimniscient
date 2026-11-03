@@ -9,6 +9,7 @@ use std::time::{SystemTime, UNIX_EPOCH};
 #[folder = "content/"]
 #[include = "*.yaml"]
 #[include = "*.lua"]
+#[include = "corpus/*.txt"]
 pub struct Content;
 
 pub fn text(path: &str) -> String {

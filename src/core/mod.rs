@@ -2,6 +2,7 @@ pub mod answer;
 pub mod card_session;
 pub mod cards;
 pub mod content;
+pub mod corpus;
 pub mod diagnose;
 pub mod drills;
 pub mod endless;

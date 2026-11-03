@@ -23,6 +23,7 @@ tasks:
       It leaves no double gap behind.
     solution: 'dap'
     hint: 'd deletes, a takes the empty line after it, p is the paragraph.'
+    generate: dap-middle
     variants:
       - start: |-
           a is around: the paragraph and the blank line after it.
@@ -61,6 +62,7 @@ tasks:
       Done.
     solution: 'yapP'
     hint: 'yap yanks a paragraph with its empty line; P puts it above the cursor.'
+    generate: yap-dup
     variants:
       - start: |-
           ▮P puts above, p puts below.
@@ -91,6 +93,7 @@ tasks:
       s is for sentence. A sentence ends at a full stop. cis changes just one.
     solution: 'cisA sentence ends at a full stop.<Esc>'
     hint: 'cis changes the inner sentence and leaves the spaces around it.'
+    generate: cis-sentence
     variants:
       - goal: 'Fix the wrong sentence: it should say "The i means inner."'
         start: |-
@@ -111,6 +114,7 @@ tasks:
       das deletes a sentence. Its space goes too.
     solution: 'das'
     hint: 'das deletes a sentence plus the space after it.'
+    generate: das-middle
     variants:
       - start: |-
           a is around: a sentence and its space. This sentence ▮is spare. The next one moves up.
@@ -137,6 +141,7 @@ tasks:
           and this one
     solution: '>ip'
     hint: '> points right, ip is the inner paragraph. (Indent here is 4 spaces.)'
+    generate: ip-indent
     variants:
       - goal: 'Indent the three lines.'
         start: |-

@@ -34,6 +34,7 @@ tasks:
       C changes to: the end of the line
     solution: 'Cthe end of the line<Esc>'
     hint: 'C changes from the cursor to the end of the line.'
+    generate: C-rest
     variants:
       - goal: 'Change the rest of the line to "the rest of the line".'
         start: |-
@@ -58,6 +59,7 @@ tasks:
       c twice, a whole line
     solution: 'cccc changes a line<Esc>'
     hint: 'cc, the doubled verb, changes the whole line, wherever the cursor is.'
+    generate: cc-line
     variants:
       - goal: 'Replace the middle line with "cc changes a line".'
         start: |-
@@ -123,6 +125,7 @@ tasks:
       console.log("A appends at the end");
     solution: 'A;<Esc>'
     hint: 'A appends at the end of the line, wherever the cursor is.'
+    generate: A-semicolon
     variants:
       - goal: 'Add a semicolon at the end.'
         start: |-
@@ -145,6 +148,7 @@ tasks:
       # insert = "I puts you at the start"
     solution: 'I# <Esc>'
     hint: 'I inserts at the start of the line.'
+    generate: I-comment
     variants:
       - start: |-
           start = ▮"I goes to the first letter"

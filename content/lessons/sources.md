@@ -1,6 +1,6 @@
 # Sources for the facts in the lesson texts
 
-Lesson practice texts are mnemonic: each one is about the keys it practises (see
+Written lesson texts (the Learn round) are mnemonic: each one is about the keys it practises (see
 `../mnemonics.yaml`). Memory science belongs in lesson intros, where it explains
 why the training works. Every factual claim there should trace back to one of these.
 

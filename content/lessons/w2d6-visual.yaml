@@ -36,6 +36,7 @@ tasks:
       v is VISUAL MODE: you see it
     solution: 'veeU'
     hint: 'v, then e e to the end of "mode", then U.'
+    generate: visual-upper
     variants:
       - goal: 'Uppercase "visual selections".'
         start: |-
@@ -104,6 +105,7 @@ tasks:
       if ok:
     solution: 'c%ok<Esc>'
     hint: '% jumps to the matching bracket, so c% changes the whole group. (v%c works too.)'
+    generate: c-percent
     variants:
       - goal: 'Replace the whole condition with "ok".'
         start: |-

@@ -21,6 +21,7 @@ tasks:
       O opens one above
     solution: 'obelow<Esc>'
     hint: 'o opens a new line below and starts insert mode.'
+    generate: o-below
     variants:
       - goal: 'Add the line "o goes below" between them.'
         start: |-
@@ -48,6 +49,7 @@ tasks:
       this line
     solution: 'OO opened this one above<Esc>'
     hint: 'Capital O opens a line above.'
+    generate: O-above
     variants:
       - goal: 'Add the line "O opens above" above.'
         start: |-
@@ -70,6 +72,7 @@ tasks:
       e goes to the end, and a appends after it.
     solution: 'eas<Esc>'
     hint: 'e goes to the end of the word, a appends after it.'
+    generate: ea-append
     variants:
       - goal: 'Fix "append" to "appends".'
         start: |-
@@ -91,6 +94,7 @@ tasks:
       =====
     solution: '5i=<Esc>'
     hint: 'A count before i repeats the inserted text.'
+    generate: count-insert
     variants:
       - goal: 'Underline the title with five = signs.'
         start: |-
@@ -114,6 +118,7 @@ tasks:
       R overwrites: 2026-10-26
     solution: 'R2026-10-26<Esc>'
     hint: 'R keeps replacing: it types over the existing characters.'
+    generate: R-overwrite
     variants:
       - goal: 'Type the date 2026-11-02 over the placeholder.'
         start: |-
@@ -134,6 +139,7 @@ tasks:
       r replaces one letter
     solution: 'rr'
     hint: 'r replaces one character and stays in normal mode. Here that''s r, then r.'
+    generate: r-replace
     variants:
       - goal: 'Fix "mot" to "dot".'
         start: |-

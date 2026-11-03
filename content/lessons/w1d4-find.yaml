@@ -32,6 +32,7 @@ tasks:
       let t = "till"; let f = "find";
     solution: 'ct;"till"<Esc>'
     hint: 'ct; changes till, not including, the semicolon.'
+    generate: ct-semi
     variants:
       - goal: 'Change the value to "find" (keep the semicolon).'
         start: |-
@@ -52,6 +53,7 @@ tasks:
       lessons/week-1/till/
     solution: 'T/D'
     hint: 'Capital T goes backwards: T/ stops just after the last slash; D deletes to the end of the line.'
+    generate: path-T
     variants:
       - start: |-
           vim/motions/capital-T/goes-back.tx▮t
@@ -70,6 +72,7 @@ tasks:
       count, then f, then the comma; done
     solution: '3f,r;'
     hint: 'f, then ; ; walks comma by comma ("and so on"). A count is shorter: 3f, and then r; replaces the character.'
+    generate: nf-comma
     variants:
       - start: |-
           ▮f, t, F, T
@@ -89,6 +92,7 @@ tasks:
       f_lands = on_it  # t stops before it
     solution: 'ct on_it<Esc>'
     hint: 't works with a space too. ct<Space> changes till the next space.'
+    generate: ct-space
     variants:
       - goal: 'Replace the whole at(char) call with till.'
         start: |-
@@ -110,6 +114,7 @@ tasks:
       f lands on the letter.
     solution: 'df)'
     hint: 'f finds and lands on the ), so df) deletes the bracket too.'
+    generate: df-paren
     variants:
       - start: |-
           F finds backwards▮ (to the left) on the line.

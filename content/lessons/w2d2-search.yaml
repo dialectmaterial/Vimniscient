@@ -20,6 +20,7 @@ tasks:
       so it searches ahead
     solution: '/b<CR>cwahead<Esc>'
     hint: 'Search for as little as you need. /b<Enter> lands on backwards already.'
+    generate: search-cw
     variants:
       - goal: 'Change "back" to "forward".'
         start: |-
@@ -44,6 +45,7 @@ tasks:
       Search is a motion
     solution: 'd/S<CR>'
     hint: 'd/S<Enter> deletes up to the next S (uppercase, so the search is exact).'
+    generate: search-d
     variants:
       - goal: 'Delete the hedging before "Slash".'
         start: |-
@@ -67,6 +69,7 @@ tasks:
       next_one = found
     solution: '*ciwfound<Esc>'
     hint: '* stars the word under the cursor and jumps to its next match.'
+    generate: star-ciw
     variants:
       - goal: 'Rename the second whole word "star" to match.'
         start: |-
@@ -92,6 +95,7 @@ tasks:
       n means next, and N means the next one back.
     solution: '*ndaw'
     hint: '* goes to the second next, n to the third, daw deletes it.'
+    generate: star-n-daw
     variants:
       - goal: 'Delete the third "star".'
         start: |-
@@ -110,6 +114,7 @@ tasks:
       / leans forward and searches forward; ? asks backward, from the end.
     solution: '?fo<CR>cwbackward<Esc>'
     hint: '?fo<Enter> asks backwards from the cursor.'
+    generate: search-back
     variants:
       - goal: 'Change the last "forward" to "backward", searching backwards.'
         start: |-

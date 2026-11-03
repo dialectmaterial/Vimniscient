@@ -19,16 +19,14 @@ pub struct Tables {
     pub normal: IndexMap<String, String>,
     pub objects: IndexMap<String, String>,
     pub ex: IndexMap<String, String>,
-    pub means: Vec<(String, String, String)>, // key as written, means, hook
 }
 
 pub static TABLES: LazyLock<Tables> = LazyLock::new(|| {
     let data: serde_norway::Mapping = serde_norway::from_str(&content::text("mnemonics.yaml")).expect("mnemonics.yaml");
-    let (mut normal, mut objects, mut ex, mut means) = (IndexMap::new(), IndexMap::new(), IndexMap::new(), Vec::new());
+    let (mut normal, mut objects, mut ex) = (IndexMap::new(), IndexMap::new(), IndexMap::new());
     for (key, entry) in &data {
         let key = content::scalar(key);
         let hook = entry.get("hook").map(content::scalar).unwrap_or_default();
-        means.push((key.clone(), entry.get("means").map(content::scalar).unwrap_or_default(), hook.clone()));
         let (name, kind) = key.split_once(" (").unwrap_or((&key, ""));
         let kind = kind.trim_end_matches(')');
         match kind {
@@ -59,7 +57,7 @@ pub static TABLES: LazyLock<Tables> = LazyLock::new(|| {
     for c in PAIRS.chars() {
         objects.entry(c.to_string()).or_insert_with(|| round.clone());
     }
-    Tables { normal, objects, ex, means }
+    Tables { normal, objects, ex }
 });
 
 /// The hooks for the parts of `keys`, in order, without repeats.

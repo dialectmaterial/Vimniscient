@@ -264,7 +264,8 @@ tasks:
     solution: ciwquick<Esc>   # the reference; its length is the "ref" count
     hint: ciw changes the inner word under the cursor.
     ft: python                # optional filetype
-    variants:                 # the same skill on other texts, for Recall and reviews
+    generate: ciw-typo        # a kind in src/core/generate.rs: new texts for Recall and reviews
+    variants:                 # the same skill on other written texts, for Learn
       - goal: 'Change "big" to "small".'
         start: |-
           A b▮ig corpus.
@@ -279,7 +280,15 @@ More details:
 - `lazyvim: true` marks lessons that need LazyVim.
 - Indented text needs an indentation indicator (`|2-`), or YAML strips the leading spaces.
 
-The texts are mnemonic. Where you can, write a sentence that says what the
+Learn teaches with the written texts; Recall, reviews, Endless and Quick
+practice test with a generated one whenever the task has a `generate` kind, so
+you practise the skill and not a sentence you remember. Generated texts come
+from [`content/corpus/`](https://github.com/dialectmaterial/Vimniscient/blob/main/content/corpus):
+some 7,000 sentences from Sapir's and Jespersen's books on language (public
+domain) and code names made of linguistics terms. Every week 1 and 2 task has
+one; a new kind needs its solution to pass `tests/check_neovim.py` for 150 seeds.
+
+The written texts are mnemonic. Where you can, write a sentence that says what the
 key stands for, so that the edit leaves it true: `ciw is change inner word:
 it swaps the wh▮ile word` (fix it with `ciw`). What each key officially means,
 and the hook to use where it means nothing, is in
