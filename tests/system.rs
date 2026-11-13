@@ -2,7 +2,7 @@
 
 use std::os::unix::fs::PermissionsExt;
 use std::process::{Command, Stdio};
-use vimniscient::core::cards::{output_within, run};
+use vimniscient::core::machine::{output_within, run};
 use vimniscient::core::content::Scratch;
 
 #[test]

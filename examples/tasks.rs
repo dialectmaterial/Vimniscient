@@ -6,7 +6,7 @@
 
 use serde_json::{Value, json};
 use vimniscient::core::lessons::{LESSONS, Task, two_rounds};
-use vimniscient::core::{cards, endless, evaluation, generate, missions, progress::{Progress, today}, transfer};
+use vimniscient::core::{endless, evaluation, generate, missions, progress::{Progress, today}, transfer};
 use vimniscient::system::nvim;
 
 fn row(id: String, t: &Task, solution: &str) -> Value {
@@ -46,7 +46,7 @@ fn main() {
             json!(two_rounds(lesson, &today().to_string()).iter().map(|t| json!({"solution": t.solution, "phase": t.phase, "again": t.next_version().solution})).collect::<Vec<_>>())
         }
         "endless" => {
-            let open: Vec<_> = LESSONS.iter().filter(|l| !l.lazyvim || cards::has_lazyvim()).cloned().collect();
+            let open: Vec<_> = LESSONS.iter().filter(|l| !l.lazyvim || vimniscient::core::machine::has_lazyvim()).cloned().collect();
             let rungs = endless::ladder(&open, 1, &args[1]);
             json!(rungs.iter().take(6).map(|(t, v)| json!({"solution": t.choice(*v, &format!("{}:{}", t.item_id(), today())).solution})).collect::<Vec<_>>())
         }

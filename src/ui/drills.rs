@@ -29,7 +29,7 @@ pub struct DrillScreen {
 impl DrillScreen {
     pub fn new(queue: Vec<Drill>, app: &App) -> DrillScreen {
         hyprland::listen(app.messages.0.clone());
-        DrillScreen { total: queue.len(), queue, home: hyprland::home(), window: None, current: None, hinted: false, status: vec![Span::raw("Opening the drill window…")], next_at: Some(Instant::now()) }
+        DrillScreen { total: queue.len(), queue, home: hyprland::active_workspace(), window: None, current: None, hinted: false, status: vec![Span::raw("Opening the drill window…")], next_at: Some(Instant::now()) }
     }
 
     fn next_drill(&mut self, app: &mut App) -> Flow {

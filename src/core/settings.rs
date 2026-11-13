@@ -1,14 +1,14 @@
 //! Your settings, in ~/.config/vimniscient/config.yaml. Only one so far:
 //! `minutes`, how long today's routine is meant to take.
 
-use super::cards::home;
+use super::machine::config_home;
 use serde_norway::{Mapping, Value};
 use std::path::PathBuf;
 
 const DEFAULT_MINUTES: u32 = 15;
 
 pub fn config() -> PathBuf {
-    std::env::var_os("XDG_CONFIG_HOME").map(PathBuf::from).unwrap_or_else(|| home().join(".config")).join("vimniscient/config.yaml")
+    config_home().join("vimniscient/config.yaml")
 }
 
 fn read() -> Mapping {

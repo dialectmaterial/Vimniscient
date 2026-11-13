@@ -11,6 +11,7 @@ pub mod generate;
 pub mod habits;
 pub mod keys;
 pub mod lessons;
+pub mod machine;
 pub mod missions;
 pub mod mnemonics;
 pub mod placement;

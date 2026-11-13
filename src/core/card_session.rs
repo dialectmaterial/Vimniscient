@@ -35,7 +35,7 @@ impl CardSession {
     pub fn begin(&mut self, progress: &Progress) -> Option<Card> {
         let card = self.card()?.clone();
         // never answered from memory, and not introduced since the last miss
-        self.intro = !self.retried.contains(&card.id) && !progress.ever_right(&card.id) && progress.item(&card.id).is_none_or(|item| item.reps == 0);
+        self.intro = !self.retried.contains(&card.id) && progress.is_new_card(&card.id);
         Some(card)
     }
 

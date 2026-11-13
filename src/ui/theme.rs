@@ -1,6 +1,6 @@
 //! Colours: the Omarchy theme in use, Catppuccin Mocha's own palette by default.
 
-use crate::core::cards::home;
+use crate::core::machine::state_home;
 use ratatui::style::Color;
 use serde_json::{Value, json};
 
@@ -46,7 +46,7 @@ pub const THEMES: [Theme; 7] = [
 
 /// The theme of ~/.local/state/omarchy/current/theme.name, when it has a twin here.
 pub fn omarchy_theme() -> Theme {
-    let state = std::env::var_os("XDG_STATE_HOME").map(std::path::PathBuf::from).unwrap_or_else(|| home().join(".local/state"));
+    let state = state_home();
     let name = std::fs::read_to_string(state.join("omarchy/current/theme.name")).unwrap_or_default();
     let wanted = match name.trim().to_lowercase().as_str() {
         "catppuccin-latte" => "vimniscient-latte",

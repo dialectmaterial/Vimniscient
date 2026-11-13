@@ -4,7 +4,7 @@
 use super::app::{App, Flow, Job};
 use super::theme::Theme;
 use super::{markdown, text, widgets};
-use crate::core::cards::has_plugin;
+use crate::core::machine::has_plugin;
 use crate::core::progress::today as date;
 use crate::core::today::{self, Step};
 use crate::core::habits;

@@ -2,7 +2,7 @@
 
 use chrono::Local;
 use clap::{Parser, Subcommand};
-use vimniscient::core::cards::has_lazyvim;
+use vimniscient::core::machine::has_lazyvim;
 use vimniscient::core::lessons::{LESSONS, two_rounds};
 use vimniscient::core::progress::{Progress, today};
 use vimniscient::core::{endless, evaluation, settings};

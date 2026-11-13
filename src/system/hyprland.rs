@@ -13,7 +13,7 @@ const DRILL_CLASS: &str = "vimniscient-drill";
 const DRILL_TITLE: &str = "Vimniscient drill";
 
 fn hyprctl(what: &str) -> Value {
-    let out = crate::core::cards::run("hyprctl", &[what, "-j"], 5);
+    let out = crate::core::machine::run("hyprctl", &[what, "-j"], 5);
     serde_json::from_str(&out).unwrap_or(Value::Null)
 }
 
@@ -21,7 +21,8 @@ pub fn available() -> bool {
     socket().is_some()
 }
 
-pub fn home() -> String {
+/// The workspace you're on, where a drill sends the window back to.
+pub fn active_workspace() -> String {
     hyprctl("activeworkspace")["id"].to_string()
 }
 
@@ -50,7 +51,7 @@ pub fn ensure_drill_window(window: &mut Option<Child>) -> Option<String> {
 
 pub fn close_drill_window(window: &mut Option<Child>) {
     if let Some(address) = drill_address() {
-        crate::core::cards::run("hyprctl", &["dispatch", &format!("hl.dsp.window.close({{ window = \"address:0x{address}\" }})")], 5);
+        crate::core::machine::run("hyprctl", &["dispatch", &format!("hl.dsp.window.close({{ window = \"address:0x{address}\" }})")], 5);
     }
     if let Some(child) = window {
         let _ = child.kill();

@@ -1,7 +1,7 @@
 //! Challenges from vimgolf.com, played in your own Neovim. The challenge list and each
 //! challenge are cached in ~/.cache/vimniscient/vimgolf/.
 
-use crate::core::cards::home;
+use crate::core::machine::cache_home;
 use crate::core::progress::Progress;
 use fancy_regex::Regex;
 use serde_json::{Value, json};
@@ -40,7 +40,7 @@ impl Challenge {
 }
 
 fn cache() -> Result<PathBuf, String> {
-    let path = std::env::var_os("XDG_CACHE_HOME").map(PathBuf::from).unwrap_or_else(|| home().join(".cache")).join("vimniscient/vimgolf");
+    let path = cache_home().join("vimniscient/vimgolf");
     std::fs::create_dir_all(&path).map_err(|e| e.to_string())?;
     Ok(path)
 }

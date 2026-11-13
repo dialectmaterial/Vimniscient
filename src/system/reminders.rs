@@ -4,7 +4,8 @@
 //! The follow-ups are Omarchy reminders (`omarchy-reminder-*` timers with a message file);
 //! each runs `vimniscient remind` when it fires, which only notifies if work is left.
 
-use crate::core::cards::{self, home, on_path, run};
+use crate::core::cards;
+use crate::core::machine::{self, config_home, on_path, run, state_home};
 use crate::core::lessons::{LESSONS, Lesson};
 use crate::core::progress::Progress;
 use crate::core::today::{self, Step};
@@ -38,24 +39,20 @@ pub const fn every() -> i64 {
     EVERY
 }
 
-fn folder(variable: &str, fallback: &str) -> PathBuf {
-    std::env::var_os(variable).map(PathBuf::from).unwrap_or_else(|| home().join(fallback))
-}
-
 fn reminder_dir() -> PathBuf {
     PathBuf::from(std::env::var_os("XDG_RUNTIME_DIR").unwrap_or_else(|| "/tmp".into())).join("omarchy-reminders")
 }
 
 fn last_sent() -> PathBuf {
-    folder("XDG_STATE_HOME", ".local/state").join("vimniscient/last-reminder")
+    state_home().join("vimniscient/last-reminder")
 }
 
 fn systemd_dir() -> PathBuf {
-    folder("XDG_CONFIG_HOME", ".config").join("systemd/user")
+    config_home().join("systemd/user")
 }
 
 fn hook() -> PathBuf {
-    folder("XDG_CONFIG_HOME", ".config").join("omarchy/hooks/post-boot.d/vimniscient-reminder")
+    config_home().join("omarchy/hooks/post-boot.d/vimniscient-reminder")
 }
 
 /// This Vimniscient, run the same way from systemd or a hook.
@@ -64,7 +61,7 @@ fn this_program() -> String {
 }
 
 fn current_plan() -> Vec<Step> {
-    let lessons: Vec<Lesson> = LESSONS.iter().filter(|l| !l.lazyvim || cards::has_lazyvim()).cloned().collect();
+    let lessons: Vec<Lesson> = LESSONS.iter().filter(|l| !l.lazyvim || machine::has_lazyvim()).cloned().collect();
     let Ok(progress) = Progress::open() else { return Vec::new() };
     let work = today::todays_work(&progress, &lessons, &cards::load_decks(), &drills::load_drills(), None);
     today::plan(&progress, &lessons, &work)
@@ -168,7 +165,7 @@ struct Lock(PathBuf);
 
 impl Lock {
     fn take() -> Option<Lock> {
-        let path = folder("XDG_STATE_HOME", ".local/state").join("vimniscient/remind.lock");
+        let path = state_home().join("vimniscient/remind.lock");
         if let Some(parent) = path.parent() {
             let _ = std::fs::create_dir_all(parent);
         }

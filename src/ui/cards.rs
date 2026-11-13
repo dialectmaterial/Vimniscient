@@ -140,7 +140,7 @@ impl CardScreen {
             Some(s) => (s.card().cloned(), s.done(), s.total, s.intro, s.pending.clone()),
             None => {
                 let card = self.cards.first().cloned();
-                let intro = card.as_ref().is_some_and(|c| !app.progress.ever_right(&c.id) && app.progress.item(&c.id).is_none_or(|i| i.reps == 0));
+                let intro = card.as_ref().is_some_and(|c| app.progress.is_new_card(&c.id));
                 (card, 0, self.cards.len(), intro, None)
             }
         };

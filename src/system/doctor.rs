@@ -1,7 +1,7 @@
 //! `vimniscient doctor`: does this machine work with the trainer? Required checks stop
 //! it working; the rest say what you'd be missing.
 
-use crate::core::cards::{has_lazyvim, has_plugin, on_path, output_within};
+use crate::core::machine::{has_lazyvim, has_plugin, on_path, output_within};
 use crate::core::progress::data_dir;
 use fancy_regex::Regex;
 use std::process::{Command, Stdio};

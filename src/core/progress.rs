@@ -1,6 +1,7 @@
 //! Progress, kept in ~/.local/share/vimniscient/progress.db.
 
-use super::cards::{Card, DECK_ORDER, Deck, home};
+use super::cards::{Card, DECK_ORDER, Deck};
+use super::machine::data_home;
 use super::drills::Drill;
 use super::lessons::{Lesson, Task};
 use super::results::TaskResult;
@@ -48,7 +49,7 @@ pub fn data_dir() -> PathBuf {
     if let Some(dir) = std::env::var_os("VIMNISCIENT_DATA").filter(|d| !d.is_empty()) {
         return dir.into();
     }
-    std::env::var_os("XDG_DATA_HOME").map(PathBuf::from).unwrap_or_else(|| home().join(".local/share")).join("vimniscient")
+    data_home().join("vimniscient")
 }
 
 fn item_row(row: &rusqlite::Row) -> rusqlite::Result<Item> {
@@ -261,6 +262,11 @@ impl Progress {
     /// "I know this": the card is never asked again.
     pub fn know_card(&self, id: &str) {
         self.run("INSERT OR IGNORE INTO known (id, ts) VALUES (?, ?)", params![id, now()]);
+    }
+
+    /// Never answered from memory and never scheduled past a first sight: introduced, not asked.
+    pub fn is_new_card(&self, id: &str) -> bool {
+        !self.ever_right(id) && self.item(id).is_none_or(|item| item.reps == 0)
     }
 
     /// Cards marked as known.

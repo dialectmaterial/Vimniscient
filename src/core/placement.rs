@@ -3,7 +3,7 @@
 //! earlier. Skills never touch each other's result. Reviews and week 6 aren't tested; a
 //! review counts as known once its week's other lessons all are.
 
-use super::cards::has_lazyvim;
+use super::machine::has_lazyvim;
 use super::lessons::{Lesson, Task};
 use super::{results::TaskResult, srs};
 use indexmap::IndexMap;

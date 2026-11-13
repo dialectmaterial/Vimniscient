@@ -2,7 +2,8 @@
 //! `Use dj instead of 2dd` becomes a card; `You pressed the j key too soon!` and
 //! `The <Up> key is disabled!` bring the motion lessons back.
 
-use super::cards::{Card, Deck, home};
+use super::cards::{Card, Deck};
+use super::machine::state_home;
 use super::keys::split_keys;
 use super::mnemonics::OPERATORS;
 use super::progress::today;
@@ -25,7 +26,7 @@ pub struct Habit {
 }
 
 fn read_log() -> Vec<(NaiveDate, String)> {
-    let state = std::env::var_os("XDG_STATE_HOME").map(std::path::PathBuf::from).unwrap_or_else(|| home().join(".local/state"));
+    let state = state_home();
     let Ok(bytes) = std::fs::read(state.join("nvim/hardtime.nvim.log")) else { return Vec::new() };
     let text = String::from_utf8_lossy(&bytes);
     let mut entries = Vec::new();
