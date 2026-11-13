@@ -193,6 +193,7 @@ machine.
 | [hardtime.nvim](https://github.com/m4xshen/hardtime.nvim) | Your bad habits become cards ("You typed `2dd`. What's shorter?"). When you lean on `hjkl` a lot, review brings back the motion lessons |
 | [Omarchy](https://omarchy.org) / Hyprland | Cards for desktop keybindings (read live), and live drills (`d`): "send this window to workspace 9 and fetch it back", checked through Hyprland's events |
 | foot, Zathura | Cards for their keys |
+| curl | Today's VimGolf challenge, fetched from vimgolf.com |
 
 LazyVim and tmux decks are excluded from reviews and statistics, even when
 installed. Existing card history is preserved; tmux bindings are not loaded.

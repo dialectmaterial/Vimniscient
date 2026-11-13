@@ -1,11 +1,12 @@
 //! Challenges from vimgolf.com, played in your own Neovim. The challenge list and each
 //! challenge are cached in ~/.cache/vimniscient/vimgolf/.
 
-use crate::core::machine::cache_home;
+use crate::core::machine::{cache_home, on_path, output_within};
 use crate::core::progress::Progress;
 use fancy_regex::Regex;
 use serde_json::{Value, json};
 use std::path::PathBuf;
+use std::process::{Command, Stdio};
 use std::sync::LazyLock;
 use std::time::{Duration, SystemTime};
 
@@ -45,11 +46,22 @@ fn cache() -> Result<PathBuf, String> {
     Ok(path)
 }
 
+/// A page from vimgolf.com, through curl: the system's own TLS, none built in.
 fn get(url: &str, accept: &str) -> Result<String, String> {
+    if !on_path("curl") {
+        return Err("curl isn't installed".into());
+    }
+    let mut curl = Command::new("curl");
     // a stalled connection gives up instead of leaving "Fetching…" up for good
-    static AGENT: LazyLock<ureq::Agent> = LazyLock::new(|| ureq::Agent::config_builder().timeout_global(Some(REQUEST_TIMEOUT)).build().into());
-    let mut response = AGENT.get(url).header("Accept", accept).header("User-Agent", "vimniscient").call().map_err(|e| e.to_string())?;
-    response.body_mut().read_to_string().map_err(|e| e.to_string())
+    let seconds = REQUEST_TIMEOUT.as_secs();
+    curl.args(["--fail", "--silent", "--show-error", "--location", "--compressed", "--max-time", &seconds.to_string()])
+        .args(["--user-agent", "vimniscient", "--header", &format!("Accept: {accept}"), url])
+        .stdout(Stdio::piped()).stderr(Stdio::piped());
+    let out = output_within(&mut curl, seconds + 5).ok_or("vimgolf.com didn't answer in time")?;
+    if !out.status.success() {
+        return Err(String::from_utf8_lossy(&out.stderr).trim().trim_start_matches("curl: ").to_string());
+    }
+    String::from_utf8(out.stdout).map_err(|e| e.to_string())
 }
 
 fn unescape(text: &str) -> String {

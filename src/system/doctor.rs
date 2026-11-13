@@ -77,5 +77,6 @@ pub fn checks() -> Vec<Check> {
     found.push(check("LazyVim", lazyvim, format!("optional week 5 lessons{}", if lazyvim { "" } else { " stay hidden" }), false));
     found.push(check("hardtime.nvim", has_plugin("hardtime.nvim"), "habit cards and drills", false));
     found.push(check("Hyprland", std::env::var_os("HYPRLAND_INSTANCE_SIGNATURE").is_some_and(|s| !s.is_empty()), "Omarchy drills", false));
+    found.push(check("curl", on_path("curl"), "today's VimGolf challenge", false));
     found
 }
