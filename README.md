@@ -189,10 +189,13 @@ machine.
 | You have | You get |
 |---|---|
 | Neovim | Weeks 1–4 and 6, Vim and shell cards, VimGolf |
-| [LazyVim](https://www.lazyvim.org) | Week 5, plus LazyVim cards whose names and keys are read from your own config |
+| [LazyVim](https://www.lazyvim.org) | Optional Week 5 lessons; no LazyVim review cards |
 | [hardtime.nvim](https://github.com/m4xshen/hardtime.nvim) | Your bad habits become cards ("You typed `2dd`. What's shorter?"). When you lean on `hjkl` a lot, review brings back the motion lessons |
-| [Omarchy](https://omarchy.org) / Hyprland | Cards for every desktop and tmux keybinding (read live), and live drills (`d`): "send this window to workspace 9 and fetch it back", checked through Hyprland's events |
+| [Omarchy](https://omarchy.org) / Hyprland | Cards for desktop keybindings (read live), and live drills (`d`): "send this window to workspace 9 and fetch it back", checked through Hyprland's events |
 | foot, Zathura | Cards for their keys |
+
+LazyVim and tmux decks are excluded from reviews and statistics, even when
+installed. Existing card history is preserved; tmux bindings are not loaded.
 
 ### Optional: practice while you work
 
@@ -239,9 +242,11 @@ keys and would make them count twice.
 
 **My answer to a card was right but got marked wrong.** Common notations are
 accepted (`<C-a>`, `ctrl-a`, `^a`; `<leader>ff`, `space ff`). Cards show the
-leader as `Space` and the tmux prefix as `CTRL + SPACE`: press Space, or
-Ctrl-Space / Ctrl-B, in the answer box and it types that for you. If yours
-still fails, press `o` ("I was right").
+leader as `Space`: press Space in the answer box and it types that for you.
+If yours still fails, press `o` ("I was right").
+Shown answers include a plain-English legend for special keys: `<CR>` means
+Enter, `<Esc>` means Escape, and `<C-r>` means Ctrl + r. Lessons show the
+same legend during Learn and when revealing an answer, not during Recall.
 
 **A card keeps coming back but I know it.** Press `Tab` while the card is
 asked, or `k` after you've answered it. It leaves the queue and is never

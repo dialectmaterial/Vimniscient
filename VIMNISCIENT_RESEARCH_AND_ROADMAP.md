@@ -13,9 +13,8 @@ rather than solve a familiar puzzle in few keystrokes?
 
 ## 0. Where we are (2 November 2026)
 
-**Version 1.0.1** is released (GitHub, PyPI, crates.io). It's one Rust binary; Python
-is gone. `main` has two more commits after the review on 2 November (see §7). They
-aren't in a release yet.
+**Version 1.0.2** is released (GitHub, PyPI, crates.io), with the fixes from the
+review on 2 November (see §7). It's one Rust binary; Python is gone.
 
 | Area | What exists | Gaps |
 | --- | --- | --- |
@@ -96,7 +95,7 @@ do first. Nothing here starts until you choose it.
 
 | # | Proposal | Why | Effort |
 | --- | --- | --- | --- |
-| A1 **Rec.** | **Release 1.0.2** with the 2 November fixes | 1.0.1 users can still hit the drill bug that blanks and freezes the app | 0.1 |
+| A1 ✅ | **Release 1.0.2** with the 2 November fixes | Done 2 Nov: 1.0.1 could blank and freeze the app after drills | — |
 | A2 **Rec.** | **Take the full `eval pre`** (all 8 tasks) | Without a baseline the evaluation can't say anything | You, 15 min |
 | A3 | Play Quick practice, a mission and a drill session once each, and fix what turns up | None has been played by hand since the Rust port | 0.25–0.5 |
 
@@ -132,7 +131,7 @@ do first. Nothing here starts until you choose it.
 | E2 | Test against a stock LazyVim and a plain Neovim in CI | Compatibility is only tested on your setup | 0.5–1 |
 | E3 | Without Omarchy, hide what needs it more gracefully | Drills and reminders are Omarchy-only | 0.25 |
 
-**Suggested order:** A1 → A2 → A3, two weeks of use, then B1 → C1. The rest follows
+**Suggested order:** A2 → A3, two weeks of use, then B1 → C1. The rest follows
 what §3 shows.
 
 ---
@@ -187,7 +186,7 @@ progress history.
 | 30 Oct | Every audit point acted on: variation (575 texts, 37 generator kinds), diagnostics, placement by skill, Choose, missions, Quick practice, `doctor`, `eval`. Filler texts removed |
 | 30 Oct | **Rust port, v1.0.0**: on screen in 75 ms instead of 425, 12 MB of memory instead of 50, golden files kept from the Python version. A copy of the old database is at `~/.local/share/vimniscient/progress.before-rust.db` |
 | 30 Oct | v1.0.1: highlights span the row, the graph fills its pane |
-| 2 Nov | Code review and fixes (unreleased): drill events no longer drop the screen; reminders after an unlock wait; private temp folders; timeouts; placement can be stopped; task ids guarded; CI with releases gated on tests |
+| 2 Nov | **v1.0.2**, after a code review: drill events no longer drop the screen; reminders after an unlock wait; private temp folders; timeouts; placement can be stopped; task ids guarded; CI with releases gated on tests |
 
 **Where the 26 October problems stand:** P1 variation and P2 timing are done. P3
 diagnostics has three rules (D1 continues it). P4 placement is by skill now. P5 SRS

@@ -31,6 +31,7 @@ fn task_json(t: &Task) -> Value {
         "goal": t.goal, "start": t.start, "cursor": [t.cursor.0, t.cursor.1], "target": t.target, "ref": t.reference(),
         "hint": t.hint, "solution": t.solution, "ft": t.ft, "phase": t.phase,
         "why": if t.solution == "—" { Vec::new() } else { hooks(&t.solution) }, // what the keys stand for
+        "key_legend": crate::core::answer::key_legend(&t.solution),
     })
 }
 

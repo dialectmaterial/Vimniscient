@@ -1,21 +1,18 @@
 //! Flashcard decks. The static ones come from `cards/*.yaml`; a deck about a
 //! program only shows up when that program is installed.
 
-use super::{answer::{display_keys, pretty_keys}, content, habits};
+use super::{answer::display_keys, content, habits};
 use fancy_regex::Regex;
 use indexmap::IndexMap;
 use serde_norway::Value;
-use std::collections::HashSet;
 use std::path::PathBuf;
 use std::io::Read;
 use std::process::{Command, Output, Stdio};
 use std::sync::LazyLock;
 use std::time::{Duration, Instant};
 
-const KEYMAPS_SECONDS: u64 = 30;
-
 // New cards are introduced round-robin in this order.
-pub const DECK_ORDER: [&str; 8] = ["habits", "vim", "lazyvim", "omarchy", "tmux", "shell", "foot", "zathura"];
+pub const DECK_ORDER: [&str; 6] = ["habits", "vim", "omarchy", "shell", "foot", "zathura"];
 
 #[derive(Clone, Debug, Default)]
 pub struct Card {
@@ -70,12 +67,15 @@ fn static_decks() -> IndexMap<String, Deck> {
     let mut decks = IndexMap::new();
     for name in content::names("cards") {
         let data: Value = serde_norway::from_str(&content::text(&name)).unwrap_or_else(|e| panic!("{name}: {e}"));
-        // a deck about a program only shows up when that program is installed
-        let requires = data.get("requires").map(content::scalar).unwrap_or_default();
-        if (requires == "lazyvim" && !has_lazyvim()) || (!requires.is_empty() && requires != "lazyvim" && !on_path(&requires)) {
+        let id = content::scalar(&data["deck"]);
+        // Keep the optional lesson material, but do not introduce LazyVim cards.
+        if id == "lazyvim" {
             continue;
         }
-        let id = content::scalar(&data["deck"]);
+        let requires = data.get("requires").map(content::scalar).unwrap_or_default();
+        if !requires.is_empty() && !on_path(&requires) {
+            continue;
+        }
         let mut deck = Deck { id: id.clone(), title: content::scalar(&data["title"]), cards: Vec::new() };
         let text = |c: &Value, key: &str, default: String| c.get(key).map(content::scalar).unwrap_or(default);
         for (i, c) in data["cards"].as_sequence().expect("cards").iter().enumerate() {
@@ -162,17 +162,11 @@ fn arrow_list(deck: &str, text: &str, case_sensitive: bool) -> Vec<Card> {
         {
             continue;
         }
-        let (prompt, answers) = if keys == &["PREFIX"] {
-            // tmux: "PREFIX → CTRL + SPACE / CTRL + B"
-            ("The tmux prefix".to_string(), desc.split('/').map(|k| k.trim().to_string()).collect())
-        } else {
-            (desc.clone(), keys.clone())
-        };
         cards.push(Card {
             deck: deck.into(),
-            id: format!("{deck}:{prompt}"),
-            prompt,
-            answers,
+            id: format!("{deck}:{desc}"),
+            prompt: desc.clone(),
+            answers: keys.clone(),
             style: "combo".into(),
             case_sensitive,
             order: i,
@@ -182,92 +176,15 @@ fn arrow_list(deck: &str, text: &str, case_sensitive: bool) -> Vec<Card> {
     cards
 }
 
-fn folder(variable: &str, fallback: &str) -> PathBuf {
-    std::env::var_os(variable).map(PathBuf::from).unwrap_or_else(|| home().join(fallback))
-}
-
-fn newest(path: &std::path::Path, best: &mut f64) {
-    let Ok(entries) = std::fs::read_dir(path) else { return };
-    for entry in entries.flatten() {
-        let path = entry.path();
-        if path.is_dir() {
-            newest(&path, best);
-        } else if let Ok(modified) = entry.metadata().and_then(|m| m.modified())
-            && let Ok(age) = modified.duration_since(std::time::UNIX_EPOCH)
-        {
-            *best = best.max(age.as_secs_f64());
-        }
-    }
-}
-
-/// Every described keymap in the user's Neovim, cached until the config changes.
-fn nvim_keymaps() -> Vec<serde_json::Value> {
-    let cache_dir = folder("XDG_CACHE_HOME", ".cache").join("vimniscient");
-    if std::fs::create_dir_all(&cache_dir).is_err() {
-        return Vec::new();
-    }
-    let cache = cache_dir.join("nvim-keymaps.json");
-    let mut time = 0.0;
-    newest(&folder("XDG_CONFIG_HOME", ".config").join("nvim"), &mut time);
-    let signature = time.to_string();
-    if let Some(data) = std::fs::read_to_string(&cache).ok().and_then(|text| serde_json::from_str::<serde_json::Value>(&text).ok())
-        && data["signature"] == signature.as_str()
-    {
-        return data["maps"].as_array().cloned().unwrap_or_default();
-    }
-    let out = cache_dir.join("nvim-keymaps.tmp.json");
-    let Ok(scratch) = content::Scratch::new() else { return Vec::new() };
-    let Ok(script) = scratch.write("nvim/keymaps.lua") else { return Vec::new() };
-    // your whole config starts headless; one that hangs mustn't hold up the app or a reminder
-    let mut nvim = Command::new("nvim");
-    nvim.args(["--headless", "-i", "NONE", "-n", "-S"]).arg(script)
-        .env("VIMNISCIENT_KEYMAPS", &out).current_dir(&cache_dir).stdout(Stdio::null()).stderr(Stdio::null());
-    if output_within(&mut nvim, KEYMAPS_SECONDS).is_none() {
-        return Vec::new();
-    }
-    let Some(maps) = std::fs::read_to_string(&out).ok().and_then(|text| serde_json::from_str::<Vec<serde_json::Value>>(&text).ok()) else {
-        return Vec::new();
-    };
-    let _ = std::fs::remove_file(&out);
-    let _ = std::fs::write(cache, serde_json::json!({"signature": signature, "maps": maps}).to_string());
-    maps
-}
-
-/// The `from_config` keymaps of cards/lazyvim.yaml, as named in the user's config.
-fn lazyvim_extra_cards(core: &[Card]) -> Vec<Card> {
-    let data: Value = serde_norway::from_str(&content::text("cards/lazyvim.yaml")).expect("lazyvim.yaml");
-    let wanted: Vec<String> = data.get("from_config").and_then(Value::as_sequence).map(|k| k.iter().map(|v| pretty_keys(&content::scalar(v))).collect()).unwrap_or_default();
-    let known: HashSet<&String> = core.iter().flat_map(|c| &c.answers).collect();
-    let by_lhs: IndexMap<String, String> = nvim_keymaps().iter()
-        .filter(|m| m["mode"] == "n" && !m["desc"].as_str().unwrap_or("+").starts_with('+'))
-        .map(|m| (pretty_keys(m["lhs"].as_str().unwrap_or("")), m["desc"].as_str().unwrap_or("").to_string()))
-        .collect();
-    wanted.iter().filter(|lhs| by_lhs.contains_key(*lhs) && !known.contains(lhs)).enumerate().map(|(i, lhs)| Card {
-        deck: "lazyvim".into(),
-        id: format!("lazyvim:{}", by_lhs[lhs]),
-        prompt: by_lhs[lhs].clone(),
-        answers: vec![lhs.clone()],
-        style: "keys".into(),
-        case_sensitive: true,
-        order: core.len() + i,
-        ..Card::default()
-    }).collect()
-}
-
-/// Every deck, the ones read from this machine included.
+/// Active review decks, including this machine's desktop bindings.
 pub fn load_decks() -> IndexMap<String, Deck> {
     let mut decks = static_decks();
     for (id, title, cards) in [
         ("omarchy", "Omarchy", arrow_list("omarchy", &run("omarchy", &["menu", "keybindings", "--print"], 20), false)),
-        ("tmux", "tmux", arrow_list("tmux", &run("omarchy-menu-tmux-keybindings", &["--print"], 20), true)),
     ] {
         if !cards.is_empty() {
             decks.insert(id.to_string(), Deck { id: id.into(), title: title.into(), cards });
         }
-    }
-    if let Some(deck) = decks.get_mut("lazyvim") {
-        let extra = lazyvim_extra_cards(&deck.cards);
-        deck.cards.extend(extra);
     }
     decks.insert("habits".into(), habits::habit_deck());
     order(decks)

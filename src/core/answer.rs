@@ -182,6 +182,60 @@ pub fn pretty_keys(keys: &str) -> String {
     }
 }
 
+fn key_name(token: &str) -> Option<String> {
+    let lower = token.to_ascii_lowercase();
+    let name = match lower.as_str() {
+        "cr" | "enter" | "return" => "Enter",
+        "esc" | "escape" => "Escape",
+        "bs" | "backspace" => "Backspace",
+        "del" | "delete" => "Delete",
+        "space" | "leader" => "Space",
+        "tab" => "Tab",
+        "lt" => "less-than sign (<)",
+        "bar" => "vertical bar (|)",
+        "bslash" => "backslash (\\)",
+        "up" => "Up arrow",
+        "down" => "Down arrow",
+        "left" => "Left arrow",
+        "right" => "Right arrow",
+        "home" => "Home",
+        "end" => "End",
+        "pageup" => "Page Up",
+        "pagedown" => "Page Down",
+        _ => {
+            if let Some((modifier, key)) = token.split_once('-') {
+                let modifier = match modifier.to_ascii_lowercase().as_str() {
+                    "c" => "Ctrl",
+                    "s" => "Shift",
+                    "m" | "a" => "Alt",
+                    "d" => "Super",
+                    _ => return None,
+                };
+                let key = key_name(key).or_else(|| {
+                    (key.chars().count() == 1).then(|| key.to_string())
+                })?;
+                return Some(format!("{modifier} + {key}"));
+            }
+            return FUNCTION.is_match(&lower).unwrap_or(false).then(|| token.to_ascii_uppercase());
+        }
+    };
+    Some(name.to_string())
+}
+
+/// Explain special Vim key tokens without changing the executable key sequence.
+pub fn key_legend(keys: &str) -> String {
+    let mut explanations = Vec::new();
+    for captures in TOKEN.captures_iter(keys).flatten() {
+        if let Some(name) = key_name(&captures[1]) {
+            let explanation = format!("{} = {name}", &captures[0]);
+            if !explanations.contains(&explanation) {
+                explanations.push(explanation);
+            }
+        }
+    }
+    explanations.join("; ")
+}
+
 /// Keys as you press them: the leader is Space, the tmux prefix is its chord.
 pub fn display_keys(keys: &str) -> String {
     let mut rest = keys;
@@ -214,6 +268,16 @@ mod tests {
         assert_eq!(display_keys("PREFIX + c"), "CTRL + SPACE, c");
         assert_eq!(display_keys("ciw"), "ciw");
         assert_eq!(display_keys("CTRL + SPACE"), "CTRL + SPACE");
+    }
+
+    #[test]
+    fn special_keys_have_readable_names_without_changing_answers() {
+        assert_eq!(key_legend(":w<CR>"), "<CR> = Enter");
+        assert_eq!(key_legend("ciwtext<Esc><Esc>"), "<Esc> = Escape");
+        assert_eq!(key_legend("<C-r><C-S-Tab><BS>"),
+            "<C-r> = Ctrl + r; <C-S-Tab> = Ctrl + Shift + Tab; <BS> = Backspace");
+        assert_eq!(key_legend("f<unknown>ciw"), "");
+        assert!(is_correct(":w<Enter>", &[":w<CR>".into()], "keys", true));
     }
 
     #[test]

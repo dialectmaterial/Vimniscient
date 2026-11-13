@@ -183,6 +183,9 @@ local function why(task, group)
   for _, hook in ipairs(task.why or {}) do
     vim.list_extend(out, { { "\n" }, { hook, group } })
   end
+  if task.key_legend and task.key_legend ~= "" then
+    vim.list_extend(out, { { "\n" }, { task.key_legend, group } })
+  end
   return out
 end
 
@@ -336,6 +339,9 @@ function redraw()
   vim.list_extend(lines, wrap({ { task.goal, TITLE } }, width))
   if task.show and task.show ~= "" then
     table.insert(lines, { { "type  ", MUTED }, { task.show, STRONG } })
+    if task.key_legend and task.key_legend ~= "" then
+      vim.list_extend(lines, wrap({ { task.key_legend, MUTED } }, width))
+    end
   end
   table.insert(lines, {})
 

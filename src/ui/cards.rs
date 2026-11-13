@@ -27,7 +27,12 @@ pub struct CardScreen {
 }
 
 fn why(card: &Card) -> Vec<String> {
-    if HOOK_DECKS.contains(&card.deck.as_str()) { hooks(&card.answers[0]) } else { Vec::new() }
+    let mut lines = if HOOK_DECKS.contains(&card.deck.as_str()) { hooks(&card.answers[0]) } else { Vec::new() };
+    let legend = crate::core::answer::key_legend(&card.answers.join(" "));
+    if !legend.is_empty() {
+        lines.push(legend);
+    }
+    lines
 }
 
 impl CardScreen {
