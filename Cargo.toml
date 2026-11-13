@@ -30,3 +30,6 @@ serde_json = "1"
 [profile.release]
 lto = true
 strip = true
+codegen-units = 1 # one unit optimises across the whole crate: smaller
+opt-level = "s"   # for size; the app waits on you and Neovim, not on its own speed
+panic = "abort"   # no unwinding tables; nothing catches a panic, and the terminal is still restored
