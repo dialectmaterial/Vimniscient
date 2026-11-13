@@ -8,7 +8,7 @@ use super::keys::split_keys;
 use super::mnemonics::OPERATORS;
 use super::progress::today;
 use chrono::{Days, NaiveDate};
-use fancy_regex::Regex;
+use regex_lite::Regex;
 use indexmap::IndexMap;
 use std::sync::LazyLock;
 
@@ -31,7 +31,7 @@ fn read_log() -> Vec<(NaiveDate, String)> {
     let text = String::from_utf8_lossy(&bytes);
     let mut entries = Vec::new();
     for line in text.lines() {
-        if let Ok(Some(caps)) = LINE.captures(line.trim())
+        if let Some(caps) = LINE.captures(line.trim())
             && let Ok(day) = NaiveDate::parse_from_str(&caps[1], "%d %b %Y")
         {
             entries.push((day, caps[2].trim().to_string()));
@@ -59,7 +59,7 @@ pub fn habits(days: u64) -> Vec<Habit> {
 pub fn habit_deck() -> Deck {
     let mut deck = Deck { id: "habits".into(), title: "Your habits".into(), cards: Vec::new() };
     for (i, habit) in habits(14).iter().enumerate() {
-        let Ok(Some(caps)) = USE.captures(&habit.message) else { continue };
+        let Some(caps) = USE.captures(&habit.message) else { continue };
         let (better, worse) = (&caps[1], &caps[2]);
         let n = split_keys(better).len();
         let first = better.chars().next().map(String::from).unwrap_or_default();
@@ -95,7 +95,7 @@ pub fn drill_lessons(days: u64) -> Vec<String> {
         if day < since {
             continue;
         }
-        let caps = TOO_SOON.captures(&message).ok().flatten().or_else(|| DISABLED.captures(&message).ok().flatten());
+        let caps = TOO_SOON.captures(&message).or_else(|| DISABLED.captures(&message));
         if let Some(caps) = caps {
             let key = match &caps[1] {
                 "<Down>" => "j",

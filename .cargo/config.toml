@@ -1,0 +1,6 @@
+# Builds from this checkout (local installs, CI, the PyPI wheels) leave out the SQLite
+# extensions Vimniscient never uses: full-text search, R-tree, JSON, soundex and the
+# statistics tables. About 0.3 MB smaller. `cargo install` from crates.io doesn't read
+# this file and gets the full SQLite, which works the same.
+[env]
+LIBSQLITE3_FLAGS = "-USQLITE_ENABLE_FTS3 -USQLITE_ENABLE_FTS3_PARENTHESIS -USQLITE_ENABLE_FTS5 -USQLITE_ENABLE_RTREE -USQLITE_ENABLE_DBSTAT_VTAB -USQLITE_ENABLE_STAT4 -USQLITE_SOUNDEX -DSQLITE_OMIT_JSON"

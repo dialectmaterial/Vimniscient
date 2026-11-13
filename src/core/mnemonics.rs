@@ -3,7 +3,7 @@
 //! each one. Shown after an answer, never before (it names the keys).
 
 use super::content;
-use fancy_regex::Regex;
+use regex_lite::Regex;
 use indexmap::IndexMap;
 use std::sync::LazyLock;
 
@@ -171,7 +171,7 @@ fn ex_hooks(command: &str) -> Vec<String> {
     let hook = |name: &str| ex.get(name).cloned().unwrap_or_default();
     let mut out = Vec::new();
     let body = command.trim_start_matches(':');
-    let Ok(Some(caps)) = SPAN.captures(body) else {
+    let Some(caps) = SPAN.captures(body) else {
         return out;
     };
     let (span, name) = (&caps[1], &caps[2]);

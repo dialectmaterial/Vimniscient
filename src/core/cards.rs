@@ -3,7 +3,7 @@
 
 use super::machine::{on_path, run};
 use super::{answer::display_keys, content, habits};
-use fancy_regex::Regex;
+use regex_lite::Regex;
 use indexmap::IndexMap;
 use serde_norway::Value;
 use std::sync::LazyLock;
@@ -86,7 +86,7 @@ fn arrow_list(deck: &str, text: &str, case_sensitive: bool) -> Vec<Card> {
     for line in text.lines() {
         let Some((keys, desc)) = line.split_once('→') else { continue };
         let (keys, desc) = (keys.trim(), desc.trim());
-        if keys.is_empty() || desc.is_empty() || SKIP.is_match(keys).unwrap_or(true) {
+        if keys.is_empty() || desc.is_empty() || SKIP.is_match(keys) {
             continue;
         }
         by_desc.entry(desc.to_string()).or_default().push(keys.to_string());
@@ -94,7 +94,7 @@ fn arrow_list(deck: &str, text: &str, case_sensitive: bool) -> Vec<Card> {
     let mut cards = Vec::new();
     for (i, (desc, keys)) in by_desc.iter().enumerate() {
         // "Switch to workspace 1..10" is one thing to learn: keep the 1.
-        if let Ok(Some(m)) = NUMBERED.captures(desc)
+        if let Some(m) = NUMBERED.captures(desc)
             && &m[2] != "1"
             && by_desc.contains_key(&format!("{}1", &m[1]))
         {

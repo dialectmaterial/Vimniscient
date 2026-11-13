@@ -3,7 +3,7 @@
 
 use crate::core::machine::{cache_home, on_path, output_within};
 use crate::core::progress::Progress;
-use fancy_regex::Regex;
+use regex_lite::Regex;
 use serde_json::{Value, json};
 use std::path::PathBuf;
 use std::process::{Command, Stdio};
@@ -84,7 +84,7 @@ pub fn index() -> Result<Vec<Value>, String> {
     let mut found: Vec<Value> = Vec::new();
     for page in 1..40 {
         let html = get(&format!("{BASE}/?page={page}"), "text/html")?;
-        let rows: Vec<_> = ROW.captures_iter(&html).flatten().collect();
+        let rows: Vec<_> = ROW.captures_iter(&html).collect();
         if rows.is_empty() {
             break;
         }
@@ -113,7 +113,7 @@ pub fn challenge(entry: &Value) -> Result<Challenge, String> {
         None => {
             let raw: Value = serde_json::from_str(&get(&format!("{BASE}/challenges/{id}.json"), "application/json")?).map_err(|e| e.to_string())?;
             let html = get(&format!("{BASE}/challenges/{id}"), "text/html")?;
-            let best = SCORE.captures(&html).ok().flatten().and_then(|c| c[1].parse::<u64>().ok());
+            let best = SCORE.captures(&html).and_then(|c| c[1].parse::<u64>().ok());
             let data = json!({"in": raw["in"]["data"], "out": raw["out"]["data"], "best": best});
             let _ = std::fs::write(&path, data.to_string());
             data

@@ -4,8 +4,6 @@
 //! about text you typed in insert mode.
 
 use super::keys::split_keys;
-use fancy_regex::Regex;
-use std::sync::LazyLock;
 
 const MOTION_RUN: usize = 4; // jjjj; Vjj in a reference is fine, and three presses aren't a habit
 const X_RUN: usize = 3;
@@ -100,9 +98,53 @@ fn longest_run(runs: &[Vec<String>], wanted: &[&str]) -> (String, usize) {
     (best, length)
 }
 
+/// The first stretch of three or more keys typed three times running: the shortest
+/// at the leftmost start. A key is `<...>` or one character, and a `<` may also be
+/// read as itself, as the backtracking regex `((?:<[^<>\s]+>|.){3,}?)\1\1` did.
+fn repeated(keys: &str) -> Option<&str> {
+    // where each char starts, plus the end
+    let at: Vec<usize> = keys.char_indices().map(|(i, _)| i).chain([keys.len()]).collect();
+    let n = at.len() - 1;
+    // the char index a `<...>` key starting at char `i` ends at
+    let bracket = |i: usize| -> Option<usize> {
+        let rest = &keys[at[i]..];
+        let close = rest.strip_prefix('<')?.find(|c: char| c == '>' || c == '<' || c.is_whitespace())?;
+        (close > 0 && rest[1 + close..].starts_with('>')).then(|| at.partition_point(|&b| b < at[i] + close + 2))
+    };
+    let thrice = |start: usize, end: usize| {
+        let part = &keys[at[start]..at[end]];
+        keys[at[end]..].strip_prefix(part).is_some_and(|rest| rest.starts_with(part))
+    };
+    for start in 0..n {
+        // depth first, as the regex tries it: stop as soon as three keys or more repeat,
+        // else a bracketed key before a single character. A position reached with three
+        // keys or more that failed once fails again.
+        let mut failed = vec![false; n + 1];
+        let mut stack = vec![(start, 0usize)];
+        while let Some((pos, count)) = stack.pop() {
+            if count >= 3 {
+                if failed[pos] {
+                    continue;
+                }
+                if thrice(start, pos) {
+                    return Some(&keys[at[start]..at[pos]]);
+                }
+                failed[pos] = true;
+            }
+            let next = count.min(3) + 1;
+            if pos < n {
+                stack.push((pos + 1, next)); // tried second
+            }
+            if let Some(end) = bracket(pos) {
+                stack.push((end, next)); // tried first
+            }
+        }
+    }
+    None
+}
+
 /// One thing worth saying about how `keys` went about it, or nothing.
 pub fn diagnose(keys: &str, count: usize, reference: usize) -> String {
-    static REPEAT: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(?s)((?:<[^<>\s]+>|.){3,}?)\1\1").expect("a valid pattern"));
     if count <= reference {
         return String::new();
     }
@@ -115,11 +157,11 @@ pub fn diagnose(keys: &str, count: usize, reference: usize) -> String {
     if longest_run(&runs, &["x"]).1 >= X_RUN {
         return "x over and over: a count, dw or diw takes it all at once.".into();
     }
-    if let Ok(Some(caps)) = REPEAT.captures(keys) {
-        let part = &caps[1];
-        if !runs.iter().any(|run| run.iter().any(|key| key == ".")) && part.contains("<Esc>") {
-            return format!("You typed {part} three times: . repeats the last change.");
-        }
+    if let Some(part) = repeated(keys)
+        && !runs.iter().any(|run| run.iter().any(|key| key == "."))
+        && part.contains("<Esc>")
+    {
+        return format!("You typed {part} three times: . repeats the last change.");
     }
     String::new()
 }

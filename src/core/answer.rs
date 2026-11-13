@@ -2,7 +2,7 @@
 //! `<C-a>`, `<leader>ff`) and `combo` for chords (`SUPER SHIFT + B`). Both accept
 //! the usual ways of writing the same thing.
 
-use fancy_regex::{Captures, Regex};
+use regex_lite::{Captures, Regex};
 use std::collections::BTreeSet;
 use std::sync::LazyLock;
 
@@ -15,7 +15,6 @@ macro_rules! regex {
 }
 
 regex!(LEADING, r"(?i)^(leader|space|spc)(\s*\+\s*|\s+|$)");
-regex!(SPACE, r"(?i)(?<![<\w])space(?![>\w])");
 regex!(CTRL, r"(?i)\b(?:ctrl|control)[-+ ]+(\S)");
 regex!(ALT, r"(?i)\b(?:alt|meta)[-+ ]+(\S)");
 regex!(CARET, r"\^([A-Za-z_\[\]])");
@@ -51,6 +50,26 @@ fn token_name(low: &str) -> Option<&'static str> {
     })
 }
 
+/// "space" on its own, any case, as `<Space>`; not inside a word or `<...>`.
+fn space_word(text: &str) -> String {
+    let chars: Vec<char> = text.chars().collect();
+    let word = |c: Option<&char>, edge: char| c.is_some_and(|&c| c == edge || c == '_' || c.is_alphanumeric());
+    let mut out = String::with_capacity(text.len());
+    let mut i = 0;
+    while i < chars.len() {
+        let here: String = chars[i..chars.len().min(i + 5)].iter().collect();
+        let before = i.checked_sub(1).and_then(|b| chars.get(b));
+        if here.eq_ignore_ascii_case("space") && !word(before, '<') && !word(chars.get(i + 5), '>') {
+            out.push_str("<Space>");
+            i += 5;
+        } else {
+            out.push(chars[i]);
+            i += 1;
+        }
+    }
+    out
+}
+
 fn norm_token(caps: &Captures) -> String {
     let inner = &caps[1];
     let low = inner.to_lowercase();
@@ -60,7 +79,7 @@ fn norm_token(caps: &Captures) -> String {
     if let Some(name) = token_name(&low) {
         return name.into();
     }
-    if let Ok(Some(m)) = MODIFIED.captures(inner) {
+    if let Some(m) = MODIFIED.captures(inner) {
         let modifier = match m[1].to_lowercase().as_str() {
             "c" => "C",
             "s" => "S",
@@ -70,7 +89,7 @@ fn norm_token(caps: &Captures) -> String {
         let key = if modifier == "C" && key.chars().count() == 1 { key.to_lowercase() } else { key.to_string() };
         return format!("<{modifier}-{key}>");
     }
-    if FUNCTION.is_match(&low).unwrap_or(false) {
+    if FUNCTION.is_match(&low) {
         return format!("<F{}>", &low[1..]);
     }
     format!("<{inner}>")
@@ -83,7 +102,7 @@ pub fn norm_keys(text: &str, case_sensitive: bool) -> String {
 /// `caret`: read `^r` as Ctrl-r. Only for what you type: in an answer key `^` is the motion.
 fn norm_keys_with(text: &str, case_sensitive: bool, caret: bool) -> String {
     let s = LEADING.replace_all(text.trim(), "<leader>").into_owned();
-    let s = SPACE.replace_all(&s, "<Space>").into_owned();
+    let s = space_word(&s);
     let s = CTRL.replace_all(&s, "<C-$1>").into_owned();
     let s = ALT.replace_all(&s, "<M-$1>").into_owned();
     let s = if caret { CARET.replace_all(&s, "<C-$1>").into_owned() } else { s };
@@ -127,12 +146,12 @@ pub fn norm_combo(text: &str, case_sensitive: bool) -> (BTreeSet<&'static str>, 
     let s = TMUX_PREFIX.replace(text.trim(), "PREFIX ").into_owned();
     let s = COPY_MODE.replace_all(&s, "COPYMODE").into_owned();
     let mut s = PAGE.replace_all(&s, "PAGE_$1").into_owned();
-    let plus_key = PLUS_KEY.is_match(&s).unwrap_or(false); // "CTRL + +" or "CTRL +"
+    let plus_key = PLUS_KEY.is_match(&s); // "CTRL + +" or "CTRL +"
     if plus_key {
         s = PLUS_END.replace_all(&s, "").into_owned();
     }
     let mut parts: Vec<String> = Vec::new();
-    for part in SPLIT.split(&s).flatten() {
+    for part in SPLIT.split(&s) {
         if part.chars().count() > 1 && part.contains('-') {
             parts.extend(part.split('-').filter(|p| !p.is_empty()).map(str::to_string));
         } else if !part.is_empty() {
@@ -216,7 +235,7 @@ fn key_name(token: &str) -> Option<String> {
                 })?;
                 return Some(format!("{modifier} + {key}"));
             }
-            return FUNCTION.is_match(&lower).unwrap_or(false).then(|| token.to_ascii_uppercase());
+            return FUNCTION.is_match(&lower).then(|| token.to_ascii_uppercase());
         }
     };
     Some(name.to_string())
@@ -225,7 +244,7 @@ fn key_name(token: &str) -> Option<String> {
 /// Explain special Vim key tokens without changing the executable key sequence.
 pub fn key_legend(keys: &str) -> String {
     let mut explanations = Vec::new();
-    for captures in TOKEN.captures_iter(keys).flatten() {
+    for captures in TOKEN.captures_iter(keys) {
         if let Some(name) = key_name(&captures[1]) {
             let explanation = format!("{} = {name}", &captures[0]);
             if !explanations.contains(&explanation) {

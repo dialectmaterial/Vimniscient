@@ -14,7 +14,7 @@ repository = "https://github.com/dialectmaterial/Vimniscient"
 chrono = "0.4"
 clap = { version = "4", features = ["derive"] }
 crossterm = "0.29"
-fancy-regex = "0.16"
+regex-lite = "0.1"
 indexmap = { version = "2", features = ["serde"] }
 ratatui = "0.30"
 rusqlite = { version = "0.41", features = ["bundled", "fallible_uint"] }

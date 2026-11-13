@@ -3,7 +3,7 @@
 
 use crate::core::machine::{has_lazyvim, has_plugin, on_path, output_within};
 use crate::core::progress::data_dir;
-use fancy_regex::Regex;
+use regex_lite::Regex;
 use std::process::{Command, Stdio};
 
 const MIN_NVIM: (u32, u32) = (0, 10);
@@ -32,7 +32,7 @@ fn nvim() -> Vec<Check> {
         return vec![check("Neovim", false, format!("not found; install {wanted} or newer"), true)];
     }
     let out = Command::new("nvim").arg("--version").output().map(|o| String::from_utf8_lossy(&o.stdout).into_owned()).unwrap_or_default();
-    let found = Regex::new(r"v(\d+)\.(\d+)").ok().and_then(|re| re.captures(&out).ok().flatten());
+    let found = Regex::new(r"v(\d+)\.(\d+)").ok().and_then(|re| re.captures(&out));
     let version = found.map_or((0, 0), |c| (c[1].parse().unwrap_or(0), c[2].parse().unwrap_or(0)));
     let good = version >= MIN_NVIM;
     let detail = format!("{}.{}{}", version.0, version.1, if good { String::new() } else { format!("; {wanted} or newer needed") });
