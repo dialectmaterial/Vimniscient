@@ -243,6 +243,10 @@ leader as `Space` and the tmux prefix as `CTRL + SPACE`: press Space, or
 Ctrl-Space / Ctrl-B, in the answer box and it types that for you. If yours
 still fails, press `o` ("I was right").
 
+**A card keeps coming back but I know it.** Press `Tab` while the card is
+asked, or `k` after you've answered it. It leaves the queue and is never
+asked again.
+
 ## Writing lessons
 
 Lessons are YAML files in [`content/lessons/`](https://github.com/dialectmaterial/Vimniscient/blob/main/content/lessons).

@@ -57,6 +57,17 @@ impl CardSession {
         }
     }
 
+    /// "I know this": the card on screen leaves the queue and never comes back. An
+    /// answer already given is dropped with it.
+    pub fn know(&mut self, progress: &Progress) {
+        let Some(card) = self.queue.first().cloned() else { return };
+        self.pending = None;
+        self.queue.retain(|c| c.id != card.id);
+        self.total -= usize::from(!self.retried.contains(&card.id));
+        self.retried.remove(&card.id);
+        progress.know_card(&card.id);
+    }
+
     /// Grade the answered card (only the first try of a session counts).
     pub fn settle(&mut self, progress: &Progress) {
         let Some((card, correct, answer)) = self.pending.take() else { return };

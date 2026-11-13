@@ -91,6 +91,20 @@ fn every_screen() {
     special(&mut app, KeyCode::Esc);
     assert!(on_main(&app));
 
+    // Tab: known already, never asked again
+    press(&mut app, "c");
+    assert!(screen(&app).contains("I know it"), "the known key is on the bar");
+    let next = app.progress.new_cards(&app.decks, app.lessons)[0].clone();
+    special(&mut app, KeyCode::Tab);
+    assert!(app.progress.known().contains(&next.id));
+    assert!(app.progress.new_cards(&app.decks, app.lessons).iter().all(|c| c.id != next.id), "a known card isn't new again");
+    assert!(app.progress.item(&next.id).is_none(), "nor scheduled");
+    if let Some(Screen::Cards(cards)) = app.screens.last() {
+        assert!(cards.session.as_ref().unwrap().card().is_none_or(|c| c.id != next.id), "it leaves the queue");
+        special(&mut app, KeyCode::Esc);
+    }
+    assert!(on_main(&app));
+
     let lesson = &app.lessons[0];
     let tasks = two_rounds(lesson, "2026-10-30");
     let results: Vec<TaskResult> = tasks.iter().enumerate().map(|(i, t)| {

@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS placed (lesson TEXT PRIMARY KEY, ts TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS drill_log (id INTEGER PRIMARY KEY, ts TEXT NOT NULL, drill TEXT NOT NULL, seconds REAL NOT NULL, hinted INTEGER NOT NULL, skipped INTEGER NOT NULL);
 CREATE TABLE IF NOT EXISTS endless_runs (id INTEGER PRIMARY KEY, ts TEXT NOT NULL, start INTEGER NOT NULL, level INTEGER NOT NULL,
     climbed INTEGER NOT NULL, missed INTEGER NOT NULL, fixed INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS known (id TEXT PRIMARY KEY, ts TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS vimgolf (id TEXT PRIMARY KEY, title TEXT NOT NULL, assigned TEXT NOT NULL, best INTEGER, score INTEGER, solved TEXT);
 ";
 
@@ -257,6 +258,17 @@ impl Progress {
         self.exists("SELECT 1 FROM card_log WHERE card = ? AND correct = 1 AND intro = 0 LIMIT 1", [id])
     }
 
+    /// "I know this": the card is never asked again.
+    pub fn know_card(&self, id: &str) {
+        self.run("INSERT OR IGNORE INTO known (id, ts) VALUES (?, ?)", params![id, now()]);
+    }
+
+    /// Cards marked as known.
+    pub fn known(&self) -> HashSet<String> {
+        let Ok(mut statement) = self.db.prepare("SELECT id FROM known") else { return HashSet::new() };
+        statement.query_map([], |row| row.get::<_, String>(0)).map(|rows| rows.flatten().collect()).unwrap_or_default()
+    }
+
     /// Cards for lessons you've done: a card with a `day` waits for that day's lesson, one
     /// with only a `week` comes in when that week starts.
     pub fn unlocked(&self, decks: &IndexMap<String, Deck>, lessons: &[Lesson]) -> Vec<Card> {
@@ -267,7 +279,9 @@ impl Progress {
 
     pub fn due_cards(&self, decks: &IndexMap<String, Deck>, lessons: &[Lesson], limit: Option<usize>) -> Vec<Card> {
         let items = self.items("card");
-        let mut due: Vec<Card> = self.unlocked(decks, lessons).into_iter().filter(|c| items.get(&c.id).is_some_and(|i| i.due <= Some(today()))).collect();
+        let known = self.known();
+        let mut due: Vec<Card> = self.unlocked(decks, lessons).into_iter()
+            .filter(|c| !known.contains(&c.id) && items.get(&c.id).is_some_and(|i| i.due <= Some(today()))).collect();
         due.sort_by_key(|c| items[&c.id].due);
         due.truncate(limit.unwrap_or(usize::MAX));
         due
@@ -277,9 +291,10 @@ impl Progress {
     pub fn new_cards(&self, decks: &IndexMap<String, Deck>, lessons: &[Lesson]) -> Vec<Card> {
         let items = self.items("card");
         let mut left = NEW_CARDS_PER_DAY - items.values().filter(|i| i.created == Some(today())).count() as i64;
+        let known = self.known();
         let mut unseen: IndexMap<String, Vec<Card>> = IndexMap::new();
         for card in self.unlocked(decks, lessons) {
-            if !items.contains_key(&card.id) {
+            if !items.contains_key(&card.id) && !known.contains(&card.id) {
                 unseen.entry(card.deck.clone()).or_default().push(card);
             }
         }

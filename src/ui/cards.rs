@@ -90,6 +90,16 @@ impl CardScreen {
             session.settle(&app.progress);
             return Flow::Close;
         }
+        // Tab, or k once answered: known already, never ask again
+        if key.code == KeyCode::Tab || (session.pending.is_some() && key.code == KeyCode::Char('k')) {
+            session.know(&app.progress);
+            self.input.clear();
+            self.copy_again = false;
+            if session.begin(&app.progress).is_none() {
+                return Flow::Close;
+            }
+            return Flow::Stay;
+        }
         if session.pending.is_some() {
             match key.code {
                 KeyCode::Enter => {
@@ -171,9 +181,9 @@ impl CardScreen {
         }
         frame.render_widget(Paragraph::new(feedback).wrap(Wrap { trim: false }), below);
         let keys: &[(&str, &str)] = match &pending {
-            Some((_, false, _)) => &[("enter", "next"), ("o", "I was right"), ("esc", "stop")],
-            Some(_) => &[("enter", "next"), ("esc", "stop")],
-            None => &[("enter", "check"), ("esc", "stop")],
+            Some((_, false, _)) => &[("enter", "next"), ("o", "I was right"), ("k", "I know it, don't ask again"), ("esc", "stop")],
+            Some(_) => &[("enter", "next"), ("k", "I know it, don't ask again"), ("esc", "stop")],
+            None => &[("enter", "check"), ("tab", "I know it, don't ask again"), ("esc", "stop")],
         };
         frame.render_widget(Paragraph::new(widgets::keybar(keys, t)), bar);
     }
