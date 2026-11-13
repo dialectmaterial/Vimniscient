@@ -1983,7 +1983,6 @@ dependencies = [
  "regex-lite",
  "rusqlite",
  "rust-embed",
- "serde",
  "serde_json",
  "serde_norway",
 ]
