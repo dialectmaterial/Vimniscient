@@ -5,9 +5,17 @@ skill: repeats
 intro: |
   `gn` reads as *go to the next match* and grab it: it selects the next
   search match. So `cgn` changes the next match, and `.` then changes the one
-  after that, and the one after that. Search once (with `/` or `*`), `cgn`
-  the first, then press `.` per match. Press `n` to skip one you want to
-  keep. `dgn` deletes matches the same way.
+  after that, and the one after that.
+
+  The keys look long, but every task here is the same three moves:
+
+  - **Search**: `*` for the word under the cursor, or `/text<Enter>` for anything else.
+  - **Change one**: `cgn`, type the new text, `<Esc>`.
+  - **Repeat**: `.` for each match left. `n` skips one you want to keep.
+
+  `dgn` deletes matches the same way, with nothing to type. Learn ticks off
+  the moves as you type them, and in Recall each `:Hint` after the first
+  gives you one more move.
 keys: ['cgn', 'dgn', '*cgn', 'n.']
 tasks:
   - goal: 'Rename every hit to next_match.'

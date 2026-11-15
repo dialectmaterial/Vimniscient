@@ -186,6 +186,16 @@ impl Progress {
         self.is_placed(lesson) || self.best(lesson).len() == lesson.tasks.len()
     }
 
+    /// What's left of a lesson begun but not done: the tasks not recalled yet, so a
+    /// long lesson can be finished over several days. A lesson done, or not begun, runs whole.
+    pub fn left(&self, lesson: &Lesson) -> Lesson {
+        let best = self.best(lesson);
+        if best.is_empty() || self.is_done(lesson) {
+            return lesson.clone();
+        }
+        Lesson { tasks: lesson.tasks.iter().filter(|t| !best.contains_key(&t.index)).cloned().collect(), ..lesson.clone() }
+    }
+
     pub fn next_lesson<'a>(&self, lessons: &'a [Lesson]) -> Option<&'a Lesson> {
         lessons.iter().find(|lesson| !self.is_done(lesson))
     }

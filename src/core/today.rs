@@ -110,7 +110,7 @@ pub fn todays_work(progress: &Progress, lessons: &[Lesson], decks: &IndexMap<Str
     let review = review_tasks(progress, lessons);
     let todays = todays_drills(progress, drill_list);
     let lesson = progress.next_lesson(lessons).filter(|_| !progress.lesson_today()); // one a day, budget or not
-    let lesson_seconds = lesson.map_or(0.0, |l| l.tasks.len() as f64 * 2.0 * lesson_task + LESSON_READING_SECONDS);
+    let lesson_seconds = lesson.map_or(0.0, |l| progress.left(l).tasks.len() as f64 * 2.0 * lesson_task + LESSON_READING_SECONDS);
 
     let mut left = budget - lesson_seconds;
     let (mut take_review, mut take_due, mut take_drills, mut take_new) = (0, 0, 0, 0);

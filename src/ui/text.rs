@@ -7,7 +7,7 @@ use crate::core::transfer;
 use crate::system::vimgolf::{Challenge, SAVE_KEYS};
 use std::collections::HashMap;
 
-pub const TASK_HELP: &str = "The goal shows in the top window, your text below. When they match, the next task loads by itself. Inside Neovim: `:Hint` (twice for the answer), `:Skip`, `:Reset`, `:q` to stop.";
+pub const TASK_HELP: &str = "The goal shows in the top window, your text below. When they match, the next task loads by itself. Inside Neovim: `:Hint` (a clue, then the answer one step at a time), `:Skip`, `:Reset`, `:q` to stop.";
 pub const VIMGOLF_HELP: &str = "The goal shows in the top window, your text below; it's done when they match. Inside Neovim: `:Reset` to start over, `:q` to stop.";
 pub const RETRY_HELP: &str = "Skip a task you can't recall and you'll see the answer, type it once, and get it again at the end.";
 pub const ROUNDS_HELP: &str = "Two rounds. **Learn**: each task with the keys to type shown. **Recall**: the same skills on new text, in another order, from memory. Only Recall counts towards your progress.";

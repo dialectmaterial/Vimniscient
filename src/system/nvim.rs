@@ -3,6 +3,7 @@
 use crate::core::lessons::{Lesson, Task};
 use crate::core::missions::Mission;
 use crate::core::mnemonics::hooks;
+use crate::core::steps::steps;
 use crate::core::progress::today;
 use crate::core::content::{self, Scratch};
 use crate::core::results::TaskResult;
@@ -32,6 +33,8 @@ fn task_json(t: &Task) -> Value {
         "hint": t.hint, "solution": t.solution, "ft": t.ft, "phase": t.phase,
         "why": if t.solution == "—" { Vec::new() } else { hooks(&t.solution) }, // what the keys stand for
         "key_legend": crate::core::answer::key_legend(&t.solution),
+        // the solution in small moves: ticked off in Learn, given one at a time by :Hint
+        "steps": steps(&t.solution).into_iter().map(|s| [s.keys, s.says]).collect::<Vec<_>>(),
     })
 }
 

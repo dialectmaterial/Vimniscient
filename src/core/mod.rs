@@ -20,5 +20,6 @@ pub mod quick;
 pub mod results;
 pub mod settings;
 pub mod srs;
+pub mod steps;
 pub mod today;
 pub mod transfer;

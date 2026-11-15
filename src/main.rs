@@ -147,7 +147,7 @@ fn main() {
                 std::process::exit(2);
             };
             let mut session = lesson.clone();
-            session.tasks = two_rounds(lesson, &today().to_string());
+            session.tasks = two_rounds(&progress().left(lesson), &today().to_string());
             let results = nvim::run_lesson(&session, true);
             progress().record(&results);
             for (i, r) in results.iter().enumerate() {

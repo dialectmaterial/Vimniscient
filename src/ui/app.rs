@@ -417,7 +417,7 @@ impl App {
         let (lesson, results, note, subtitle, again) = match job.clone() {
             Job::Lesson(lesson) => {
                 let mut session = lesson.clone();
-                session.tasks = two_rounds(&lesson, &day);
+                session.tasks = two_rounds(&self.progress.left(&lesson), &day);
                 let results = nvim::run_lesson(&session, true);
                 self.progress.record(&results);
                 (session, results, String::new(), String::new(), job)

@@ -23,9 +23,15 @@ itself. There's nothing to submit, and any way of getting there counts.
 Every lesson has two rounds:
 
 1. **Learn**: each task with the keys to type shown next to it, so you use
-   exactly what you'll need to remember.
+   exactly what you'll need to remember. Longer answers are split into
+   steps (`*` search, `cgn` change the next match, `match<Esc>` type it,
+   `..` repeat), each ticked off as you type it.
 2. **Recall**: the same skills come back on different text, in a different
    order, with the keys hidden. Only this round counts towards your progress.
+
+A lesson is done once you've recalled each of its tasks, and that doesn't
+have to happen in one go: next time, the tasks you already recalled are
+left out.
 
 Every task has more than one text, and each review gives you the next one.
 That way you remember the skill, not the sentence.
@@ -38,7 +44,8 @@ counts them, and afterwards you see your keys next to the reference
 solution. If `ciwbuf<Esc>..` took you 14 keys and the reference does it in
 10, you'll see how.
 
-Stuck? Type `:Hint` (twice for the answer). `:Skip` and `:Reset` do what
+Stuck? Type `:Hint` for a clue. Each `:Hint` after that gives you one more
+step of the answer, so you can take just as much help as you need. `:Skip` and `:Reset` do what
 they say, and `:q` stops.
 
 ## Texts that teach the keys

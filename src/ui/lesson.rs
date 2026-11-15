@@ -39,7 +39,15 @@ impl Intro {
         } else {
             String::new()
         };
-        let count = if lesson.tasks.len() > 1 { format!("{}.{rounds} ", crate::core::today::plural(lesson.tasks.len(), "task")) } else { String::new() };
+        let left = if lesson.week > 0 { app.progress.left(&lesson).tasks.len() } else { lesson.tasks.len() };
+        let count = if left < lesson.tasks.len() {
+            let done = lesson.tasks.len() - left;
+            format!("You've recalled {done} of {} already, so this time it's only the other {}.{rounds} ", lesson.tasks.len(), crate::core::today::plural(left, "task"))
+        } else if lesson.tasks.len() > 1 {
+            format!("{}.{rounds} ", crate::core::today::plural(lesson.tasks.len(), "task"))
+        } else {
+            String::new()
+        };
         let help = if lesson.id == "vimgolf" { VIMGOLF_HELP } else { TASK_HELP };
         let body = format!("{}\n\n{count}{help}", lesson_markdown(&lesson, None));
         Intro { title: title(&lesson), lines: markdown::render(&body, &app.theme), job, scroll: 0 }

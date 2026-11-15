@@ -274,6 +274,50 @@ local function task_keys()
   return table.concat(kept), #kept
 end
 
+-- How many of the task's steps your keys have typed so far, in the reference's
+-- order: a different route ticks nothing, and :Reset starts the count again.
+local function steps_typed(task)
+  local typed, want = tokens((task_keys())), tokens(task.solution)
+  local same = 0
+  while same < #typed and same < #want and typed[same + 1] == want[same + 1] do
+    same = same + 1
+  end
+  local done, reach = 0, 0
+  for _, step in ipairs(task.steps or {}) do
+    reach = reach + #tokens(step[1])
+    if reach > same then
+      break
+    end
+    done = done + 1
+  end
+  return done
+end
+
+-- The steps as aligned lines: keys, then what they do. `upto`: how many to list;
+-- `done`: how many to tick off (nil: no ticks, as in a hint).
+local function step_lines(task, upto, done, width)
+  local keys_w = 0
+  for i = 1, upto do
+    keys_w = math.max(keys_w, vim.fn.strdisplaywidth(task.steps[i][1]))
+  end
+  local out = {}
+  for i = 1, upto do
+    local keys, says = task.steps[i][1], task.steps[i][2]
+    local pad = string.rep(" ", keys_w - vim.fn.strdisplaywidth(keys) + 2)
+    local mark, group, text_group = done and "· " or "", STRONG, MUTED
+    if done then
+      if i <= done then
+        mark, group = "✓ ", RIGHT
+      elseif i == done + 1 then
+        mark, text_group = "› ", nil
+      end
+    end
+    local line = wrap({ { mark, group }, { keys, group }, { pad }, { says, text_group } }, width)
+    vim.list_extend(out, line)
+  end
+  return out
+end
+
 local MODES = { n = "NORMAL", i = "INSERT", v = "VISUAL", V = "V-LINE", ["\22"] = "V-BLOCK", R = "REPLACE",
   c = "COMMAND", o = "PENDING", s = "SELECT", t = "TERMINAL" }
 local BAR = 40 -- as wide as the app's progress bar
@@ -339,6 +383,10 @@ function redraw()
   vim.list_extend(lines, wrap({ { task.goal, TITLE } }, width))
   if task.show and task.show ~= "" then
     table.insert(lines, { { "type  ", MUTED }, { task.show, STRONG } })
+    if task.steps and #task.steps > 1 and task.show == task.solution then
+      state.steps_done = steps_typed(task)
+      vim.list_extend(lines, step_lines(task, #task.steps, state.steps_done, width))
+    end
     if task.key_legend and task.key_legend ~= "" then
       vim.list_extend(lines, wrap({ { task.key_legend, MUTED } }, width))
     end
@@ -394,7 +442,7 @@ function redraw()
   })
 
   local commands = task.solution == "—" and { { ":Reset", "start over" }, { ":q", "stop" } }
-    or { { ":Hint", "a clue, twice for the answer" }, { ":Skip", "skip" }, { ":Reset", "start over" }, { ":q", "stop" } }
+    or { { ":Hint", endless and "a clue, twice for the answer" or "a clue, then a step at a time" }, { ":Skip", "skip" }, { ":Reset", "start over" }, { ":q", "stop" } }
   local bar = { { " " } }
   for i, c in ipairs(commands) do
     vim.list_extend(bar, { { (i > 1 and "  " or "") .. c[1], TITLE }, { " " .. c[2], MUTED } })
@@ -415,6 +463,10 @@ local function update_status()
   local text = status_for(task, select(2, task_keys()))
   if text ~= status_text then
     show_status(text)
+  end
+  -- a step typed (or undone with :Reset): tick it off in the list
+  if task.show == task.solution and task.steps and #task.steps > 1 and steps_typed(task) ~= state.steps_done then
+    redraw()
   end
 end
 local function status_soon()
@@ -708,9 +760,19 @@ vim.api.nvim_create_user_command("Hint", function()
   state.hints = state.hints + 1
   if task.solution == "—" -- VimGolf: there's no reference to give away
     or state.hints == 1 and task.hint ~= "" then
-    tell({ { "hint  ", ACCENT }, { task.hint } })
+    local more = not endless and #(task.steps or {}) > 1 and { { "\n" }, { ":Hint again for the first step", MUTED } } or {}
+    tell(vim.list_extend({ { "hint  ", ACCENT }, { task.hint } }, more))
   elseif endless and task.budget and not state.done then
     miss("You asked for the answer.")
+  elseif #(task.steps or {}) > 1 and state.hints - (task.hint ~= "" and 1 or 0) < #task.steps then
+    -- one step more each time; the last :Hint gives the whole answer, as before
+    local upto = state.hints - (task.hint ~= "" and 1 or 0)
+    local said = { { string.format("step %d of %d", upto, #task.steps), ACCENT }, { "   :Hint again for the next", MUTED } }
+    for _, line in ipairs(step_lines(task, upto, nil, 999)) do
+      table.insert(said, { "\n" })
+      vim.list_extend(said, line)
+    end
+    tell(said)
   else
     tell(vim.list_extend({ { "answer  ", ACCENT }, { task.solution, STRONG } }, why(task, MUTED)))
   end

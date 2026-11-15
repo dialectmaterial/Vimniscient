@@ -9,9 +9,9 @@ use std::sync::LazyLock;
 
 pub const OPERATORS: [&str; 9] = ["c", "d", "y", "gU", "gu", "g~", ">", "<", "gc"];
 // keys that take one character after them: f{char}, ma, "a, @a, r{char} ...
-const TAKES_CHAR: [&str; 11] = ["f", "t", "F", "T", "m", "'", "`", "q", "@", "r", "<C-r>"];
+pub const TAKES_CHAR: [&str; 11] = ["f", "t", "F", "T", "m", "'", "`", "q", "@", "r", "<C-r>"];
 // keys that leave you typing text until <Esc>
-const INSERTS: [&str; 11] = ["i", "a", "A", "I", "o", "O", "R", "C", "s", "S", "cc"];
+pub const INSERTS: [&str; 11] = ["i", "a", "A", "I", "o", "O", "R", "C", "s", "S", "cc"];
 const PAIRS: &str = "()[]{}<>\"'`";
 const MAX_HOOKS: usize = 4;
 
@@ -19,18 +19,23 @@ pub struct Tables {
     pub normal: IndexMap<String, String>,
     pub objects: IndexMap<String, String>,
     pub ex: IndexMap<String, String>,
+    pub means: IndexMap<String, String>, // what Vim calls each key (Ex commands with their colon)
+    pub object_means: IndexMap<String, String>,
 }
 
 pub static TABLES: LazyLock<Tables> = LazyLock::new(|| {
     let data: serde_norway::Mapping = serde_norway::from_str(&content::text("mnemonics.yaml")).expect("mnemonics.yaml");
     let (mut normal, mut objects, mut ex) = (IndexMap::new(), IndexMap::new(), IndexMap::new());
+    let (mut means, mut object_means) = (IndexMap::new(), IndexMap::new());
     for (key, entry) in &data {
         let key = content::scalar(key);
         let hook = entry.get("hook").map(content::scalar).unwrap_or_default();
+        let meaning = entry.get("means").map(content::scalar).unwrap_or_default();
         let (name, kind) = key.split_once(" (").unwrap_or((&key, ""));
         let kind = kind.trim_end_matches(')');
         match kind {
             "object" => {
+                object_means.insert(name.to_string(), meaning);
                 objects.insert(name.to_string(), hook);
             }
             "range" => {
@@ -42,12 +47,18 @@ pub static TABLES: LazyLock<Tables> = LazyLock::new(|| {
             "motion" | "" => {
                 if kind.is_empty() && matches!(name, "w" | "W" | "s") {
                     objects.insert(name.to_string(), hook.clone());
+                    object_means.insert(name.to_string(), meaning.clone());
                 }
                 // "h j k l", "n N", "( b": several keys sharing one hook
                 let parts: Vec<&str> = if name.contains(' ') && !name.starts_with(':') { name.split(' ').collect() } else { vec![name] };
                 for part in parts {
                     let table = if part.starts_with(':') { &mut ex } else { &mut normal };
                     table.insert(part.to_string(), hook.clone());
+                    if kind == "motion" {
+                        means.insert(part.to_string(), meaning.clone()); // w the motion, not the word
+                    } else {
+                        means.entry(part.to_string()).or_insert_with(|| meaning.clone());
+                    }
                 }
             }
             _ => {}
@@ -57,7 +68,19 @@ pub static TABLES: LazyLock<Tables> = LazyLock::new(|| {
     for c in PAIRS.chars() {
         objects.entry(c.to_string()).or_insert_with(|| round.clone());
     }
-    Tables { normal, objects, ex }
+    for c in PAIRS.chars() {
+        let name = match c {
+            '(' | ')' => "( ) block".to_string(),
+            '[' | ']' => "[ ] block".to_string(),
+            '{' | '}' => "{ } block".to_string(),
+            '<' | '>' => "< > block".to_string(),
+            '"' => "double-quoted string".to_string(),
+            '\'' => "single-quoted string".to_string(),
+            _ => "backtick string".to_string(),
+        };
+        object_means.entry(c.to_string()).or_insert(name);
+    }
+    Tables { normal, objects, ex, means, object_means }
 });
 
 /// The hooks for the parts of `keys`, in order, without repeats.
